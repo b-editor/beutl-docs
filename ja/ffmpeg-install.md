@@ -1,3 +1,8 @@
+---
+title: FFmpegの配置
+description: Beutlでメディアファイルをエンコード/デコードするためにFFmpegを配置する方法を説明します
+---
+
 ## FFmpegの配置
 この操作を実行する前にFFmpegのライセンスをご確認ください。
 https://www.ffmpeg.org/legal.html
