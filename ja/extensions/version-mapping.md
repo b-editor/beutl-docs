@@ -8,6 +8,7 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 
 | Beutl | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) |
 | ----- | ---- | -------- |
+| 1.0.0-preview.4 | 8.0 | 11.0.5 |
 | 1.0.0-preview.3 | 7.0 | 11.0.4 |
 | 1.0.0-preview.2 | 7.0 | 11.0.4 |
 | 1.0.0-preview.1 | 7.0 | 11.0.4 |
