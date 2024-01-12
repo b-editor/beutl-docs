@@ -3,13 +3,12 @@ title: FFmpegの配置
 description: Beutlでメディアファイルをエンコード/デコードするためにFFmpegを配置する方法を説明します
 ---
 
-## FFmpegの配置
 この操作を実行する前にFFmpegのライセンスをご確認ください。  
 https://www.ffmpeg.org/legal.html
 
 **バージョンアップ等によって、ダウンロードするファイルが変わる可能があります。**
 
-### Windows (64bit) の場合
+## Windows (64bit) の場合
 以下のページから、`ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip`をダウンロードします。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
@@ -31,7 +30,7 @@ C:\Users\(ユーザー)\.beutl\ffmpeg
 ┗━ swscale-7.dll
 ```
 
-### Linuxの場合
+## Linuxの場合
 **パッケージマネージャからインストールしたFFmpegはバージョンの違いなどにより、正常に動作しない場合があります。
 なので、Windowsと同様に操作を行ってください。**
 
@@ -73,5 +72,5 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 ```
 共有ライブラリの内、Suffixに`x.xxx`がついているもの以外はシンボリックリンクです。
 
-### macOSの場合
+## macOSの場合
 準備中

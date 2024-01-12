@@ -3,7 +3,6 @@ title: バージョンの対応表
 description: Beutlのバージョンとその依存フレームワーク、ライブラリのバージョンを列挙します。
 ---
 
-## バージョンの対応表
 Beutlのバージョンとその依存フレームワーク、ライブラリのバージョンを列挙します。
 
 | Beutl | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) |
