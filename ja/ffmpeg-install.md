@@ -74,7 +74,7 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 ```
 共有ライブラリの内、Suffixに`x.xxx`がついているもの以外はシンボリックリンクです。
 
-## macOSの場合
+### macOSの場合
 準備中
 
 ## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
