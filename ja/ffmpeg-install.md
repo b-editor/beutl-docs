@@ -6,9 +6,11 @@ description: Beutlでメディアファイルをエンコード/デコードす�
 この操作を実行する前にFFmpegのライセンスをご確認ください。  
 https://www.ffmpeg.org/legal.html
 
+## 手動で配置する
+
 **バージョンアップ等によって、ダウンロードするファイルが変わる可能があります。**
 
-## Windows (64bit) の場合
+### Windows (64bit) の場合
 以下のページから、`ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip`をダウンロードします。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
@@ -30,7 +32,7 @@ C:\Users\(ユーザー)\.beutl\ffmpeg
 ┗━ swscale-7.dll
 ```
 
-## Linuxの場合
+### Linuxの場合
 **パッケージマネージャからインストールしたFFmpegはバージョンの違いなどにより、正常に動作しない場合があります。
 なので、Windowsと同様に操作を行ってください。**
 
@@ -74,3 +76,33 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 
 ## macOSの場合
 準備中
+
+## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
+
+バージョン`1.0.0-preview4`以降は[FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使うことができます。
+
+> [!TIP]
+> この方法を実行するにはBeutlアカウントが必要です。
+
+1. 拡張機能ページを開きます
+2. 左上の検索ボックスに `"Beutl.Extensions.FFmpegLocator"` と入力して、エンターを押します。
+3. __"FFmpeg配置ツール"__ をクリックします。
+4. インストールをクリックします。
+5. Beutlを閉じます。
+6. インストールダイアログが表示されるので指示に従って続行します。
+7. Beutlを開きます。
+8. サイドバーから __"FFmpeg配置ツール"__ を開きます。
+9. __インストール__ をクリックするとFFmpegのインストールが開始されます。
+10. インストールが終了したら、Beutlを再起動すると配置が完了します。
+
+> [!TIP]
+> この作業が終わったあとは、__"FFmpeg配置ツール"__ をアンインストールしていただいても構いません。
+
+## トラブルシューティング
+
+### FFmpegのバージョンの問題
+インストール後も __"FFmpegがインストールされていることを確認してください。"__ と表示される場合、
+FFmpegのバージョンが間違っている可能性があります。
+正しいバージョンは[バージョンマッピング](./extensions/version-mapping.md)からご確認ください。
+
+FFmpeg配置ツールを使用してインストールした場合は[こちら](https://github.com/b-editor/Beutl.Extensions.FFmpegLocator/issues)に報告していただけると助かります。
