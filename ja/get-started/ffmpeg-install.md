@@ -75,7 +75,22 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 共有ライブラリの内、Suffixに`x.xxx`がついているもの以外はシンボリックリンクです。
 
 ### macOSの場合
-準備中
+
+> [!IMPORTANT]
+> この方法はバージョン`1.0.0-preview.6`から使えます。
+
+> [!WARNING]
+> Rosettaを使わないでください。
+
+ターミナルで以下のコマンドを実行してHomebrewをインストールします。
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+以下のコマンドを実行してFFmpegをインストールします。
+```sh
+brew install ffmpeg
+```
 
 ## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
 
