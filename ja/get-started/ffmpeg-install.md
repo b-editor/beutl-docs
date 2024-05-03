@@ -75,7 +75,22 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 共有ライブラリの内、Suffixに`x.xxx`がついているもの以外はシンボリックリンクです。
 
 ### macOSの場合
-準備中
+
+> [!IMPORTANT]
+> この方法はバージョン`1.0.0-preview.6`から使えます。
+
+> [!WARNING]
+> Rosettaを使わないでください。
+
+ターミナルで以下のコマンドを実行してHomebrewをインストールします。
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+以下のコマンドを実行してFFmpegをインストールします。
+```sh
+brew install ffmpeg@6
+```
 
 ## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
 
@@ -103,7 +118,7 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 ### FFmpegのバージョンの問題
 インストール後も __"FFmpegがインストールされていることを確認してください。"__ と表示される場合、
 FFmpegのバージョンが間違っている可能性があります。
-正しいバージョンは[バージョンマッピング](./extensions/version-mapping.md)からご確認ください。
+正しいバージョンは[バージョンマッピング](../extensions/version-mapping.md)からご確認ください。
 
 FFmpeg配置ツールを使用しているにもかかわらず、
 メッセージが表示される場合、[こちら](https://github.com/b-editor/Beutl.Extensions.FFmpegLocator/issues)に報告していただけると助かります。
