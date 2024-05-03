@@ -89,7 +89,7 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 
 以下のコマンドを実行してFFmpegをインストールします。
 ```sh
-brew install ffmpeg
+brew install ffmpeg@6
 ```
 
 ## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
@@ -118,7 +118,7 @@ brew install ffmpeg
 ### FFmpegのバージョンの問題
 インストール後も __"FFmpegがインストールされていることを確認してください。"__ と表示される場合、
 FFmpegのバージョンが間違っている可能性があります。
-正しいバージョンは[バージョンマッピング](./extensions/version-mapping.md)からご確認ください。
+正しいバージョンは[バージョンマッピング](../extensions/version-mapping.md)からご確認ください。
 
 FFmpeg配置ツールを使用しているにもかかわらず、
 メッセージが表示される場合、[こちら](https://github.com/b-editor/Beutl.Extensions.FFmpegLocator/issues)に報告していただけると助かります。
