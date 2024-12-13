@@ -3,7 +3,7 @@ title: 版本对照表
 description: 列举了 Beutl 各个版本对应的工具、运行库的版本。
 ---
 
-下方列举了 Beutl 各个版本对应的工具、运行库的版本。
+下方列举了 Beutl 各个版本对应的工具、运行库的版本。  
 
 | Beutl           | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | --------------- | ---- | -------------------------------------------------- | ------ |

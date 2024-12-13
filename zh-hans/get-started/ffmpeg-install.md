@@ -14,7 +14,7 @@ https://www.ffmpeg.org/legal.html
 请从以下页面下载 `ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip`。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
-解压下载的文件，将 `ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\` 中的文件放置到以下的位置：
+解压下载的文件，将 `ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\` 中的文件放置到以下的位置：  
 
 ```
 C:\Users\(你的用户名)\.beutl\ffmpeg
@@ -37,7 +37,7 @@ C:\Users\(你的用户名)\.beutl\ffmpeg
 请从以下页面下载 `ffmpeg-n6.0-latest-linux64-gpl-shared-6.0.tar.xz`。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
-解压下载的文件，将 `bin/` 和 `lib/` 中的文件放置到以下的位置：
+解压下载的文件，将 `bin/` 和 `lib/` 中的文件放置到以下的位置：  
 
 ```
 /home/(你的用户名)/.beutl/ffmpeg
@@ -70,7 +70,7 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 ┗━ libswscale.so.7.x.xxx
 ```
 
-注意：后缀为 `x.xxx` 的文件为符号链接。
+注意：后缀为 `x.xxx` 的文件为符号链接。  
 
 ### macOS
 
@@ -92,21 +92,21 @@ brew install ffmpeg@6
 
 ## 使用 [FFmpeg 配置工具](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)
 
-从版本 `1.0.0-preview4` 开始，可以使用 [FFmpeg 配置工具](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator) 来自动安装 FFmpeg。
+从版本 `1.0.0-preview4` 开始，可以使用 [FFmpeg 配置工具](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator) 来自动安装 FFmpeg。  
 
 > [!TIP]  
 > 执行此方法需要 Beutl 账户。
 
-1. 在菜单中打开扩展功能页面。
-2. 在左上角的搜索框中输入 `"Beutl.Extensions.FFmpegLocator"` 并按回车。
-3. 点击 __"FFmpeg 配置工具"__。
-4. 点击安装。
-5. 关闭 Beutl。
-6. 安装对话框将显示，请按照指示继续。
-7. 打开 Beutl。
-8. 从侧边栏打开 __"FFmpeg 配置工具"__。
-9. 点击 __安装__，FFmpeg 的安装将开始。
-10. 安装完成后，重新启动 Beutl 完成配置。
+1. 在菜单中打开扩展功能页面。  
+2. 在左上角的搜索框中输入 `"Beutl.Extensions.FFmpegLocator"` 并按回车。  
+3. 点击 __"FFmpeg 配置工具"__。  
+4. 点击安装。  
+5. 关闭 Beutl。  
+6. 安装对话框将显示，请按照指示继续。  
+7. 打开 Beutl。  
+8. 从侧边栏打开 __"FFmpeg 配置工具"__。  
+9. 点击 __安装__，FFmpeg 的安装将开始。  
+10. 安装完成后，重新启动 Beutl 完成配置。  
 
 > [!TIP]  
 > 完成此操作后，您可以选择卸载 __"FFmpeg 配置工具"__。
@@ -115,6 +115,6 @@ brew install ffmpeg@6
 
 ### FFmpeg 版本问题
 如果安装后仍显示 __"请确认 FFmpeg 已安装。"__，可能是 FFmpeg 版本错误。  
-请从 [版本对照表](../extensions/version-mapping.md) 中确认正确版本。
+请从 [版本对照表](../extensions/version-mapping.md) 中确认正确版本。  
 
-如果您在使用 FFmpeg 配置工具的情况下仍收到该消息，请 [在此处](https://github.com/b-editor/Beutl.Extensions.FFmpegLocator/issues) 反馈。
+如果您在使用 FFmpeg 配置工具的情况下仍收到该消息，请 [在此处](https://github.com/b-editor/Beutl.Extensions.FFmpegLocator/issues) 反馈。  
