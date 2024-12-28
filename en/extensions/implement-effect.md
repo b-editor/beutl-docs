@@ -71,35 +71,39 @@ public class MyFilterEffect : FilterEffect
     public override void ApplyTo(FilterEffectContext context)
     {
         // The data argument is passed to the action and transformBounds methods
-        // Specify a comparable value
-        context.Custom(
+        // Specify an equivalence-comparable value
+        context.CustomTom(
             data: 0,
             action: CustomEffectProcess,
             transformBounds: (_, b) => b);
     }
 
-    private static void CustomEffectProcess(int _, FilterEffectCustonOperationContext context)
+    private static void CustomEffectProcess(int _, CustomFilterEffectContext context)
     {
-        // Obtain SKSurface
-        if (context.Target.Surface is { } surface)
+        for (int i = 0; i < context.Targets.Count; i++)
         {
-            // Use SKCanvas
+            EffectTarget target = context.Targets[i];
+            RenderTarget renderTarget = target.RenderTarget!;
+            // When operating Skia directly
+            // 1. Get SKSurface
+            SKSurface surface = RenderTarget.GetSKSurface(renderTarget);
+            // 2. Get SKCanvas
             SKCanvas skcanvas = surface.Value.Canvas;
+            // 3. Manipulate
             skcanvas.Clear();
-        }
 
-        // Use Beutl's canvas
-        using (ImmediateCanvas canvas = context.Open(context.Target))
-        {
-            canvas.Clear();
-        }
+            // When using the Beutl wrapper
+            // 1. Create Canvas
+            using (var canvas = new ImmediateCanvas(renderTarget))
+            {
+                // 2. Manipulate
+                canvas.Clear();
+            }
 
-        // Replace the effect target
-        // (Change the image processed by subsequent effects)
-        // Using a reference counter, hence using 'using'.
-        using (var newTarget = context.CreateTarget(width: 100, height: 100))
-        {
-            context.ReplaceTarget(newTarget);
+            // If you want to change the image size
+            var newTarget = context.CreateTarget(width: 100, height: 100);
+            context.Targets[i] = newTarget;
+            target.Dispose();
         }
     }
 }
