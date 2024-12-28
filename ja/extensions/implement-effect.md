@@ -71,35 +71,40 @@ public class MyFilterEffect : FilterEffect
     public override void ApplyTo(FilterEffectContext context)
     {
         // data引数はactionやtransformBoundsの第一引数に渡されます
-        // 比較可能な値を指定してください
-        context.Custom(
+        // 等価比較可能な値を指定してください
+        context.CustomEffect(
             data: 0,
             action: CustomEffectProcess,
             transformBounds: (_, b) => b);
     }
 
-    private static void CustomEffectProcess(int _, FilterEffectCustonOperationContext context)
+    private static void CustomEffectProcess(int _, CustomFilterEffectContext context)
     {
-        // SKSurfaceを取得
-        if (context.Target.Surface is { } surface)
+        for (int i = 0; i < context.Targets.Count; i++)
         {
-            // SKCanvasを使う
+            EffectTarget target = context.Targets[i];
+            RenderTarget renderTarget = target.RenderTarget!;
+
+            // Skiaを直接操作する場合
+            // 1. SKSurfaceを取得
+            SKSurface surface = RenderTarget.GetSKSurface(renderTarget);
+            // 2. SKCanvasを取得
             SKCanvas skcanvas = surface.Value.Canvas;
+            // 3. 操作
             skcanvas.Clear();
-        }
 
-        // Beutlのキャンバスを使う
-        using (ImmediateCanvas canvas = context.Open(context.Target))
-        {
-            canvas.Clear();
-        }
+            // Beutlのラッパーを使う場合
+            // 1. キャンバスを作成
+            using (var canvas = new ImmediateCanvas(renderTarget))
+            {
+                // 2. 操作
+                canvas.Clear();
+            }
 
-        // エフェクトターゲットを置き換え
-        // (後続のエフェクトが処理する画像を変更)
-        // 参照カウンタを使っているためusingしています。
-        using (var newTarget = context.CreateTarget(width: 100, height: 100))
-        {
-            context.ReplaceTarget(newTarget);
+            // 画像サイズを変更したい場合
+            var newTarget = context.CreateTarget(width: 100, height: 100);
+            context.Targets[i] = newTarget;
+            target.Dispose();
         }
     }
 }

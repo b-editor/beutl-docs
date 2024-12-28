@@ -19,6 +19,7 @@ description: 新しく描画オブジェクトを実装する方法を説明し�
 
 ```cs
 using Beutl.Graphics;
+using Beutl.Graphics.Rendering;
 
 namespace MyExtension;
 
@@ -30,7 +31,7 @@ public class StarShape : Drawable
         throw new NotImplementedException();
     }
 
-    protected override void OnDraw(ICanvas canvas)
+    protected override void OnDraw(GraphicsContext2D context)
     {
         throw new NotImplementedException();
     }
@@ -114,10 +115,10 @@ public class StarShape : Drawable
         return _geometry.Bounds.Size;
     }
 
-    protected override void OnDraw(ICanvas canvas)
+    protected override void OnDraw(GraphicsContext2D context)
     {
         // FillはDrawableクラスに定義済み
-        canvas.DrawGeometry(_geometry, Fill, null);
+        context.DrawGeometry(_geometry, Fill, null);
     }
 }
 ```
@@ -125,31 +126,6 @@ public class StarShape : Drawable
 ### 試しに描画してみる
 試しに星型が描画されるかテストしてみましょう。
 **Program.cs**
-```cs
-using Beutl.Media;
-using Beutl.Graphics;
-using MyExtension;
-
-var shape = new StarShape()
-{
-    Size = 100,
-    Fill = Brushes.White
-};
-
-using var canvas = new ImmediateCanvas(120, 120);
-shape.Render(shape);
-
-using var bitmap = canvas.Snapshot();
-bitmap.Save("star.png");
-```
-
-このコマンドを実行すると以下のような、画像が生成されます。
-```sh
-dotnet run -p:OutputType=Exe
-```
-<details>
-<summary>コンソールでエフェクトを使って描画したい場合</summary>
-
 ```cs
 using Beutl.Media;
 using Beutl.Graphics;
@@ -162,22 +138,18 @@ var shape = new StarShape()
     Fill = Brushes.White
 };
 
-var canvasSize = new PixelSize(120, 120);
-var node = new ContainerNode();
-using (var deferred = new DeferredCanvas(node, canvasSize))
-{
-    shape.Render(deferred);
-}
-// nodeを描画する前に、using (...) { ... } または Disposeメソッドを使用してください。
+using var renderTarget = RenderTarget.Create(120, 120);
+using var canvas = new ImmediateCanvas(renderTarget);
+canvas.DrawDrawable(shape);
 
-using var canvas = new ImmediateCanvas(canvasSize.Width, canvasSize.Height);
-node.Render(shape);
-
-using var bitmap = canvas.Snapshot();
+using var bitmap = renderTarget.Snapshot();
 bitmap.Save("star.png");
 ```
 
-</details>
+このコマンドを実行すると以下のような、画像が生成されます。
+```sh
+dotnet run -p:OutputType=Exe
+```
 
 ## 2. SourceOperatorクラスを作成
 
@@ -192,24 +164,18 @@ using Beutl.Styling;
 
 namespace MyExtension;
 
-public class StarShapeOperator : DrawablePublishOperator<StarShape>
-{
-    public Setter<float> Size { get; set; } = new(StarShape.WidthProperty, 100);
-
-    public Setter<ITransform?> Transform { get; set; } = new(Drawable.TransformProperty, new TransformGroup());
-
-    public Setter<AlignmentX> AlignmentX { get; set; } = new(Drawable.AlignmentXProperty, Media.AlignmentX.Center);
-
-    public Setter<AlignmentY> AlignmentY { get; set; } = new(Drawable.AlignmentYProperty, Media.AlignmentY.Center);
-
-    public Setter<RelativePoint> TransformOrigin { get; set; } = new(Drawable.TransformOriginProperty, RelativePoint.Center);
-
-    public Setter<IBrush?> Fill { get; set; } = new(Drawable.FillProperty, new SolidColorBrush(Colors.White));
-
-    public Setter<FilterEffect?> FilterEffect { get; set; } = new(Drawable.FilterEffectProperty, new FilterEffectGroup());
-
-    public Setter<BlendMode> BlendMode { get; set; } = new Setter<BlendMode>(Drawable.BlendModeProperty, Graphics.BlendMode.SrcOver);
-}
+public class StarShapeOperator() : PublishOperator<StarShape>(
+[
+    (StarShape.WidthProperty, 100),
+    (Drawable.TransformProperty, () => new TransformGroup()),
+    Drawable.AlignmentXProperty,
+    Drawable.AlignmentYProperty,
+    Drawable.TransformOriginProperty,
+    (Drawable.FillProperty, () => new SolidColorBrush(Colors.White)),
+    (Drawable.FilterEffectProperty, () => new FilterEffectGroup()),
+    Drawable.BlendModeProperty,
+    Drawable.OpacityProperty
+]);
 ```
 
 ## 3. Extensionクラスを作成
