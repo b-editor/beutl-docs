@@ -18,6 +18,7 @@ Create a `StarShape` class that inherits from the `Drawable` class as follows.
 
 ```cs
 using Beutl.Graphics;
+using Beutl.Graphics.Rendering;
 
 namespace MyExtension;
 
@@ -29,7 +30,7 @@ public class StarShape : Drawable
         throw new NotImplementedException();
     }
 
-    protected override void OnDraw(ICanvas canvas)
+    protected override void OnDraw(GraphicsContext2D context)
     {
         throw new NotImplementedException();
     }
@@ -112,10 +113,10 @@ public class StarShape : Drawable
         return _geometry.Bounds.Size;
     }
 
-    protected override void OnDraw(ICanvas canvas)
+    protected override void OnDraw(GraphicsContext2D context)
     {
         // Fill is defined in the Drawable class
-        canvas.DrawGeometry(_geometry, Fill, null);
+        context.DrawGeometry(_geometry, Fill, null);
     }
 }
 ```
@@ -124,31 +125,6 @@ public class StarShape : Drawable
 
 Test if the star shape is drawn correctly.
 **Program.cs**
-```cs
-using Beutl.Media;
-using Beutl.Graphics;
-using MyExtension;
-
-var shape = new StarShape()
-{
-    Size = 100,
-    Fill = Brushes.White
-};
-
-using var canvas = new ImmediateCanvas(120, 120);
-shape.Render(canvas);
-
-using var bitmap = canvas.Snapshot();
-bitmap.Save("star.png");
-```
-
-Run the following command to generate the image:
-```sh
-dotnet run -p:OutputType=Exe
-```
-<details>
-<summary>If you want to use effects and draw in the console</summary>
-
 ```cs
 using Beutl.Media;
 using Beutl.Graphics;
@@ -161,22 +137,18 @@ var shape = new StarShape()
     Fill = Brushes.White
 };
 
-var canvasSize = new PixelSize(120, 120);
-var node = new ContainerNode();
-using (var deferred = new DeferredCanvas(node, canvasSize))
-{
-    shape.Render(deferred);
-}
-// Use using (...) { ... } or the Dispose method before rendering the node.
+using var renderTarget = RenderTarget.Create(120, 120);
+using var canvas = new ImmediateCanvas(renderTarget);
+canvas.DrawDrawable(shape);
 
-using var canvas = new ImmediateCanvas(canvasSize.Width, canvasSize.Height);
-node.Render(canvas);
-
-using var bitmap = canvas.Snapshot();
+using var bitmap = renderTarget.Snapshot();
 bitmap.Save("star.png");
 ```
 
-</details>
+Run the following command to generate the image:
+```sh
+dotnet run -p:OutputType=Exe
+```
 
 ## 2. Create the SourceOperator Class
 
@@ -187,28 +159,21 @@ using Beutl.Operators.Source;
 using Beutl.Graphics.Effects;
 using Beutl.Graphics.Transformation;
 using Beutl.Media;
-using Beutl.Styling;
 
 namespace MyExtension;
 
-public class StarShapeOperator : DrawablePublishOperator<StarShape>
-{
-    public Setter<float> Size { get; set; } = new(StarShape.SizeProperty, 100);
-
-    public Setter<ITransform?> Transform { get; set; } = new(Drawable.TransformProperty, new TransformGroup());
-
-    public Setter<AlignmentX> AlignmentX { get; set; } = new(Drawable.AlignmentXProperty, Media.AlignmentX.Center);
-
-    public Setter<AlignmentY> AlignmentY { get; set; } = new(Drawable.AlignmentYProperty, Media.AlignmentY.Center);
-
-    public Setter<RelativePoint> TransformOrigin { get; set; } = new(Drawable.TransformOriginProperty, RelativePoint.Center);
-
-    public Setter<IBrush?> Fill { get; set; } = new(Drawable.FillProperty, new SolidColorBrush(Colors.White));
-
-    public Setter<FilterEffect?> FilterEffect { get; set; } = new(Drawable.FilterEffectProperty, new FilterEffectGroup());
-
-    public Setter<BlendMode> BlendMode { get; set; } = new(Drawable.BlendModeProperty, Graphics.BlendMode.SrcOver);
-}
+public class StarShapeOperator() : PublishOperator<StarShape>(
+[
+    (StarShape.WidthProperty, 100),
+    (Drawable.TransformProperty, () => new TransformGroup()),
+    Drawable.AlignmentXProperty,
+    Drawable.AlignmentYProperty,
+    Drawable.TransformOriginProperty,
+    (Drawable.FillProperty, () => new SolidColorBrush(Colors.White)),
+    (Drawable.FilterEffectProperty, () => new FilterEffectGroup()),
+    Drawable.BlendModeProperty,
+    Drawable.OpacityProperty
+]);
 ```
 
 ## 3. Create the Extension Class
