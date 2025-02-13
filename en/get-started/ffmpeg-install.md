@@ -73,9 +73,6 @@ The files with the suffix `x.xxx` are symbolic links.
 
 ### For macOS
 
-> [!IMPORTANT]
-> This method is available from version `1.0.0-preview.6`.
-
 > [!WARNING]
 > Do not use Rosetta.
 
@@ -94,21 +91,21 @@ brew install ffmpeg@6
 From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator).
 
 > [!TIP]
-> You need a Beutl account to use this method.
+> You need a Beutl account to use this method.  
+> Please sign in beforehand from the Account page in the Settings window.
 
-1. Open the extensions page.
-2. Enter `"Beutl.Extensions.FFmpegLocator"` in the search box at the top left and press Enter.
-3. Click on __"FFmpeg Configuration Tool"__.
+1. open the __Tools > Extensions__ window
+2. click on __"FFmpeg配置ツール"__.
 4. Click Install.
 5. Close Beutl.
 6. Follow the instructions in the installation dialog.
 7. Open Beutl.
-8. Open __"FFmpeg Configuration Tool"__ from the sidebar.
+8. Open __"FFmpeg配置ツール"__ from __Tools__.
 9. Click __Install__ to start the installation of FFmpeg.
 10. After the installation is complete, restart Beutl to finish the configuration.
 
 > [!TIP]
-> After completing this task, you can uninstall the __"FFmpeg Configuration Tool"__ if you wish.
+> After completing this task, you can uninstall the __"FFmpeg配置ツール"__ if you wish.
 
 ## Troubleshooting
 

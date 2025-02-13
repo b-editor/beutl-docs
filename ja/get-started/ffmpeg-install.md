@@ -76,9 +76,6 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 
 ### macOSの場合
 
-> [!IMPORTANT]
-> この方法はバージョン`1.0.0-preview.6`から使えます。
-
 > [!WARNING]
 > Rosettaを使わないでください。
 
@@ -97,16 +94,16 @@ brew install ffmpeg@6
 バージョン`1.0.0-preview4`以降は[FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使うことができます。
 
 > [!TIP]
-> この方法を実行するにはBeutlアカウントが必要です。
+> この方法を実行するにはBeutlアカウントが必要です。  
+> あらかじめ、設定ウィンドウのアカウントページから、サインインしてください。
 
-1. 拡張機能ページを開きます
-2. 左上の検索ボックスに `"Beutl.Extensions.FFmpegLocator"` と入力して、エンターを押します。
-3. __"FFmpeg配置ツール"__ をクリックします。
+1. __ツール > 拡張機能__ ウィンドウを開きます
+2. __"FFmpeg配置ツール"__ をクリックします。
 4. インストールをクリックします。
 5. Beutlを閉じます。
 6. インストールダイアログが表示されるので指示に従って続行します。
 7. Beutlを開きます。
-8. サイドバーから __"FFmpeg配置ツール"__ を開きます。
+8. __ツール__ から __"FFmpeg配置ツール"__ を開きます。
 9. __インストール__ をクリックするとFFmpegのインストールが開始されます。
 10. インストールが終了したら、Beutlを再起動すると配置が完了します。
 
