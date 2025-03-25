@@ -12,7 +12,7 @@ https://www.ffmpeg.org/legal.html
 
 ### Windows (64bit) の場合
 以下のページから、`ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip`をダウンロードします。  
-https://github.com/BtbN/FFmpeg-Builds/releases
+[Release Auto-Build 2023-11-30 12:55 · BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2023-11-30-12-55)
 
 ダウンロードしたファイルを展開して、
 `ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\`内のファイルを以下のように配置します。
@@ -37,7 +37,7 @@ C:\Users\(ユーザー)\.beutl\ffmpeg
 なので、Windowsと同様に操作を行ってください。**
 
 以下のページから、`ffmpeg-n6.0-latest-linux64-gpl-shared-6.0.tar.xz`をダウンロードします。  
-https://github.com/BtbN/FFmpeg-Builds/releases
+[Release Auto-Build 2023-11-30 12:55 · BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2023-11-30-12-55)
 
 ダウンロードしたファイルを展開して、
 `bin/`および`lib/`内のファイルを以下のように配置します。

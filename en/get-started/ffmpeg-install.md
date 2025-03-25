@@ -12,7 +12,7 @@ https://www.ffmpeg.org/legal.html
 
 ### For Windows (64bit)
 Download `ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip` from the following page:  
-https://github.com/BtbN/FFmpeg-Builds/releases
+[Release Auto-Build 2023-11-30 12:55 · BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2023-11-30-12-55)
 
 Extract the downloaded file and place the files from `ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\` as follows:
 
@@ -35,7 +35,7 @@ C:\Users\(your_username)\.beutl\ffmpeg
 **FFmpeg installed via package manager may not work correctly due to version differences. Therefore, follow the same steps as for Windows.**
 
 Download `ffmpeg-n6.0-latest-linux64-gpl-shared-6.0.tar.xz` from the following page:  
-https://github.com/BtbN/FFmpeg-Builds/releases
+[Release Auto-Build 2023-11-30 12:55 · BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2023-11-30-12-55)
 
 Extract the downloaded file and place the files from `bin/` and `lib/` as follows:
 
