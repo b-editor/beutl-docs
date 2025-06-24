@@ -89,9 +89,9 @@ C:\Users\(ユーザー)\.beutl\ffmpeg
 brew install ffmpeg@6
 ```
 
-## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
+## [FFmpeg配置ツール](https://beutl.beditor.net/ja/store/Beutl.Extensions.FFmpegLocator)を使う
 
-バージョン`1.0.0-preview4`以降は[FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使うことができます。
+バージョン`1.0.0-preview4`以降は[FFmpeg配置ツール](https://beutl.beditor.net/ja/store/Beutl.Extensions.FFmpegLocator)を使うことができます。
 
 > [!TIP]
 > この方法を実行するにはBeutlアカウントが必要です。  
