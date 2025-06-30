@@ -86,9 +86,9 @@ Then, run the following command to install FFmpeg:
 brew install ffmpeg@6
 ```
 
-## Using the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)
+## Using the [FFmpeg Configuration Tool](https://beutl.beditor.net/en/store/Beutl.Extensions.FFmpegLocator)
 
-From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator).
+From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/en/store/Beutl.Extensions.FFmpegLocator).
 
 > [!TIP]
 > You need a Beutl account to use this method.  
