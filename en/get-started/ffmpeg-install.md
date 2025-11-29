@@ -11,30 +11,29 @@ https://www.ffmpeg.org/legal.html
 **The files to be downloaded may change due to updates.**
 
 ### For Windows (64bit)
-Download `ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip` from the following page:  
+Download `ffmpeg-n8.0-latest-win64-gpl-shared-8.0.zip` from the following page:  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
-Extract the downloaded file and place the files from `ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\` as follows:
+Extract the downloaded file and place the files from `ffmpeg-n8.0-latest-win64-gpl-shared-8.0\bin\` as follows:
 
 ```
 C:\Users\(your_username)\.beutl\ffmpeg
-┣━ avcodec-60.dll
-┣━ avdevice-60.dll
-┣━ avfilter-9.dll
-┣━ avformat-60.dll
-┣━ avutil-58.dll
+┣━ avcodec-62.dll
+┣━ avdevice-62.dll
+┣━ avfilter-11.dll
+┣━ avformat-62.dll
+┣━ avutil-60.dll
 ┣━ ffmpeg.exe
 ┣━ ffplay.exe
 ┣━ ffprobe.exe
-┣━ postproc-57.dll
-┗━ swresample-4.dll
-    ┗━ swscale-7.dll
+┗━ swresample-6.dll
+┗━ swscale-9.dll
 ```
 
 ### For Linux
 **FFmpeg installed via package manager may not work correctly due to version differences. Therefore, follow the same steps as for Windows.**
 
-Download `ffmpeg-n6.0-latest-linux64-gpl-shared-6.0.tar.xz` from the following page:  
+Download `ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz` from the following page:  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
 Extract the downloaded file and place the files from `bin/` and `lib/` as follows:
@@ -45,29 +44,26 @@ Extract the downloaded file and place the files from `bin/` and `lib/` as follow
 ┣━ ffplay
 ┣━ ffprobe
 ┣━ libavcodec.so
-┣━ libavcodec.so.60
+┣━ libavcodec.so.62
 ┣━ libavdevice.so
-┣━ libavdevice.so.60
+┣━ libavdevice.so.62
 ┣━ libavfilter.so
-┣━ libavfilter.so.9
+┣━ libavfilter.so.11
 ┣━ libavformat.so
-┣━ libavformat.so.60
+┣━ libavformat.so.62
 ┣━ libavutil.so
-┣━ libavutil.so.58
-┣━ libpostproc.so
-┣━ libpostproc.so.57
+┣━ libavutil.so.60
 ┣━ libswresample.so
-┣━ libswresample.so.4
+┣━ libswresample.so.6
 ┣━ libswscale.so
-┣━ libswscale.so.7
-┣━ libavcodec.so.60.x.xxx
-┣━ libavdevice.so.60.x.xxx
-┣━ libavfilter.so.9.x.xxx
-┣━ libavformat.so.60.x.xxx
-┣━ libavutil.so.58.x.xxx
-┣━ libpostproc.so.57.x.xxx
-┣━ libswresample.so.4.x.xxx
-┗━ libswscale.so.7.x.xxx
+┣━ libswscale.so.9
+┣━ libavcodec.so.62.x.xxx
+┣━ libavdevice.so.62.x.xxx
+┣━ libavfilter.so.11.x.xxx
+┣━ libavformat.so.62.x.xxx
+┣━ libavutil.so.60.x.xxx
+┣━ libswresample.so.6.x.xxx
+┗━ libswscale.so.9.x.xxx
 ```
 The files with the suffix `x.xxx` are symbolic links.
 
@@ -83,10 +79,26 @@ Run the following command in the terminal to install Homebrew:
 
 Then, run the following command to install FFmpeg:
 ```sh
-brew install ffmpeg@6
+brew install ffmpeg@8
 ```
 
+## In-App Configuration
+
+> [!TIP]
+> Available from version 1.1.0.
+
+If FFmpeg is not installed, a notification like the following will appear when you start Beutl.
+![Notification when FFmpeg is not installed](_images/ffmpeg-install/ffmpeg-not-installed.png)
+
+Clicking the __Install__ button on this notification will launch the FFmpeg installation dialog.
+
+In this dialog, you can install FFmpeg from BtbN/FFmpeg-Builds for Windows and Linux, and from Homebrew for macOS.
+If Homebrew is not installed, it will be installed automatically.
+
 ## Using the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)
+
+> [!WARNING]
+> This extension is planned to be deprecated.
 
 From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator).
 

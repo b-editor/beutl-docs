@@ -11,32 +11,30 @@ https://www.ffmpeg.org/legal.html
 **バージョンアップ等によって、ダウンロードするファイルが変わる可能があります。**
 
 ### Windows (64bit) の場合
-以下のページから、`ffmpeg-n6.0-latest-win64-gpl-shared-6.0.zip`をダウンロードします。  
+以下のページから、`ffmpeg-n8.0-latest-win64-gpl-shared-8.0.zip`をダウンロードします。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
 ダウンロードしたファイルを展開して、
-`ffmpeg-n6.0-latest-win64-gpl-shared-6.0\bin\`内のファイルを以下のように配置します。
-
+`ffmpeg-n8.0-latest-win64-gpl-shared-8.0\bin\`内のファイルを以下のように配置します。
 ```
 C:\Users\(ユーザー)\.beutl\ffmpeg
-┣━ avcodec-60.dll
-┣━ avdevice-60.dll
-┣━ avfilter-9.dll
-┣━ avformat-60.dll
-┣━ avutil-58.dll
+┣━ avcodec-62.dll
+┣━ avdevice-62.dll
+┣━ avfilter-11.dll
+┣━ avformat-62.dll
+┣━ avutil-60.dll
 ┣━ ffmpeg.exe
 ┣━ ffplay.exe
 ┣━ ffprobe.exe
-┣━ postproc-57.dll
-┣━ swresample-4.dll
-┗━ swscale-7.dll
+┣━ swresample-6.dll
+┗━ swscale-9.dll
 ```
 
 ### Linuxの場合
 **パッケージマネージャからインストールしたFFmpegはバージョンの違いなどにより、正常に動作しない場合があります。
 なので、Windowsと同様に操作を行ってください。**
 
-以下のページから、`ffmpeg-n6.0-latest-linux64-gpl-shared-6.0.tar.xz`をダウンロードします。  
+以下のページから、`ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz`をダウンロードします。  
 https://github.com/BtbN/FFmpeg-Builds/releases
 
 ダウンロードしたファイルを展開して、
@@ -48,29 +46,26 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 ┣━ ffplay
 ┣━ ffprobe
 ┣━ libavcodec.so
-┣━ libavcodec.so.60
+┣━ libavcodec.so.62
 ┣━ libavdevice.so
-┣━ libavdevice.so.60
+┣━ libavdevice.so.62
 ┣━ libavfilter.so
-┣━ libavfilter.so.9
+┣━ libavfilter.so.11
 ┣━ libavformat.so
-┣━ libavformat.so.60
+┣━ libavformat.so.62
 ┣━ libavutil.so
-┣━ libavutil.so.58
-┣━ libpostproc.so
-┣━ libpostproc.so.57
+┣━ libavutil.so.60
 ┣━ libswresample.so
-┣━ libswresample.so.4
+┣━ libswresample.so.6
 ┣━ libswscale.so
-┣━ libswscale.so.7
-┣━ libavcodec.so.60.x.xxx
-┣━ libavdevice.so.60.x.xxx
-┣━ libavfilter.so.9.x.xxx
-┣━ libavformat.so.60.x.xxx
-┣━ libavutil.so.58.x.xxx
-┣━ libpostproc.so.57.x.xxx
-┣━ libswresample.so.4.x.xxx
-┗━ libswscale.so.7.x.xxx
+┣━ libswscale.so.9
+┣━ libavcodec.so.62.x.xxx
+┣━ libavdevice.so.62.x.xxx
+┣━ libavfilter.so.11.x.xxx
+┣━ libavformat.so.62.x.xxx
+┣━ libavutil.so.60.x.xxx
+┣━ libswresample.so.6.x.xxx
+┗━ libswscale.so.9.x.xxx
 ```
 共有ライブラリの内、Suffixに`x.xxx`がついているもの以外はシンボリックリンクです。
 
@@ -86,10 +81,26 @@ https://github.com/BtbN/FFmpeg-Builds/releases
 
 以下のコマンドを実行してFFmpegをインストールします。
 ```sh
-brew install ffmpeg@6
+brew install ffmpeg@8
 ```
 
+## アプリ内から配置する
+
+> [!TIP]
+> 1.1.0から利用可能です．
+
+FFmpegがインストールされていない場合，Beutlを起動したときに以下のような通知が表示されます．
+![FFmpegがインストールされていない場合の通知](_images/ffmpeg-install/ffmpeg-not-installed.png)
+
+この通知の __インストール__ ボタンをクリックすると，FFmpegのインストールダイアログが起動します．
+
+このダイアログではWindows，Linuxの場合は BtbN/FFmpeg-Builds から，macOSの場合は Homebrew からFFmpegをインストールできます．
+Homebrewがインストールされていない場合は自動的にインストールされます．
+
 ## [FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使う
+
+> [!WARNING]
+> この拡張機能は廃止予定です
 
 バージョン`1.0.0-preview4`以降は[FFmpeg配置ツール](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)を使うことができます。
 
