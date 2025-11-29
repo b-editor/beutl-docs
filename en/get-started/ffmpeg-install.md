@@ -95,12 +95,12 @@ Clicking the __Install__ button on this notification will launch the FFmpeg inst
 In this dialog, you can install FFmpeg from BtbN/FFmpeg-Builds for Windows and Linux, and from Homebrew for macOS.
 If Homebrew is not installed, it will be installed automatically.
 
-## Using the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator)
+## Using the [FFmpeg Configuration Tool](https://beutl.beditor.net/en/store/Beutl.Extensions.FFmpegLocator)
 
 > [!WARNING]
 > This extension is planned to be deprecated.
 
-From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/store/packages/Beutl.Extensions.FFmpegLocator).
+From version `1.0.0-preview4` onwards, you can use the [FFmpeg Configuration Tool](https://beutl.beditor.net/en/store/Beutl.Extensions.FFmpegLocator).
 
 > [!TIP]
 > You need a Beutl account to use this method.  
