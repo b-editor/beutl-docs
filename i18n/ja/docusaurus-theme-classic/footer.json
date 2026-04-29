@@ -1,0 +1,38 @@
+{
+  "link.title.Project": {
+    "message": "プロジェクト",
+    "description": "The title of the footer links column with title=Project in the footer"
+  },
+  "link.title.Community": {
+    "message": "コミュニティ",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.Docs": {
+    "message": "ドキュメント",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.item.label.Beutl": {
+    "message": "Beutl",
+    "description": "The label of footer link with label=Beutl linking to https://beutl.beditor.net"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/b-editor/beutl"
+  },
+  "link.item.label.Discord": {
+    "message": "Discord",
+    "description": "The label of footer link with label=Discord linking to https://discord.gg/Bm3pnVc928"
+  },
+  "link.item.label.X": {
+    "message": "X",
+    "description": "The label of footer link with label=X linking to https://x.com/yuto_daisensei"
+  },
+  "link.item.label.Edit on GitHub": {
+    "message": "GitHub で編集",
+    "description": "The label of footer link with label=Edit on GitHub linking to https://github.com/b-editor/beutl-docs"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 b-editor.",
+    "description": "The footer copyright"
+  }
+}

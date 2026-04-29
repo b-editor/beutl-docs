@@ -1,0 +1,56 @@
+---
+title: Publishing Extensions
+description: Explanation of how to publish Beutl extensions to the store.
+sidebar_position: 4
+---
+
+This guide explains how to publish Beutl extensions to the store.
+
+_In this guide, the C# project name is `YOUR_PROJECT`._
+
+## Creating a NuGet Package
+Run the following command in the directory where `YOUR_PROJECT.csproj` is located:
+```sh
+dotnet pack -c Release
+```
+
+This will generate a `YOUR_PROJECT.1.0.0.nupkg` file as shown below:
+```
+YOUR_PROJECT
+┣━ YOUR_PROJECT.csproj
+┗━ bin
+    ┗━ Release
+        ┗━ YOUR_PROJECT.1.0.0.nupkg
+```
+
+## Creating a New Package
+1. Go to [Developer](https://beutl.beditor.net/en/developer)
+2. Sign in if you are not already signed in. 3.
+3. Click __[Create New Extension]__.
+   ![Create New Extension](_images/4.publish/create-project-button.png)
+4. Enter the package ID (in this case, YOUR_PROJECT)
+5. Click __[Create]__.
+   ! [Create Package](_images/4.publish/create-project-page.png)
+
+## Creating a Release
+
+1. Click __[Create Release]__.
+   ![Create Release](_images/4.publish/package-dev-page-1.png)
+2. Enter the version.
+   ![Create Release](_images/4.publish/create-release-dialog.png)
+3. Click __[Create]__.
+4. The release will be created.
+   ![Create Release](_images/4.publish/package-dev-page-2.png)
+5. Click the edit button.
+6. Click __[Select File]__.
+   ![Edit Release](_images/4.publish/release-view.png)
+7. Select `YOUR_PROJECT.1.0.0.nupkg`.
+
+8. Click __[Publish]__.
+   (To make the package available for users to download, you need to change the package's publish settings)
+9. Click __[Save]__.
+
+## Publishing the Package
+Click __[Publish]__.
+![Publish Package](_images/4.publish/package-publish-button.png)
+

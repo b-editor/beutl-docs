@@ -1,4 +1,0 @@
----
-title: Settings
-type: auto
----

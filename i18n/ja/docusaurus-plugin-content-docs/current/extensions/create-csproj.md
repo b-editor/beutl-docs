@@ -1,0 +1,143 @@
+---
+title: 拡張機能用のC#プロジェクトを作成
+description: Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明します。
+sidebar_position: 2
+---
+
+Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明します。
+
+この記事では、__Visual Studio Code__、__Visual Studio__ を使う方法を紹介します。
+また、対象とするBeutlのバージョンは`1.1.0`とします。
+
+## Visual Studio Code
+1. ターミナルを使用して、クラスライブラリを作成します。  
+```sh
+dotnet new classlib -o MyBeutlExtension
+```
+
+ディレクトリ構造が以下のようになることをご確認ください。
+```
+MyBeutlExtension
+┣━ obj
+┃  ┗━ (...)
+┣━ Class1.cs
+┗━ MyBeutlExtension.csproj
+```
+
+2. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFrameworkはBeutlのバージョンに応じて変更してください -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- 以下は任意です。 -->
+    <RepositoryUrl>url/to/repository</RepositoryUrl>
+    <PackageId>MyBeutlExtension</PackageId>
+    <Title>拡張機能のサンプル</Title>
+    <Description>サンプル</Description>
+    <PackageTags>sample</PackageTags>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Authors>作者名</Authors>
+  </PropertyGroup>
+
+  <!-- ビルドしたときに、サイドロード拡張機能として認識されるようにする。 -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <OutputPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\.beutl\sideloads\$(AssemblyName)</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Beutl.Extensibility" Version="1.1.0" />
+    <PackageReference Include="Beutl.ProjectSystem" Version="1.1.0" />
+    <PackageReference Include="Beutl.Operators" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
+```
+
+3. 以下のコマンドを実行して、`nuget.config` を生成し、パッケージソースを追加します。
+```sh
+dotnet new nugetconfig
+dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.beditor.net
+```
+
+以上で拡張機能用に空のC#プロジェクトを作成することができました。
+
+## Visual Studio
+1. Visual Studio を開いて、__ファイル &gt; 新規作成 &gt; プロジェクト__ をクリックします。  
+![Visual Studioプロジェクトを作成](_images/2.create-csproj/visual-studio/create-new-project.png)
+
+2. クラスライブラリを選択して、次へをクリックします。  
+![クラスライブラリを選択](_images/2.create-csproj/visual-studio/select-classlib.png)
+
+3. プロジェクト名、場所を入力して次へをクリックします。
+![プロジェクト名、場所を入力](_images/2.create-csproj/visual-studio/confirm-name-and-location.png)
+
+4. フレームワークはBeutlのバージョンに応じて選択してください。
+
+5. 作成をクリックします。
+
+ディレクトリ構造が以下のようになることをご確認ください。
+```
+MyBeutlExtension
+┣━ MyBeutlExtension
+┃  ┣━ obj
+┃  ┃  ┗━ (...)
+┃  ┣━ Class1.cs
+┃  ┗━ MyBeutlExtension.csproj
+┗━ MyBeutlExtension.sln
+```
+
+6. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFrameworkはBeutlのバージョンに応じて変更してください -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- 以下は任意です。 -->
+    <RepositoryUrl>url/to/repository</RepositoryUrl>
+    <PackageId>MyBeutlExtension</PackageId>
+    <Title>拡張機能のサンプル</Title>
+    <Description>サンプル</Description>
+    <PackageTags>sample</PackageTags>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Authors>作者名</Authors>
+  </PropertyGroup>
+
+  <!-- ビルドしたときに、サイドロード拡張機能として認識されるようにする。 -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <OutputPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\.beutl\sideloads\$(AssemblyName)</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Beutl.Extensibility" Version="1.1.0" />
+    <PackageReference Include="Beutl.ProjectSystem" Version="1.1.0" />
+    <PackageReference Include="Beutl.Operators" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
+```
+
+7. 以下のコマンドを実行して、`nuget.config` を生成し、パッケージソースを追加します。
+```sh
+dotnet new nugetconfig
+dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.beditor.net
+```
+
+8. __NuGetパッケージの復元__ をクリックして、正常にNuGet依存関係を復元できることをご確認ください。  
+![NuGetパッケージを復元](_images/2.create-csproj/visual-studio/restore-nuget-packages.png)
+
+以上で拡張機能用に空のC#プロジェクトを作成することができました。

@@ -1,0 +1,66 @@
+---
+title: インストール
+description: Beutlをインストールする方法を説明します
+sidebar_position: 1
+---
+
+Beutlをインストールする方法を説明します。
+
+このドキュメントではインストールするBeutlのバージョンを`{version}`としています。
+
+## Windowsの場合
+
+### スタンドアロンインストーラーを使う (おすすめ)
+1. `beutl-standalone-setup.exe`をダウンロードして、実行します。
+2. 画面に従ってインストールします。
+3. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
+4. `Beutl.exe`を起動します。
+
+### 軽量インストーラーを使う
+[.NET ランタイム](https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0)をインストールします。
+
+:::tip
+インストールするBeutlのバージョンに応じて.NETのバージョンを決定してください。  
+[バージョンの対応表](../extensions/version-mapping.md)
+:::
+
+1. `beutl-setup.exe`をダウンロードして、実行します。
+2. 画面に従ってインストールします。
+3. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
+4. `Beutl.exe`を起動します。
+
+### 手動でインストール
+1. `beutl-win-x64-standalone-{version}.zip`をダウンロードして、展開します。
+2. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
+3. `Beutl.exe`を起動します。
+
+## Ubuntu22.04の場合
+
+### Debianパッケージからインストール
+
+1. `beutl_{version}ubuntu22.04_amd64.deb`をダウンロードします。
+2. 以下のコマンドを実行します。
+```sh
+sudo apt update
+sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
+```
+3. インストール完了です
+
+### 手動でインストール
+1. `beutl-linux-x64-standalone-{version}.zip`をダウンロードして、展開します。
+2. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
+3. `chmod`を使用して、`Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, `Beutl.WaitingDialog`を実行可能にします。
+4. `Beutl`を起動します。
+
+:::info
+`1.0.0-preview.5`未満をインストールする場合、
+[こちら](https://github.com/shimat/opencvsharp#ubuntu)を参考に `libOpenCvSharpExtern` をビルドしてください。
+:::
+
+## macOSの場合
+
+- `Beutl.osx_arm64.app.zip` または `Beutl.osx_x64.app.zip` をダウンロードします。
+- ダウンロードしたファイルをダブルクリックして展開します。
+- `Beutl.app`をダブルクリックするとアプリが起動します。
+
+-  FFmpegがインストールされていないといった警告が出る場合は、[FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。

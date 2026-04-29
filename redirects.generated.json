@@ -1,0 +1,14 @@
+[
+  {
+    "from": "/ffmpeg-install",
+    "to": "/get-started/ffmpeg-install"
+  },
+  {
+    "from": "/インストール",
+    "to": "/get-started/install"
+  },
+  {
+    "from": "/拡張機能",
+    "to": "/extensions"
+  }
+]

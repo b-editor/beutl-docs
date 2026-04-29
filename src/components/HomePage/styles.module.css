@@ -1,0 +1,309 @@
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding-block: 1.25rem 4rem;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+/* Let the home page fill the full content viewport width.
+   Overrides the 1180px cap declared in src/css/custom.css and strips the
+   Infima container/row/col gutters that surround the doc area. */
+:global(main:has(.home-hero-root)) > :global(.container),
+:global(main:has(.home-hero-root)) :global(.container) {
+  max-width: none;
+  padding-inline: 0;
+}
+
+:global(main:has(.home-hero-root)) :global(.row) {
+  margin-inline: 0;
+}
+
+:global(main:has(.home-hero-root)) :global(.col) {
+  padding-inline: 0;
+}
+
+/* ── Mesh gradient backdrop (lifted from beutl-web hero) ─────────────────── */
+.mesh {
+  position: absolute;
+  inset: -2rem -2rem auto -2rem;
+  height: 480px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+
+.blob1 {
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: hsl(244 86% 57%);
+  animation: float1 10s ease-in-out infinite;
+  top: -10%;
+  left: 10%;
+}
+
+.blob2 {
+  width: 45vw;
+  height: 45vw;
+  max-width: 540px;
+  max-height: 540px;
+  background: hsl(280 80% 55%);
+  animation: float2 15s ease-in-out infinite;
+  top: 5%;
+  right: -5%;
+}
+
+.blob3 {
+  width: 40vw;
+  height: 40vw;
+  max-width: 480px;
+  max-height: 480px;
+  background: hsl(190 80% 50%);
+  animation: float3 12s ease-in-out infinite;
+  bottom: -25%;
+  left: 35%;
+}
+
+@keyframes float1 {
+  0%,
+  100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
+  25%  { transform: translate(30px, -20px) scale(1.05); border-radius: 60% 40% 70% 30%; }
+  50%  { transform: translate(-20px, 20px) scale(0.95); border-radius: 40% 60% 30% 70%; }
+  75%  { transform: translate(10px, -10px) scale(1.02); border-radius: 70% 30% 50% 50%; }
+}
+
+@keyframes float2 {
+  0%,
+  100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
+  33%  { transform: translate(-40px, 30px) scale(1.08); border-radius: 30% 70% 60% 40%; }
+  66%  { transform: translate(20px, -30px) scale(0.92); border-radius: 70% 30% 40% 60%; }
+}
+
+@keyframes float3 {
+  0%,
+  100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
+  50%  { transform: translate(30px, -40px) scale(1.1); border-radius: 60% 40% 50% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none !important;
+  }
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 760px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: color-mix(in oklab, var(--ifm-color-primary) 14%, transparent);
+  color: var(--ifm-color-primary);
+  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 25%, transparent);
+}
+
+.title {
+  font-size: clamp(2.25rem, 5.5vw, 3.0rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: clamp(1.25rem, 1.4vw, 1.875rem);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Match beutl-web: solid primary, hover -> primary/90 + glow */
+.ctaPrimary {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-foreground, white);
+  border-color: color-mix(in oklab, var(--ifm-color-primary) 60%, transparent);
+  box-shadow: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+}
+
+.ctaPrimary:hover {
+  background: color-mix(in oklab, var(--ifm-color-primary) 90%, transparent);
+  color: var(--ifm-color-primary-contrast-foreground, white);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px color-mix(in oklab, var(--ifm-color-primary) 40%, transparent);
+}
+
+.ctaSecondary {
+  background: color-mix(in oklab, var(--ifm-background-color) 75%, transparent);
+  color: var(--ifm-font-color-base);
+  border-color: color-mix(in oklab, var(--ifm-font-color-base) 16%, transparent);
+  backdrop-filter: brightness(0.85);
+  -webkit-backdrop-filter: brightness(0.85);
+}
+
+.ctaSecondary:hover {
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px color-mix(in oklab, var(--ifm-font-color-base) 12%, transparent);
+}
+
+.ctaArrow {
+  transition: transform 0.2s ease;
+}
+
+.ctaPrimary:hover .ctaArrow,
+.ctaSecondary:hover .ctaArrow {
+  transform: translateX(2px);
+}
+
+/* ── Cards (glassmorphism, modeled after beutl-web Cross-Platform tiles) ── */
+.cardsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.5rem 1.5rem 1.65rem;
+  border-radius: 12px;
+  border: 1px solid hsl(0 0% 100% / 0.10);
+  background: color-mix(in oklab, var(--ifm-background-surface-color) 50%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+[data-theme='light'] .card {
+  border-color: hsl(0 0% 0% / 0.08);
+}
+
+.card:hover {
+  border-color: color-mix(in oklab, var(--ifm-color-primary) 30%, transparent);
+  text-decoration: none;
+  transform: translateY(-4px);
+  box-shadow: 0 0 22px color-mix(in oklab, var(--ifm-color-primary) 16%, transparent);
+}
+
+.cardBadge {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--ifm-color-primary);
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.cardArrow {
+  margin-top: auto;
+  align-self: flex-end;
+  font-size: 1.1rem;
+  color: var(--ifm-color-primary);
+  transform: translateX(0);
+  transition: transform 0.25s ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .home {
+    gap: 2.5rem;
+    padding-block: 0.5rem 3rem;
+  }
+  .hero {
+    padding: 2rem 1rem;
+  }
+  .cardsSection {
+    padding-inline: 1rem;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "Extension Development",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "slug": "/extensions",
+    "description": "Explanation of how to develop extensions."
+  }
+}

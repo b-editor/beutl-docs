@@ -1,0 +1,8 @@
+{
+  "label": "Start",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "slug": "/get-started"
+  }
+}

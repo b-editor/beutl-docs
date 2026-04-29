@@ -1,0 +1,332 @@
+/* ───────────────────────────────────────────────────────────────────────────
+ * Beutl Docs — global theme
+ * HSL tokens lifted from beutl-web-docs (shadcn/ui-derived palette).
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --ifm-color-primary: hsl(259 100% 56%);
+  --ifm-color-primary-dark: hsl(259 100% 50%);
+  --ifm-color-primary-darker: hsl(259 100% 47%);
+  --ifm-color-primary-darkest: hsl(259 100% 39%);
+  --ifm-color-primary-light: hsl(259 100% 62%);
+  --ifm-color-primary-lighter: hsl(259 100% 65%);
+  --ifm-color-primary-lightest: hsl(259 100% 73%);
+  --ifm-color-primary-contrast-foreground: hsl(300 9% 98%);
+
+  /* Surfaces (card == popover == background per source) */
+  --ifm-background-color: hsl(270 8% 95%);
+  --ifm-background-surface-color: hsl(270 8% 95%);
+  --ifm-color-emphasis-100: hsl(264 11% 91%);
+  /* secondary / accent */
+  --ifm-color-emphasis-200: hsl(260 9% 87%);
+  /* border */
+  --ifm-color-emphasis-300: hsl(253 9% 81%);
+  /* input */
+  --ifm-color-emphasis-600: hsl(260 9% 45%);
+  /* muted-foreground */
+  --ifm-color-emphasis-700: hsl(260 9% 35%);
+  --ifm-color-emphasis-800: hsl(240 8% 18%);
+  --ifm-font-color-base: hsl(240 8% 5%);
+
+  /* Typography — Noto Sans JP for Japanese, Inter for Latin */
+  --ifm-font-family-base:
+    'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo',
+    system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  --ifm-heading-font-weight: 600;
+  --ifm-heading-line-height: 1.25;
+  --ifm-h1-font-size: 2.0rem;
+  --ifm-h2-font-size: 1.7rem;
+  --ifm-h3-font-size: 1.25rem;
+  --ifm-line-height-base: 1.7;
+  --ifm-paragraph-margin-bottom: 1.1rem;
+
+  /* Code */
+  --ifm-code-font-size: 92%;
+  --ifm-code-padding-horizontal: 0.45rem;
+  --ifm-code-padding-vertical: 0.18rem;
+  --ifm-code-background: hsl(264 11% 91%);
+  --ifm-pre-padding: 1.1rem;
+  --docusaurus-highlighted-code-line-bg: hsla(259, 100%, 56%, 0.12);
+
+  /* Layout */
+  --ifm-navbar-height: 4rem;
+  --ifm-navbar-shadow: none;
+  --ifm-toc-border-color: hsl(260 9% 87%);
+  --ifm-link-color: hsl(259 100% 56%);
+  --ifm-link-hover-color: hsl(259 100% 47%);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: hsl(244 100% 67%);
+  --ifm-color-primary-dark: hsl(244 100% 60%);
+  --ifm-color-primary-darker: hsl(244 100% 55%);
+  --ifm-color-primary-darkest: hsl(244 100% 47%);
+  --ifm-color-primary-light: hsl(244 100% 73%);
+  --ifm-color-primary-lighter: hsl(244 100% 78%);
+  --ifm-color-primary-lightest: hsl(244 100% 84%);
+  --ifm-color-primary-contrast-foreground: hsl(0 0% 98%);
+
+  --ifm-background-color: hsl(240 3% 6%);
+  --ifm-background-surface-color: hsl(270 6% 7%);
+  --ifm-color-emphasis-100: hsl(240 5% 15%);
+  /* secondary */
+  --ifm-color-emphasis-200: hsl(240 5% 12%);
+  /* border */
+  --ifm-color-emphasis-300: hsl(240 4% 18%);
+  /* input */
+  --ifm-color-emphasis-600: hsl(245 5% 49%);
+  /* muted-foreground */
+  --ifm-color-emphasis-700: hsl(245 5% 60%);
+  --ifm-color-emphasis-800: hsl(245 5% 80%);
+  --ifm-font-color-base: hsl(0 0% 98%);
+
+  --ifm-code-background: hsl(245 6% 13%);
+  --ifm-toc-border-color: hsl(240 5% 12%);
+  --docusaurus-highlighted-code-line-bg: hsla(244, 100%, 67%, 0.18);
+  --ifm-link-color: hsl(244 100% 75%);
+  --ifm-link-hover-color: hsl(244 100% 82%);
+}
+
+/* Body refinements */
+html,
+body {
+  font-feature-settings: 'cv11', 'ss01', 'palt';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  margin-top: 2.4rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+h3 {
+  margin-top: 1.8rem;
+}
+
+/* Logo + wordmark are visually center-aligned (matches the rendered look of
+ * beutl-web-docs even though the source uses vertical-align: bottom). */
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar__logo {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  width: 28px;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.navbar__logo img {
+  display: block;
+  height: 28px !important;
+  width: 28px !important;
+  object-fit: contain;
+}
+
+.navbar__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ifm-font-color-base);
+  margin-top: 2px;
+}
+
+.navbar__brand:hover {
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+/* Footer — soft, on-brand instead of pitch black */
+.footer {
+  background: linear-gradient(180deg,
+      color-mix(in oklab, var(--ifm-color-primary) 10%, var(--ifm-background-color)) 0%,
+      var(--ifm-background-color) 100%);
+  color: var(--ifm-font-color-base);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  padding-block: 3rem;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: transparent;
+  --ifm-footer-color: var(--ifm-font-color-base);
+  --ifm-footer-link-color: var(--ifm-color-emphasis-700);
+  --ifm-footer-title-color: var(--ifm-font-color-base);
+}
+
+.footer__copyright {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.85rem;
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+/* Sidebar — softer separators, brand-tinted active item */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-color);
+}
+
+.menu__link {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: color-mix(in oklab, var(--ifm-color-primary) 14%, transparent);
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  background: color-mix(in oklab, var(--ifm-color-primary) 22%, transparent);
+  color: hsl(244 100% 80%);
+}
+
+/* Doc content — tasteful link underlines, balanced lists */
+article a:not(.card):not(.button):not(.menu__link):hover {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+article ul,
+article ol {
+  padding-inline-start: 1.4rem;
+}
+
+article li+li {
+  margin-top: 0.35rem;
+}
+
+/* Tables */
+.markdown table {
+  display: table;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.markdown table thead tr {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* Admonitions */
+.theme-admonition {
+  border-radius: 12px;
+  border-width: 1px;
+}
+
+/* Inline code */
+.markdown code:not([class*='language-']) {
+  background: var(--ifm-code-background);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+}
+
+/* Home page tweaks — strip the doc chrome so the hero owns the viewport */
+.theme-doc-markdown:has(.home-hero-root) {
+  padding: 0 !important;
+}
+
+.theme-doc-markdown:has(.home-hero-root)>h1:first-child,
+article:has(.home-hero-root)>h1:first-child {
+  display: none;
+}
+
+main:has(.home-hero-root)>.container,
+main:has(.home-hero-root) .container {
+  max-width: 1180px;
+}
+
+/* Hide redundant chrome on the home page */
+main:has(.home-hero-root) .theme-doc-breadcrumbs,
+main:has(.home-hero-root) .theme-edit-this-page,
+main:has(.home-hero-root) .theme-last-updated {
+  display: none !important;
+}
+
+/* Search input */
+.navbar .navbar__search-input {
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.2s ease;
+}
+
+.navbar .navbar__search-input:focus {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ifm-color-primary) 30%, transparent);
+  outline: none;
+}
+
+/* Pagination */
+.pagination-nav__link {
+  border-radius: 12px;
+  border-color: var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+  transition: border-color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  background: color-mix(in oklab, var(--ifm-color-primary) 6%, var(--ifm-background-surface-color));
+  transform: translateY(-1px);
+}
+
+.breadcrumbs {
+  padding-inline-start: 0rem;
+}
+
+.menu__link {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.menu__caret {
+  padding: 0.375rem;
+}
+
+.menu__caret:before {
+  transform: scale(0.7);
+}
+.menu__list-item--collapsed .menu__link--sublist:after,
+.menu__list-item--collapsed .menu__caret:before {
+  transform: rotate(-180deg) scale(0.7);
+}
+
+.navbar__toggle {
+  transform: scale(0.6, 0.7);
+}
+.navbar-sidebar__close {
+  transform: scale(0.7);
+}
+
+.navbar__items--right {
+  font-size: 0.9rem;
+}
+
+.markdown h1:first-child, .main-wrapper header h1 {
+  --ifm-h1-font-size: 2.0rem;
+}

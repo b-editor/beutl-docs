@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Start": {
+    "message": "はじめに",
+    "description": "The label for category 'Start' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Advanced Documents": {
+    "message": "アドバンスド",
+    "description": "The label for category 'Advanced Documents' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Extension Development": {
+    "message": "拡張機能開発",
+    "description": "The label for category 'Extension Development' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Extension Development.link.generated-index.description": {
+    "message": "Beutl の拡張機能を自作する方法を解説します。",
+    "description": "The generated-index page description for category 'Extension Development' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Settings": {
+    "message": "設定",
+    "description": "The label for category 'Settings' in sidebar 'docsSidebar'"
+  }
+}
