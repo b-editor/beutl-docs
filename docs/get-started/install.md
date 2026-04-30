@@ -17,7 +17,7 @@ In this document, the version of Beutl to be installed is referred to as `{versi
 4. Launch `Beutl.exe`.
 
 ### Using the lightweight installer
-Install the [.NET Runtime](https://dotnet.microsoft.com/download/dotnet/9.0).
+Install the [.NET Runtime](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 :::tip
 Determine the version of .NET to install based on the version of Beutl you are installing.  

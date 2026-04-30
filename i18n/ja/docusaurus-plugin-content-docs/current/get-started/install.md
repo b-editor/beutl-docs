@@ -17,7 +17,7 @@ Beutlをインストールする方法を説明します。
 4. `Beutl.exe`を起動します。
 
 ### 軽量インストーラーを使う
-[.NET ランタイム](https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0)をインストールします。
+[.NET ランタイム](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0)をインストールします。
 
 :::tip
 インストールするBeutlのバージョンに応じて.NETのバージョンを決定してください。  

@@ -21,8 +21,8 @@ MyProject
 以下は例です。
 ```json
 {
-  "appVersion": "1.0.0",
-  "minAppVersion": "1.0.0",
+  "appVersion": "2.0.0-preview.2",
+  "minAppVersion": "2.0.0-preview.2",
   "items": [
     "MyProject/MyProject.scene"
   ],

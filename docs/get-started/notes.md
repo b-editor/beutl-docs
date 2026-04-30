@@ -4,7 +4,7 @@ description: Explains the notes for using Beutl
 sidebar_position: 8
 ---
 
-The notes explained here are as of `v1.0.2`.
+The notes explained here are as of `v2.0.0-preview.2`.
 They may be improved in future updates.
 
 ## Security of Extensions
