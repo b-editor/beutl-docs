@@ -1,0 +1,9 @@
+{
+  "label": "拡張機能開発",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "slug": "/extensions",
+    "description": "拡張機能の開発方法について説明します。"
+  }
+}

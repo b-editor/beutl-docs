@@ -1,7 +1,7 @@
 {
   "version.label": {
-    "message": "2.0.0-preview",
-    "description": "The label for version current"
+    "message": "1.x",
+    "description": "The label for version 1"
   },
   "sidebar.docsSidebar.category.Start": {
     "message": "はじめに",

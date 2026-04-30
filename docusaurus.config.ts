@@ -70,6 +70,16 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/b-editor/beutl-docs/edit/main/',
           editLocalizedFiles: true,
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: '2.0.0-preview',
+            },
+            '1': {
+              label: '1.x',
+              path: '1',
+            },
+          },
         },
         blog: false,
         theme: {
@@ -111,6 +121,10 @@ const config: Config = {
         srcDark: 'img/logo-dark.svg',
       },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
         {
           type: 'localeDropdown',
           position: 'right',
