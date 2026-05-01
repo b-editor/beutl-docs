@@ -20,4 +20,4 @@ Brushes and pens are also documented here. They are not registered in the librar
 - [Audio Effects](./audio-effects/index.md)
 - [3D (Experimental)](./3d-objects/index.md)
 
-The source of truth for this reference is `Beutl/Services/LibraryRegistrar.cs` in the [Beutl repository](https://github.com/b-editor/beutl).
+The source of truth for this reference is `src/Beutl/Services/LibraryRegistrar.cs` in the [Beutl repository](https://github.com/b-editor/beutl).

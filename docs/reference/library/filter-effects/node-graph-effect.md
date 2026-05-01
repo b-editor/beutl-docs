@@ -19,7 +19,7 @@ Library → Filter Effect → Node Graph (Effect)
 Node graph model that defines the filter.
 
 - **Type:** `GraphModel?`
-- **Default:** `null`
+- **Default:** Empty `GraphModel`
 - **Animatable:** No
 
 ## Usage

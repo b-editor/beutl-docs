@@ -14,11 +14,17 @@ Library → Sound Group
 
 ## Properties
 
-_This object has no properties of its own. Only the inherited common properties are available._
+### Children
+
+The sound sources that belong to the group. They are mixed together and shared processing is applied to the result.
+
+- **Type:** `IList<Sound>`
+- **Default:** Empty list
+- **Animatable:** No
 
 ## Common properties
 
-This object inherits from `Sound` and exposes the [common properties](../common-properties.md) declared on its base classes.
+This object inherits from `Sound` and exposes the [common properties](../common-properties.md) declared on its base classes. `Offset Position` and `Speed` are hidden from the editor for this object.
 
 ## Usage
 

@@ -31,7 +31,7 @@ Plane width along the local X axis.
 
 ### Height
 
-Plane height along the local Y axis.
+Plane height along the local Z axis (the plane lies on the XZ plane with a Y-up normal).
 
 - **Type:** `float`
 - **Default:** `1`

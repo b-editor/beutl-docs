@@ -36,10 +36,10 @@ Declared in [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-edito
 
 ### Transform
 
-Optional 2D transform applied to the drawable (translate / scale / rotate / skew).
+Optional 2D transform applied to the drawable (translate / scale / rotate / skew). The constructor instantiates an empty `TransformGroup` so additional transforms can be appended.
 
 - **Type:** `Transform?`
-- **Default:** `null`
+- **Default:** Empty `TransformGroup`
 - **Animatable:** No
 
 ### Alignment X (AlignmentX)
@@ -68,10 +68,10 @@ Pivot point used by `Transform`, expressed as a relative point (0–1).
 
 ### Filter Effect (FilterEffect)
 
-Optional chain of filter effects applied after rendering.
+Optional chain of filter effects applied after rendering. The constructor instantiates an empty `FilterEffectGroup` so effects can be appended.
 
 - **Type:** `FilterEffect?`
-- **Default:** `null`
+- **Default:** Empty `FilterEffectGroup`
 - **Animatable:** No
 
 ### Blend Mode (BlendMode)
@@ -108,7 +108,7 @@ Outline pen (stroke). When `null`, no outline is drawn.
 Brush used to fill the interior. When `null`, the shape is hollow.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `#FFFFFFFF` (white)
 - **Animatable:** No
 
 ## Sound
@@ -143,8 +143,10 @@ Playback speed in percent (100 = normal).
 
 ### Audio Effect (Effect)
 
+The constructor instantiates an empty `AudioEffectGroup` so effects can be appended.
+
 - **Type:** `AudioEffect?`
-- **Default:** `null`
+- **Default:** Empty `AudioEffectGroup`
 - **Animatable:** No
 
 ## AudioVisualizerDrawable
@@ -166,7 +168,7 @@ Visualization width in pixels.
 - **Type:** `float`
 - **Default:** `640`
 - **Animatable:** Yes
-- **Range:** `(0, ∞)`
+- **Range:** `[1, ∞)`
 
 ### Height
 
@@ -175,14 +177,14 @@ Visualization height in pixels.
 - **Type:** `float`
 - **Default:** `120`
 - **Animatable:** Yes
-- **Range:** `(0, ∞)`
+- **Range:** `[1, ∞)`
 
 ### Fill
 
 Brush used to draw the bars / lines.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `#FFFFFFFF` (white)
 - **Animatable:** No
 
 ### Gain
@@ -245,7 +247,7 @@ Local scale per axis.
 Material that defines the surface's shading.
 
 - **Type:** `Material3D?`
-- **Default:** `null`
+- **Default:** `PBRMaterial` (overridden to `null` on `Group3D`)
 - **Animatable:** No
 
 ### Cast Shadows (CastShadows)

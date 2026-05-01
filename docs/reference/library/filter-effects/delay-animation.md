@@ -28,7 +28,7 @@ Delay in seconds.
 The effect chain whose timing is delayed.
 
 - **Type:** `FilterEffect?`
-- **Default:** `null`
+- **Default:** Empty `FilterEffectGroup`
 - **Animatable:** No
 
 ## Usage

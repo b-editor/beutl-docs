@@ -16,7 +16,7 @@ Library → Transform → Scale
 
 ### Scale
 
-Uniform scale factor (1 = original size).
+Uniform scale factor expressed as a percentage (`100` = original size).
 
 - **Type:** `float`
 - **Default:** `100`
@@ -40,7 +40,7 @@ Vertical scale multiplier (multiplied with `Scale`).
 
 ## Usage
 
-Animate `Scale` from 0 to 1 for a "pop in" reveal, or use negative values on a single axis to mirror the layer.
+Animate `Scale` from `0` to `100` for a "pop in" reveal, or use negative values on a single axis to mirror the layer.
 
 ## Source
 

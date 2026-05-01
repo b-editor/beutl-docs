@@ -19,7 +19,7 @@ Library → Filter Effect → Path Follow
 The path geometry to follow.
 
 - **Type:** `Geometry?`
-- **Default:** `null`
+- **Default:** Empty `PathGeometry`
 - **Animatable:** No
 
 ### Progress

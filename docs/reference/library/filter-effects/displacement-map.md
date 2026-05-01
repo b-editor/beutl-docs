@@ -19,7 +19,7 @@ Library → Filter Effect → Displacement Map
 Brush whose pixels drive the displacement.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `Radial Gradient Brush` (white at the center fading to transparent)
 - **Animatable:** No
 
 ### Transform
@@ -27,7 +27,7 @@ Brush whose pixels drive the displacement.
 Transform applied to the displacement map before sampling.
 
 - **Type:** `DisplacementMapTransform?`
-- **Default:** `null`
+- **Default:** `Translation Transform`
 - **Animatable:** No
 
 ### Spread Method (SpreadMethod)

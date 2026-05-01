@@ -19,7 +19,7 @@ Library → Geometry
 The path data to render. Define it by combining segments such as line segments and Bézier curves.
 
 - **Type:** `Geometry?`
-- **Default:** `null`
+- **Default:** Empty `PathGeometry`
 - **Animatable:** No
 
 ## Common properties

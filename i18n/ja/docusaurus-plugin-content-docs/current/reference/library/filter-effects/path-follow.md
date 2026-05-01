@@ -19,7 +19,7 @@ sidebar_position: 32
 追従するパスのジオメトリー。
 
 - **型:** `Geometry?`
-- **既定値:** なし (`null`)
+- **既定値:** 空の `PathGeometry`
 - **アニメーション:** 不可
 
 ### 進捗 (Progress)

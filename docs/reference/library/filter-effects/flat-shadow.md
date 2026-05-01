@@ -35,7 +35,7 @@ How far the shadow extends.
 Brush used to fill the shadow.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `#FF808080` (gray)
 - **Animatable:** No
 
 ### Shadow Only (ShadowOnly)

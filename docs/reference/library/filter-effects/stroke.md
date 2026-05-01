@@ -27,7 +27,7 @@ Pen describing the stroke (color, thickness, dash, etc.).
 Offset of the stroke relative to the source.
 
 - **Type:** `Point`
-- **Default:** (0, 0)`
+- **Default:** `(0, 0)`
 - **Animatable:** Yes
 
 ### Border Style (Style)

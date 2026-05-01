@@ -28,7 +28,7 @@ sidebar_position: 34
 タイミングを遅らせるエフェクトチェーン。
 
 - **型:** `FilterEffect?`
-- **既定値:** なし (`null`)
+- **既定値:** 空の `FilterEffectGroup`
 - **アニメーション:** 不可
 
 ## 使い方

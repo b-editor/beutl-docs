@@ -19,7 +19,7 @@ Library → Filter Effect → Blend
 Brush composited over the layer.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `#FFFFFFFF` (white)
 - **Animatable:** No
 
 ### Blend Mode (BlendMode)
