@@ -22,5 +22,73 @@
   "sidebar.docsSidebar.category.Settings": {
     "message": "設定",
     "description": "The label for category 'Settings' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Shapes": {
+    "message": "シェイプ",
+    "description": "The label for category 'Shapes' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Sources": {
+    "message": "ソース",
+    "description": "The label for category 'Sources' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Sounds": {
+    "message": "サウンド",
+    "description": "The label for category 'Sounds' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.3D (Experimental)": {
+    "message": "3D（試験的）",
+    "description": "The label for category '3D (Experimental)' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Particles": {
+    "message": "パーティクル",
+    "description": "The label for category 'Particles' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Node-based": {
+    "message": "ノードベース",
+    "description": "The label for category 'Node-based' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Portal": {
+    "message": "ポータル",
+    "description": "The label for category 'Portal' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Scene References": {
+    "message": "シーン参照",
+    "description": "The label for category 'Scene References' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Containers": {
+    "message": "コンテナ",
+    "description": "The label for category 'Containers' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Audio Visualizer": {
+    "message": "オーディオビジュアライザー",
+    "description": "The label for category 'Audio Visualizer' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Transforms": {
+    "message": "トランスフォーム",
+    "description": "The label for category 'Transforms' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Filter Effects": {
+    "message": "フィルターエフェクト",
+    "description": "The label for category 'Filter Effects' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Script": {
+    "message": "スクリプト",
+    "description": "The label for category 'Script' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Audio Effects": {
+    "message": "オーディオエフェクト",
+    "description": "The label for category 'Audio Effects' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Drawables": {
+    "message": "描画オブジェクト",
+    "description": "The label for category 'Drawables' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Library": {
+    "message": "ライブラリ",
+    "description": "The label for category 'Library' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "リファレンス",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
   }
 }
