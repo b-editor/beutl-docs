@@ -62,6 +62,35 @@ When `true`, draws the map itself for debugging.
 - **Default:** `false`
 - **Animatable:** Yes
 
+## Displacement map transforms
+
+The following are the types of objects that can be set for the `Transform` property.
+
+### Translation Transform
+
+Treats the displacement value as a 2D translation offset.
+
+- **X:** `float`, default `0`, animatable. Maximum horizontal offset (pixels) at full displacement.
+- **Y:** `float`, default `0`, animatable. Maximum vertical offset (pixels) at full displacement.
+
+### Scale Transform
+
+Treats the displacement value as a per-pixel scale around a pivot point.
+
+- **Scale:** `float`, default `100`, animatable. Uniform scale percentage at full displacement.
+- **Scale X (ScaleX):** `float`, default `100`, animatable. Horizontal scale percentage (multiplied with `Scale`).
+- **Scale Y (ScaleY):** `float`, default `100`, animatable. Vertical scale percentage (multiplied with `Scale`).
+- **Center X (CenterX):** `float`, default `0`, animatable. Pivot X offset from the image center (pixels).
+- **Center Y (CenterY):** `float`, default `0`, animatable. Pivot Y offset from the image center (pixels).
+
+### Rotation Transform
+
+Treats the displacement value as a per-pixel rotation around a pivot point.
+
+- **Rotation:** `float`, default `0`, animatable. Rotation amount in degrees at full displacement.
+- **Center X (CenterX):** `float`, default `0`, animatable. Pivot X offset from the image center (pixels).
+- **Center Y (CenterY):** `float`, default `0`, animatable. Pivot Y offset from the image center (pixels).
+
 ## Usage
 
 Use a noise pattern, gradient, or video clip as the map. Animate the map's `Transform` for flowing distortions; toggle `ShowDisplacementMap` for debugging.

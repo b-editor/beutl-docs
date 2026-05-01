@@ -22,13 +22,6 @@ How each frequency bin is drawn.
 - **Default:** Bar (`BarSpectrumShape`)
 - **Animatable:** No
 
-The available shapes are:
-- Bar
-- Filled
-- Line
-- Mirrored bar
-- Radial
-
 ### Bar Count (BarCount)
 
 Number of frequency bars displayed.
@@ -76,6 +69,45 @@ Temporal smoothing factor (0 = no smoothing, larger = more averaging).
 ## Common properties
 
 This object inherits from `AudioVisualizerDrawable` and exposes the [common properties](../../common-properties.md) declared on its base classes.
+
+## Spectrum shapes
+
+The following are the spectrum types that can be set for the `Shape` property.
+
+### Bar
+
+Renders each frequency bin as a vertical bar.
+
+- **Bar Width (BarWidth):** `float`, default `6`, range `[0.5, 10000]`, animatable.
+- **Corner Radius (CornerRadius):** `CornerRadius`, default `(0, 0, 0, 0)`, animatable.
+
+### Line
+
+Renders the spectrum envelope as a polyline.
+
+- **Thickness:** `float`, default `2`, range `[0.5, 50]`, animatable.
+- **Smoothness:** `float`, default `0`, range `[0, 100]`, animatable. Higher values round corners.
+
+### Filled Area
+
+Renders the spectrum envelope as a filled area beneath the curve.
+
+- **Smoothness:** `float`, default `0`, range `[0, 100]`, animatable.
+
+### Mirrored Bars
+
+Renders each bar mirrored above and below the horizontal center.
+
+- **Bar Width (BarWidth):** `float`, default `6`, range `[0.5, 10000]`, animatable.
+
+### Radial
+
+Arranges bars around a circle.
+
+- **Inner Radius (InnerRadius):** `float`, default `40`, range `[0, 10000]`, animatable.
+- **Start Angle (StartAngle):** `float`, default `-90`, animatable. Angle (degrees) of the first bar.
+- **Bar Width (BarWidth):** `float`, default `4`, range `[0.5, 100]`, animatable.
+- **Direction:** `RadialSpectrumDirection` (`Outward` / `Inward`), default `Outward`, animatable.
 
 ## Usage
 
