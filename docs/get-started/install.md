@@ -13,8 +13,7 @@ In this document, the version of Beutl to be installed is referred to as `{versi
 ### Using the standalone installer (recommended)
 1. Download and run `beutl-standalone-setup.exe`.
 2. Follow the on-screen instructions to install.
-3. Refer to [FFmpeg Installation](ffmpeg-install.md) to install FFmpeg.
-4. Launch `Beutl.exe`.
+3. Launch `Beutl.exe`.
 
 ### Using the lightweight installer
 Install the [.NET Runtime](https://dotnet.microsoft.com/download/dotnet/10.0).
@@ -26,12 +25,6 @@ Determine the version of .NET to install based on the version of Beutl you are i
 
 1. Download and run `beutl-setup.exe`.
 2. Follow the on-screen instructions to install.
-3. Refer to [FFmpeg Installation](ffmpeg-install.md) to install FFmpeg.
-4. Launch `Beutl.exe`.
-
-### Manual installation
-1. Download and extract `beutl-win-x64-standalone-{version}.zip`.
-2. Refer to [FFmpeg Installation](ffmpeg-install.md) to install FFmpeg.
 3. Launch `Beutl.exe`.
 
 ## For Ubuntu 22.04
@@ -48,9 +41,8 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 
 ### Manual installation
 1. Download and extract `beutl-linux-x64-standalone-{version}.zip`.
-2. Refer to [FFmpeg Installation](ffmpeg-install.md) to install FFmpeg.
-3. Use `chmod` to make `Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, and `Beutl.WaitingDialog` executable.
-4. Launch `Beutl`.
+2. Use `chmod` to make `Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, and `Beutl.WaitingDialog` executable.
+3. Launch `Beutl`.
 
 :::info
 If installing a version below `1.0.0-preview.5`,
@@ -62,5 +54,3 @@ refer to [this guide](https://github.com/shimat/opencvsharp#ubuntu) to build `li
 - Download and extract `Beutl.osx_arm64.app.zip` or `Beutl.osx_x64.app.zip`.
 - Double-click the downloaded file to extract it.
 - Double-click `Beutl.app` to launch the application.
-
-- If you see a warning about FFmpeg not being installed, refer to [FFmpeg Installation](ffmpeg-install.md) to install FFmpeg.

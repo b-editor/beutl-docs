@@ -13,8 +13,7 @@ Beutlをインストールする方法を説明します。
 ### スタンドアロンインストーラーを使う (おすすめ)
 1. `beutl-standalone-setup.exe`をダウンロードして、実行します。
 2. 画面に従ってインストールします。
-3. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
-4. `Beutl.exe`を起動します。
+3. `Beutl.exe`を起動します。
 
 ### 軽量インストーラーを使う
 [.NET ランタイム](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0)をインストールします。
@@ -26,12 +25,6 @@ Beutlをインストールする方法を説明します。
 
 1. `beutl-setup.exe`をダウンロードして、実行します。
 2. 画面に従ってインストールします。
-3. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
-4. `Beutl.exe`を起動します。
-
-### 手動でインストール
-1. `beutl-win-x64-standalone-{version}.zip`をダウンロードして、展開します。
-2. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
 3. `Beutl.exe`を起動します。
 
 ## Ubuntu22.04の場合
@@ -48,9 +41,8 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 
 ### 手動でインストール
 1. `beutl-linux-x64-standalone-{version}.zip`をダウンロードして、展開します。
-2. [FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
-3. `chmod`を使用して、`Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, `Beutl.WaitingDialog`を実行可能にします。
-4. `Beutl`を起動します。
+2. `chmod`を使用して、`Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, `Beutl.WaitingDialog`を実行可能にします。
+3. `Beutl`を起動します。
 
 :::info
 `1.0.0-preview.5`未満をインストールする場合、
@@ -62,5 +54,3 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 - `Beutl.osx_arm64.app.zip` または `Beutl.osx_x64.app.zip` をダウンロードします。
 - ダウンロードしたファイルをダブルクリックして展開します。
 - `Beutl.app`をダブルクリックするとアプリが起動します。
-
--  FFmpegがインストールされていないといった警告が出る場合は、[FFmpegの配置](ffmpeg-install.md)を参考にして、FFmpegをインストールします。
