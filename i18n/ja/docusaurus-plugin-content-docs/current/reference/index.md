@@ -9,3 +9,4 @@ sidebar_position: 4
 Beutl のリファレンスドキュメントです。
 
 - [ライブラリ](./library/index.md) — エディタの「ライブラリ」パネルに登録されている全オブジェクト
+- [ツールタブ](./tool-tabs/index.md) — エディタで利用できるツールタブ一覧
