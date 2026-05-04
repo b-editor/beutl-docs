@@ -19,7 +19,7 @@ const EN_CARDS: Card[] = [
   },
   {
     title: 'Advanced',
-    description: 'Rendering pipeline, source operators, filter effects, and supported types.',
+    description: 'Rendering pipeline, filter effects, and supported types.',
     to: '/advanced',
     badge: '02',
   },
@@ -46,7 +46,7 @@ const JA_CARDS: Card[] = [
   },
   {
     title: 'アドバンスド',
-    description: 'レンダリングパイプライン、ソースオペレーター、フィルター効果を解説します。',
+    description: 'レンダリングパイプライン、フィルターエフェクトを解説します。',
     to: '/ja/advanced',
     badge: '02',
   },
