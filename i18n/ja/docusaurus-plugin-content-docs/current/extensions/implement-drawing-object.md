@@ -10,7 +10,7 @@ description: 新しく描画オブジェクトを実装する方法を説明し�
 ここでは新たに星型を描画するオブジェクトを実装します。
 
 新しく描画オブジェクトを追加するには、
-`Drawable`, `SourceOperator`, `Extension`の3つのクラスが必要です。  
+`Drawable`と`Extension`の2つのクラスが必要です。  
 
 まず、`Drawable`クラスを実装していきます。
 
@@ -152,34 +152,7 @@ bitmap.Save("star.png");
 dotnet run -p:OutputType=Exe
 ```
 
-## 2. SourceOperatorクラスを作成
-
-特に特別な処理をしない場合、表示するプロパティを以下のように並べます
-
-```cs
-using Beutl.Operators.Source;
-using Beutl.Graphics.Effects;
-using Beutl.Graphics.Transformation;
-using Beutl.Media;
-using Beutl.Styling;
-
-namespace MyExtension;
-
-public class StarShapeOperator() : PublishOperator<StarShape>(
-[
-    (StarShape.WidthProperty, 100),
-    (Drawable.TransformProperty, () => new TransformGroup()),
-    Drawable.AlignmentXProperty,
-    Drawable.AlignmentYProperty,
-    Drawable.TransformOriginProperty,
-    (Drawable.FillProperty, () => new SolidColorBrush(Colors.White)),
-    (Drawable.FilterEffectProperty, () => new FilterEffectGroup()),
-    Drawable.BlendModeProperty,
-    Drawable.OpacityProperty
-]);
-```
-
-## 3. Extensionクラスを作成
+## 2. Extensionクラスを作成
 
 `Extension.Load`メソッドをオーバーライドしてライブラリに今回実装したクラスを登録します。
 
@@ -199,10 +172,7 @@ public class StarShapeExtension : Extension
     public override void Load()
     {
         base.Load();
-        // 一つの項目に複数の型を追加することができます。
-        // UI上でドラッグアンドドロップする場所に応じて、型が選ばれます
         LibraryService.Current.AddMultiple("星型", m => m
-            .BindSourceOperator<StarShapeOperator>()
             .BindDrawable<StarShape>());
     }
 }

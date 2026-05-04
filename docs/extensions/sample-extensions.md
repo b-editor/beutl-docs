@@ -7,7 +7,7 @@ description: Introduction to sample extensions
 A set of extensions to make Beutl easier to use.  
 For example, it allows you to add animation effects like fade-in and fade-out without using keyframes.
 
-Use this as a reference for developing effects and source operations.
+Use this as a reference for developing effects.
 
 **Fade In/Out**
 

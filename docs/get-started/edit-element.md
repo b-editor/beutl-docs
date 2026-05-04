@@ -8,18 +8,12 @@ This page explains how to add effects to elements, move them, and more.
 
 ## Prerequisite Knowledge
 
-This page uses terms such as __Source Operation__ and __Drawing Object__.
+This page uses the term __Drawing Object__.
 For details, please refer to [here](../advanced/rendering-process.md).
-<details>
-<summary>
-How to distinguish on the UI
-</summary>
-<img alt="How to distinguish on the UI" src="https://raw.githubusercontent.com/b-editor/beutl-docs/main/ja/get-started/_images/5.edit-element/ui.webp"></img>
-</details>
 
 ## Adding Effects
 First, select the element you want to add on the timeline.
-The properties of the selected element will be displayed in the __Source Operation__ tab on the right.
+The properties of the selected element will be displayed in the property editor on the right.
 
 To add an effect directly to a drawing object,
 click the `+` button in __Filter Effects__ and select the effect you want to add.  
@@ -28,9 +22,6 @@ click the `+` button in __Filter Effects__ and select the effect you want to add
 Alternatively, you can drag and drop the effect you want to add from the library to __Filter Effects__.  
 <video controls muted playsInline title="" src="_images/5.edit-element/add-effect-via-library.mp4" />
 
-If you drag and drop it elsewhere, you can add the effect as a source operation.  
-<video controls muted playsInline title="" src="_images/5.edit-element/add-effect-as-source-operator.mp4" />
-
 ## Transform
 Using transform, you can express movement, rotation, scaling, distortion, and more.
 
@@ -38,7 +29,7 @@ To set a transform directly on a drawing object,
 click the `+` button in __Transform__ and select the type of transform you want to add.
 
 Only for move transform, you can move it with the mouse from the preview screen.
-However, move transforms added as effects (or source operations) cannot be moved with the mouse.
+However, move transforms added as effects cannot be moved with the mouse.
 
 <video controls muted playsInline title="" src="_images/5.edit-element/add-transform.mp4" />
 

@@ -44,11 +44,6 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 2. `chmod`を使用して、`Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, `Beutl.WaitingDialog`を実行可能にします。
 3. `Beutl`を起動します。
 
-:::info
-`1.0.0-preview.5`未満をインストールする場合、
-[こちら](https://github.com/shimat/opencvsharp#ubuntu)を参考に `libOpenCvSharpExtern` をビルドしてください。
-:::
-
 ## macOSの場合
 
 - `Beutl.osx_arm64.app.zip` または `Beutl.osx_x64.app.zip` をダウンロードします。

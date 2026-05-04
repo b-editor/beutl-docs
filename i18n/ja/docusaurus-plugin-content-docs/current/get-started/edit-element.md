@@ -8,19 +8,12 @@ sidebar_position: 5
 
 ## 前提知識
 
-このページでは __ソース操作__ __描画オブジェクト__ などを用語を用いて説明します。
+このページでは __描画オブジェクト__ という用語を用いて説明します。
 詳細は[こちら](../advanced/rendering-process.md)をご覧ください。
-<details>
-<summary>
-UI上での見分け方
-</summary>
-<img alt="UI上での見分け方" src="https://raw.githubusercontent.com/b-editor/beutl-docs/main/ja/get-started/_images/5.edit-element/ui.webp"></img>
-</details>
-
 
 ## エフェクトを追加
 まずは追加したい要素をタイムライン上で選択します。
-右側のタブの __ソース操作__ に選択している要素のプロパティが表示されます。
+右側のプロパティエディターに選択している要素のプロパティが表示されます。
 
 描画オブジェクトに直接エフェクトを追加する場合は、
 __フィルタエフェクト__ の `+` ボタンをクリックして、追加したいエフェクトを選びます。  
@@ -29,9 +22,6 @@ __フィルタエフェクト__ の `+` ボタンをクリックして、追加�
 または、ライブラリから追加したいエフェクトを __フィルタエフェクト__ にドラッグアンドドロップすると追加できます。  
 <video controls muted playsInline title="" src="_images/5.edit-element/add-effect-via-library.mp4" />
 
-それ以外の場所にドラッグアンドドロップすると、ソース操作としてエフェクトを追加することができます。  
-<video controls muted playsInline title="" src="_images/5.edit-element/add-effect-as-source-operator.mp4" />
-
 ## トランスフォーム
 トランスフォームを使用すると、移動、回転、スケール、歪みなどを表現できます。
 
@@ -39,7 +29,7 @@ __フィルタエフェクト__ の `+` ボタンをクリックして、追加�
 __トランスフォーム__ の `+` ボタンをクリックして、追加したいトランスフォームの種類を選びます。
 
 移動トランスフォームの場合のみ、プレビュー画面からマウスで移動することができます。
-しかし、エフェクト (またはソース操作) として追加した移動トランスフォームはマウスで移動できません。
+しかし、エフェクトとして追加した移動トランスフォームはマウスで移動できません。
 
 <video controls muted playsInline title="" src="_images/5.edit-element/add-transform.mp4" />
 

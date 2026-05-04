@@ -7,7 +7,7 @@ sidebar_position: 1
 ## Elements
 Elements are placed on the timeline and evaluated in order from the top.
 
-When evaluated, elements create drawing objects through source operations or transform those drawing objects.
+When evaluated, elements create drawing objects or transform those drawing objects.
 
 The created drawing objects are then passed to the drawing layer after applying animations.
 
@@ -19,9 +19,6 @@ Properties include:
 - Pen
 - Fill
 - Effects
-
-## Source Operations
-Source operations can completely change the incoming drawing object into a different object or modify its properties.
 
 ## Drawing Scene / Drawing Layer
 A scene or layer that does not consider the timeline.

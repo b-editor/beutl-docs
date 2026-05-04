@@ -44,11 +44,6 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 2. Use `chmod` to make `Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, and `Beutl.WaitingDialog` executable.
 3. Launch `Beutl`.
 
-:::info
-If installing a version below `1.0.0-preview.5`,
-refer to [this guide](https://github.com/shimat/opencvsharp#ubuntu) to build `libOpenCvSharpExtern`.
-:::
-
 ## For macOS
 
 - Download and extract `Beutl.osx_arm64.app.zip` or `Beutl.osx_x64.app.zip`.

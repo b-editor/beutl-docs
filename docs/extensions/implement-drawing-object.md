@@ -9,7 +9,7 @@ This page is under construction.
 
 This guide explains how to implement a new drawing object that draws a star shape.
 
-To add a new drawing object, you need three classes: `Drawable`, `SourceOperator`, and `Extension`.
+To add a new drawing object, you need two classes: `Drawable` and `Extension`.
 
 First, we will implement the `Drawable` class.
 
@@ -151,33 +151,7 @@ Run the following command to generate the image:
 dotnet run -p:OutputType=Exe
 ```
 
-## 2. Create the SourceOperator Class
-
-If no special processing is required, arrange the properties to be displayed as follows.
-
-```cs
-using Beutl.Operators.Source;
-using Beutl.Graphics.Effects;
-using Beutl.Graphics.Transformation;
-using Beutl.Media;
-
-namespace MyExtension;
-
-public class StarShapeOperator() : PublishOperator<StarShape>(
-[
-    (StarShape.WidthProperty, 100),
-    (Drawable.TransformProperty, () => new TransformGroup()),
-    Drawable.AlignmentXProperty,
-    Drawable.AlignmentYProperty,
-    Drawable.TransformOriginProperty,
-    (Drawable.FillProperty, () => new SolidColorBrush(Colors.White)),
-    (Drawable.FilterEffectProperty, () => new FilterEffectGroup()),
-    Drawable.BlendModeProperty,
-    Drawable.OpacityProperty
-]);
-```
-
-## 3. Create the Extension Class
+## 2. Create the Extension Class
 
 Override the `Extension.Load` method to register the classes implemented in this library.
 
@@ -197,10 +171,7 @@ public class StarShapeExtension : Extension
     public override void Load()
     {
         base.Load();
-        // Multiple types can be added to a single item.
-        // The type is selected based on the drag-and-drop location in the UI
         LibraryService.Current.AddMultiple("Star Shape", m => m
-            .BindSourceOperator<StarShapeOperator>()
             .BindDrawable<StarShape>());
     }
 }

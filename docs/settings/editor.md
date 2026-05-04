@@ -88,13 +88,3 @@ The default value is __"1"__.
 Locks the cursor and hides it during drag operations in the property editor (Windows only).
 
 The default setting is __"On"__.
-
-### Hide Key Properties
-
-Hides properties that are also provided as source operations.
-
-The default setting is __"Off"__.
-
-### Key Properties
-
-When __"Hide Key Properties"__ is enabled, set the properties to hide.
