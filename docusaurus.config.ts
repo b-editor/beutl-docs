@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import remarkVideoAssets from './scripts/remark-video-assets.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -71,6 +72,7 @@ const config: Config = {
           editUrl: 'https://github.com/b-editor/beutl-docs/edit/main/',
           editLocalizedFiles: true,
           lastVersion: 'current',
+          beforeDefaultRemarkPlugins: [remarkVideoAssets],
           versions: {
             current: {
               label: '2.0.0-preview',

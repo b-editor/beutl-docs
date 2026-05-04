@@ -219,6 +219,14 @@ article li+li {
   margin-top: 0.35rem;
 }
 
+/* Media — keep videos and audio inside the content column */
+.markdown video,
+.markdown audio {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Tables */
 .markdown table {
   display: table;
