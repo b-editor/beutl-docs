@@ -1,115 +1,114 @@
 ---
 title: エフェクトを実装する
+description: EngineObject パターンに基づくカスタム FilterEffect を実装します。
 ---
 
-:::note
-このページは作業中です。
-:::
+`FilterEffect` はレンダーターゲットを後処理する `EngineObject` です。基本的な書き方は[描画オブジェクトを実装](implement-drawing-object.md)と同じで、`partial class` で宣言し、`IProperty<T>` メンバを公開し、`ApplyTo` の中で自動生成された `Resource` からスナップショット値を読み取ります。
+
+[EngineObject リファレンス](engine-object.md) を読んでいない場合は先に目を通してください。プロパティシステムや `Resource` のライフサイクルがそこで説明されています。
+
+## 1. 最小のエフェクト
 
 ```cs
-public class MyFilterEffect : FilterEffect
+using Beutl.Graphics.Effects;
+using Beutl.Graphics.Rendering;
+
+namespace MyExtension;
+
+public sealed partial class MyFilterEffect : FilterEffect
 {
-    public override void ApplyTo(FilterEffectContext context)
+    public MyFilterEffect()
     {
-        // ここに処理を追加
+        ScanProperties<MyFilterEffect>();
+    }
+
+    public override void ApplyTo(FilterEffectContext context, FilterEffect.Resource resource)
+    {
+        // ここで context にフィルタ操作を追加します。
     }
 }
 ```
 
-## 既存のエフェクトを組み合わせる
-### FilterEffectContextのメソッドを使う
+`Drawable` との違いは 2 つ：
+
+- `ApplyTo` は `FilterEffectContext` と自動生成された `Resource` を受け取ります。プロパティの値を読むには `resource` を派生 `Resource` 型にキャストします。
+- `MeasureCore` / `OnDraw` はありません。エディタが `FilterEffectContext` を介してレンダーターゲットを流し込んでくれるので、それをどう変換するかだけを記述します。
+
+## 2. 既存のエフェクトを組み合わせる
+
+最も簡単なカスタムエフェクトは、`FilterEffectContext` の拡張メソッドを使って Beutl 組み込みの操作を重ねていく方法です。境界の自動拡張（例：ブラーは表面を広げる）も内部で処理されるため、サイズ調整を自分で書く必要はほぼありません。
+
 ```cs
-public class MyFilterEffect : FilterEffect
+using System.ComponentModel.DataAnnotations;
+using Beutl.Engine;
+using Beutl.Graphics.Effects;
+using Beutl.Graphics.Rendering;
+using Beutl.Media;
+
+namespace MyExtension;
+
+public sealed partial class HighContrastBlur : FilterEffect
 {
-    public override void ApplyTo(FilterEffectContext context)
+    public HighContrastBlur()
     {
-        context.Blur(new Size(20, 20));
+        ScanProperties<HighContrastBlur>();
+    }
+
+    [Display(Name = "Blur Sigma")]
+    [Range(0, float.MaxValue)]
+    public IProperty<float> BlurSigma { get; } = Property.CreateAnimatable<float>(20);
+
+    [Display(Name = "Contrast")]
+    [Range(-100, 100)]
+    public IProperty<float> Contrast { get; } = Property.CreateAnimatable<float>(20);
+
+    public override void ApplyTo(FilterEffectContext context, FilterEffect.Resource resource)
+    {
+        var r = (Resource)resource;
+        context.Blur(new Size(r.BlurSigma, r.BlurSigma));
         context.HighContrast(
             grayscale: false,
             invertStyle: HighContrastInvertStyle.NoInvert,
-            contrast: 20);
-    }
-
-    public override Rect TransformBounds(Rect bounds)
-    {
-        // Blurの分、境界線を膨らませる
-        return bounds.Inflate(20 * 3);
+            contrast: r.Contrast / 100f);
     }
 }
 ```
-### 他のFilterEffectインスタンスを使う
+
+`FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`LookupTable`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) を参照してください。
+
+## 3. レンダーターゲットを直接処理する
+
+[`FlatShadow.cs](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs) や [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs)、[`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) などを参考にしてください。
+
+## 4. 拡張機能で登録する
+
 ```cs
-public class MyFilterEffect : FilterEffect
+using Beutl.Extensibility;
+using Beutl.Services;
+
+namespace MyExtension;
+
+[Export]
+public sealed class MyEffectExtension : LayerExtension
 {
-    private readonly Blur _blur = new()
-    {
-        Sigma = new Size(20, 20)
-    };
-    private readonly HighContrast _contrast = new()
-    {
-        Grayscale = false,
-        InvertStyle = HighContrastInvertStyle.NoInvert,
-        Contrast = 20
-    };
+    public override string Name => "My Effects";
+    public override string DisplayName => "My Effects";
 
-    public override void ApplyTo(FilterEffectContext context)
+    public override void Load()
     {
-        context.Apply(_blur);
-        context.Apply(_contrast);
-    }
-
-    public override Rect TransformBounds(Rect bounds)
-    {
-        return _blur.TransformBounds(bounds);
+        LibraryService.Current.Register<HighContrastBlur>(
+            KnownLibraryItemFormats.FilterEffect,
+            "High-Contrast Blur");
     }
 }
 ```
 
-## ビットマップを直接処理する
-```cs
-public class MyFilterEffect : FilterEffect
-{
-    public override void ApplyTo(FilterEffectContext context)
-    {
-        // data引数はactionやtransformBoundsの第一引数に渡されます
-        // 等価比較可能な値を指定してください
-        context.CustomEffect(
-            data: 0,
-            action: CustomEffectProcess,
-            transformBounds: (_, b) => b);
-    }
+複数のエフェクトをまとめたい場合は、[EngineObject リファレンス](engine-object.md#ライブラリへの登録) で説明している `RegisterGroup` ヘルパーを使うと、ライブラリ上で 1 つのカテゴリにグルーピングできます。
 
-    private static void CustomEffectProcess(int _, CustomFilterEffectContext context)
-    {
-        for (int i = 0; i < context.Targets.Count; i++)
-        {
-            EffectTarget target = context.Targets[i];
-            RenderTarget renderTarget = target.RenderTarget!;
+## Beutl ソースの参考ファイル
 
-            // Skiaを直接操作する場合
-            // 1. SKSurfaceを取得
-            SKSurface surface = RenderTarget.GetSKSurface(renderTarget);
-            // 2. SKCanvasを取得
-            SKCanvas skcanvas = surface.Value.Canvas;
-            // 3. 操作
-            skcanvas.Clear();
-
-            // Beutlのラッパーを使う場合
-            // 1. キャンバスを作成
-            using (var canvas = new ImmediateCanvas(renderTarget))
-            {
-                // 2. 操作
-                canvas.Clear();
-            }
-
-            // 画像サイズを変更したい場合
-            var newTarget = context.CreateTarget(width: 100, height: 100);
-            context.Targets[i] = newTarget;
-            target.Dispose();
-        }
-    }
-}
-```
-
-## プロパティを追加する
-[描画オブジェクトを実装](implement-drawing-object.md) の __プロパティを追加__ をご覧ください。
+| ファイル | 学べること |
+| --- | --- |
+| `src/Beutl.Engine/Graphics/FilterEffects/HighContrast.cs` | `FilterEffectContext` の単一呼び出しで完結する最小エフェクト。 |
+| `src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs` | `CustomEffect` で独自描画を行い、`transformBounds` で境界を拡張する例。 |
+| `src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs` | チェイン可能な組み込み操作の全リスト。 |
