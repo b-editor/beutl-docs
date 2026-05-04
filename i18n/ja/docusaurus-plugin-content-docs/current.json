@@ -87,6 +87,10 @@
     "message": "ライブラリ",
     "description": "The label for category 'Library' in sidebar 'docsSidebar'"
   },
+  "sidebar.docsSidebar.category.Tool Tabs": {
+    "message": "ツールタブ",
+    "description": "The label for category 'Tool Tabs' in sidebar 'docsSidebar'"
+  },
   "sidebar.docsSidebar.category.Reference": {
     "message": "リファレンス",
     "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
