@@ -31,10 +31,10 @@ sidebar_position: 2
 | [シーン設定](./scene-settings.md) | シーンのサイズ・開始時間・長さ・レイヤー数を設定する |
 | [グラフエディタ](./graph-editor.md) | アニメーションの時間カーブを編集する |
 | [ノードグラフ](./node-graph.md) | ノードグラフの構造をツリー表示する（メニュー上の表記は「GraphNode Tree」） |
-| [スコープ](./color-scopes.md) | 映像の波形・ベクトルスコープを表示する |
+| [スコープ](./color-scopes.md) | 映像の波形・ヒストグラム・ベクトルスコープ・フォルスカラー・ゼブラを表示する |
 | [カラーグレーディング](./color-grading.md) | 色調補正・カラーグレーディングを行う |
 | [カーブ](./curves.md) | トーンカーブで色調を調整する |
-| [オーディオビジュアライザー](./audio-visualizer.md) | 音声の波形・スペクトラム・スペクトログラムを表示する |
+| [オーディオビジュアライザー](./audio-visualizer.md) | 音声の波形・スペクトラム・レベルメーター・スペクトログラム・位相スコープを表示する |
 | [パスエディタ](./path-editor.md) | パス図形の制御点を編集する |
 
 このドキュメントの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` および `src/Beutl.Editor.Components/` 配下の `*TabExtension.cs` です。
