@@ -34,6 +34,7 @@ You can drag the splitters between the columns to change their widths.
 - Hover near the left or right edge of an element to resize it (drag the edge to change the start time or duration).
 - Hold **`Alt`** while dragging an element's body to drop a **duplicate** at the new position; the original stays in place. (When you drag an element's edge to resize it, holding **`Alt`** disables snapping instead.)
 - If an element is so small that only the resize handles are visible, hold **`Ctrl`** while dragging to move it without resizing.
+- While dragging, the edges snap to other elements, the scene start/end, the playhead, and the timeline origin. Toggle snapping from the empty-area right-click menu (**Snap**).
 
 ### Selection
 
@@ -64,10 +65,22 @@ You can drag the splitters between the columns to change their widths.
 
 You can also rename an element by double-clicking it.
 
-### Playhead navigation
+### Playback and playhead navigation
 
-- Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an exact position. It accepts a timecode (`hh:mm:ss.fff` or `mm:ss.fff`), an absolute frame (`#120` or `120f`), a relative offset (`+5s`, `-10f`, `+2m`), or a marker-name prefix (`@intro`).
-- Press **`Ctrl + Shift + →`** / **`Ctrl + Shift + ←`** (`Cmd + Shift + →` / `Cmd + Shift + ←` on macOS) to seek to the next / previous keyframe of the selected element.
+| Action | Windows / Linux | macOS |
+|------|------|------|
+| Play / pause | `Space` | `Space` |
+| Step one frame back / forward | `←` / `→` | `←` / `→` |
+| Jump to start / end | `Home` / `End` | `Cmd + ←` / `Cmd + →` |
+| Shuttle backward / stop / forward | `J` / `K` / `L` | `J` / `K` / `L` |
+| Shuttle backward / forward (fine) | `Shift + J` / `Shift + L` | `Shift + J` / `Shift + L` |
+| Toggle loop playback | `/` | `/` |
+| Previous / next marker | `Ctrl + ←` / `Ctrl + →` | `Alt + ←` / `Alt + →` |
+| Previous / next keyframe (selected element) | `Ctrl + Shift + ←` / `Ctrl + Shift + →` | `Cmd + Shift + ←` / `Cmd + Shift + →` |
+
+Press **`J`** / **`L`** to shuttle backward / forward — press again to go faster — and **`K`** to stop; add **`Shift`** for finer speed steps. Toggle looped playback with **`/`**.
+
+Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an exact position. It accepts a timecode (`hh:mm:ss.fff` or `mm:ss.fff`), an absolute frame (`#120` or `120f`), a relative offset (`+5s`, `-10f`, `+2m`), or a marker-name prefix (`@intro`).
 
 ### Command palette
 
