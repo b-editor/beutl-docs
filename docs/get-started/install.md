@@ -44,6 +44,26 @@ sudo apt install ./beutl_{version}ubuntu22.04_amd64.deb
 2. Use `chmod` to make `Beutl`, `Beutl.ExceptionHandler`, `Beutl.PackageTools`, and `Beutl.WaitingDialog` executable.
 3. Launch `Beutl`.
 
+## For Linux (Flatpak)
+
+Flatpak lets you install Beutl on any Linux distribution without a distribution-specific package.
+
+:::note
+Requires `flatpak` with the Flathub remote configured. The bundle pulls the `org.freedesktop.Platform` runtime from Flathub on first install.
+:::
+
+1. Download `Beutl-{version}.flatpak` from the release page.
+2. Install the bundle for the current user:
+```sh
+flatpak install --user Beutl-{version}.flatpak
+```
+3. Launch Beutl:
+```sh
+flatpak run net.beditor.Beutl
+```
+
+After installation, Beutl also appears in your desktop environment's application menu.
+
 ## For macOS
 
 - Download and extract `Beutl.osx_arm64.app.zip` or `Beutl.osx_x64.app.zip`.

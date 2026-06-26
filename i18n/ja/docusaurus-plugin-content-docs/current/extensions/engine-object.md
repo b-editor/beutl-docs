@@ -188,7 +188,7 @@ using Beutl.Services;
 namespace MyExtension;
 
 [Export]
-public sealed class MyExtension : LayerExtension
+public sealed class MyExtension : Extension
 {
     public override string Name => "My Extension";
     public override string DisplayName => "My Extension";

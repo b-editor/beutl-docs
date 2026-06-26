@@ -45,3 +45,9 @@ By caching the object after the effect is applied, the effect only needs to be a
 2. └ Transform Node
 3. 　 └ Draw cached image
 ```
+
+## Resolution-independent rendering
+
+Beutl evaluates the scene in logical coordinates and only scales to device pixels at the end of the pipeline. Because of this, the editor can render the preview at a reduced **working density** — Half, Quarter, or fit-to-previewer — to play back and scrub faster. Vector shapes, text, and most effects are re-rasterized at that density instead of being upscaled, so they stay sharp at the smaller size. Encoding always renders at the project resolution (scale 1.0).
+
+The preview density is chosen from the [Preview Settings](../reference/tool-tabs/preview-settings.md) tab. Custom shaders receive the working density through their uniforms; see [GLSL Script](../reference/library/filter-effects/script/glsl-script.md) and [SKSL Script](../reference/library/filter-effects/script/sksl-script.md) for how to keep a shader resolution-independent.
