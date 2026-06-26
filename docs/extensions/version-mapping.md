@@ -9,6 +9,8 @@ This table lists the versions of Beutl along with their corresponding dependenci
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.4  | 10.0 | 11.3.17                                            | 8.0    |
+| 2.0.0-preview.3  | 10.0 | 11.3.13                                            | 8.0    |
 | 2.0.0-preview.2  | 10.0 | 11.3.13                                            | 8.0    |
 | 2.0.0-preview.1  | 10.0 | 11.3.13                                            | 8.0    |
 | 1.1.0            | 10.0 | 11.3.9                                             | 8.0    |

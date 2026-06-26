@@ -89,7 +89,7 @@ using Beutl.Services;
 namespace MyExtension;
 
 [Export]
-public sealed class MyEffectExtension : LayerExtension
+public sealed class MyEffectExtension : Extension
 {
     public override string Name => "My Effects";
     public override string DisplayName => "My Effects";

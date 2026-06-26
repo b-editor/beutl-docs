@@ -42,6 +42,8 @@ To change the easing of an existing keyframe, drop the desired easing from the e
 
 The default easing is spline easing, which allows you to adjust acceleration and deceleration using the green circle control points.
 
+The easing list also includes a **Hold** easing, which keeps the value fixed until the next keyframe (step interpolation). Use it to switch between discrete states with no in-between animation.
+
 <video controls muted playsInline title="" src="_images/6.keyframe/easing.mp4" />
 
 :::tip

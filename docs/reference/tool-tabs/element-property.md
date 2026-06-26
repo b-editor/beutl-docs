@@ -66,6 +66,10 @@ Expanding an object reveals a per-property editor.
 
 For animated properties, use the **vertical three-dot menu (⋮)** on the right side of the property to open the [Graph Editor](./graph-editor.md) or to inline-expand the animation onto the timeline.
 
+### Scrubbing number values
+
+Drag horizontally on a number field to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** for fine steps (0.1×).
+
 ## Objects of unknown type
 
 When the object's type cannot be resolved — for example because the providing extension is not installed — the view falls back to a placeholder. It shows the original type name along with a command bar for editing and saving the JSON directly, so you can still inspect and make minimal fixes on the spot.

@@ -150,7 +150,7 @@ using Beutl.Services;
 namespace MyExtension;
 
 [Export]
-public sealed class StarShapeExtension : LayerExtension
+public sealed class StarShapeExtension : Extension
 {
     public override string Name => "Star Shape";
     public override string DisplayName => "星型";
