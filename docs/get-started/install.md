@@ -10,8 +10,10 @@ In this document, the version of Beutl to be installed is referred to as `{versi
 
 ## For Windows
 
+Both x64 and ARM64 are supported. On ARM64 devices, use the installers whose file names contain `arm64`.
+
 ### Using the standalone installer (recommended)
-1. Download and run `beutl-standalone-setup.exe`.
+1. Download and run `beutl-standalone-setup.exe` (ARM64: `beutl-standalone-arm64-setup.exe`).
 2. Follow the on-screen instructions to install.
 3. Launch `Beutl.exe`.
 
@@ -23,7 +25,7 @@ Determine the version of .NET to install based on the version of Beutl you are i
 [Version Compatibility Table](../extensions/version-mapping.md)
 :::
 
-1. Download and run `beutl-setup.exe`.
+1. Download and run `beutl-setup.exe` (ARM64: `beutl-arm64-setup.exe`).
 2. Follow the on-screen instructions to install.
 3. Launch `Beutl.exe`.
 

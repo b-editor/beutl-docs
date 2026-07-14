@@ -36,5 +36,7 @@ sidebar_position: 2
 | [カーブ](./curves.md) | トーンカーブで色調を調整する |
 | [オーディオビジュアライザー](./audio-visualizer.md) | 音声の波形・スペクトラム・レベルメーター・スペクトログラム・位相スコープを表示する |
 | [パスエディタ](./path-editor.md) | パス図形の制御点を編集する |
+| [ターミナル](./terminal.md) | エディターを離れずにプロジェクトフォルダーでシェルを実行する |
+| [プロキシ](./proxies.md) | プレビューを軽快にする低解像度プロキシメディアを生成・管理する |
 
 このドキュメントの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` および `src/Beutl.Editor.Components/` 配下の `*TabExtension.cs` です。

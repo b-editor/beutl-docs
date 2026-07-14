@@ -79,6 +79,37 @@ Nodes below this pixel count will not be cached.
 
 The default value is __"1"__.
 
+## Proxy Media
+
+Settings for the [proxy media workflow](../reference/tool-tabs/proxies.md).
+
+### Preview Source
+
+Selects whether the preview uses proxy media.
+
+- Prefer proxy __(default value)__
+- Force original
+
+### Store Location
+
+The folder where proxy files are stored.
+
+The default value is the `proxies` folder in Beutl's home directory. Changes take effect after restart.
+
+### Maximum Store Size
+
+When the store exceeds this size (in GiB), least-recently-used proxies are removed.
+
+The default value is __"50"__ GiB (allowed range: 5–500). Changes take effect after restart.
+
+### Default Preset
+
+The quality preset selected by default in the Proxies tool tab.
+
+- Half proxy (1/2)
+- Quarter proxy (1/4) __(default value)__
+- Eighth proxy (1/8)
+
 ## Property Editor
 
 ![](_images/property-editor.png)

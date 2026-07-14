@@ -36,5 +36,7 @@ How to open each is described on its respective page.
 | [Curves](./curves.md) | Adjust tones with tone curves |
 | [Audio Visualizer](./audio-visualizer.md) | Waveform / Spectrum / Meter / Spectrogram / Phase Scope displays for audio |
 | [Path editor](./path-editor.md) | Edit control points of path shapes |
+| [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
+| [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).

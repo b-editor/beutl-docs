@@ -1,7 +1,7 @@
 ---
 title: Notes
 description: Explains the notes for using Beutl
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 The notes explained here are as of `v2.0.0-preview.2`.

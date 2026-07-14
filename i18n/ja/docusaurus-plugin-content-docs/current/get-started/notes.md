@@ -1,7 +1,7 @@
 ---
 title: 注意事項
 description: Beutlを使う上での注意事項を説明します
-sidebar_position: 8
+sidebar_position: 9
 ---
 
 ここで説明する注意事項は `v2.0.0-preview.2` 時点のものです。
