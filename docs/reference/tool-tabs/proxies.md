@@ -35,7 +35,7 @@ Open it from the menu bar via **View → Tools → Proxies**.
 ## Tab layout
 
 - **Store metrics (top)**: project / store / cap usage.
-- **Clip list**: every eligible clip in the scene, each with:
+- **Clip list**: every eligible video clip in the open project (all scenes), each with:
   - a **state pill**: Ready / Generating / Stale / Failed / Missing / Partial
   - a **quality preset** dropdown (initialized from the *Default preset* setting)
   - **Generate** / **Regenerate** / **Delete** buttons and a progress bar with a cancel button while generating
