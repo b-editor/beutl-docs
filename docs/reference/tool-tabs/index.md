@@ -36,6 +36,8 @@ See their respective pages for instructions on opening them.
 | [Curves](./curves.md) | Adjust tones with tone curves |
 | [Audio Visualizer](./audio-visualizer.md) | Waveform / Spectrum / Meter / Spectrogram / Phase Scope displays for audio |
 | [Path editor](./path-editor.md) | Edit control points of path shapes |
+| [Preview Settings](./preview-settings.md) | Preview render quality, onion skin, and the render caches |
+| [History](./history.md) | Browse the edit history and jump back to any step |
 | [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
 | [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
 

@@ -32,8 +32,9 @@ You can drag the splitters between the columns to change their widths.
 
 - Drag an element's body to move it across layers or along the time axis.
 - Hover near the left or right edge of an element to resize it (drag the edge to change the start time or duration).
-- Hold **`Alt`** while dragging to temporarily disable snapping.
+- Hold **`Alt`** while dragging an element's body to drop a **duplicate** at the new position; the original stays in place. (When you drag an element's edge to resize it, holding **`Alt`** disables snapping instead.)
 - If an element is so small that only the resize handles are visible, hold **`Ctrl`** while dragging to move it without resizing.
+- While dragging, the edges snap to other elements, the scene start/end, the playhead, and the timeline origin. Toggle snapping from the empty-area right-click menu (**Snap**).
 
 ### Selection
 
@@ -47,6 +48,7 @@ You can drag the splitters between the columns to change their widths.
 | Copy | `Ctrl + C` | `Cmd + C` |
 | Cut | `Ctrl + X` | `Cmd + X` |
 | Paste | `Ctrl + V` | `Cmd + V` |
+| Duplicate selected elements | `Ctrl + D` | `Cmd + D` |
 | Exclude (remove from timeline) | `Delete` | `Back` |
 | Delete (also delete the element file from disk) | `Ctrl + Delete` | `Cmd + Back` |
 | Split by current frame | `Ctrl + K` | `Cmd + K` |
@@ -65,8 +67,32 @@ You can drag the splitters between the columns to change their widths.
 | Go to next gap | `Shift + ;` | `Shift + ;` |
 | Go to previous gap | `Alt + ;` | `Alt + ;` |
 | Add / remove marker | `M` | `M` |
+| Nudge element 1 frame left / right | `,` / `.` | `,` / `.` |
+| Nudge element 10 frames left / right | `Shift + ,` / `Shift + .` | `Shift + ,` / `Shift + .` |
+| Nudge element 1 second left / right | `Alt + ,` / `Alt + .` | `Alt + ,` / `Alt + .` |
 
 You can also rename an element by double-clicking it.
+
+### Playback and playhead navigation
+
+| Action | Windows / Linux | macOS |
+|------|------|------|
+| Play / pause | `Space` | `Space` |
+| Step one frame back / forward | `←` / `→` | `←` / `→` |
+| Jump to start / end | `Home` / `End` | `Cmd + ←` / `Cmd + →` |
+| Shuttle backward / stop / forward | `J` / `K` / `L` | `J` / `K` / `L` |
+| Shuttle backward / forward (fine) | `Shift + J` / `Shift + L` | `Shift + J` / `Shift + L` |
+| Toggle loop playback | `/` | `/` |
+| Previous / next marker | `Ctrl + ←` / `Ctrl + →` | `Alt + ←` / `Alt + →` |
+| Previous / next keyframe (selected element) | `Ctrl + Shift + ←` / `Ctrl + Shift + →` | `Cmd + Shift + ←` / `Cmd + Shift + →` |
+
+Press **`J`** / **`L`** to shuttle backward / forward — press again to go faster — and **`K`** to stop; add **`Shift`** for finer speed steps. Toggle looped playback with **`/`**.
+
+Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an exact position. It accepts a timecode (`hh:mm:ss.fff` or `mm:ss.fff`), an absolute frame (`#120` or `120f`), a relative offset (`+5s`, `-10f`, `+2m`), or a marker-name prefix (`@intro`).
+
+### Command palette
+
+Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable command palette that lists the available editor and tool-tab commands, so you can find and run an action — and see its shortcut — without hunting through the menus.
 
 ### Element right-click menu
 
@@ -137,6 +163,7 @@ Each layer header includes four toggle buttons:
 
 - **Editing Mode** submenu: toggle **Razor Tool** / **Slip Tool** / **Roll Tool** / **Slide Tool** / **Ripple Edit**
 - **Add Element** / **Add from Template** (pick from items registered in the library)
+- **Add Adjustment Layer** (adds a [Backdrop](../library/drawables/sources/backdrop.md)-based element; filter effects you add to it apply to the layers below it)
 - **Paste** (elements, files, or images on the clipboard)
 - **Set start time** / **Set end time** (snap to the click position)
 - **Gaps** submenu: **Close Gap** (the gap at the click position) / **Close All Gaps** / **Go to Next Gap** / **Go to Previous Gap**

@@ -1,7 +1,7 @@
 ---
 title: "Proxies"
 description: "Describes the role of the Proxies tab and the proxy media workflow."
-sidebar_position: 15
+sidebar_position: 17
 ---
 
 # Proxies
@@ -50,7 +50,7 @@ The proxy store is shared machine-wide. **Delete project proxies** also removes 
 ## Proxies in the editor
 
 - On the timeline, each clip with proxy state shows a small **colored dot** in its top-right corner (ready / generating / stale / failed); hover it for details.
-- The **Preview source** option controls whether the preview uses proxies. Choose **Prefer proxy** (default) or **Force original** in **Settings → Editor → Proxy media** or the editor's Preview Settings tab. The change takes effect on the next frame without reloading the project.
+- The **Preview source** option controls whether the preview uses proxies. Choose **Prefer proxy** (default) or **Force original** in **Settings → Editor → Proxy media** or the editor's [Preview Settings tab](./preview-settings.md). The change takes effect on the next frame without reloading the project.
 - When a proxy is missing, stale, or partial, the preview silently falls back to the original media.
 - **Export never uses proxies.** If an original file is missing at export time, export fails with an error rather than using the proxy as a substitute.
 

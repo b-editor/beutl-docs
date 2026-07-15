@@ -1,7 +1,7 @@
 ---
 title: "Terminal"
 description: "Describes the role of the Terminal tab and how to use it."
-sidebar_position: 14
+sidebar_position: 16
 ---
 
 # Terminal

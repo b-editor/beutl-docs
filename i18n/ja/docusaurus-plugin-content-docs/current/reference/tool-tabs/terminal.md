@@ -1,7 +1,7 @@
 ---
 title: "ターミナル"
 description: "ターミナルタブの役割と使い方を説明します。"
-sidebar_position: 14
+sidebar_position: 16
 ---
 
 # ターミナル

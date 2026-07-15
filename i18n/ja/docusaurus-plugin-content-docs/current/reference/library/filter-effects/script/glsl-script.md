@@ -32,8 +32,9 @@ GLSL フラグメントシェーダーのソース。
         float progress;   // 0.0 - 1.0
         float duration;   // seconds
         float time;       // seconds
-        float width;      // render target width
-        float height;     // render target height
+        float width;      // render target width (device px)
+        float height;     // render target height (device px)
+        float scale;      // working scale w (1.0 = unscaled); multiply absolute-px literals by this
     } pc;
 
     void main() {
@@ -46,6 +47,12 @@ GLSL フラグメントシェーダーのソース。
 ## 使い方
 
 入力ソーステクスチャと任意のアニメーション可能 uniform から出力色を書き込むフラグメントシェーダーを記述します。
+
+## 解像度スケーリング
+
+Beutl は、プロジェクト解像度とは異なる作業密度でレンダリングすることがあります（縮小プレビューやスーパーサンプリングされた書き出しなど）。`width` / `height` はその密度でのレンダーターゲットの **デバイスピクセル** サイズを表し、`scale` は論理ピクセルあたりのデバイスピクセル数（作業密度）です（スケールなしのとき `1.0`）。
+
+既定の `fragCoord` 入力はすでに `0.0 – 1.0` に正規化されているため、それを使ってサンプリングするシェーダーは自動的に解像度非依存になり、変更は不要です。**ピクセル単位の絶対値**（固定の半径・オフセット・境界幅など）を使う場合は、`scale` を掛けることでどの密度でも画面上の見た目の大きさを保てます。`scale` を参照しないシェーダーは、スケール `1.0` のとき従来とまったく同じ結果になります。
 
 ## ソース
 
