@@ -30,7 +30,7 @@ For some agents the MCP configuration cannot be written automatically; the page 
 
 The live endpoint starts automatically with the app and listens on **loopback only**:
 
-```
+```text
 http://127.0.0.1:<port>/mcp
 ```
 
@@ -38,7 +38,7 @@ The default port is `59737`; if it is taken, the next free port is used. The act
 
 Every request must carry the token in the standard header — treat it like a password:
 
-```
+```text
 Authorization: Bearer <token>
 ```
 
@@ -64,7 +64,7 @@ The headless server is a separate process that speaks MCP over stdio. The `BEUTL
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "beutl-agent": {
       "type": "stdio",
       "command": "<path-to-stdio-server>",
@@ -73,6 +73,10 @@ The headless server is a separate process that speaks MCP over stdio. The `BEUTL
   }
 }
 ```
+
+:::note
+The configuration file name and the top-level property name vary by agent (most use `mcpServers`, as above, but not all). Installing from **Settings → AI Agents** writes the correct format for each agent, so prefer that over hand-editing.
+:::
 
 ## Available tools (overview)
 

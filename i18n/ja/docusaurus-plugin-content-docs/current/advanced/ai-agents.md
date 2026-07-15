@@ -30,7 +30,7 @@ Beutlは **AIコーディングエージェント**(Claude Code、Codex、Cursor
 
 Liveエンドポイントはアプリの起動時に自動で開始され、**ループバックのみ**で待ち受けます。
 
-```
+```text
 http://127.0.0.1:<port>/mcp
 ```
 
@@ -38,7 +38,7 @@ http://127.0.0.1:<port>/mcp
 
 すべてのリクエストに標準ヘッダーでトークンを含める必要があります。パスワードと同様に扱ってください。
 
-```
+```text
 Authorization: Bearer <token>
 ```
 
@@ -60,11 +60,11 @@ MCPクライアント設定の例:
 
 ## Stdio MCP サーバー
 
-ヘッドレスサーバーはstdioでMCPを話す独立したプロセスです。環境変数 `BEUTL_WORKSPACE` で、サーバーがプロジェクトの作成・保存を許可されるフォルダーを指定します(未指定時はカレントディレクトリ)。フォルダー外のファイルの読み取りは可能です。
+ヘッドレスサーバーはstdio経由でMCP通信を行う独立したプロセスです。環境変数 `BEUTL_WORKSPACE` で、サーバーがプロジェクトの作成・保存を許可されるフォルダーを指定します(未指定時はカレントディレクトリ)。フォルダー外のファイルの読み取りは可能です。
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "beutl-agent": {
       "type": "stdio",
       "command": "<path-to-stdio-server>",
@@ -73,6 +73,10 @@ MCPクライアント設定の例:
   }
 }
 ```
+
+:::note
+設定ファイル名とトップレベルのプロパティ名はエージェントごとに異なります(多くは上記のとおり `mcpServers` ですが、例外もあります)。**設定 → AI エージェント** からインストールすると各エージェントに合った正しい形式で書き込まれるため、手動編集よりもそちらを推奨します。
+:::
 
 ## 利用できるツール(概要)
 
@@ -86,7 +90,7 @@ MCP URLしか知らないエージェントは、まず `get_started` を呼び�
 | 編集 | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
 | レンダー / 品質 | `render_still`, `render_storyboard`, `evaluate_motion_variation`, `analyze_audio_rhythm`, `evaluate_edit_quality`, `preview_quality_risks`, `suggest_quality_fixes`, `final_preflight`, `export_video`, `read_render_job`, `cancel_render_job` |
 
-編集の中核ツールは `apply_edit` です。宣言的なdesiredドキュメント(JSON Merge Patch)を受け取り、検証したうえでBeutlの履歴経由でアトミックに適用するため、エージェントの変更はユーザーがアンドゥできます。
+編集の中核ツールは `apply_edit` です。望ましい状態を宣言するドキュメント(JSON Merge Patch)を受け取り、検証したうえでBeutlの履歴経由でアトミックに適用するため、エージェントの変更はユーザーがアンドゥできます。
 
 ## ソース
 

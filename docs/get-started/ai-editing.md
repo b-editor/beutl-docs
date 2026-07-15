@@ -28,7 +28,7 @@ This teaches your agent how to edit Beutl projects and registers the connection 
 2. Start your agent in the project folder — the built-in [Terminal tab](../reference/tool-tabs/terminal.md) is a convenient place, since it already starts there. For Claude Code, just run `claude`.
 3. Ask for what you want, for example:
 
-```
+```text
 Add a dark blue background and a title that fades in over the first second.
 ```
 
