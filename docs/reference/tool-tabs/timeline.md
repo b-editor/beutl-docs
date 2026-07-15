@@ -6,8 +6,8 @@ sidebar_position: 1
 
 # Timeline
 
-A tab for **arranging and editing the elements in a scene along the time axis**.
-You can add, move, split, and group elements layer by layer, control the playback position, and manage the frame cache and markers.
+Use this tab to **arrange and edit the elements in a scene along the time axis**.
+You can add, move, split, and group elements on each layer. The tab also lets you control the playback position and manage the frame cache and markers.
 
 ## Tab characteristics
 
@@ -86,7 +86,7 @@ You can also rename an element by double-clicking it.
 
 ## Editing modes
 
-The **Editing Mode** submenu of the empty-area right-click menu (or the keyboard shortcuts above) switches between mutually exclusive tool modes. While a mode is active, the timeline shows a colored border with the mode's name; press `V` or `Esc` to return to the normal selection tool.
+Choose a tool mode from the **Editing Mode** submenu in the empty-area right-click menu, or use one of the keyboard shortcuts above. Only one tool mode can be active at a time. The timeline shows a colored border and the mode's name while it is active; press `V` or `Esc` to return to the normal selection tool.
 
 - **Razor Tool** (`C`): Click an element to split it at that position.
 - **Slip Tool** (`S`): Drag a clip to shift its source-media window (in/out points) without moving the clip on the timeline.
@@ -95,18 +95,18 @@ The **Editing Mode** submenu of the empty-area right-click menu (or the keyboard
 
 ### Ripple Edit
 
-**Ripple Edit** (`B`) is a persistent on/off setting rather than a tool mode — it stays enabled until you toggle it off, and is remembered across sessions. While it is on, the following operations shift the subsequent clips on the same layer to close (or open) the resulting space:
+**Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later clips on the same layer to close (or open) the resulting space:
 
 - **Delete** / **Exclude** / **Cut**
 - Trimming an element's edge
 
-Locked layers are not shifted, and a locked clip acts as an anchor that stops the ripple from propagating past it.
+Locked layers stay in place. A locked clip acts as an anchor, so the ripple does not propagate past it.
 
 ## Closing and navigating gaps
 
-Empty spaces between clips on the same layer are treated as **gaps**. Use the **Gaps** submenu of the empty-area right-click menu or the keyboard shortcuts:
+Empty spaces between clips on the same layer are treated as **gaps**. Use the **Gaps** submenu in the empty-area right-click menu or the keyboard shortcuts below:
 
-- **Close Gap**: closes a single gap — the one at the right-click position (from the menu) or the one after the selected element (`;`).
+- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element.
 - **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped.
 - **Go to Next Gap** (`Shift + ;`) / **Go to Previous Gap** (`Alt + ;`): moves the playback position to the next or previous gap from the current frame.
 
@@ -114,16 +114,16 @@ Empty spaces between clips on the same layer are treated as **gaps**. Use the **
 
 ### Locking elements
 
-Toggle **Lock** in an element's right-click menu. A locked element is shown semi-transparent with a lock icon and cannot be moved, trimmed, split, renamed, or deleted. It also acts as an anchor for ripple and gap operations.
+Use **Lock** in an element's right-click menu to lock or unlock it. A locked element appears semi-transparent with a lock icon and cannot be moved, trimmed, split, renamed, or deleted. It also acts as an anchor for ripple and gap operations.
 
 ### Layer toggles
 
-Each layer header has four toggle buttons:
+Each layer header includes four toggle buttons:
 
 - **Lock**: locks every clip on the layer. Locked layers are also excluded from ripple and gap operations.
 - **Video** (video mute): the layer is skipped when compositing video; its audio still plays.
 - **Audio** (audio mute): the layer is skipped when compositing audio; its video is still shown.
-- **Solo**: while any layer is soloed, layers that are not soloed are neither shown nor heard. Multiple layers can be soloed at the same time.
+- **Solo**: when at least one layer is soloed, layers that are not soloed are neither shown nor heard. You can solo multiple layers at the same time.
 
 ## Working in the timeline panel
 

@@ -4,13 +4,13 @@ description: How to install Beutl
 sidebar_position: 1
 ---
 
-This document explains how to install Beutl.
+This page covers the available ways to install Beutl.
 
-In this document, the version of Beutl to be installed is referred to as `{version}`.
+In the instructions below, `{version}` represents the version of Beutl you are installing.
 
 ## For Windows
 
-Both x64 and ARM64 are supported. On ARM64 devices, use the installers whose file names contain `arm64`.
+Windows supports both x64 and ARM64. For an ARM64 device, use an installer with `arm64` in its file name.
 
 ### Using the standalone installer (recommended)
 1. Download and run `beutl-standalone-setup.exe` (ARM64: `beutl-standalone-arm64-setup.exe`).

@@ -6,18 +6,18 @@ sidebar_position: 2
 
 # Tool Tabs
 
-Tool tabs are workspaces that dock around the scene editor.
-They are split into purpose-specific tabs such as Timeline, Library, and Properties,
-and you can drag them to rearrange, stack, or tile them as needed.
+Tool tabs are dockable workspaces around the scene editor.
+Each tab serves a specific purpose, such as the Timeline, Library, or Properties.
+Drag the tabs to rearrange, stack, or tile them as needed.
 
 ## Opening and resetting tabs
 
-- Currently closed tabs can be reopened from the menu bar via **View → Tools**.
+- Reopen a closed tab from the menu bar via **View → Tools**.
 - Drag a tab's header to move it to a different dock area.
 - Choose **View → Reset Dock Layout** to restore the tab arrangement to its initial state.
 
 The **Scene settings** and **Graph Editor** tabs do not appear in the **View → Tools** menu.
-How to open each is described on its respective page.
+See their respective pages for instructions on opening them.
 
 ## Tab list
 

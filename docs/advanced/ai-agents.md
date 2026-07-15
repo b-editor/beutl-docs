@@ -6,29 +6,29 @@ sidebar_position: 6
 
 # Editing with AI Agents
 
-Beutl lets **AI coding agents** (Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, and many others) edit projects through the **Model Context Protocol (MCP)**. Agents read the scene as a declarative document, apply changes as JSON Merge Patches through Beutl's undo history, and can render stills or storyboards to check their work.
+Beutl supports project editing by **AI coding agents** (Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, and many others) through the **Model Context Protocol (MCP)**. An agent reads the scene as a declarative document, applies JSON Merge Patches through Beutl's undo history, and can render stills or storyboards to check the result.
 
-Two MCP servers are provided:
+Beutl provides two MCP servers:
 
-- **Live MCP server** (recommended): runs inside the Beutl app and connects agents to the **running editor**. Edits appear live in the preview and timeline, and every change lands on the undo stack.
-- **Stdio MCP server** (optional): a headless process that edits project files **without launching the GUI** — useful for automation.
+- **Live MCP server** (recommended): runs inside the Beutl app and connects the agent to the **running editor**. Edits appear in the preview and timeline as they are made, and every change is added to the undo stack.
+- **Stdio MCP server** (optional): runs as a headless process and edits project files **without launching the GUI**. It is intended for automation.
 
 ## Setting up from the app
 
 Open **Settings → AI Agents**.
 
-1. Choose the **Agent** to install for (Claude Code, Codex, Cursor, Gemini CLI, …, or *Custom (manual paths)*) and the **Install scope** — **Project** (into a project folder) or **Global (user profile)**.
-2. Under **Components**, pick what to install:
+1. Choose the **Agent** to install for (Claude Code, Codex, Cursor, Gemini CLI, …, or *Custom (manual paths)*) and the **Install scope**: **Project** (into a project folder) or **Global (user profile)**.
+2. Under **Components**, choose what to install:
    - **Skills**: Beutl editing know-how the agent loads on demand
    - **Subagents**: specialized agent definitions for timeline, look, and quality-review tasks
    - **Stdio MCP server** / **Live MCP server** entries for the agent's MCP configuration
 3. Press **Install**.
 
-For some agents the MCP configuration cannot be written automatically; the page then shows the command to register it manually (e.g. `claude mcp add --scope user`, `codex mcp add`).
+If the MCP configuration cannot be written automatically for an agent, the page shows the command to register it manually (e.g. `claude mcp add --scope user`, `codex mcp add`).
 
 ## Live MCP server
 
-The live endpoint starts automatically with the app and listens on **loopback only**:
+The app starts the live endpoint automatically. It listens on **loopback only**:
 
 ```text
 http://127.0.0.1:<port>/mcp
@@ -36,7 +36,7 @@ http://127.0.0.1:<port>/mcp
 
 The default port is `59737`; if it is taken, the next free port is used. The actual **Live MCP URL** and the **Authentication header** are shown on the **Settings → AI Agents** page.
 
-Every request must carry the token in the standard header — treat it like a password:
+Every request must include the token in the standard header. Treat the token like a password:
 
 ```text
 Authorization: Bearer <token>
@@ -56,11 +56,11 @@ Example MCP client configuration:
 }
 ```
 
-After connecting, the agent calls the `attach_active_editor` tool to bind its session to the scene currently open in the editor.
+After it connects, the agent calls the `attach_active_editor` tool to bind its session to the scene currently open in the editor.
 
 ## Stdio MCP server
 
-The headless server is a separate process that speaks MCP over stdio. The `BEUTL_WORKSPACE` environment variable defines the folder the server is allowed to create and save projects in (it defaults to the current directory); files outside it can still be read.
+The headless server runs as a separate process and communicates over stdio. The `BEUTL_WORKSPACE` environment variable defines the folder in which the server can create and save projects (it defaults to the current directory); the server can still read files outside that folder.
 
 ```json
 {
@@ -75,12 +75,12 @@ The headless server is a separate process that speaks MCP over stdio. The `BEUTL
 ```
 
 :::note
-The configuration file name and the top-level property name vary by agent (most use `mcpServers`, as above, but not all). Installing from **Settings → AI Agents** writes the correct format for each agent, so prefer that over hand-editing.
+The configuration file name and top-level property name vary by agent (most use `mcpServers`, as above, but not all). Installation from **Settings → AI Agents** writes the correct format for the selected agent, so you normally do not need to edit the file by hand.
 :::
 
 ## Available tools (overview)
 
-An agent that only knows the MCP URL should call `get_started` first — it returns a compact usage guide.
+If an agent only has the MCP URL, it should call `get_started` first. The tool returns a compact usage guide.
 
 | Group | Tools |
 |-------|-------|
@@ -90,7 +90,7 @@ An agent that only knows the MCP URL should call `get_started` first — it retu
 | Edit | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
 | Render / quality | `render_still`, `render_storyboard`, `evaluate_motion_variation`, `analyze_audio_rhythm`, `evaluate_edit_quality`, `preview_quality_risks`, `suggest_quality_fixes`, `final_preflight`, `export_video`, `read_render_job`, `cancel_render_job` |
 
-The central editing tool is `apply_edit`: it takes a declarative desired document (JSON Merge Patch), validates it, and applies it atomically through Beutl's history so the user can undo the agent's changes.
+The main editing tool is `apply_edit`. It takes a declarative desired document (JSON Merge Patch), validates it, and applies it atomically through Beutl's history, allowing the user to undo the agent's changes.
 
 ## Source
 

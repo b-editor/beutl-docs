@@ -6,7 +6,7 @@ sidebar_position: 15
 
 # Proxies
 
-A tab for **generating and managing proxy media** — low-resolution copies of heavy video clips that make preview and scrubbing smoother. While editing, the preview can use the proxy; **export always uses the original media**.
+Use this tab to **generate and manage proxy media**. Proxies are low-resolution copies of heavy video clips that make preview and scrubbing smoother. The preview can use a proxy while you edit, but **export always uses the original media**.
 
 ## Tab characteristics
 
@@ -19,7 +19,7 @@ Open it from the menu bar via **View → Tools → Proxies**.
 
 ## How proxies work
 
-- Proxies are generated **manually** from this tab — they are not created automatically on import.
+- Proxies are generated **manually** from this tab; importing a clip does not create one automatically.
 - Only **video** clips are proxied; still images and audio are skipped.
 - A proxy is an **H.264 (libx264) `.mp4`** encoded by the FFmpeg extension. Three quality presets are available:
 
@@ -29,8 +29,8 @@ Open it from the menu bar via **View → Tools → Proxies**.
 | Quarter proxy (1/4) | 25% | 1280 px |
 | Eighth proxy (1/8) | 12.5% | 960 px |
 
-- A proxy is keyed on the source file's **path, size, and modification time**. If any of these change, the proxy becomes **Stale** and is treated as missing until you regenerate it. Multiple clips (and multiple projects) referencing the same file share one proxy.
-- Proxies are stored in a **machine-wide shared store** (default: the `proxies` folder in Beutl's home directory). When the store exceeds its size cap, least-recently-used proxies are evicted automatically. See [Editor settings](../../settings/editor.md#proxy-media) to configure the store.
+- The source file's **path, size, and modification time** form the key for its proxy. If any of them change, the proxy becomes **Stale** and is treated as missing until you regenerate it. Multiple clips (and multiple projects) that reference the same file share one proxy.
+- A **machine-wide shared store** holds the proxies (default: the `proxies` folder in Beutl's home directory). When the store exceeds its size cap, Beutl automatically removes the least-recently-used proxies. See [Editor settings](../../settings/editor.md#proxy-media) to configure the store.
 
 ## Tab layout
 
@@ -41,18 +41,18 @@ Open it from the menu bar via **View → Tools → Proxies**.
   - **Generate** / **Regenerate** / **Delete** buttons and a progress bar with a cancel button while generating
 - **Toolbar**: **Generate selected** / **Generate all** / **Regenerate selected** / **Delete selected** / **Delete project proxies** / **Refresh**.
 
-**Generate all** only processes clips at or above 1920x1080 (or at least 32 MB when the resolution is unknown); use per-clip **Generate** for lighter clips. If nothing qualifies, a "No clips met the bulk-generation threshold" notice is shown.
+**Generate all** processes only clips at or above 1920x1080 (or at least 32 MB when the resolution is unknown). For lighter clips, use the per-clip **Generate** button. If nothing qualifies, a "No clips met the bulk-generation threshold" notice is shown.
 
 :::warning
-The proxy store is shared machine-wide. **Delete project proxies** removes proxy files that other projects referencing the same source files also use — a confirmation dialog warns about this.
+The proxy store is shared machine-wide. **Delete project proxies** also removes proxy files used by other projects that reference the same source files. A confirmation dialog warns about this before deletion.
 :::
 
 ## Proxies in the editor
 
 - On the timeline, each clip with proxy state shows a small **colored dot** in its top-right corner (ready / generating / stale / failed); hover it for details.
-- Whether the preview uses proxies is controlled by the **Preview source** option — **Prefer proxy** (default) or **Force original** — available in **Settings → Editor → Proxy media** and in the editor's Preview Settings tab. Switching takes effect on the next frame without reloading the project.
+- The **Preview source** option controls whether the preview uses proxies. Choose **Prefer proxy** (default) or **Force original** in **Settings → Editor → Proxy media** or the editor's Preview Settings tab. The change takes effect on the next frame without reloading the project.
 - When a proxy is missing, stale, or partial, the preview silently falls back to the original media.
-- **Export never uses proxies.** If an original file is missing at export time, the export fails with an error instead of substituting the proxy.
+- **Export never uses proxies.** If an original file is missing at export time, export fails with an error rather than using the proxy as a substitute.
 
 ## Related documents
 
