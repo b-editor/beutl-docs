@@ -6,18 +6,18 @@ sidebar_position: 2
 
 # Tool Tabs
 
-Tool tabs are workspaces that dock around the scene editor.
-They are split into purpose-specific tabs such as Timeline, Library, and Properties,
-and you can drag them to rearrange, stack, or tile them as needed.
+Tool tabs are dockable workspaces around the scene editor.
+Each tab serves a specific purpose, such as the Timeline, Library, or Properties.
+Drag the tabs to rearrange, stack, or tile them as needed.
 
 ## Opening and resetting tabs
 
-- Currently closed tabs can be reopened from the menu bar via **View → Tools**.
+- Reopen a closed tab from the menu bar via **View → Tools**.
 - Drag a tab's header to move it to a different dock area.
 - Choose **View → Reset Dock Layout** to restore the tab arrangement to its initial state.
 
 The **Scene settings** and **Graph Editor** tabs do not appear in the **View → Tools** menu.
-How to open each is described on its respective page.
+See their respective pages for instructions on opening them.
 
 ## Tab list
 
@@ -38,5 +38,7 @@ How to open each is described on its respective page.
 | [Path editor](./path-editor.md) | Edit control points of path shapes |
 | [Preview Settings](./preview-settings.md) | Preview render quality, onion skin, and the render caches |
 | [History](./history.md) | Browse the edit history and jump back to any step |
+| [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
+| [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).

@@ -6,8 +6,8 @@ sidebar_position: 1
 
 # Timeline
 
-A tab for **arranging and editing the elements in a scene along the time axis**.
-You can add, move, split, and group elements layer by layer, control the playback position, and manage the frame cache and markers.
+Use this tab to **arrange and edit the elements in a scene along the time axis**.
+You can add, move, split, and group elements on each layer. The tab also lets you control the playback position and manage the frame cache and markers.
 
 ## Tab characteristics
 
@@ -21,7 +21,7 @@ Open it from the menu bar via **View → Tools → Timeline**.
 ## Layout
 
 - **Timeline scale (top)**: The time-axis ruler. Shows the playback position, scene start/end bars, markers, and the frame cache.
-- **Layer headers (left)**: Toggle each layer's visibility, color, and name.
+- **Layer headers (left)**: Toggle each layer's lock / video mute / audio mute / solo state, and change its color and name.
 - **Timeline panel (center)**: The work area where elements are laid out across time and layers.
 
 You can drag the splitters between the columns to change their widths.
@@ -57,7 +57,15 @@ You can drag the splitters between the columns to change their widths.
 | Snap scene start time to current frame | `[` | `[` |
 | Snap scene end time to current frame | `]` | `]` |
 | Switch to Razor Tool | `C` | `C` |
-| Exit Razor Tool | `V` or `Esc` | `V` or `Esc` |
+| Switch to Slip Tool | `S` | `S` |
+| Switch to Roll Tool | `R` | `R` |
+| Switch to Slide Tool | `D` | `D` |
+| Exit the current tool mode | `V` or `Esc` | `V` or `Esc` |
+| Toggle Ripple Edit | `B` | `B` |
+| Close gap after the selected element | `;` | `;` |
+| Close all gaps | `Shift + Alt + ;` | `Shift + Alt + ;` |
+| Go to next gap | `Shift + ;` | `Shift + ;` |
+| Go to previous gap | `Alt + ;` | `Alt + ;` |
 | Add / remove marker | `M` | `M` |
 | Nudge element 1 frame left / right | `,` / `.` | `,` / `.` |
 | Nudge element 10 frames left / right | `Shift + ,` / `Shift + .` | `Shift + ,` / `Shift + .` |
@@ -89,7 +97,9 @@ Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable c
 ### Element right-click menu
 
 - Toggle **Enable element**
+- Toggle **Lock** (a locked element cannot be moved, trimmed, split, or deleted)
 - Toggle **Razor Tool**
+- Toggle **Ripple Edit**
 - **Split** / **Split by current frame**
 - **Cut** / **Copy** / **Delete** / **Exclude**
 - **Group selected elements** / **Ungroup selected elements**
@@ -99,6 +109,47 @@ Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable c
 - Toggle **Disable Thumbnails**
 - **Save as Template**
 - **Animation** submenu: **Finish editing** / **Bring to the top**
+
+## Editing modes
+
+Choose a tool mode from the **Editing Mode** submenu in the empty-area right-click menu, or use one of the keyboard shortcuts above. Only one tool mode can be active at a time. The timeline shows a colored border and the mode's name while it is active; press `V` or `Esc` to return to the normal selection tool.
+
+- **Razor Tool** (`C`): Click an element to split it at that position.
+- **Slip Tool** (`S`): Drag a clip to shift its source-media window (in/out points) without moving the clip on the timeline.
+- **Roll Tool** (`R`): Drag a clip edge to move the boundary with its neighbor while preserving the total length.
+- **Slide Tool** (`D`): Drag a clip to move it while the neighboring clips compensate, preserving the total length.
+
+### Ripple Edit
+
+**Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later clips on the same layer to close (or open) the resulting space:
+
+- **Delete** / **Exclude** / **Cut**
+- Trimming an element's edge
+
+Locked layers stay in place. A locked clip acts as an anchor, so the ripple does not propagate past it.
+
+## Closing and navigating gaps
+
+Empty spaces between clips on the same layer are treated as **gaps**. Use the **Gaps** submenu in the empty-area right-click menu or the keyboard shortcuts below:
+
+- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element.
+- **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped.
+- **Go to Next Gap** (`Shift + ;`) / **Go to Previous Gap** (`Alt + ;`): moves the playback position to the next or previous gap from the current frame.
+
+## Locking, muting, and soloing
+
+### Locking elements
+
+Use **Lock** in an element's right-click menu to lock or unlock it. A locked element appears semi-transparent with a lock icon and cannot be moved, trimmed, split, renamed, or deleted. It also acts as an anchor for ripple and gap operations.
+
+### Layer toggles
+
+Each layer header includes four toggle buttons:
+
+- **Lock**: locks every clip on the layer. Locked layers are also excluded from ripple and gap operations.
+- **Video** (video mute): the layer is skipped when compositing video; its audio still plays.
+- **Audio** (audio mute): the layer is skipped when compositing audio; its video is still shown.
+- **Solo**: when at least one layer is soloed, layers that are not soloed are neither shown nor heard. You can solo multiple layers at the same time.
 
 ## Working in the timeline panel
 
@@ -110,11 +161,12 @@ Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable c
 
 ### Right-click menu on empty area
 
-- Toggle **Razor Tool**
+- **Editing Mode** submenu: toggle **Razor Tool** / **Slip Tool** / **Roll Tool** / **Slide Tool** / **Ripple Edit**
 - **Add Element** / **Add from Template** (pick from items registered in the library)
 - **Add Adjustment Layer** (adds a [Backdrop](../library/drawables/sources/backdrop.md)-based element; filter effects you add to it apply to the layers below it)
 - **Paste** (elements, files, or images on the clipboard)
 - **Set start time** / **Set end time** (snap to the click position)
+- **Gaps** submenu: **Close Gap** (the gap at the click position) / **Close All Gaps** / **Go to Next Gap** / **Go to Previous Gap**
 - Toggle **Automatically adjusts scene duration**
 - Toggle **Snap**
 - **Settings** (open the Scene settings tab)
@@ -196,7 +248,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 ## Layer headers
 
 - Drag the handle at the left edge up or down to change the layer's height.
-- Toggle visibility with the eye icon.
+- Toggle **Lock** / **Video** (video mute) / **Audio** (audio mute) / **Solo** with the four buttons (see [Locking, muting, and soloing](#locking-muting-and-soloing)).
 - Change the layer color with the color picker.
 - Change the layer name in the text box.
 
@@ -224,3 +276,7 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 - [`InlineAnimationLayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml.cs)
 - [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/PropertyEditorMenu.axaml.cs) (entry point for the inline view)
+- [`LayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml) / [`LayerHeaderViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/LayerHeaderViewModel.cs) (layer lock / mute / solo)
+- [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/RippleHelper.cs) (ripple edit)
+- [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementGapService.cs) (gap operations)
+- [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementResizeService.cs) (slip / roll / slide trims)

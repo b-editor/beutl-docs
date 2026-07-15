@@ -4,14 +4,16 @@ description: Beutlをインストールする方法を説明します
 sidebar_position: 1
 ---
 
-Beutlをインストールする方法を説明します。
+このページでは、Beutlのインストール方法を説明します。
 
-このドキュメントではインストールするBeutlのバージョンを`{version}`としています。
+以下の手順では、インストールするBeutlのバージョンを`{version}`と表記します。
 
 ## Windowsの場合
 
+Windowsではx64とARM64の両方を利用できます。ARM64デバイスには、ファイル名に`arm64`を含むインストーラーを使用してください。
+
 ### スタンドアロンインストーラーを使う (おすすめ)
-1. `beutl-standalone-setup.exe`をダウンロードして、実行します。
+1. `beutl-standalone-setup.exe` (ARM64の場合は`beutl-standalone-arm64-setup.exe`) をダウンロードして、実行します。
 2. 画面に従ってインストールします。
 3. `Beutl.exe`を起動します。
 
@@ -23,7 +25,7 @@ Beutlをインストールする方法を説明します。
 [バージョンの対応表](../extensions/version-mapping.md)
 :::
 
-1. `beutl-setup.exe`をダウンロードして、実行します。
+1. `beutl-setup.exe` (ARM64の場合は`beutl-arm64-setup.exe`) をダウンロードして、実行します。
 2. 画面に従ってインストールします。
 3. `Beutl.exe`を起動します。
 

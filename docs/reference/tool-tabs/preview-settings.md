@@ -28,6 +28,15 @@ Selects the resolution at which the editor renders the preview, trading image qu
 
 This setting **cannot be changed during playback**, and it is not saved with the project. Thanks to the [resolution-independent rendering pipeline](../../advanced/rendering-process.md), lowering the preview quality keeps vector shapes, text, and most effects sharp at the reduced size rather than simply pixelating the result.
 
+## Preview source
+
+Selects whether the preview plays [proxy media](./proxies.md) or the original files.
+
+- **Prefer proxy** *(default)* — use a clip's proxy when one is available; fall back to the original otherwise.
+- **Force original** — always decode the original media.
+
+The change takes effect on the next frame without reloading the project. The same option is available in **Settings → Editor → Proxy media**, and export always uses the originals regardless of this setting.
+
 ## Onion skin
 
 Overlays neighboring frames as translucent ghosts so you can see motion across frames — useful for hand-drawn animation and timing. Toggle it from this tab or with the **`Alt + O`** shortcut.
