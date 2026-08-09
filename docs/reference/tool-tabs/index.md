@@ -13,8 +13,10 @@ Drag the tabs to rearrange, stack, or tile them as needed.
 ## Opening and resetting tabs
 
 - Reopen a closed tab from the menu bar via **View → Tools**.
+- Hover a dock's tab header and press the `+` button to add a tab to **that** dock. Tabs that are already open and do not allow multiple instances are disabled in the menu.
 - Drag a tab's header to move it to a different dock area.
-- Choose **View → Reset Dock Layout** to restore the tab arrangement to its initial state.
+- Choose **View → Reset dock layout** to restore the tab arrangement to its initial state.
+- Save the current arrangement under a name and re-apply it to any scene from the [Dock layout](./dock-layout.md) tab.
 
 The **Scene settings** and **Graph Editor** tabs do not appear in the **View → Tools** menu.
 See their respective pages for instructions on opening them.
@@ -40,5 +42,6 @@ See their respective pages for instructions on opening them.
 | [History](./history.md) | Browse the edit history and jump back to any step |
 | [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
 | [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
+| [Dock layout](./dock-layout.md) | Save the tab arrangement under a name and re-apply it to any scene |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).

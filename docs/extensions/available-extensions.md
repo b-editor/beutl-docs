@@ -17,3 +17,4 @@ In Beutl, you can extend the following functionalities:
 | ProjectItemExtension | Adds types of items to the project |
 | PropertyEditorExtension | Adds a UI for editing specific property types |
 | [ToolTabExtension](sample-extensions.md#tooltabextension) | Adds tabs to the scene editing screen |
+| [ThemeExtension](implement-theme.md) | Adds a theme to the picker in Settings → Display |

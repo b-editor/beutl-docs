@@ -10,7 +10,7 @@ Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明�
 Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
 
 :::tip
-ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.2`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
+ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.7`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.2">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -105,7 +105,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.2">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
