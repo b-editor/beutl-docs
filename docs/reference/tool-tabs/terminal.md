@@ -39,6 +39,7 @@ On macOS and Linux, apps launched from the GUI often have no locale in their env
 
 - When the shell process exits, a banner saying **"The terminal session has ended."** and a **Restart** button appear at the top of the tab. Click the button to start a new session with the same shell and working directory.
 - The scrollback buffer holds up to 5,000 lines.
+- Switching to another tab in the same dock and back leaves the shell process and the scrollback intact.
 - The session is not persisted. Closing the tab or the editor ends the shell process.
 
 ## Related documents

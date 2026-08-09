@@ -17,3 +17,4 @@ Beutlでは以下の機能を拡張できます。
 | ProjectItemExtension | プロジェクトのアイテムの種類を追加します |
 | PropertyEditorExtension | プロパティの特定の型の編集UIを追加します |
 | [ToolTabExtension](sample-extensions.md#tooltabextension) | シーンの編集画面にタブを追加します |
+| [ThemeExtension](implement-theme.md) | 「設定」→「表示」のテーマ選択にテーマを追加します |
