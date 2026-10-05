@@ -8,22 +8,17 @@ The package store includes **Extensions**, **Materials**, and **Templates**. A p
 
 ## Install a package
 
-Open the **Extensions** window and use the category filter to browse the store. Open a package, select a release, and press **Install**. Installed packages also offer update and uninstall actions.
+1. Open the **Extensions** window.
+2. Choose **Materials** or **Templates** in the category filter.
+3. Open the package you want, select a release, and press **Install**.
+
+Installed packages also offer update and uninstall actions.
 
 ## Use the installed files
 
-Open the [Files](../reference/tool-tabs/file-browser.md) tab. Its pinned **Materials** and **Templates** folders contain the installed assets, grouped by package name:
-
-- Materials: `materials/<packageName>` in Beutl's home directory.
-- Object templates: `templates/<packageName>` in Beutl's home directory.
+Open the [Files](../reference/tool-tabs/file-browser.md) tab and choose the pinned **Materials** or **Templates** folder. Installed assets are grouped by package name.
 
 Drag supported media or object templates to the timeline. Object templates can show thumbnails in the file browser.
-
-## Installation links from the web
-
-A web installation link opens the package's details in Beutl. It can request a version using `beutl://install?package=<packageName>&version=<version>`; `version` is optional.
-
-Opening the link does not install the package. Review the selected release and press **Install**. If a requested version is unavailable, choose an available release first.
 
 ## Related documents
 
@@ -34,5 +29,4 @@ Opening the link does not install the package. Review the selected release and p
 
 - [`PackageKind.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageKind.cs)
 - [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)
-- [`PackageInstallRequest.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/PackageInstallRequest.cs)
 - [`PackageDetailsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/ExtensionsPages/DiscoverPages/PackageDetailsPageViewModel.cs)

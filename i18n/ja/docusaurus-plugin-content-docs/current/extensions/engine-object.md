@@ -166,12 +166,6 @@ public abstract partial class Drawable : EngineObject { /* … */ }
 
 保存されたプロジェクトが、現在インストールされていない型（例：拡張機能が削除された）を参照していた場合でも、Beutl は対応するフォールバックにデータをデシリアライズしてくれます。これにより次回保存時もデータが保持されます。
 
-### 修復を完了する
-
-復旧した要素は、未解決の問題がある間、元の要素ファイルを保持します。プラグインや独自のエディターでは、通常のプロパティやコレクションのAPIで修復した後、同じ履歴トランザクションを確定する前に `ElementRecoveryService.TryCompleteRepair(element, history)` を呼び出してください。
-
-すべての問題が解消されると `true` を返して通常の保存を再開できる状態になり、問題が残っている場合や保護されていない要素では `false` を返します。このメソッド自体は履歴を確定しません。取り消しは復旧時の保護と保持した元のデータも復元します。
-
 ## 共通の派生クラス
 
 | 基底クラス | 名前空間 | 役割 | 実装ガイド |
@@ -220,5 +214,3 @@ public sealed class MyExtension : Extension
 ```
 
 `KnownLibraryItemFormats` にはエディタが認識するフォーマット（`EngineObject`、`Drawable`、`FilterEffect`、`Brush`、`Geometry`、`Pen`、`Sound`、`Transform` など）の定数が並んでいます。`AddMultiple` の `BindDrawable<T>()` ショートカットを使うと、フォーマット文字列を書かずに `Drawable` を図形ピッカーへ登録できます。
-
-- [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/Services/ElementRecoveryService.cs)

@@ -17,17 +17,15 @@ Project, scene, and element data are JSON. Media and Git metadata have their own
 
 ## `MyProject.bep`
 
-The project file records its scenes (`items`), application and minimum-compatible versions (`appVersion` and `minAppVersion`), and variables such as frame rate and sample rate (`variables`).
+The project file records the scenes in the project and shared settings such as frame rate and sample rate.
 
 ## `MyProject.scene`
 
-The scene file stores scene dimensions and timing. Its `Elements` entry includes element files with the `**/*.belm` pattern.
+The scene file stores the scene size, timing, and the elements on its timeline.
 
 ## `*.belm`
 
-Element files store timeline placement, duration, layer, name, and enabled state, plus the element's `Objects` collection. These objects supply drawing, sound, effects, and other processing.
-
-The current format uses `Objects`; legacy `Operation` content is migrated when loaded.
+Each element file stores its timeline position, duration, layer, name, and settings for drawing, sound, and effects.
 
 ## `.beutl`
 
@@ -37,7 +35,7 @@ Beutl stores local UI state here, including the dock arrangement and editor view
 
 When [version control](../reference/tool-tabs/version-control.md) is enabled, the project uses a standard Git repository. A repository created for the project has a `.git` directory; a project inside an existing repository can use that enclosing repository.
 
-Beutl adds ignore rules for `.beutl` directories and temporary files, and text attributes for `.bep`, `.scene`, and `.belm` files. Git LFS can track media when available.
+The local UI state in `.beutl` is excluded from project history. See [Version Control](../reference/tool-tabs/version-control.md) for recording and restoring versions.
 
 ## Related documents
 

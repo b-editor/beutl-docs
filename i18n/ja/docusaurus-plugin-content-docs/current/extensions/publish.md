@@ -57,13 +57,10 @@ __[公開する]__ をクリックします。
 
 ## 素材とテンプレートのパッケージ
 
-素材やオブジェクトテンプレートもNuGetパッケージで配布できます。ストアのパッケージタグに、大小文字を区別する予約タグ `beutl-material`、`beutl-template` を指定します。両方を指定すると、素材とテンプレートを含むパッケージとして分類されます。
-
-`.nupkg` の最上位に `materials/`、`templates/` を配置してください。対応するタグが付いた内容は、Beutlのホームディレクトリ内の `materials/<packageName>`、`templates/<packageName>` に展開されます。データパッケージからアセンブリは読み込みません。
+配布する素材を `.nupkg` の最上位の `materials/` に、オブジェクトテンプレートを `templates/` に配置してください。
 
 利用者向けの手順は[素材とテンプレート](../get-started/packages.md)を参照してください。
 
 ## ソース
 
-- [`PackageKind.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageKind.cs)
 - [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)

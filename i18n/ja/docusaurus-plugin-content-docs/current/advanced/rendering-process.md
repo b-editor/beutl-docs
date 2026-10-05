@@ -40,7 +40,7 @@ sidebar_position: 1
 4. 　 　 └ 図形ノード
 ```
 
-レンダラーは、まずノードの処理を記録し、境界・必要な描画領域・キャッシュの再利用を解決してから実行計画を作成します。対応するシェーダー処理は同じGPUパスに統合でき、描画はこの計画を実行して行います。
+これらのノードが、画像を描く内容と、それに適用するエフェクトやトランスフォームを表します。
 
 この構造は描画内容をキャッシュする上で非常に便利です。
 例えば、重いエフェクトを適用したオブジェクトに
@@ -57,11 +57,10 @@ sidebar_position: 1
 
 ## 解像度非依存のレンダリング
 
-Beutl はシーンを論理座標で評価し、描画リクエストに合わせてデバイスピクセルの寸法と作業密度を解決します。そのためエディタは、プレビューを低い **作業密度**（1/2・1/4・プレビューに合わせる）でレンダリングして再生やスクラブを高速化できます。その際、ベクター図形・テキスト・多くのエフェクトは単純に拡大されるのではなく、その密度で再ラスタライズされるため、縮小しても鮮明さが保たれます。エンコード時は常にプロジェクト解像度（スケール 1.0）でレンダリングされます。
+プレビューの描画解像度を変更しても、シーンのサイズやオブジェクトの配置は変わりません。そのためエディタは、プレビューを低い **作業密度**（1/2・1/4・プレビューに合わせる）でレンダリングして再生やスクラブを高速化できます。その際、ベクター図形・テキスト・多くのエフェクトは単純に拡大されるのではなく、その密度で再ラスタライズされるため、縮小しても鮮明さが保たれます。エンコード時は常にプロジェクト解像度（スケール 1.0）でレンダリングされます。
 
 プレビュー密度は [プレビュー設定](../reference/tool-tabs/preview-settings.md) タブから選びます。カスタムシェーダーには作業密度が uniform を通じて渡されます。解像度非依存に保つ方法は [GLSLスクリプト](../reference/library/filter-effects/script/glsl-script.md) と [SKSLスクリプト](../reference/library/filter-effects/script/sksl-script.md) を参照してください。
 
 ## ソース
 
 - [`RenderNodeRenderer.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/RenderNodeRenderer.cs)
-- [`RenderRequestCompiler.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Requests/RenderRequestCompiler.cs)

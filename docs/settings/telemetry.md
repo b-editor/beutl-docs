@@ -9,7 +9,7 @@ Open **Settings → Telemetry** to choose which information Beutl collects.
 
 The **Application** switch controls detailed desktop usage collection. This includes session starts and running time, project and export outcomes, tool tabs and features used, committed edits and edited property names, and enabled effect types.
 
-Detailed usage excludes project and file names, paths, URLs, prompts, search terms, command parameters, property values, and media content. Collection requires your telemetry choices to be configured and **Application** to be enabled. You can disable it at any time; disabling it also discards pending usage summaries.
+Detailed usage excludes project and file names, paths, URLs, prompts, search terms, command parameters, property values, and media content. You can stop this collection at any time by turning **Application** off.
 
 ## Logging
 

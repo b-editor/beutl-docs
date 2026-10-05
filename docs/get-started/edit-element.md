@@ -64,13 +64,10 @@ You can change the name with the `F2` key or by double-clicking the element.
 
 ## Recovering damaged elements
 
-If an element file contains unreadable data or an object whose type cannot be loaded, Beutl recovers what it can so that the rest of the scene remains editable. An unreadable element becomes a disabled placeholder; unavailable objects are shown as fallbacks.
+If an element's data is damaged or a required extension is missing, the parts that cannot be loaded appear as placeholder elements or objects. Unreadable elements are disabled, but you can continue editing the rest of the scene.
 
-Beutl retains the affected element's original file bytes while recovery blockers remain, including during auto-save. Replace or remove the unavailable objects through the property editors, or repair the source file and reopen the project. Once all blockers have been resolved, normal persistence can resume. Undoing a completed repair restores the protection of the original data.
-
-Keep a copy of the original project when repairing files manually.
+Reinstall the required extension or restore damaged files from a backup, then reopen the project. Original data for parts that could not be recovered is protected from being overwritten by auto-save.
 
 ## Source
 
 - [`SceneRecovery.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.cs)
-- [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/Services/ElementRecoveryService.cs)

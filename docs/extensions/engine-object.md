@@ -166,12 +166,6 @@ public abstract partial class Drawable : EngineObject { /* … */ }
 
 If a saved project references a type that is no longer installed (for example, an extension was removed), Beutl can deserialize the data into the corresponding fallback. The data is preserved when the project is saved again.
 
-### Completing repairs
-
-Recovered elements retain their original element files while recovery blockers remain. In a plugin or custom editor, repair through the normal property or collection APIs, then call `ElementRecoveryService.TryCompleteRepair(element, history)` before committing the same history transaction.
-
-It returns `true` when all blockers have been resolved and normal persistence can resume, or `false` when a blocker remains or the element is not protected. The method does not commit history. Undo also restores recovery protection and the retained original data.
-
 ## Common derived classes
 
 | Base class | Namespace | Role | Implementation guide |
@@ -220,5 +214,3 @@ public sealed class MyExtension : Extension
 ```
 
 `KnownLibraryItemFormats` exposes the formats the editor recognizes (`EngineObject`, `Drawable`, `FilterEffect`, `Brush`, `Geometry`, `Pen`, `Sound`, `Transform`, etc.). The `BindDrawable<T>()` shortcut on `AddMultiple` registers a `Drawable` with the shape picker without needing the format string yourself.
-
-- [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/Services/ElementRecoveryService.cs)

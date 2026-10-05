@@ -1,30 +1,22 @@
 ---
 title: Cache
-description: Explanation of render cache generation in Beutl
+description: How render caching can improve preview performance and where to configure it
 sidebar_position: 4
 ---
 
 ## Cache
-Consider the following nodes.
-```
-1. Render Node
-2. └ Transform Node
-3. 　 └ Effect Node (Drop Shadow, with animation)
-4. 　 　 └ Effect Node (Outline)
-5. 　 　 　 └ Shape Node
-```
-Transform Node and Shape Node have no animation.
 
-In conclusion,
-In this example, after a few frames are rendered,
-Beutl will cache up to the 4th effect node.  
-Below is an explanation of why this happens.
+Reusing results for drawing content that has not changed can reduce the cost of calculating heavy effects on every frame.
+
+For example, when a shape has a static outline and an animated shadow, the shape and outline can be reused while the shadow is updated. Caching is most useful when only part of the drawing changes.
+
+## Settings
+
+Enable **Settings → Editor → Node Cache**. Increasing the maximum pixel count lets larger drawing content be cached, at the cost of more memory. See [Editor settings](../settings/editor.md#node-cache).
 
 ## Determining Cacheability
 
-An unchanged node becomes eligible for capture after three successfully completed stable frame or cache-warmup requests. Bounds measurement and hit testing alone do not advance this count. Changes reset the warmup count and cache.
-
-The execution plan selects cache lookup and capture according to the cache settings, requested regions, and working density.
+Beutl manages the cache automatically. Editing drawing content or effects, or animating their values, redraws the affected parts. Content outside the configured size limits is not cached, so enabling caching does not make every scene faster.
 
 ## Source
 

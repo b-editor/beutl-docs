@@ -86,7 +86,7 @@ See [`FlatShadow.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engi
 
 ### Metadata callback diagnostics
 
-Pass values read by metadata callbacks through explicit state or bound render resources so recorded plans can be reused correctly. `Beutl.Engine.SourceGenerators` diagnostic `BESG004` reports unproven static reads and operations the analysis cannot inspect. The absence of a warning is not proof that a callback is state-free.
+If the compiler reports `BESG004`, check the values read by the metadata callback and any helpers it calls. Pass those values through explicit state or bound render resources instead of reading mutable static state.
 
 ## 4. Register the effect in your extension
 

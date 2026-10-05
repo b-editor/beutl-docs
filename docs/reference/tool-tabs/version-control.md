@@ -52,7 +52,7 @@ Configure authentication through Git's credential helper or SSH agent. Resolve d
 | Git executable path | Automatic discovery |
 | Large-media warning threshold | 50 MB |
 
-Git LFS stores large media separately from ordinary Git objects. Remote LFS storage and bandwidth quotas still apply. Beutl hosted Git uploads support resumable large-object transfers and parallel multipart uploads.
+Git LFS stores large media separately from ordinary Git objects. Remote LFS storage and bandwidth quotas still apply.
 
 ## Related documents
 

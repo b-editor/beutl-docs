@@ -97,7 +97,7 @@ If an agent only has the MCP URL, it should call `get_started` first. The tool r
 
 1. Call `get_started` to understand the session, then inspect its current state with `read_document_summary` or a targeted `get_schema` query.
 2. Apply a patch and inspect the operation and validation results. Warnings are advisory.
-3. Use `render_still` or `render_storyboard` to inspect the rendered result. The tools provide evidence rather than creative direction or a verdict on whether the work is finished; the agent and user assess it.
+3. Use `render_still` or `render_storyboard` to inspect the rendered result. Check that the appearance and motion match what you asked for before proceeding.
 4. In a file-backed session, call `save_project` after major successful edits and final revisions. This tool does not save live-editor sessions; use the editor's auto-save or Beutl's save action there.
 
 `undo` and `redo` reverse and replay edits through history. Live sessions share the user's history, so inspect `read_history` and its `nextUndo` before undoing. Save a file-backed session again after undoing.
