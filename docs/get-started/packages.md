@@ -16,7 +16,7 @@ Installed packages also offer update and uninstall actions.
 
 ## Use the installed files
 
-Open the [Files](../reference/tool-tabs/file-browser.md) tab and choose the pinned **Materials** or **Templates** folder. Installed assets are grouped by package name.
+Open the [Files](../reference/tool-tabs/file-browser.md) tab and choose the pinned **Materials** or **Templates** folder. Installed materials and object templates are grouped by package name.
 
 Drag supported media or object templates to the timeline. Object templates can show thumbnails in the file browser.
 

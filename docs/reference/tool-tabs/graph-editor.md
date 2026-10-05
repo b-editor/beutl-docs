@@ -83,7 +83,7 @@ When the easing is a spline, **control points** are shown before and after each 
 - `Shift` + wheel scrolls vertically.
 - `Alt` or `Ctrl` (`Cmd`) + wheel zooms in/out along the time axis (centered on the pointer).
 - `Ctrl` + `Shift` (`Cmd` + `Shift`) + wheel zooms in/out vertically.
-- The wheel over the vertical scale also scrolls vertically; holding `Ctrl` (`Cmd`) zooms vertically.
+- The wheel over the vertical scale also scrolls vertically; holding `Alt` or `Ctrl` (`Cmd`) zooms vertically.
 
 If **Swap the scroll direction of the timeline** is enabled in the settings, the vertical and horizontal behaviors are swapped.
 

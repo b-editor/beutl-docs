@@ -30,7 +30,7 @@ sidebar_position: 9
 
 ## 共通プロパティ
 
-[Object3Dの共通プロパティ](../common-properties.md#object3d)を継承します。マテリアルは内部の `UnlitMaterial` を使用し、プロパティエディターには表示しません。**影を投影する**（`CastShadows`）の既定値は `false` です。
+[Object3Dの共通プロパティ](../common-properties.md#object3d)を継承します。マテリアルには専用の `UnlitMaterial` を使用し、プロパティエディターには表示しません。**影を投影する**（`CastShadows`）の既定値は `false` です。
 
 ## ソース
 

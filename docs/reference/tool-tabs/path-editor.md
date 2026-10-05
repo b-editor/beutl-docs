@@ -107,7 +107,8 @@ Show only what you need depending on how you want to inspect the shape.
 
 ## Panning and zooming the canvas
 
-- **Mouse wheel**: Zoom in / out, centered on the wheel position.
+- **Mouse wheel**: Pan the canvas.
+- **`Ctrl` + wheel** (**`Cmd` + wheel** on macOS): Zoom in / out around the pointer.
 - **Hand (`H`), `Space` + drag, or middle-button drag**: Pan the canvas.
 - **`+` / `-`**: Zoom in / out. **`0`** resets the view.
 - **`Shift + 1`**: Fit the whole path. **`Shift + 2`**: Fit the selection.

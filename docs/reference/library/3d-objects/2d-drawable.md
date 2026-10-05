@@ -30,7 +30,7 @@ Library → 3D (Experimental) → 2D Drawable
 
 ## Common properties
 
-Inherits the [Object3D common properties](../common-properties.md#object3d). The material is an its own `UnlitMaterial` and is hidden from the property editor. **Cast Shadows** defaults to `false`.
+Inherits the [Object3D common properties](../common-properties.md#object3d). It uses its own `UnlitMaterial`, which is hidden from the property editor. **Cast Shadows** defaults to `false`.
 
 ## Source
 

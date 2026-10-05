@@ -22,7 +22,7 @@ The sample rate must be positive. Latency is non-negative; `int.MaxValue` repres
 
 `Flush(AudioProcessContext)` drains pending audio immediately after a contiguous terminal `Process` call. A single-input node processes its input's drained tail through `ProcessTail`; a node with multiple inputs must override `Flush` to drain and merge them.
 
-`ProcessTail` owns the buffer passed to it. If your override replaces that buffer, dispose the input. Hold delay-related animated parameters at their terminal values while draining.
+`ProcessTail` owns the buffer passed to it. If your override replaces that buffer, dispose the input. If it throws, dispose the input before propagating the exception. Hold delay-related animated parameters at their terminal values while draining.
 
 Natural contiguous clip endings can preserve buffered latency tails. Seeks, loops, edits, and other discontinuities can reset processing and discard buffered samples. See [Limiter](../reference/library/audio-effects/limiter.md).
 
