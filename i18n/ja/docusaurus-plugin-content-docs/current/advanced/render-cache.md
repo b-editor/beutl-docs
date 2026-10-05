@@ -20,9 +20,12 @@ Beutlはエフェクトノード内の4までをキャッシュします。
 以下でなぜそうなるのかを説明します。
 
 ## キャッシュ可能かの判断
-3フレーム以上同じ状態だとキャッシュ可能と判断します。
-ノードの描画時にカウントして、ノードが変わるとカウントをゼロにします。
-このカウントが3以上になると**キャッシュ可能**と判断します。
 
-ノードが**キャッシュ可能**かつ、すべての子要素が**キャッシュ可能**である場合、
-そのノードの描画内容をキャッシュします。
+ノードが変更されず、正常に完了したフレーム描画またはキャッシュ準備のリクエストを3回積み重ねると、キャッシュを作成できる状態になります。境界の測定やヒットテストだけでは、このカウントを進めません。ノードが変更されると、カウントとキャッシュはリセットされます。
+
+キャッシュの設定と、要求された描画領域・作業密度に応じて、実行計画がキャッシュの利用と作成を選択します。
+
+## ソース
+
+- [`RenderNodeCache.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Cache/RenderNodeCache.cs)
+- [`RenderNodeCacheLifecycle.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Cache/RenderNodeCacheLifecycle.cs)

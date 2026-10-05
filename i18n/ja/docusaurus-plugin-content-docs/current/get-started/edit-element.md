@@ -61,3 +61,16 @@ Beutlでは要素の色や名前を変えることができ、
 それぞれ、右クリックメニューから変更できます。
 
 名前は `F2` キーまたは、要素をダブルクリックで変更できます。
+
+## 破損した要素の復旧
+
+要素ファイルのデータを読み取れない場合や、オブジェクトの型を読み込めない場合、Beutlは復元できる内容を復元し、シーンの他の部分を編集できるようにします。読み取れない要素は無効な代替要素となり、利用できないオブジェクトはフォールバックとして表示されます。
+
+復旧の妨げとなる問題が残っている間、自動保存時も含めて、該当する要素の元のファイルデータを保持します。プロパティエディターで利用できないオブジェクトを置き換えるか取り除く、またはファイルを修復してプロジェクトを開き直してください。すべての問題が解消されると、通常の保存を再開できます。修復を元に戻すと、元のデータの保護も復元されます。
+
+ファイルを手作業で修復する場合は、元のプロジェクトのコピーを残してください。
+
+## ソース
+
+- [`SceneRecovery.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.cs)
+- [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/Services/ElementRecoveryService.cs)

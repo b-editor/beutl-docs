@@ -25,16 +25,16 @@ Library → 3D (Experimental) → Plane
 Plane width along the local X axis.
 
 - **Type:** `float`
-- **Default:** `1`
+- **Default:** `1000`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
 ### Height
 
-Plane height along the local Z axis (the plane lies on the XZ plane with a Y-up normal).
+Plane height along the local Z axis (the plane lies on the XZ plane with a −Y normal).
 
 - **Type:** `float`
-- **Default:** `1`
+- **Default:** `1000`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
@@ -62,4 +62,4 @@ This object inherits from `Object3D` and exposes the [common properties](../comm
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs)

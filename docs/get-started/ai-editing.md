@@ -46,3 +46,7 @@ The connection URL and its authentication header are shown in **Settings → AI 
 ## Learn more
 
 - [Editing with AI Agents (advanced)](../advanced/ai-agents.md) — connection details, the headless server for automation, and the full tool list.
+
+## Related documents
+
+- [Built-in AI workspace](../reference/tool-tabs/ai-workspace.md)

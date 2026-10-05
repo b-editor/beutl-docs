@@ -25,7 +25,7 @@ Library → 3D (Experimental) → Spot Light
 World-space position of the spotlight.
 
 - **Type:** `Vector3`
-- **Default:** `(0, 5, 0)`
+- **Default:** `(0, -500, 0)`
 - **Animatable:** Yes
 
 ### Direction
@@ -33,7 +33,7 @@ World-space position of the spotlight.
 Direction the cone is aimed toward.
 
 - **Type:** `Vector3`
-- **Default:** `(0, -1, 0)`
+- **Default:** `(0, 1, 0)`
 - **Animatable:** Yes
 
 ### Inner Cone Angle (InnerConeAngle)
@@ -68,7 +68,7 @@ Constant term of the distance falloff.
 Linear term of the distance falloff.
 
 - **Type:** `float`
-- **Default:** `0.09`
+- **Default:** `0.0009`
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
@@ -77,7 +77,7 @@ Linear term of the distance falloff.
 Quadratic term of the distance falloff.
 
 - **Type:** `float`
-- **Default:** `0.032`
+- **Default:** `0.0000032`
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
@@ -86,7 +86,7 @@ Quadratic term of the distance falloff.
 Maximum distance the spotlight reaches.
 
 - **Type:** `float`
-- **Default:** `50`
+- **Default:** `5000`
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
@@ -96,4 +96,4 @@ This object inherits from `Light3D` and exposes the [common properties](../commo
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Lighting/SpotLight3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/SpotLight3D.cs)
+[`src/Beutl.Engine/Graphics3D/Lighting/SpotLight3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Lighting/SpotLight3D.cs)

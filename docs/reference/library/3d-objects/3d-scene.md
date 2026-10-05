@@ -25,7 +25,7 @@ Library → 3D (Experimental) → 3D Scene
 Camera used to render the scene.
 
 - **Type:** `Camera3D?`
-- **Default:** `null`
+- **Default:** `PerspectiveCamera`
 - **Animatable:** No
 
 ### Ambient Color (AmbientColor)
@@ -41,7 +41,7 @@ Color of the global ambient light.
 Strength of the ambient light.
 
 - **Type:** `float`
-- **Default:** `0.1`
+- **Default:** `0.2`
 - **Animatable:** Yes
 - **Range:** `[0, 1]`
 
@@ -68,7 +68,7 @@ Height in pixels at which the scene is rasterized.
 Background fill color of the rendered scene.
 
 - **Type:** `Color`
-- **Default:** `#FF000000` (black)
+- **Default:** `Colors.Transparent`
 - **Animatable:** Yes
 
 ## Common properties
@@ -77,4 +77,4 @@ This object inherits from `Drawable` and exposes the [common properties](../comm
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Scene3D.cs)
+[`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Scene3D.cs)

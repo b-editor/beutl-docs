@@ -214,7 +214,9 @@ Declared in [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com
 
 _This class declares no new properties of its own._
 
-## Object3D
+## Object3D {/* #object3d */}
+
+Beutl’s 3D coordinates use +X right, +Y down, and +Z away from the viewer, with one unit per pixel. Models default to scale `(100, 100, 100)`. [2D Drawable](./3d-objects/2d-drawable.md) uses its own unlit material, hides the material editor, and defaults to not casting shadows.
 
 Declared in [`src/Beutl.Engine/Graphics3D/Object3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Object3D.cs). Base class: `EngineObject`.
 
@@ -315,9 +317,9 @@ Constant bias added to the shadow comparison to reduce acne.
 Bias along the surface normal to reduce shadow leaking.
 
 - **Type:** `float`
-- **Default:** `0.02`
+- **Default:** `2`
 - **Animatable:** Yes
-- **Range:** `[0, 0.1]`
+- **Range:** `[0, 10]`
 
 ### Shadow Strength (ShadowStrength)
 

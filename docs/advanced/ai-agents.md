@@ -20,7 +20,7 @@ Open **Settings → AI Agents**.
 1. Choose the **Agent** to install for (Claude Code, Codex, Cursor, Gemini CLI, …, or *Custom (manual paths)*) and the **Install scope**: **Project** (into a project folder) or **Global (user profile)**.
 2. Under **Components**, choose what to install:
    - **Skills**: Beutl editing know-how the agent loads on demand
-   - **Subagents**: specialized agent definitions for timeline, look, and quality-review tasks
+   - **Subagents**: specialized agent definitions for timeline and look tasks
    - **Stdio MCP server** / **Live MCP server** entries for the agent's MCP configuration
 3. Press **Install**.
 
@@ -85,17 +85,27 @@ If an agent only has the MCP URL, it should call `get_started` first. The tool r
 | Group | Tools |
 |-------|-------|
 | Session | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status`, `attach_active_editor` (live server only) |
-| Query / schema | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds`, `compare_revisions`, `list_creative_directions`, `record_creative_direction`, `plan_original_scaffold` |
-| Design | `derive_palette`, `get_background_grammar` |
+| Query / schema | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_fonts`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds` |
 | Edit | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
-| Render / quality | `render_still`, `render_storyboard`, `evaluate_motion_variation`, `analyze_audio_rhythm`, `evaluate_edit_quality`, `preview_quality_risks`, `suggest_quality_fixes`, `final_preflight`, `export_video`, `read_render_job`, `cancel_render_job` |
+| Elements | `add_element`, `move_element`, `remove_element`, `duplicate_element`, `split_element`, `group_elements`, `ungroup_elements` |
+| History | `undo`, `redo`, `read_history` |
+| Render / inspection | `render_still`, `render_storyboard`, `measure_frame_differences`, `analyze_audio_rhythm`, `export_video`, `read_render_job`, `cancel_render_job` |
 
-The main editing tool is `apply_edit`. It takes a declarative desired document (JSON Merge Patch), validates it, and applies it atomically through Beutl's history, allowing the user to undo the agent's changes.
+`apply_edit` accepts exactly one of a complete `desired` document or a partial `patch`. For targeted edits, use a JSON Merge Patch in `patch` and provide the `schemaVersion` returned by `get_schema`. A full `desired` document is authoritative: omitted child arrays can delete existing content.
+
+## Edit and inspect
+
+1. Call `get_started` to understand the session, then inspect its current state with `read_document_summary` or a targeted `get_schema` query.
+2. Apply a patch and inspect the operation and validation results. Warnings are advisory.
+3. Use `render_still` or `render_storyboard` to inspect the rendered result. The tools provide evidence rather than creative direction or a verdict on whether the work is finished; the agent and user assess it.
+4. In a file-backed session, call `save_project` after major successful edits and final revisions. This tool does not save live-editor sessions; use the editor's auto-save or Beutl's save action there.
+
+`undo` and `redo` reverse and replay edits through history. Live sessions share the user's history, so inspect `read_history` and its `nextUndo` before undoing. Save a file-backed session again after undoing.
 
 ## Source
 
-- [`AgentHostEndpoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/AgentHost/AgentHostEndpoint.cs) (live server)
-- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/AgentHost/AgentHostTools.cs)
-- [`Beutl.AgentToolkit.Mcp/Program.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.AgentToolkit.Mcp/Program.cs) (stdio server)
-- [`Beutl.AgentToolkit/Tools/`](https://github.com/b-editor/beutl/tree/main/src/Beutl.AgentToolkit/Tools) (tool implementations)
-- [`AgentCatalog.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.AgentToolkit/Installation/AgentCatalog.cs) (supported agents)
+- [`AgentHostEndpoint.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostEndpoint.cs) (live server)
+- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostTools.cs)
+- [`Beutl.AgentToolkit.Mcp/Program.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit.Mcp/Program.cs) (stdio server)
+- [`Beutl.AgentToolkit/Tools/`](https://github.com/b-editor/beutl/tree/v2.0.0-preview.8/src/Beutl.AgentToolkit/Tools) (tool implementations)
+- [`AgentCatalog.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit/Installation/AgentCatalog.cs) (supported agents)

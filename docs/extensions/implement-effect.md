@@ -74,11 +74,19 @@ public sealed partial class HighContrastBlur : FilterEffect
 }
 ```
 
-`FilterEffectContext` exposes a method for each built-in operation: `Blur`, `DropShadow`, `InnerShadow`, `Erode`, `Dilate`, `ColorMatrix`, `Saturate`, `HueRotate`, `Brightness`, `HighContrast`, `Lighting`, `LookupTable`, `MatrixConvolution`, `Transform`, `BlendMode`, and more. See [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) for the complete list.
+`FilterEffectContext` exposes a method for each built-in operation: `Blur`, `DropShadow`, `InnerShadow`, `Erode`, `Dilate`, `ColorMatrix`, `Saturate`, `HueRotate`, `Brightness`, `HighContrast`, `Lighting`, `MatrixConvolution`, `Transform`, `BlendMode`, and more. See [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) for the complete list.
+
+`Crop(Rect, GradientSpreadMethod = Decal)` crops in the coordinates of `Bounds`. The default `Decal` makes pixels outside the rectangle transparent and shrinks the bounds. `Pad` extends edge pixels, `Repeat` tiles, and `Reflect` mirrors the crop while retaining the original bounds.
+
+For GLSL with multiple inputs or multiple passes, also see [C# Script](../reference/library/filter-effects/script/csharp-script.md#custom-glsl-passes).
 
 ## 3. Processing the render target directly
 
 See [`FlatShadow.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs), [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs), and [`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) as references.
+
+### Metadata callback diagnostics
+
+Pass values read by metadata callbacks through explicit state or bound render resources so recorded plans can be reused correctly. `Beutl.Engine.SourceGenerators` diagnostic `BESG004` reports unproven static reads and operations the analysis cannot inspect. The absence of a warning is not proof that a callback is state-free.
 
 ## 4. Register the effect in your extension
 
@@ -112,3 +120,5 @@ If you want to bundle several effects together, use the `RegisterGroup` helper d
 | `src/Beutl.Engine/Graphics/FilterEffects/HighContrast.cs` | A minimal effect that delegates to a single `FilterEffectContext` call. |
 | `src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs` | Custom drawing through `CustomEffect`, with `transformBounds` to expand the surface. |
 | `src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs` | The full list of chainable built-in operations. |
+
+- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)

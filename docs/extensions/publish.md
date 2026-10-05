@@ -54,3 +54,15 @@ YOUR_PROJECT
 Click __[Publish]__.
 ![Publish Package](_images/4.publish/package-publish-button.png)
 
+## Material and template packages
+
+Distribute materials and object templates as NuGet packages using the case-sensitive reserved store tags `beutl-material` and `beutl-template`. Using both tags classifies a package as containing both materials and templates.
+
+Place payloads in top-level `materials/` and `templates/` directories in the `.nupkg`. Tagged payloads are deployed into `materials/<packageName>` and `templates/<packageName>` in Beutl’s home directory. Data packages do not load assemblies.
+
+See [Materials and Templates](../get-started/packages.md) for the user workflow.
+
+## Source
+
+- [`PackageKind.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageKind.cs)
+- [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)

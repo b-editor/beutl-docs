@@ -1,10 +1,10 @@
 ---
-title: "File Browser"
+title: "Files"
 description: "Describes the role of the File Browser tab and how to use it."
 sidebar_position: 3
 ---
 
-# File Browser
+# Files
 
 A tab for **browsing and organizing files** in the project folder or any other folder, and **dragging them onto the timeline** to import them.
 You can also bookmark favorites, search for media files within a project, view thumbnails, and perform file operations such as renaming, deleting, and creating new folders.
@@ -12,11 +12,13 @@ You can also bookmark favorites, search for media files within a project, view t
 ## Tab characteristics
 
 - **Open by default**: Yes
-- **Allow multiple instances**: No
+- **Allow multiple instances**: Yes
 
 ## How to open
 
-Open it from the menu bar via **View → Tools → File Browser**.
+Open it from the menu bar via **View → Tools → Files**.
+
+Open several tabs to browse different folders or storage locations. Each tab title follows the location it displays.
 
 ## Layout
 
@@ -46,7 +48,7 @@ Each section can be **collapsed or expanded** with the toggle in its header, and
 
 ### Favorites
 
-A place for bookmarking any folder or file. The **Templates** folder (the destination for elements saved via "Save as Template" on the timeline) is always pinned at the top.
+A place for bookmarking any folder or file. The **Templates** folder (the destination for templates saved from the timeline) and **Materials** folder are pinned. [Store materials and templates](../../get-started/packages.md) are available from these folders.
 
 - The favorites list is persisted as a setting and preserved across launches.
 - To add: right-click an item and choose **Add to Favorites**, or drag and drop onto this section.
@@ -73,6 +75,8 @@ Lists the contents of the selected folder using the display mode chosen in the t
 
 ### Thumbnails and tooltips
 
+Object templates can also display thumbnails.
+
 Thumbnails are generated automatically for images (png / jpg / jpeg / gif / bmp / webp / ico / tiff / tif) and videos (mp4 / avi / mov / mkv / wmv / flv / webm). Files for which a thumbnail cannot be generated are shown with an icon based on their extension.
 
 Hovering an item shows a tooltip with media information.
@@ -97,6 +101,16 @@ Hovering an item shows a tooltip with media information.
 | **Rename** | Enter a new name in a flyout (an error is shown if a file or folder with the same name exists) |
 | **Delete** | Permanently deletes the item after confirmation — it does not go to the trash. Multiple selections are deleted in one go |
 | **Add to Favorites / Remove from Favorites** | The label changes depending on whether the item is already a favorite |
+
+## Online storage
+
+Choose **Storage locations → Beutl storage** to open online storage. If you are not signed in, use **Open account settings** to sign in. Choose **This device** to return to local files.
+
+Online items offer download, copy-link, rename, move, details, public/private, and delete actions according to your permissions. Dropping local files uploads them; dragging online files downloads them before handing them to the editor or another app. Icon and list views are available.
+
+## Reveal in the system file manager
+
+Right-click an item and choose **Open in Finder** on macOS, **Open in File Explorer** on Windows, or **Open in File Manager** on Linux. For a file, this opens its containing folder and selects it where the OS supports that action.
 
 ## Drag and drop
 
@@ -130,6 +144,9 @@ Dropping items from an OS file manager performs a **copy** (existing files with 
 - [Timeline](./timeline.md)
 
 ## Source
+
+- [`FileBrowserTabViewModel.Storage.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.Storage.cs)
+- [`FileManagerLauncher.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/Services/FileManagerLauncher.cs)
 
 - [`FileBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/FileBrowserTabExtension.cs)
 - [`FileBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.cs)

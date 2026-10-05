@@ -7,10 +7,10 @@ sidebar_position: 2
 Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明します。
 
 この記事では、__Visual Studio Code__、__Visual Studio__ を使う方法を紹介します。
-Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
+Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
 
 :::tip
-ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.7`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
+ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.8`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.8">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -56,7 +56,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 SDK が以下を自動で行います。
 
 - `TargetFramework` を `net10.0` に、`ImplicitUsings` と `Nullable` を `enable` に設定。
-- `Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
+- `Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
 - `DebugApplication` が `true` のとき、出力先を `~/.beutl/sideloads/<AssemblyName>` にリダイレクト。
 
 以上で拡張機能用に空のC#プロジェクトを作成することができました。
@@ -66,6 +66,7 @@ SDK が以下を自動で行います。
 特定の自動参照を無効化したい場合は、以下のプロパティを `false` に設定します。
 
 - `BeutlAutoReferenceAll`
+- `BeutlAutoReferenceApi`
 - `BeutlAutoReferenceExtensibility`
 - `BeutlAutoReferenceProjectSystem`
 - `BeutlAutoReferenceNodeGraph`
@@ -105,7 +106,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.8">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>

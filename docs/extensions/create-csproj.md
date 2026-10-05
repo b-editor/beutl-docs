@@ -7,10 +7,10 @@ sidebar_position: 2
 This article explains how to create an empty C# project for Beutl extensions.
 
 This guide introduces the methods using __Visual Studio Code__ or __Visual Studio__.
-Beutl 2.0 ships an MSBuild SDK called `Beutl.Extensibility.Sdk` that wires up the target framework, language defaults, the standard package references (`Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Engine.SourceGenerators`), and the sideload output path. Using it keeps the csproj small.
+Beutl 2.0 ships an MSBuild SDK called `Beutl.Extensibility.Sdk` that wires up the target framework, language defaults, the standard package references (`Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Engine.SourceGenerators`), and the sideload output path. Using it keeps the csproj small.
 
 :::tip
-Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.7`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
+Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.8`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.8">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>
@@ -56,7 +56,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 The SDK takes care of:
 
 - Setting `TargetFramework` to `net10.0`, plus `ImplicitUsings` and `Nullable` to `enable`.
-- Adding `PackageReference`s to `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, and the `Beutl.Engine.SourceGenerators` analyzer.
+- Adding `PackageReference`s to `Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, and the `Beutl.Engine.SourceGenerators` analyzer.
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
 
 This completes the creation of an empty C# project for extensions.
@@ -66,6 +66,7 @@ This completes the creation of an empty C# project for extensions.
 Set any of these properties to `false` if you want to opt out of a specific auto-reference:
 
 - `BeutlAutoReferenceAll`
+- `BeutlAutoReferenceApi`
 - `BeutlAutoReferenceExtensibility`
 - `BeutlAutoReferenceProjectSystem`
 - `BeutlAutoReferenceNodeGraph`
@@ -105,7 +106,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.7">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.8">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>

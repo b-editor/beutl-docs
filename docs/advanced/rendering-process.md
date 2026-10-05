@@ -34,7 +34,7 @@ The drawing layer tracks changes to the drawing objects and recreates drawing no
 4. 　 　 └ Shape Node
 ```
 
-These drawing nodes are executed in order from 1.
+The renderer first records the nodes' operations, resolves bounds, required regions, and cache reuse, then builds an execution plan. Compatible shader operations can be fused into a GPU pass; rendering executes that plan.
 
 This structure is very useful for caching drawing content.
 For example, applying a heavy effect to an object and animating it to appear from off-screen would normally apply the heavy effect every frame.
@@ -48,6 +48,11 @@ By caching the object after the effect is applied, the effect only needs to be a
 
 ## Resolution-independent rendering
 
-Beutl evaluates the scene in logical coordinates and only scales to device pixels at the end of the pipeline. Because of this, the editor can render the preview at a reduced **working density** — Half, Quarter, or fit-to-previewer — to play back and scrub faster. Vector shapes, text, and most effects are re-rasterized at that density instead of being upscaled, so they stay sharp at the smaller size. Encoding always renders at the project resolution (scale 1.0).
+Beutl evaluates the scene in logical coordinates and resolves device-pixel sizes and working densities for the render request. Because of this, the editor can render the preview at a reduced **working density** — Half, Quarter, or fit-to-previewer — to play back and scrub faster. Vector shapes, text, and most effects are re-rasterized at that density instead of being upscaled, so they stay sharp at the smaller size. Encoding always renders at the project resolution (scale 1.0).
 
 The preview density is chosen from the [Preview Settings](../reference/tool-tabs/preview-settings.md) tab. Custom shaders receive the working density through their uniforms; see [GLSL Script](../reference/library/filter-effects/script/glsl-script.md) and [SKSL Script](../reference/library/filter-effects/script/sksl-script.md) for how to keep a shader resolution-independent.
+
+## Source
+
+- [`RenderNodeRenderer.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/RenderNodeRenderer.cs)
+- [`RenderRequestCompiler.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Requests/RenderRequestCompiler.cs)

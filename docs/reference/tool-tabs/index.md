@@ -21,18 +21,20 @@ Drag the tabs to rearrange, stack, or tile them as needed.
 The **Scene settings** and **Graph Editor** tabs do not appear in the **View → Tools** menu.
 See their respective pages for instructions on opening them.
 
+- Hover the selected tab to show its close button. The extension icon appears to the left of the tab title.
+
 ## Tab list
 
 | Tab | Overview |
 |-----|----------|
 | [Timeline](./timeline.md) | Arrange, split, and group elements on the time axis |
 | [Library](./library.md) | Drag drawables and effects into the scene |
-| [File Browser](./file-browser.md) | Browse files in the project folder or any folder |
+| [Files](./file-browser.md) | Browse files in the project folder or any folder |
 | [Element Property](./element-property.md) | Edit the element itself (start time, duration, color, etc.) |
 | [Output](./output.md) | Manage encoding settings and output profiles |
 | [Scene settings](./scene-settings.md) | Configure scene size, start time, length, and layer count |
 | [Graph Editor](./graph-editor.md) | Edit time curves of animations |
-| [Node Graph](./node-graph.md) | Show the structure of the node graph as a tree (labeled "GraphNode Tree" in the menu) |
+| [Node Graph](./node-graph.md) | Place and connect nodes to edit a processing graph |
 | [Scopes](./color-scopes.md) | Waveform / Histogram / Vectorscope / False Color / Zebra displays for video |
 | [Color Grading](./color-grading.md) | Perform color correction and color grading |
 | [Curves](./curves.md) | Adjust tones with tone curves |
@@ -43,5 +45,8 @@ See their respective pages for instructions on opening them.
 | [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
 | [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
 | [Dock layout](./dock-layout.md) | Save the tab arrangement under a name and re-apply it to any scene |
+| [Version Control](./version-control.md) | Record, compare, and restore project versions with Git |
+| [Browser](./web-browser.md) | Browse websites and download media for the project |
+| [AI](./ai-workspace.md) | Generate and edit images and videos, create subtitles, and manage jobs |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).

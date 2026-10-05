@@ -66,8 +66,17 @@ flatpak run net.beditor.Beutl
 
 After installation, Beutl also appears in your desktop environment's application menu.
 
+### Updating a Flatpak installation
+
+Beutl's built-in updater can download and install the new Flatpak bundle into the same user or system installation. When the update finishes, close and reopen Beutl to use the new version.
+
 ## For macOS
 
 - Download and extract `Beutl.osx_arm64.app.zip` or `Beutl.osx_x64.app.zip`.
 - Double-click the downloaded file to extract it.
 - Double-click `Beutl.app` to launch the application.
+
+## Source
+
+- [`FlatpakUpdater.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/FlatpakUpdater.cs)
+- [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs)

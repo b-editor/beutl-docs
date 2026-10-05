@@ -18,6 +18,6 @@ Brushes and pens are also documented here. They are not registered in the librar
 - [Transforms](./transforms/index.md)
 - [Filter Effects](./filter-effects/index.md)
 - [Audio Effects](./audio-effects/index.md)
-- [3D (Experimental)](./3d-objects/index.md)
+- [3D (Experimental)](./3d-objects/index.md) — including [2D Drawable cards](./3d-objects/2d-drawable.md).
 
 The source of truth for this reference is `src/Beutl/Services/LibraryRegistrar.cs` in the [Beutl repository](https://github.com/b-editor/beutl).

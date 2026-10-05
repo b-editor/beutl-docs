@@ -25,7 +25,7 @@ sidebar_position: 3
 球体の半径。
 
 - **型:** `float`
-- **既定値:** `0.5`
+- **既定値:** `100`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
@@ -53,4 +53,4 @@ sidebar_position: 3
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs)

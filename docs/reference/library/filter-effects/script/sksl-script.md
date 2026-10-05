@@ -43,12 +43,14 @@ The SKSL shader source.
 
 Provide a `main(float2 coord) → half4` shader. The source layer is provided through `src` and animatable parameters are passed as uniforms.
 
+For processing only the current pixel’s color, you can also define `half4 apply(half4 color)`, receiving an input color and returning the output color. The existing `main(float2)` form remains supported.
+
 ## Resolution scaling
 
-Beutl can render at a working density that differs from the project resolution — for example a downscaled preview or a supersampled export. `width` / `height` / `iResolution` report the **device-pixel** size of the render target at that density, and `iScale` is the working density in device pixels per logical pixel (`1.0` when unscaled).
+Beutl can render at a working density that differs from the project resolution — for example a downscaled preview or a supersampled export. `width` / `height` / `iResolution` report the complete output’s **device-pixel** dimensions at that density, and `iScale` is the working density in device pixels per logical pixel (`1.0` when unscaled).
 
 A shader that works in normalized coordinates (for example `fragCoord / iResolution`) is automatically resolution-independent and needs no changes. If your shader uses **absolute pixel literals** — a fixed radius, offset, or border width measured in pixels — multiply them by `iScale` so they keep the same on-screen size at any density. A shader that never reads `iScale` renders exactly as before at scale `1.0`.
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/FilterEffects/SKSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/SKSLScriptEffect.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/SKSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/SKSLScriptEffect.cs)

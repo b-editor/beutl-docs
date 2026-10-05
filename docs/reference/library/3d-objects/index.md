@@ -15,3 +15,4 @@ Experimental 3D objects: scene container, primitives, models and lights. The 3D 
 - [**Directional Light**](./directional-light.md) — A directional light source that illuminates the scene from a single direction.
 - [**Point Light**](./point-light.md) — A point light that radiates from a single point in all directions.
 - [**Spot Light**](./spot-light.md) — A cone-shaped spotlight with adjustable inner and outer angles.
+- [**2D Drawable**](./2d-drawable.md) — Place 2D drawables on a card in a 3D scene.

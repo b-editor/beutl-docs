@@ -20,7 +20,7 @@ Beutlには2つのMCPサーバーがあります。
 1. インストール対象の**エージェント**(Claude Code、Codex、Cursor、Gemini CLI、…、または「カスタム」)と、**インストール範囲**(**プロジェクト**(プロジェクトフォルダーへ)または**グローバル(ユーザープロファイル)**)を選びます。
 2. **コンポーネント**からインストールする項目を選びます。
    - **スキル**: エージェントが必要に応じて読み込むBeutl編集ノウハウ
-   - **サブエージェント**: タイムライン・ルック・品質レビュー用の専用エージェント定義
+   - **サブエージェント**: タイムライン・ルック用の専用エージェント定義
    - エージェントのMCP設定への **Stdio MCP サーバー** / **Live MCP サーバー** の登録
 3. **インストール**を押します。
 
@@ -85,17 +85,27 @@ MCPクライアント設定の例:
 | グループ | ツール |
 |---------|-------|
 | セッション | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status`, `attach_active_editor` (Liveサーバーのみ) |
-| クエリ / スキーマ | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds`, `compare_revisions`, `list_creative_directions`, `record_creative_direction`, `plan_original_scaffold` |
-| デザイン | `derive_palette`, `get_background_grammar` |
+| クエリ / スキーマ | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_fonts`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds` |
 | 編集 | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
-| レンダー / 品質 | `render_still`, `render_storyboard`, `evaluate_motion_variation`, `analyze_audio_rhythm`, `evaluate_edit_quality`, `preview_quality_risks`, `suggest_quality_fixes`, `final_preflight`, `export_video`, `read_render_job`, `cancel_render_job` |
+| 要素 | `add_element`, `move_element`, `remove_element`, `duplicate_element`, `split_element`, `group_elements`, `ungroup_elements` |
+| 履歴 | `undo`, `redo`, `read_history` |
+| レンダー / 確認 | `render_still`, `render_storyboard`, `measure_frame_differences`, `analyze_audio_rhythm`, `export_video`, `read_render_job`, `cancel_render_job` |
 
-主な編集ツールは `apply_edit` です。望ましい状態を宣言するドキュメント(JSON Merge Patch)を受け取り、検証したうえでBeutlの履歴経由でアトミックに適用します。エージェントによる変更も、ユーザーがアンドゥできます。
+`apply_edit` は完全な望ましい状態の `desired` または部分変更の `patch` の、いずれか一方を受け取ります。部分編集にはJSON Merge Patchの `patch` を使用し、`get_schema` で確認した `schemaVersion` も指定してください。完全な `desired` は状態全体を指定するため、省略した子要素の配列が削除されることがあります。
+
+## 編集と確認
+
+1. `get_started` で接続先の利用方法を確認し、`read_document_summary` や対象を絞った `get_schema` で現在の状態を確認します。
+2. パッチを適用し、返された操作結果と検証内容を確認します。警告は参考情報です。
+3. `render_still` や `render_storyboard` で描画結果を確認します。ツールは創作方針や完成品質の判定を提供せず、エージェントとユーザーが結果を評価します。
+4. ファイルベースのセッションでは、大きな編集の成功後と最終調整後に `save_project` を呼び出します。Liveセッションではこのツールは保存に対応せず、エディターの自動保存またはBeutlの保存操作を使用します。
+
+`undo`・`redo` は履歴経由で編集を取り消し・やり直します。Liveセッションはユーザーと同じ履歴を共有するため、取り消す前に `read_history` の `nextUndo` を確認してください。ファイルベースのセッションでは、取り消し後も `save_project` で保存します。
 
 ## ソース
 
-- [`AgentHostEndpoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/AgentHost/AgentHostEndpoint.cs)（Liveサーバー）
-- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/AgentHost/AgentHostTools.cs)
-- [`Beutl.AgentToolkit.Mcp/Program.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.AgentToolkit.Mcp/Program.cs)（Stdioサーバー）
-- [`Beutl.AgentToolkit/Tools/`](https://github.com/b-editor/beutl/tree/main/src/Beutl.AgentToolkit/Tools)（ツール実装）
-- [`AgentCatalog.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.AgentToolkit/Installation/AgentCatalog.cs)（対応エージェント一覧）
+- [`AgentHostEndpoint.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostEndpoint.cs)（Liveサーバー）
+- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostTools.cs)
+- [`Beutl.AgentToolkit.Mcp/Program.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit.Mcp/Program.cs)（Stdioサーバー）
+- [`Beutl.AgentToolkit/Tools/`](https://github.com/b-editor/beutl/tree/v2.0.0-preview.8/src/Beutl.AgentToolkit/Tools)（ツール実装）
+- [`AgentCatalog.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit/Installation/AgentCatalog.cs)（対応エージェント一覧）

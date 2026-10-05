@@ -12,3 +12,7 @@ Audio effects that process a `Sound`'s output signal.
 - [**Compressor**](./compressor.md) — Dynamic-range compressor that attenuates the signal above a threshold.
 - [**Limiter**](./limiter.md) — Brick-wall peak limiter with optional lookahead.
 - [**Gate**](./gate.md) — Noise gate that attenuates the signal while it stays below a threshold.
+
+## Extension development
+
+[Implementing Audio Effects](../../../extensions/audio-effects.md) describes the latency-reporting and tail-draining APIs.

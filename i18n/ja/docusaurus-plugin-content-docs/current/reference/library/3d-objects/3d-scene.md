@@ -25,7 +25,7 @@ sidebar_position: 1
 シーンの描画に使うカメラ。
 
 - **型:** `Camera3D?`
-- **既定値:** なし (`null`)
+- **既定値:** `PerspectiveCamera`
 - **アニメーション:** 不可
 
 ### 環境色 (AmbientColor)
@@ -41,7 +41,7 @@ sidebar_position: 1
 アンビエントライトの強さ。
 
 - **型:** `float`
-- **既定値:** `0.1`
+- **既定値:** `0.2`
 - **アニメーション:** 可
 - **範囲:** `[0, 1]`
 
@@ -68,7 +68,7 @@ sidebar_position: 1
 レンダリングされたシーンの背景色。
 
 - **型:** `Color`
-- **既定値:** `#FF000000` (黒)
+- **既定値:** `Colors.Transparent`
 - **アニメーション:** 可
 
 ## 共通プロパティ
@@ -77,4 +77,4 @@ sidebar_position: 1
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Scene3D.cs)
+[`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Scene3D.cs)

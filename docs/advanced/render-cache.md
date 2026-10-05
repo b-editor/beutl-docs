@@ -21,9 +21,12 @@ Beutl will cache up to the 4th effect node.
 Below is an explanation of why this happens.
 
 ## Determining Cacheability
-If the same state persists for 3 or more frames, it is considered cacheable.
-During node rendering, a count is maintained, and if the node changes, the count is reset to zero.
-When this count reaches 3 or more, it is considered **cacheable**.
 
-If a node is **cacheable** and all its child elements are **cacheable**,
-the rendering content of that node is cached.
+An unchanged node becomes eligible for capture after three successfully completed stable frame or cache-warmup requests. Bounds measurement and hit testing alone do not advance this count. Changes reset the warmup count and cache.
+
+The execution plan selects cache lookup and capture according to the cache settings, requested regions, and working density.
+
+## Source
+
+- [`RenderNodeCache.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Cache/RenderNodeCache.cs)
+- [`RenderNodeCacheLifecycle.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Rendering/Cache/RenderNodeCacheLifecycle.cs)

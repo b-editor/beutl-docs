@@ -23,9 +23,17 @@ Beutl 1.x の設定は自動的に移行されます。**ライト**・**ハイ�
 
 - 日本語
 - 英語
+- 中国語（簡体字）
+- 韓国語
+- スペイン語
 
 ## アクセントカラー
 
 任意の色を設定できます。
 
 ![アクセントカラーの設定画面のスクリーンショット](_images/accent-color.png)
+
+## ソース
+
+- [`LocalizeService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Language/LocalizeService.cs)
+- [`ViewSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/SettingsPages/ViewSettingsPageViewModel.cs)

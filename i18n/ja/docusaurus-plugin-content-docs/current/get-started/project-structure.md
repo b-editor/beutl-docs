@@ -1,94 +1,55 @@
 ---
 title: プロジェクトの構造
-description: Beutlのプロジェクトで生成されるファイルについてを説明します
+description: Beutlのプロジェクトで生成されるファイルについて説明します。
 sidebar_position: 3
 ---
 
-ここでは、Beutlで生成されるプロジェクトディレクトリの構造について説明します。  
-Beutlで使用されるファイルはすべてJSON形式です。
-なので、ここで紹介するファイル以外も、テキストエディタなどで編集することができます。
+`MyProject` というプロジェクトを作成すると、次のフォルダー構成が生成されます。
 
-Beutlで `MyProject` という名前のプロジェクトを作成すると以下のようなディレクトリが生成されます。
-```
-MyProject
-┣━ MyProject.bproj
-┗━ MyProject
-    ┗━ MyProject.scene
+```text
+MyProject/
+├── MyProject.bep
+└── MyProject/
+    └── MyProject.scene
 ```
 
-## `MyProject.bproj` ファイル
-含まれるシーン、アプリのバージョン、変数 (フレームレート、サンプルレート) が保存されます。
-以下は例です。
-```json
-{
-  "appVersion": "2.0.0-preview.2",
-  "minAppVersion": "2.0.0-preview.2",
-  "items": [
-    "MyProject/MyProject.scene"
-  ],
-  "variables": {
-    "framerate": "30",
-    "samplerate": "44100"
-  }
-}
-```
+プロジェクト・シーン・要素のデータはJSONです。メディアとGitの管理データにはそれぞれの形式があります。
 
-## `MyProject.scene` ファイル
-このシーンの横幅、高さ、持続時間、現在の時間、含まれる要素が保存されます。
-以下は例です。
-```json
-{
-  "Id": "{オブジェクト固有Id}",
-  "Name": "MyProject",
-  "Width": 1920,
-  "Height": 1080,
-  "Duration": "00:16:32",
-  "CurrentFrame": "00:00:00",
-  "Elements": {
-      "Include": "**/*.belm"
-  }
-}
-```
+## `MyProject.bep`
 
-----
-しばらく編集していると、`.beutl` `*.belm` などのディレクトリ、ファイルが生成されます。
+プロジェクトファイルは、含まれるシーン（`items`）、アプリケーションと最低互換バージョン（`appVersion`、`minAppVersion`）、フレームレートやサンプルレートなどの変数（`variables`）を記録します。
 
-## `.beutl` ディレクトリ
-このディレクトリには、UIの状態が保存されます。
-UIの表示がおかしくなった場合、このディレクトリを削除すれば改善される場合があります。
+## `MyProject.scene`
 
-## `*.belm` ファイル
-このファイルはタイムラインに追加された要素を表します。
-開始時間、持続時間、レイヤー番号や描画内容の設定が保存されます。
+シーンファイルは寸法や時間の設定を保存します。`Elements` は `**/*.belm` のパターンで要素ファイルを含めます。
 
-以下は例です。
-```json
-{
-  "Id": "{オブジェクト固有Id}",
-  "Name": "矩形",
-  "Start": "00:00:00",
-  "Length": "00:05:00",
-  "ZIndex": 0,
-  "AccentColor": "#FF008080",
-  "IsEnabled": true,
-  "Operation": {
-    "Id": "{オブジェクト固有Id}",
-    "Name": "",
-    "Children": [
-      {
-        "Id": "{オブジェクト固有Id}",
-        "Name": " ",
-        "Properties": [
-        ],
-        "$type": "[Beutl.Operators].Source:RectOperator"
-      }
-    ]
-  },
-  "NodeTree": {
-    "Id": "{オブジェクト固有Id}",
-    "Name": "",
-    "Nodes": [ ]
-  },
-  "UseNode": false
-}
-```
+## `*.belm`
+
+要素ファイルは、タイムライン上の配置、長さ、レイヤー、名前、有効状態と、要素の `Objects` コレクションを保存します。これらのオブジェクトが描画、音声、エフェクトなどの処理を担います。
+
+現在の形式は `Objects` を使用し、旧形式の `Operation` は読み込み時に移行されます。
+
+## `.beutl`
+
+ドックの配置やエディターの表示状態など、ローカルのUI状態を保存します。
+
+## Gitの管理ファイル
+
+[バージョン管理](../reference/tool-tabs/version-control.md)を有効にすると、通常のGitリポジトリを使用します。プロジェクト用に作成されたリポジトリには `.git` ディレクトリがあり、既存のリポジトリ内にあるプロジェクトは親リポジトリを使用できます。
+
+Beutlは `.beutl` ディレクトリと一時ファイルの除外設定、`.bep`・`.scene`・`.belm` のテキスト属性を追加します。利用可能な場合は、Git LFSでメディアを管理できます。
+
+## 関連ドキュメント
+
+- [プロジェクトを作成する](./create-project.md)
+- [バージョン管理](../reference/tool-tabs/version-control.md)
+- [破損した要素の復旧](./edit-element.md#破損した要素の復旧)
+
+## ソース
+
+- [`ProjectService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/ProjectService.cs)
+- [`Project.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Core/Project.cs)
+- [`Scene.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
+- [`Element.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
+- [`EditorConstants.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/EditorConstants.cs)
+- [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)

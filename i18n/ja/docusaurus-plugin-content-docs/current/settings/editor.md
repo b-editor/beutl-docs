@@ -7,9 +7,11 @@ description: エディター画面に関係する設定
 
 オンにすると、要素を追加したとき、シーンの長さを調整する必要がある場合、自動で調整します。
 
-## 自動保存を有効化
+## 自動保存
 
-オンにすると、操作を実行後、自動でファイルを保存するようにします。
+編集内容は変更の確定後に自動で保存されます。自動保存は常に有効で、以前の **自動保存を有効化** スイッチは削除されました。
+
+完全に復元できなかった要素ファイルの保護については、[要素の編集](../get-started/edit-element.md#破損した要素の復旧)を参照してください。
 
 ## 正確な境界線を表示
 
@@ -25,7 +27,7 @@ description: エディター画面に関係する設定
 
 オンにすると、フレームキャッシュが有効になります。
 
-デフォルト値は __"オン"__ です。
+デフォルト値は __"オフ"__ です。
 
 ### 最大バイト数
 
@@ -66,7 +68,7 @@ YUVはI420を使用します。
 
 オンにすると、ノードキャッシュが有効になります。
 
-デフォルト値は __"オン"__ です。
+デフォルト値は __"オフ"__ です。
 
 ### 最大ピクセル数
 
@@ -120,3 +122,9 @@ YUVはI420を使用します。
 プロパティエディターのドラッグ操作中にカーソルを非表示にして、固定します。(Windowsのみ)
 
 デフォルト値は __"オン"__ です。
+
+## ソース
+
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/EditViewModel.cs)
+- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/AutoSaveService.cs)
