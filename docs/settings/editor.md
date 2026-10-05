@@ -7,9 +7,11 @@ description: Settings related to the editor screen
 
 When enabled, the scene length will be automatically adjusted when an element is added if necessary.
 
-## Enable Auto-Save
+## Auto-Save
 
-When enabled, files will be automatically saved after performing actions.
+Edits are saved automatically after changes are committed. Auto-save is always enabled; the former **Enable Auto-Save** switch has been removed.
+
+See [Editing Elements](../get-started/edit-element.md#recovering-damaged-elements) for how Beutl protects element files that could not be fully restored.
 
 ## Show Precise Boundaries
 
@@ -25,7 +27,7 @@ For objects like rectangles, the boundary lines might overlap with the drawing c
 
 When enabled, frame caching is activated.
 
-The default setting is __"On"__.
+The default setting is __"Off"__.
 
 ### Maximum Byte Size
 
@@ -65,7 +67,7 @@ YUV uses I420.
 
 When enabled, node caching is activated.
 
-The default setting is __"On"__.
+The default setting is __"Off"__.
 
 ### Maximum Pixel Count
 
@@ -119,3 +121,9 @@ Sets the quality preset initially selected in the Proxies tool tab.
 Locks the cursor and hides it during drag operations in the property editor (Windows only).
 
 The default setting is __"On"__.
+
+## Source
+
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/EditViewModel.cs)
+- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/AutoSaveService.cs)

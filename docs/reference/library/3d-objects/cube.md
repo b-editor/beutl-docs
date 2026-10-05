@@ -25,7 +25,7 @@ Library → 3D (Experimental) → Cube
 Cube width along the local X axis.
 
 - **Type:** `float`
-- **Default:** `1`
+- **Default:** `200`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
@@ -34,7 +34,7 @@ Cube width along the local X axis.
 Cube height along the local Y axis.
 
 - **Type:** `float`
-- **Default:** `1`
+- **Default:** `200`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
@@ -43,7 +43,7 @@ Cube height along the local Y axis.
 Cube depth along the local Z axis.
 
 - **Type:** `float`
-- **Default:** `1`
+- **Default:** `200`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
@@ -53,4 +53,4 @@ This object inherits from `Object3D` and exposes the [common properties](../comm
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs)

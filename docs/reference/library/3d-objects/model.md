@@ -28,10 +28,12 @@ The 3D model file to load.
 - **Default:** `null`
 - **Animatable:** No
 
+The default model scale is `(100, 100, 100)`, placing a model authored in meters into the pixel-based 3D scene.
+
 ## Common properties
 
 This object inherits from `Group3D` and exposes the [common properties](../common-properties.md) declared on its base classes.
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Models/Model3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Models/Model3D.cs)
+[`src/Beutl.Engine/Graphics3D/Models/Model3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Models/Model3D.cs)

@@ -23,9 +23,17 @@ Settings from Beutl 1.x are migrated automatically. A profile that had **Light**
 
 - Japanese
 - English
+- Simplified Chinese
+- Korean
+- Spanish
 
 ## Accent Color
 
 You can set any color.
 
 ![Screenshot of accent color settings](_images/accent-color.png)
+
+## Source
+
+- [`LocalizeService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Language/LocalizeService.cs)
+- [`ViewSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/SettingsPages/ViewSettingsPageViewModel.cs)

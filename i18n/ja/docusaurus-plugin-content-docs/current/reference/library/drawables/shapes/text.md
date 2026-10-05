@@ -43,6 +43,8 @@ sidebar_position: 5
 
 フォントウェイト（Thin 〜 Black）。
 
+可変フォントが `wght` 軸に対応している場合は、指定した太さで描画します。フォントの対応範囲を超える値は、その範囲内に制限されます。
+
 - **型:** `FontWeight`
 - **既定値:** `FontWeight.Regular`
 - **アニメーション:** 不可
@@ -118,3 +120,5 @@ sidebar_position: 5
 ## ソース
 
 [`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Media/Font/FontManager.cs)

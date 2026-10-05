@@ -7,6 +7,7 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.8  | 10.0 | 12.1.3                                             | 8.0    |
 | 2.0.0-preview.4  | 10.0 | 11.3.17                                            | 8.0    |
 | 2.0.0-preview.3  | 10.0 | 11.3.13                                            | 8.0    |
 | 2.0.0-preview.2  | 10.0 | 11.3.13                                            | 8.0    |
@@ -30,3 +31,9 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 | 1.0.0-preview.3  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
+
+## ソース
+
+- [`Directory.Build.props`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/Directory.Build.props)
+- [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/Directory.Packages.props)
+- [`FFmpegInstallService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.cs)

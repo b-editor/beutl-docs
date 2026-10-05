@@ -61,3 +61,13 @@ In Beutl, you can change the color and name of elements,
 both of which can be changed from the right-click menu.
 
 You can change the name with the `F2` key or by double-clicking the element.
+
+## Recovering damaged elements
+
+If an element's data is damaged or a required extension is missing, the parts that cannot be loaded appear as placeholder elements or objects. Unreadable elements are disabled, but you can continue editing the rest of the scene.
+
+Reinstall the required extension or restore damaged files from a backup, then reopen the project. Original data for parts that could not be recovered is protected from being overwritten by auto-save.
+
+## Source
+
+- [`SceneRecovery.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.cs)

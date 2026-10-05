@@ -18,7 +18,7 @@ Add, move, and delete nodes, and wire ports together to build up the processing 
 
 There are two ways to open this tab.
 
-- From the menu bar, choose **View → Tools → GraphNode Tree** to open the node graph for the currently selected element.
+- From the menu bar, choose **View → Tools → Node Graph** to open the node graph for the currently selected element.
 - In the Properties tab, click the **Open in tab** button on a graph property of a node-based drawable or filter effect to open the same graph in this tab.
 
 ## Layout
@@ -107,6 +107,22 @@ On a list-type port that accepts multiple ordered connections, each connection h
 - **Horizontal drag** reconnects that connection to a different port.
 - **Double-click** disconnects only that single connection.
 
+## Nested properties and node guidance
+
+Input ports can target nested object properties. Drag a port onto an empty area to open a menu of compatible nodes. Hover a port’s label to inspect its description, type, and property range.
+
+Nodes that cannot be loaded, such as those from an unavailable extension, appear as fallbacks that preserve their original data. An unavailable node is not an ordinary executable node.
+
+## AI generation nodes
+
+**AI Generation** contains **Prompt**, **Generate Image**, **Edit Image**, **Generate Video**, and **Edit Video**. The prompt node combines prompt, style, composition, motion, and exclusions so several generation nodes can share them.
+
+Normal preview and playback show saved results without automatically sending paid requests. Explicitly choose **Run AI nodes** from the canvas menu to start, or **Stop** to cancel. Dependencies run upstream first; unchanged complete requests reuse their results. Explicit regeneration forces new results for its target.
+
+Generation nodes offer result history, pinning, pruning, and variation comparisons. Result changes are recorded in undo history. Save a group as a template to reuse it from the **Templates** menu on an empty area.
+
+Video-generation and editing nodes output a `VideoSource`. Connect it to a video-source node’s `Source`, then connect its time input and output into the drawing flow to display the video. Available models and inputs depend on the account and model; see the [AI workspace](./ai-workspace.md).
+
 ## Monitor nodes
 
 Monitor nodes that visualize execution results display the values of the graph being edited as follows.
@@ -122,6 +138,7 @@ During playback, monitor updates are paused for performance, and they are only u
 
 - **Left-drag** an empty area to pan the entire graph.
 - Use the wheel to zoom in/out (centered on the pointer position).
+- Touchpad scrolling pans; pinch gestures zoom.
 
 ### Keyboard
 
@@ -144,6 +161,11 @@ Node positions, expansion states, and the graph's pan/zoom position are kept eve
 - [Library reference: node-based](../library/drawables/index.md)
 
 ## Source
+
+- [`NodesRegistrar.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Nodes/NodesRegistrar.cs)
+- [`GenerativeNode.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeNode.cs)
+- [`GenerativeGraphRunner.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeGraphRunner.cs)
+- [`GraphNodeView.axaml.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/NodeGraphTab/Views/GraphNodeView.axaml.cs)
 
 - [`NodeGraphTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/NodeGraphTabExtension.cs)
 - [`NodeGraphTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/ViewModels/NodeGraphTabViewModel.cs)

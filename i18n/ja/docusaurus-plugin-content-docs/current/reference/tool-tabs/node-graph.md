@@ -18,7 +18,7 @@ sidebar_position: 8
 
 開き方は 2 通りあります。
 
-- メニューバーの **「表示」→「ツール」→「GraphNode Tree」** から、現在選択している要素のノードグラフを開きます。
+- メニューバーの **「表示」→「ツール」→「ノードグラフ」** から、現在選択している要素のノードグラフを開きます。
 - プロパティタブで、ノードベースの描画オブジェクトやフィルターエフェクトが持つグラフプロパティの **「タブで開く」** ボタンからも、同じグラフをこのタブで開けます。
 
 ## 画面構成
@@ -107,6 +107,22 @@ sidebar_position: 8
 - **横方向のドラッグ**で、その接続を別のポートに繋ぎ直します。
 - **ダブルクリック**で、その接続だけを切断します。
 
+## 入れ子のプロパティとノードの案内
+
+オブジェクトの入れ子になったプロパティにも入力ポートを追加できます。ポートを空白部分へドラッグして離すと、互換性のあるノードの追加メニューが開きます。ポートのラベルにマウスを乗せると、説明・型・プロパティの範囲を確認できます。
+
+拡張機能の不足などで読み込めないノードはフォールバックとして表示されます。元のデータを保った状態で表示するため、利用できないノードを通常の実行可能なノードとして扱わないでください。
+
+## AI生成ノード
+
+**AI生成** カテゴリーには **プロンプト**、**画像を生成**、**画像を編集**、**動画を生成**、**動画を編集** があります。プロンプトノードで指示、スタイル、構図、動き、除外事項を組み立て、複数の生成ノードに共有できます。
+
+通常のプレビューや再生は保存済みの生成結果を表示し、課金されるリクエストを自動的には送信しません。キャンバスのメニューの **AIノードを実行** で明示的に開始し、**停止** で中断します。上流の依存ノードから順番に実行し、リクエスト全体が変わっていない結果は再利用します。明示的な再生成はその対象を新しく生成します。
+
+生成ノードでは履歴から結果を選び、固定や整理、バリエーションの比較を行えます。生成結果の変更は取り消し履歴に記録されます。グループはテンプレートとして保存し、空白部分の **テンプレート** メニューから再利用できます。
+
+動画生成・編集ノードは `VideoSource` を出力します。表示するには動画ソースノードの `Source` に接続し、時間入力と出力を描画の流れにつなぎます。利用できるモデルや入力条件はアカウントとモデルに依存します。[AIワークスペース](./ai-workspace.md)も参照してください。
+
 ## モニターノード
 
 実行結果を可視化するモニター系のノードでは、編集中のグラフの値が次のように表示されます。
@@ -122,6 +138,7 @@ sidebar_position: 8
 
 - 何もない場所を **左ドラッグ** でグラフ全体をパンします。
 - ホイールでズームイン/アウト（ポインタ位置を中心に拡大）します。
+- タッチパッドのスクロールでパンし、ピンチでズームできます。
 
 ### キーボード
 
@@ -144,6 +161,11 @@ sidebar_position: 8
 - [ライブラリリファレンス: ノードベース](../library/drawables/index.md)
 
 ## ソース
+
+- [`NodesRegistrar.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Nodes/NodesRegistrar.cs)
+- [`GenerativeNode.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeNode.cs)
+- [`GenerativeGraphRunner.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeGraphRunner.cs)
+- [`GraphNodeView.axaml.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/NodeGraphTab/Views/GraphNodeView.axaml.cs)
 
 - [`NodeGraphTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/NodeGraphTabExtension.cs)
 - [`NodeGraphTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/ViewModels/NodeGraphTabViewModel.cs)

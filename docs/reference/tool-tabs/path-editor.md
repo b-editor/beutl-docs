@@ -26,8 +26,10 @@ Choosing **Edit in frame** instead enters a separate mode where you edit directl
 ## Layout
 
 - **Editing canvas (center)**: The work area where the path is shown and edited. The background shows a grid that follows the current zoom level, along with horizontal and vertical lines marking the scene origin.
-- **Drag mode toggles (top-left)**: Choose how a control point behaves when dragged, from **Symmetry / Asymmetry / Separately**.
-- **Visibility toggles (top-left)**: Show or hide the path's **stroke** and **fill** independently.
+- **Toolbar**: Choose **Move (`V`)**, **Pen (`P`)**, **Bend (`B`)**, or **Hand (`H`)**, zoom in or out, and fit the path to the canvas.
+- **Point inspector (right)**: Edit the selected anchor's position and its incoming and outgoing control points. For multiple anchors, **Selection position** translates the selection together. Handle linkage and stroke/fill visibility are also available here.
+
+In a narrow tab, open **Point settings** from the toolbar to access the same inspector in a popup.
 
 While a shape is being edited, the canvas displays each segment's **anchor (endpoint)** plus the **control points (handles)** belonging to the selected segment and the next segment.
 Dotted guides are drawn from the selected segment's handles toward their anchors.
@@ -42,16 +44,18 @@ Dotted guides are drawn from the selected segment's handles toward their anchors
 
 ### Selecting anchors
 
-- **`Ctrl` + click** an anchor to toggle its selection (multi-select supported).
-- **`Ctrl` + drag** an empty area of the canvas to make a rectangular range selection.
+- **`Shift`, `Ctrl`, or `Cmd` + click** an anchor to add it to or remove it from the selection.
+- In **Move** mode, drag an empty area of the canvas to make a rectangular selection; hold **`Shift`** to extend the selection.
 - Press **`Ctrl + A`** (**`Cmd + A`** on macOS) to select every anchor.
 - Press **`Esc`** to clear the selection.
 - When multiple anchors are selected, dragging one of them moves all selected anchors together.
 
 ### Fine-tuning with the keyboard
 
-Use the **arrow keys (`←` `↑` `→` `↓`)** to nudge the anchors of the selected segment by one unit at a time.
+Use the **arrow keys (`←` `↑` `→` `↓`)** to nudge the selected anchors by one unit at a time, or ten units while holding **`Shift`**.
 The change is committed to history when the key is released.
+
+Hold **`Shift`** while dragging an anchor to constrain movement horizontally or vertically. When dragging a handle, **`Shift`** snaps its angle and **`Alt`** (**`Option`** on macOS) temporarily lets it move independently.
 
 ### Control point drag modes
 
@@ -61,7 +65,14 @@ Choose how the opposite handle responds when you drag a handle (control point).
 - **Asymmetry**: The opposite handle follows the angle only; its length is preserved.
 - **Separately**: The opposite handle is left untouched (edited independently).
 
-You can switch the drag mode from the radio buttons in the top-left of the canvas, or from the right-click menu on the canvas.
+You can switch the drag mode from the point inspector or from the right-click menu on the canvas.
+
+### Drawing and bending
+
+- **Pen (`P`)**: Click to add points, or drag to create curve handles. Click the starting point to close a path when the existing geometry supports it.
+- **Bend (`B`)**: Click an anchor to add or remove handles. Double-clicking an anchor in Move mode performs the same action.
+- Double-click a path edge in Move mode to insert an anchor.
+- Press **`Enter`** to finish drawing; **`Esc`** cancels a gesture in progress and clears the selection.
 
 ### Adding a segment
 
@@ -80,6 +91,8 @@ The added segment is appended to the end of the current path, and its control po
 **Right-click** an anchor or a control point to bring up the **Delete** menu.
 This removes the segment from the path.
 
+Use **`Delete`** or **`Backspace`** to remove selected anchors.
+
 ### Right-click menu on the canvas
 
 Right-clicking an empty area exposes the following options in addition to segment creation above.
@@ -89,13 +102,16 @@ Right-clicking an empty area exposes the following options in addition to segmen
 
 ### Visibility toggles (stroke and fill)
 
-The toggle buttons in the top-left of the canvas let you show or hide the **stroke** and **fill** of the shape being edited independently.
+The point inspector lets you show or hide the **stroke** and **fill** of the shape being edited independently.
 Show only what you need depending on how you want to inspect the shape.
 
 ## Panning and zooming the canvas
 
-- **Mouse wheel**: Zoom in / out, centered on the wheel position.
-- **Left drag (empty area)**: Pan (translate) the entire canvas.
+- **Mouse wheel**: Pan the canvas.
+- **`Ctrl` + wheel** (**`Cmd` + wheel** on macOS): Zoom in / out around the pointer.
+- **Hand (`H`), `Space` + drag, or middle-button drag**: Pan the canvas.
+- **`+` / `-`**: Zoom in / out. **`0`** resets the view.
+- **`Shift + 1`**: Fit the whole path. **`Shift + 2`**: Fit the selection.
 - **Right-click menu → Reset zoom**: Reset the zoom level and position.
 
 The background grid spacing follows the zoom level. Zoom only affects how the canvas is displayed; it does not change the actual size of the scene.
@@ -112,6 +128,8 @@ The background grid spacing follows the zoom level. Zoom only affects how the ca
 
 ## Source
 
+- [`PathEditorInteraction.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorInteraction.cs)
+- [`PathPointProperties.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/PathEditorTab/Services/PathPointProperties.cs)
 - [`PathEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/PathEditorTabExtension.cs)
 - [`PathEditorTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/ViewModels/PathEditorTabViewModel.cs)
 - [`PathEditorTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml.cs)

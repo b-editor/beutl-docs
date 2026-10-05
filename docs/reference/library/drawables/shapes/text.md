@@ -43,6 +43,8 @@ Font style (normal / italic / oblique).
 
 Font weight (Thin … Black).
 
+For a variable font with a `wght` axis, Beutl renders the requested weight, clamped to the font’s supported range.
+
 - **Type:** `FontWeight`
 - **Default:** `Media.FontWeight.Regular`
 - **Animatable:** No
@@ -118,3 +120,5 @@ Enter the text, pick a font, and adjust the size and other properties. For anima
 ## Source
 
 [`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Media/Font/FontManager.cs)

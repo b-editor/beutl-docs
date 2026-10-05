@@ -25,16 +25,16 @@ sidebar_position: 4
 ローカル X 軸方向の幅。
 
 - **型:** `float`
-- **既定値:** `1`
+- **既定値:** `1000`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
 ### 高さ (Height)
 
-ローカル Z 軸方向の高さ（平面は XZ 平面上にあり、法線は Y 軸正方向）。
+ローカル Z 軸方向の高さ。平面はXZ平面上にあり、法線は−Y方向です。
 
 - **型:** `float`
-- **既定値:** `1`
+- **既定値:** `1000`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
@@ -62,4 +62,4 @@ sidebar_position: 4
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Plane3D.cs)

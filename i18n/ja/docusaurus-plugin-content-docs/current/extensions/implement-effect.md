@@ -74,11 +74,19 @@ public sealed partial class HighContrastBlur : FilterEffect
 }
 ```
 
-`FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`LookupTable`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) を参照してください。
+`FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) を参照してください。
+
+`Crop(Rect, GradientSpreadMethod = Decal)` は `Bounds` と同じ座標系の矩形を切り出します。既定の `Decal` は範囲外を透明にして境界を縮めます。`Pad` は端の色を延長し、`Repeat` は繰り返し、`Reflect` は反転して繰り返し、元の境界を保ちます。
+
+複数入力や複数パスのGLSL処理については、[C#スクリプト](../reference/library/filter-effects/script/csharp-script.md#glslのカスタムパス)も参照してください。
 
 ## 3. レンダーターゲットを直接処理する
 
 [`FlatShadow.cs](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs) や [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs)、[`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) などを参考にしてください。
+
+### メタデータコールバックの診断
+
+コンパイラーが `BESG004` を報告した場合は、メタデータコールバックと、その中から呼ぶ処理が参照している値を確認してください。変更される静的な値を直接読み取らず、明示的な状態や束縛された描画リソースを通じて渡します。
 
 ## 4. 拡張機能で登録する
 
@@ -112,3 +120,5 @@ public sealed class MyEffectExtension : Extension
 | `src/Beutl.Engine/Graphics/FilterEffects/HighContrast.cs` | `FilterEffectContext` の単一呼び出しで完結する最小エフェクト。 |
 | `src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs` | `CustomEffect` で独自描画を行い、`transformBounds` で境界を拡張する例。 |
 | `src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs` | チェイン可能な組み込み操作の全リスト。 |
+
+- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)

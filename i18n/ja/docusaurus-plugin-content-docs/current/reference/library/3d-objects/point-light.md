@@ -42,7 +42,7 @@ sidebar_position: 7
 減衰式の線形項。
 
 - **型:** `float`
-- **既定値:** `0.09`
+- **既定値:** `0.0009`
 - **アニメーション:** 可
 - **範囲:** `[0, ∞)`
 
@@ -51,7 +51,7 @@ sidebar_position: 7
 減衰式の二次項。
 
 - **型:** `float`
-- **既定値:** `0.032`
+- **既定値:** `0.0000032`
 - **アニメーション:** 可
 - **範囲:** `[0, ∞)`
 
@@ -60,7 +60,7 @@ sidebar_position: 7
 ライトが届く最大距離。
 
 - **型:** `float`
-- **既定値:** `50`
+- **既定値:** `5000`
 - **アニメーション:** 可
 - **範囲:** `[0, ∞)`
 
@@ -70,4 +70,4 @@ sidebar_position: 7
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Lighting/PointLight3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/PointLight3D.cs)
+[`src/Beutl.Engine/Graphics3D/Lighting/PointLight3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Lighting/PointLight3D.cs)

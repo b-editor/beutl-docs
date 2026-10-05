@@ -54,3 +54,12 @@ YOUR_PROJECT
 Click __[Publish]__.
 ![Publish Package](_images/4.publish/package-publish-button.png)
 
+## Material and template packages
+
+Place the materials you want to distribute in a top-level `materials/` directory in the `.nupkg`, and object templates in `templates/`.
+
+See [Materials and Templates](../get-started/packages.md) for the user workflow.
+
+## Source
+
+- [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)

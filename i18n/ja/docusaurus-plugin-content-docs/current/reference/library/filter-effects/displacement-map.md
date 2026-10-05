@@ -91,6 +91,10 @@ sidebar_position: 31
 - **中心 X (CenterX):** `float`、既定値 `0`、アニメーション可。画像中心を原点とするピボットの X オフセット（ピクセル）。
 - **中心 Y (CenterY):** `float`、既定値 `0`、アニメーション可。画像中心を原点とするピボットの Y オフセット（ピクセル）。
 
+### 拡張機能独自の変換
+
+拡張機能は `DisplacementMapTransform` を継承し、入れ子の `Resource` の `ApplyTo(...)` を実装して変換を追加できます。公開された `FilterEffectContext` に描画ステージを記録します。このメソッドには変位マップのブラシ、範囲外のサンプリング方式、チャンネル、符号付きの指定、エフェクトコンテキストが渡されます。組み込みの変換で使用するサンプリングヘルパーは公開APIに含まれません。
+
 ## 使い方
 
 ノイズパターン・グラデーション・動画クリップなどをマップとして使います。マップ側の `トランスフォーム` をアニメーションすると流れるような歪みになります。`ディスプレイスメントマップを表示` でデバッグ表示できます。
@@ -98,3 +102,5 @@ sidebar_position: 31
 ## ソース
 
 [`src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapEffect.cs)
+
+- [`DisplacementMapTransform.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapTransform.cs)

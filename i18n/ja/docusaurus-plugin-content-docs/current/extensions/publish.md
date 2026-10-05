@@ -54,3 +54,13 @@ YOUR_PROJECT
 
 ![パッケージ公開](_images/4.publish/package-publish-button.png)
 __[公開する]__ をクリックします。
+
+## 素材とテンプレートのパッケージ
+
+配布する素材を `.nupkg` の最上位の `materials/` に、オブジェクトテンプレートを `templates/` に配置してください。
+
+利用者向けの手順は[素材とテンプレート](../get-started/packages.md)を参照してください。
+
+## ソース
+
+- [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)

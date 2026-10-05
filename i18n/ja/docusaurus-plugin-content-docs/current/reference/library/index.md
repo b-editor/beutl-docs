@@ -18,6 +18,6 @@ sidebar_position: 1
 - [トランスフォーム](./transforms/index.md)
 - [フィルターエフェクト](./filter-effects/index.md)
 - [オーディオエフェクト](./audio-effects/index.md)
-- [3D（試験的）](./3d-objects/index.md)
+- [3D（試験的）](./3d-objects/index.md) — [2D描画オブジェクト](./3d-objects/2d-drawable.md)のカード配置にも対応。
 
 このリファレンスの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/LibraryRegistrar.cs` です。

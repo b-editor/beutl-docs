@@ -91,6 +91,10 @@ Treats the displacement value as a per-pixel rotation around a pivot point.
 - **Center X (CenterX):** `float`, default `0`, animatable. Pivot X offset from the image center (pixels).
 - **Center Y (CenterY):** `float`, default `0`, animatable. Pivot Y offset from the image center (pixels).
 
+### Extension-defined transforms
+
+Extensions can derive from `DisplacementMapTransform` and implement the nested `Resource.ApplyTo(...)` to record stages through the public `FilterEffectContext`. The method receives the map brush, spread method, channel, signedness, and effect context. Sampling helpers shared by the built-in transforms are not part of the public API.
+
 ## Usage
 
 Use a noise pattern, gradient, or video clip as the map. Animate the map's `Transform` for flowing distortions; toggle `ShowDisplacementMap` for debugging.
@@ -98,3 +102,5 @@ Use a noise pattern, gradient, or video clip as the map. Animate the map's `Tran
 ## Source
 
 [`src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapEffect.cs)
+
+- [`DisplacementMapTransform.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/DisplacementMapTransform.cs)

@@ -25,7 +25,7 @@ Library → 3D (Experimental) → Directional Light
 Direction the light shines toward.
 
 - **Type:** `Vector3`
-- **Default:** `(0, -1, 0)`
+- **Default:** `(0.5, 1, 1)`
 - **Animatable:** Yes
 
 ### Shadow Distance (ShadowDistance)
@@ -33,18 +33,18 @@ Direction the light shines toward.
 Maximum distance from which shadows are sampled.
 
 - **Type:** `float`
-- **Default:** `50`
+- **Default:** `5000`
 - **Animatable:** Yes
-- **Range:** `[1, 1000]`
+- **Range:** `[1, 100000]`
 
 ### Shadow Map Size (ShadowMapSize)
 
-Resolution of the shadow map (larger = sharper, costlier).
+Width and height of the shadow map’s orthographic projection. Larger values cover more area but reduce shadow quality.
 
 - **Type:** `float`
-- **Default:** `20`
+- **Default:** `2000`
 - **Animatable:** Yes
-- **Range:** `[1, 500]`
+- **Range:** `[1, 50000]`
 
 ## Common properties
 
@@ -52,4 +52,4 @@ This object inherits from `Light3D` and exposes the [common properties](../commo
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs)
+[`src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs)

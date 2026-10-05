@@ -25,7 +25,7 @@ sidebar_position: 2
 ローカル X 軸方向の幅。
 
 - **型:** `float`
-- **既定値:** `1`
+- **既定値:** `200`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
@@ -34,7 +34,7 @@ sidebar_position: 2
 ローカル Y 軸方向の高さ。
 
 - **型:** `float`
-- **既定値:** `1`
+- **既定値:** `200`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
@@ -43,7 +43,7 @@ sidebar_position: 2
 ローカル Z 軸方向の奥行き。
 
 - **型:** `float`
-- **既定値:** `1`
+- **既定値:** `200`
 - **アニメーション:** 可
 - **範囲:** `[0.001, ∞)`
 
@@ -53,4 +53,4 @@ sidebar_position: 2
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Cube3D.cs)

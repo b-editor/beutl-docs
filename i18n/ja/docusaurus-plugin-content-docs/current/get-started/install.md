@@ -66,8 +66,17 @@ flatpak run net.beditor.Beutl
 
 インストール後、デスクトップ環境のアプリケーションメニューにも Beutl が表示されます。
 
+### Flatpak の更新
+
+Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロードし、同じユーザーまたはシステムのインストール先に適用できます。更新完了後、Beutlを閉じて開き直すと、新しいバージョンが使われます。
+
 ## macOSの場合
 
 - `Beutl.osx_arm64.app.zip` または `Beutl.osx_x64.app.zip` をダウンロードします。
 - ダウンロードしたファイルをダブルクリックして展開します。
 - `Beutl.app`をダブルクリックするとアプリが起動します。
+
+## ソース
+
+- [`FlatpakUpdater.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/FlatpakUpdater.cs)
+- [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs)

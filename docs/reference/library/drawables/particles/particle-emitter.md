@@ -57,6 +57,15 @@ Hard cap on the number of simultaneously alive particles.
 - **Animatable:** No
 - **Range:** `[1, 50000]`
 
+### Prewarm Duration (PrewarmDuration)
+
+Time to simulate before the emitter starts. Only particle simulation advances; property animations do not.
+
+- **Type:** `TimeSpan`
+- **Default:** `00:00:00`
+- **Animatable:** No
+- **Range:** `[00:00:00, 00:01:00]`
+
 ### Emission Rate (EmissionRate)
 
 Particles emitted per second.
@@ -271,4 +280,4 @@ This object inherits from `Drawable` and exposes the [common properties](../../c
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)
+[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)

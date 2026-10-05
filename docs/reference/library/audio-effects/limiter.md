@@ -54,12 +54,12 @@ Gain applied after limiting. The final peak can reach `Threshold + Makeup Gain`.
 
 - Detection is channel-linked: the loudest sample across all channels drives a single gain factor applied to every channel, so the phase relationship between channels is preserved.
 - The default `Threshold` of `-1` dB (rather than `0`) leaves headroom against the master limiter that is always applied to the mix bus, avoiding double limiting.
-- Beutl's inline audio graph has no delay compensation. With a non-zero `Lookahead`, the buffered tail at the end of a clip (or at edit points) is discarded, and the lookahead delay is not compensated elsewhere — keep `Lookahead` at `0` ms when sample-accurate timing and A/V sync matter.
+- Non-zero `Lookahead` introduces a fixed delay. The audio graph reports this latency and drains the buffered tail at a natural contiguous clip end. Seeks, loops, edits, and other discontinuities can still reset and discard buffered samples. Keep the default `0` ms when sample-accurate timing and A/V sync matter.
 
 ## Usage
 
-Place the Limiter last in the chain to guarantee the signal never exceeds `Threshold`. Lower `Threshold` (or raise `Makeup Gain`) to push the perceived loudness up, and shorten `Release` for a tighter, more aggressive sound or lengthen it to avoid pumping.
+Place the Limiter last in the chain to limit signal peaks. Lower `Threshold` (or raise `Makeup Gain`) to push the perceived loudness up, and shorten `Release` for a tighter, more aggressive sound or lengthen it to avoid pumping.
 
 ## Source
 
-[`src/Beutl.Engine/Audio/Effects/LimiterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/LimiterEffect.cs)
+[`src/Beutl.Engine/Audio/Effects/LimiterEffect.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Audio/Effects/LimiterEffect.cs)

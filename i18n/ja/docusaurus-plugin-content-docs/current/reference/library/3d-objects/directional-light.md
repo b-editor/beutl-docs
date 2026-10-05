@@ -25,7 +25,7 @@ sidebar_position: 6
 ライトの照射方向。
 
 - **型:** `Vector3`
-- **既定値:** `(0, -1, 0)`
+- **既定値:** `(0.5, 1, 1)`
 - **アニメーション:** 可
 
 ### 影の距離 (ShadowDistance)
@@ -33,18 +33,18 @@ sidebar_position: 6
 シャドウをサンプリングする最大距離。
 
 - **型:** `float`
-- **既定値:** `50`
+- **既定値:** `5000`
 - **アニメーション:** 可
-- **範囲:** `[1, 1000]`
+- **範囲:** `[1, 100000]`
 
 ### シャドウマップサイズ (ShadowMapSize)
 
-シャドウマップの解像度（大きいほど鮮明だが負荷も高い）。
+シャドウマップの正投影範囲の幅・高さ。大きくすると広い領域を覆いますが、影の品質は低下します。
 
 - **型:** `float`
-- **既定値:** `20`
+- **既定値:** `2000`
 - **アニメーション:** 可
-- **範囲:** `[1, 500]`
+- **範囲:** `[1, 50000]`
 
 ## 共通プロパティ
 
@@ -52,4 +52,4 @@ sidebar_position: 6
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs)
+[`src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Lighting/DirectionalLight3D.cs)

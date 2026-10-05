@@ -46,3 +46,7 @@ Claude Code や Codex などの **AIコーディングエージェント** か�
 ## さらに詳しく
 
 - [AIエージェントによる編集(詳細)](../advanced/ai-agents.md) — 接続の詳細、自動化向けヘッドレスサーバー、全ツール一覧。
+
+## 関連ドキュメント
+
+- [内蔵のAIワークスペース](../reference/tool-tabs/ai-workspace.md)

@@ -25,7 +25,7 @@ Library → 3D (Experimental) → Sphere
 Sphere radius.
 
 - **Type:** `float`
-- **Default:** `0.5`
+- **Default:** `100`
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
@@ -53,4 +53,4 @@ This object inherits from `Object3D` and exposes the [common properties](../comm
 
 ## Source
 
-[`src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs)
+[`src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Primitives/Sphere3D.cs)

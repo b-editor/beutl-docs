@@ -1,10 +1,10 @@
 ---
-title: "ファイルブラウザ"
+title: "ファイル"
 description: "ファイルブラウザタブの役割と主な使い方を説明します。"
 sidebar_position: 3
 ---
 
-# ファイルブラウザ
+# ファイル
 
 プロジェクトフォルダや任意のフォルダ内の **ファイルを参照・整理し、タイムラインへドラッグ&ドロップで取り込む** ためのタブです。
 お気に入りの登録、プロジェクト内のメディアファイル検索、サムネイル表示、リネーム/削除/新規フォルダ作成といったファイル操作も行えます。
@@ -12,11 +12,13 @@ sidebar_position: 3
 ## タブの特性
 
 - **デフォルトで開く**: はい
-- **複数同時に開く**: できない
+- **複数同時に開く**: できる
 
 ## 開き方
 
-メニューバーの **「表示」→「ツール」→「ファイルブラウザ」** から開けます。
+メニューバーの **「表示」→「ツール」→「ファイル」** から開けます。
+
+複数のタブを開き、別々のフォルダーやストレージを参照できます。タブの見出しは表示中の場所に応じて変わります。
 
 ## 画面構成
 
@@ -46,7 +48,7 @@ sidebar_position: 3
 
 ### お気に入り
 
-任意のフォルダ・ファイルを登録できる場所です。先頭には **「テンプレート」** フォルダ（タイムラインで「テンプレートとして保存」した要素の保存先）が常に表示されます。
+任意のフォルダ・ファイルを登録できる場所です。**テンプレート**（タイムラインで保存したテンプレートの保存先）と **素材** フォルダーは固定されています。[ストアの素材とテンプレート](../../get-started/packages.md)もここから参照できます。
 
 - 登録内容は設定として永続化され、次回以降の起動でも保持されます
 - 登録方法: 項目の右クリックメニュー **「お気に入りに追加」**、またはこのセクションへのドラッグ&ドロップ
@@ -73,6 +75,8 @@ sidebar_position: 3
 
 ### サムネイルとツールチップ
 
+オブジェクトテンプレートにもサムネイルが表示されます。
+
 画像（png / jpg / jpeg / gif / bmp / webp / ico / tiff / tif）と動画（mp4 / avi / mov / mkv / wmv / flv / webm）はサムネイルが自動生成されます。サムネイルを生成できないファイルは拡張子に応じたアイコンで表示されます。
 
 項目にマウスを乗せると、メディア情報のツールチップが表示されます。
@@ -97,6 +101,16 @@ sidebar_position: 3
 | **名前の変更** | フライアウトで新しい名前を入力（同名のファイル/フォルダがある場合はエラー表示） |
 | **削除** | 確認ダイアログを経てゴミ箱ではなく完全削除。複数選択中は一括削除 |
 | **お気に入りに追加 / お気に入りから削除** | お気に入りの登録状態に応じて表示が切り替わる |
+
+## オンラインストレージ
+
+**ストレージの切り替え → Beutlストレージ** を選択するとオンラインストレージを開きます。未ログインの場合は **アカウント設定を開く** からログインしてください。**このデバイス** を選ぶとローカルファイルに戻ります。
+
+オンラインの項目には、権限に応じてダウンロード、リンクのコピー、名前変更、移動、詳細、公開／非公開、削除などの操作があります。ローカルファイルのドロップはアップロードになり、オンラインのファイルをドラッグするとダウンロードしてエディターや外部アプリに渡します。表示はアイコンとリストから選べます。
+
+## OSのファイルマネージャーで開く
+
+項目を右クリックし、macOSでは **Finderで開く**、Windowsでは **エクスプローラーで開く**、Linuxでは **ファイルマネージャーで開く** を選択します。ファイルの場合は保存フォルダーを開き、対応するOSではそのファイルを選択します。
 
 ## ドラッグ&ドロップ
 
@@ -130,6 +144,9 @@ OSのファイラーなどからドロップすると **コピー** になりま
 - [タイムライン](./timeline.md)
 
 ## ソース
+
+- [`FileBrowserTabViewModel.Storage.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.Storage.cs)
+- [`FileManagerLauncher.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/Services/FileManagerLauncher.cs)
 
 - [`FileBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/FileBrowserTabExtension.cs)
 - [`FileBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.cs)

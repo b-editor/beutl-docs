@@ -174,7 +174,7 @@ If a saved project references a type that is no longer installed (for example, a
 | `Shape` | `Beutl.Graphics.Shapes` | A `Drawable` whose appearance is defined by a `Geometry`. Adds `Fill` and `Pen`. | [Implementing a Drawing Object](implement-drawing-object.md) |
 | `FilterEffect` | `Beutl.Graphics.Effects` | Post effect applied to a render target. | [Implementing Effects](implement-effect.md) |
 | `Sound` | `Beutl.Audio` | Anything that produces audio on the timeline. Provides `Gain`, `Speed`, `OffsetPosition`, and `AudioEffect`. |  |
-| `AudioEffect` | `Beutl.Audio.Effects` | Audio effect applied to the output of a `Sound`. |  |
+| `AudioEffect` | `Beutl.Audio.Effects` | Audio effect applied to the output of a `Sound`. | [Implementing audio effects](audio-effects.md) |
 | `Geometry` / `Brush` / `Pen` | `Beutl.Media` | Reusable drawing building blocks. | (Use the `EngineObject` pattern above.) |
 
 ## Registering with the library

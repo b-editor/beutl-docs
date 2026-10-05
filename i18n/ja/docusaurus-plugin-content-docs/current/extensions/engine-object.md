@@ -174,7 +174,7 @@ public abstract partial class Drawable : EngineObject { /* … */ }
 | `Shape` | `Beutl.Graphics.Shapes` | 見た目が `Geometry` で決まる `Drawable`。`Fill` と `Pen` を追加で持ちます。 | [描画オブジェクトを実装](implement-drawing-object.md) |
 | `FilterEffect` | `Beutl.Graphics.Effects` | レンダーターゲットへ適用するポストエフェクト。 | [エフェクトを実装する](implement-effect.md) |
 | `Sound` | `Beutl.Audio` | タイムラインに配置される任意の音源。`Gain` / `Speed` / `OffsetPosition` / `AudioEffect` を提供。 |  |
-| `AudioEffect` | `Beutl.Audio.Effects` | `Sound` の出力に適用されるオーディオエフェクト。 |  |
+| `AudioEffect` | `Beutl.Audio.Effects` | `Sound` の出力に適用されるオーディオエフェクト。 | [音声エフェクトの実装](audio-effects.md) |
 | `Geometry` / `Brush` / `Pen` | `Beutl.Media` | 再利用可能な描画ビルディングブロック。 | （上記の `EngineObject` パターンを使用） |
 
 ## ライブラリへの登録

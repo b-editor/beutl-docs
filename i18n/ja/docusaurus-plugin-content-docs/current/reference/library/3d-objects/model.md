@@ -28,10 +28,12 @@ sidebar_position: 5
 - **既定値:** なし (`null`)
 - **アニメーション:** 不可
 
+モデルの既定スケールは `(100, 100, 100)` です。メートル単位で作成されたモデルを、ピクセル単位の3Dシーンに合わせます。
+
 ## 共通プロパティ
 
 このオブジェクトは `3Dグループ` を継承しているため、基底クラスで宣言された[共通プロパティ](../common-properties.md)も利用できます。
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics3D/Models/Model3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Models/Model3D.cs)
+[`src/Beutl.Engine/Graphics3D/Models/Model3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Models/Model3D.cs)
