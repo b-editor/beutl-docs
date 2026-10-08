@@ -18,6 +18,17 @@
     { "id": "font-settings-windows", "path": "settings/_images/font-settings-on-windows.png" },
     { "id": "extension-settings", "path": "settings/_images/extension-settings.png" },
     { "id": "decoder-priority", "path": "settings/_images/decoder-priority-settings.png" },
-    { "id": "ffmpeg-decoder", "path": "settings/_images/ffmpeg-decoder-settings.png" }
+    { "id": "ffmpeg-decoder", "path": "settings/_images/ffmpeg-decoder-settings.png" },
+    { "id": "editor-overview", "path": "get-started/_images/editor-overview.png" },
+    { "id": "library-tab", "path": "reference/tool-tabs/_images/library.png" },
+    { "id": "library-easings", "path": "reference/tool-tabs/_images/easings.png" },
+    { "id": "timeline-tab", "path": "reference/tool-tabs/_images/timeline.png" },
+    { "id": "element-properties", "path": "reference/tool-tabs/_images/element-properties.png" },
+    { "id": "scene-settings-tab", "path": "reference/tool-tabs/_images/scene-settings.png" },
+    { "id": "preview-settings-tab", "path": "reference/tool-tabs/_images/preview-settings.png" },
+    { "id": "graph-editor-tab", "path": "reference/tool-tabs/_images/graph-editor.png" },
+    { "id": "node-graph-tab", "path": "reference/tool-tabs/_images/node-graph.png" },
+    { "id": "telemetry-settings", "path": "settings/_images/telemetry-settings.png" },
+    { "id": "keyframe-property", "path": "get-started/_images/6.keyframe/property.png" }
   ]
 }

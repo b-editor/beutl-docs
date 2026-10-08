@@ -10,6 +10,8 @@ Tool tabs are dockable workspaces around the scene editor.
 Each tab serves a specific purpose, such as the Timeline, Library, or Properties.
 Drag the tabs to rearrange, stack, or tile them as needed.
 
+![Scene editor with Library, Element Property, and Timeline tabs](../../get-started/_images/editor-overview.png)
+
 ## Opening and resetting tabs
 
 - Reopen a closed tab from the menu bar via **View → Tools**.

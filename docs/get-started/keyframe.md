@@ -36,6 +36,10 @@ When animation is enabled on a property, it should look like this:
 Clicking the `<` or `>` buttons will move you to the previous or next keyframe.
 
 ## Easing
+
+![Easing presets available in the Library](../reference/tool-tabs/_images/easings.png)
+
+![Keyframes and a spline curve in the Graph Editor](../reference/tool-tabs/_images/graph-editor.png)
 You can edit easing by opening the animation editor from the __Edit Animation__ menu.
 
 To change the easing of an existing keyframe, drop the desired easing from the easing list onto the keyframe.

@@ -17,6 +17,8 @@ A tab that gathers the **options that affect only the editor preview** — previ
 
 Open it from the menu bar via **View → Tools → Preview Settings**.
 
+![Preview quality, onion skin, and cache settings](_images/preview-settings.png)
+
 ## Preview render quality
 
 Selects the resolution at which the editor renders the preview, trading image quality for speed. Lowering it makes playback and scrubbing smoother on heavy scenes.

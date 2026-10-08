@@ -10,6 +10,7 @@ using Beutl.Controls.Styling;
 using Beutl.Editor.Components.Helpers;
 using Beutl.Extensibility;
 using Beutl.Helpers;
+using Beutl.NodeGraph.Nodes;
 using Beutl.Services;
 using Beutl.Services.StartupTasks;
 using Beutl.Testing.Headless;
@@ -58,6 +59,7 @@ public sealed class ScreenshotApp : Application
         typeof(PropertyEditorExtension).GetProperty("DefaultHandler", BindingFlags.Static | BindingFlags.NonPublic)!
             .SetValue(null, Activator.CreateInstance(implementation, true));
         LibraryRegistrar.RegisterAll();
+        NodesRegistrar.RegisterAll();
         foreach (var extension in LoadPrimitiveExtensionTask.PrimitiveExtensions)
             extension.Load();
     }
@@ -73,6 +75,10 @@ public sealed class ScreenshotApp : Application
 // instead of maintaining another theme/property-editor implementation in the docs repository.
 internal static class DesktopInternals
 {
+    public static T Property<T>(object instance, string name) =>
+        (T)(instance.GetType().GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            ?.GetValue(instance) ?? throw new InvalidOperationException($"Desktop property changed: {instance.GetType().FullName}.{name}"));
+
     public static IScheduler UiScheduler => (IScheduler)Type("Beutl.Helpers.UiThreadScheduler")
         .GetProperty("Instance", BindingFlags.Static | BindingFlags.Public)!.GetValue(null)!;
 

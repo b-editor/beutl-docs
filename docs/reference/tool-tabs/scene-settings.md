@@ -23,6 +23,8 @@ The Scene settings tab does not appear in the **View → Tools** menu. Open it i
 
 If it is already open, that tab will simply be selected.
 
+![Scene size, duration, layer count, and Apply button](_images/scene-settings.png)
+
 ## Layout
 
 The settings are listed vertically, with the **Apply** and **Discard changes** buttons at the bottom.
