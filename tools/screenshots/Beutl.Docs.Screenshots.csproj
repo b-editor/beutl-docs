@@ -14,6 +14,6 @@
   </ItemGroup>
   <Target Name="ValidateDesktopSource" BeforeTargets="PrepareForBuild">
     <Error Condition="!Exists('$(BeutlSource)/src/Beutl/Beutl.csproj')" Text="Set BeutlSource to a Beutl desktop checkout." />
-    <Error Condition="!Exists('.generated/ScreenshotApp.axaml')" Text="Run node scripts/screenshots.mjs update to prepare the production application XAML." />
+    <Error Condition="!Exists('.generated/ScreenshotApp.axaml')" Text="Run node scripts/screenshots.mjs render to prepare the production application XAML." />
   </Target>
 </Project>

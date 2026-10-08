@@ -40,6 +40,7 @@
     "@docusaurus/types": "3.10.0",
     "@types/react": "^19.0.0",
     "gray-matter": "^4.0.3",
+    "pngjs": "7.0.0",
     "typescript": "~6.0.2",
     "wrangler": "^4.85.0"
   },

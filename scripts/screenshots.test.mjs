@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import { PNG } from 'pngjs';
 import { planCaptures, prepareAppXaml, publishCaptures } from './screenshots.mjs';
 
 const manifest = {
@@ -10,7 +11,7 @@ const manifest = {
     ja: { culture: 'ja-JP', root: 'i18n/ja/docusaurus-plugin-content-docs/current' } },
   scenarios: [{ id: 'view-settings', path: 'settings/_images/view-settings.png' }]
 };
-const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aL1sAAAAASUVORK5CYII=', 'base64');
+const png = PNG.sync.write({ width: 1, height: 1, data: Buffer.from([255, 255, 255, 255]) });
 
 test('both locales target current documentation and filters reject typos', () => {
   const captures = planCaptures(manifest);
@@ -78,3 +79,22 @@ test('missing or corrupt output in the second locale preserves all checked-in as
   for (const capture of captures)
     assert.equal((await readFile(path.join(destination, capture.path))).toString(), 'original');
 });
+
+const badCrc = Buffer.from(png);
+badCrc[badCrc.length - 13] ^= 0xff; // Corrupt the IDAT checksum immediately before IEND.
+for (const [name, invalid] of [
+  ['header without image data', png.subarray(0, 33)],
+  ['missing end chunk', png.subarray(0, -12)],
+  ['corrupt image checksum', badCrc]
+]) {
+  test(`a PNG with ${name} preserves all checked-in assets`, async context => {
+    const { source, destination } = await fixture(context);
+    const captures = planCaptures(manifest);
+    await save(source, captures[0].path, png);
+    await save(source, captures[1].path, invalid);
+    for (const capture of captures) await save(destination, capture.path, 'original');
+    await assert.rejects(publishCaptures(captures, source, destination, 'update'), /Invalid rendered PNG/);
+    for (const capture of captures)
+      assert.equal((await readFile(path.join(destination, capture.path))).toString(), 'original');
+  });
+}

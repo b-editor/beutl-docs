@@ -5,6 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
+import { PNG } from 'pngjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const projectRoot = path.join(repoRoot, 'tools/screenshots');
@@ -56,7 +57,13 @@ export async function inspectCaptures(captures, root) {
     if (bytes.length < 33 || !bytes.subarray(0, 8).equals(pngSignature)
       || bytes.toString('ascii', 12, 16) !== 'IHDR' || bytes.readUInt32BE(16) === 0 || bytes.readUInt32BE(20) === 0)
       throw new Error(`Invalid rendered PNG: ${capture.path}`);
-    return { ...capture, bytes, sha256: hash(bytes), width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) };
+    let decoded;
+    try {
+      decoded = PNG.sync.read(bytes, { checkCRC: true });
+    } catch (cause) {
+      throw new Error(`Invalid rendered PNG: ${capture.path}`, { cause });
+    }
+    return { ...capture, bytes, sha256: hash(bytes), width: decoded.width, height: decoded.height };
   }));
 }
 
