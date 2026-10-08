@@ -27,6 +27,14 @@ pnpm start              # English at http://localhost:3000
 pnpm start --locale ja  # Japanese at http://localhost:3000
 ```
 
+Desktop UI screenshots can be regenerated without a display:
+
+```bash
+pnpm screenshots:update --beutl-source ../beutl
+```
+
+See [Headless screenshots](screenshots/README.md) for previewing changes, selecting scenarios/locales, and generating artifacts through GitHub Actions.
+
 ## Build & local Workers preview
 
 ```bash

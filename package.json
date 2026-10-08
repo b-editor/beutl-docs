@@ -14,6 +14,11 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "migrate": "node scripts/migrate-content.mjs",
+    "screenshots:list": "node scripts/screenshots.mjs list",
+    "screenshots:render": "node scripts/screenshots.mjs render",
+    "screenshots:update": "node scripts/screenshots.mjs update",
+    "screenshots:check": "node scripts/screenshots.mjs check",
+    "screenshots:test": "node --test scripts/screenshots.test.mjs",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy"
   },
@@ -35,6 +40,7 @@
     "@docusaurus/types": "3.10.0",
     "@types/react": "^19.0.0",
     "gray-matter": "^4.0.3",
+    "pngjs": "7.0.0",
     "typescript": "~6.0.2",
     "wrangler": "^4.85.0"
   },

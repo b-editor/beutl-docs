@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <BeutlSource Condition="'$(BeutlSource)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../../beutl'))</BeutlSource>
+  </PropertyGroup>
+  <Import Project="$(BeutlSource)/Directory.Build.props" Condition="Exists('$(BeutlSource)/Directory.Build.props')" />
+</Project>

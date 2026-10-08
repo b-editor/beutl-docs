@@ -1,0 +1,76 @@
+name: Desktop screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      desktop_ref:
+        description: Beutl desktop branch, tag, or commit to render
+        required: true
+        default: main
+        type: string
+  repository_dispatch:
+    types: [desktop-ui-changed]
+  pull_request:
+    paths:
+      - .github/workflows/screenshots.yml
+      - scripts/screenshots*
+      - screenshots/**
+      - tools/screenshots/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: screenshots-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - name: Install screenshot dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify screenshot updater
+        run: node --test scripts/screenshots.test.mjs
+
+      - name: Checkout desktop source
+        uses: actions/checkout@v4
+        with:
+          repository: b-editor/beutl
+          ref: ${{ github.event.client_payload.desktop_ref || inputs.desktop_ref || 'main' }}
+          path: .cache/screenshots/desktop
+          submodules: recursive
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: .cache/screenshots/desktop/global.json
+
+      - name: Render English and Japanese screenshots
+        run: node scripts/screenshots.mjs render --beutl-source .cache/screenshots/desktop --output .cache/screenshots/artifact
+
+      - name: Upload images and desktop revision report
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-screenshots
+          path: .cache/screenshots/artifact/
+          if-no-files-found: error
+
+      - name: Upload rendering diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diagnostics
+          path: .cache/screenshots/run-*/
+          if-no-files-found: ignore

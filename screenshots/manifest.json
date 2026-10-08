@@ -1,0 +1,23 @@
+{
+  "locales": {
+    "en": { "culture": "en-US", "root": "docs" },
+    "ja": { "culture": "ja-JP", "root": "i18n/ja/docusaurus-plugin-content-docs/current" }
+  },
+  "scenarios": [
+    { "id": "create-project-menu", "path": "get-started/_images/2.create-project/menu.png" },
+    { "id": "create-project-start", "path": "get-started/_images/2.create-project/start.png" },
+    { "id": "create-project-name", "path": "get-started/_images/2.create-project/name-location.png" },
+    { "id": "create-project-options", "path": "get-started/_images/2.create-project/options.png" },
+    { "id": "view-settings", "path": "settings/_images/view-settings.png" },
+    { "id": "accent-color", "path": "settings/_images/accent-color.png" },
+    { "id": "editor-settings", "path": "settings/_images/editor-settings.png" },
+    { "id": "frame-cache", "path": "settings/_images/frame-cache.png" },
+    { "id": "node-cache", "path": "settings/_images/node-cache.png" },
+    { "id": "property-editor", "path": "settings/_images/property-editor.png" },
+    { "id": "font-settings-linux", "path": "settings/_images/font-settings-on-linux.png" },
+    { "id": "font-settings-windows", "path": "settings/_images/font-settings-on-windows.png" },
+    { "id": "extension-settings", "path": "settings/_images/extension-settings.png" },
+    { "id": "decoder-priority", "path": "settings/_images/decoder-priority-settings.png" },
+    { "id": "ffmpeg-decoder", "path": "settings/_images/ffmpeg-decoder-settings.png" }
+  ]
+}

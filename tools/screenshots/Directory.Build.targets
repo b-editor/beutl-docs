@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="$(BeutlSource)/Directory.Build.targets" Condition="Exists('$(BeutlSource)/Directory.Build.targets')" />
+</Project>
