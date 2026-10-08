@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.generated/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless" />
+    <PackageReference Include="Avalonia.Skia" />
+    <ProjectReference Include="$(BeutlSource)/src/Beutl/Beutl.csproj" />
+    <ProjectReference Include="$(BeutlSource)/tests/Beutl.Testing.Headless/Beutl.Testing.Headless.csproj" />
+    <AvaloniaResource Include=".generated/ScreenshotApp.axaml" />
+  </ItemGroup>
+  <Target Name="ValidateDesktopSource" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(BeutlSource)/src/Beutl/Beutl.csproj')" Text="Set BeutlSource to a Beutl desktop checkout." />
+    <Error Condition="!Exists('.generated/ScreenshotApp.axaml')" Text="Run node scripts/screenshots.mjs update to prepare the production application XAML." />
+  </Target>
+</Project>

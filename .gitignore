@@ -24,3 +24,8 @@ pnpm-debug.log*
 # Wrangler
 .wrangler
 
+# Headless desktop screenshot build and preview output
+/.cache/
+/tools/screenshots/.generated/
+/tools/screenshots/bin/
+/tools/screenshots/obj/

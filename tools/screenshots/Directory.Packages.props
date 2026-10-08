@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="$(BeutlSource)/Directory.Packages.props" Condition="Exists('$(BeutlSource)/Directory.Packages.props')" />
+</Project>
