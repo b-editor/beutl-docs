@@ -8,6 +8,8 @@ sidebar_position: 4
 
 There are three ways to add elements to a created project/scene.
 
+![Library categories used to add objects](../reference/tool-tabs/_images/library.png)
+
 ## Method 1
 - Drag and drop the type of element you want to add from the library to the desired position on the timeline.
 

@@ -18,6 +18,8 @@ You can add, move, split, and group elements on each layer. The tab also lets yo
 
 Open it from the menu bar via **View → Tools → Timeline**.
 
+![Timeline with a playhead and elements on two layers](_images/timeline.png)
+
 ## Layout
 
 - **Timeline scale (top)**: The time-axis ruler. Shows the playback position, scene start/end bars, markers, and the frame cache.

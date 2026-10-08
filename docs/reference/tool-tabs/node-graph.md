@@ -21,6 +21,8 @@ There are two ways to open this tab.
 - From the menu bar, choose **View → Tools → Node Graph** to open the node graph for the currently selected element.
 - In the Properties tab, click the **Open in tab** button on a graph property of a node-based drawable or filter effect to open the same graph in this tab.
 
+![Nodes with properties and a connected output port](_images/node-graph.png)
+
 ## Layout
 
 - **Breadcrumb bar (top)**: Shows the hierarchy of the graph currently being edited. After entering a group node, click an item to return to a parent graph.

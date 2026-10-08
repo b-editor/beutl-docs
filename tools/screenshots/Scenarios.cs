@@ -75,7 +75,7 @@ internal static class Scenarios
                 model.Location.Value = "/home/user/Projects";
                 model.IsGitAvailable.Value = true;
                 model.TrackHistory.Value = true;
-                var dialog = new CreateNewProject { DataContext = model };
+                var dialog = new CreateNewProject { DataContext = model, UseLayoutRounding = true };
                 dialog.FindControl<Carousel>("carousel")!.PageTransition = null;
                 using var host = new CaptureHost(new Border(), 900, 650);
                 Task<FAContentDialogResult> shown = dialog.ShowAsync(host.Window);
@@ -230,18 +230,19 @@ internal static class Scenarios
                 break;
             }
             default:
-                throw new ArgumentException($"Unknown screenshot scenario: {id}");
+                await EditorScreenshots.Render(id, output);
+                break;
         }
     }
 
-    private static void Settle()
+    internal static void Settle()
     {
         // Fixed render ticks, with Fluent animations disabled, avoid wall-clock timing races.
         HeadlessTestHelpers.Settle(3);
         HeadlessTestHelpers.Render(3);
     }
 
-    private sealed class CaptureHost : IDisposable
+    internal sealed class CaptureHost : IDisposable
     {
         public Window Window { get; }
 

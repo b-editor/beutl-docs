@@ -21,6 +21,8 @@ In the Properties tab, click the **vertical three-dot menu (⋮)** on the proper
 
 You can also open the same animation in the Graph Editor tab from the **Open** icon button in the header of an inline animation on the timeline.
 
+![Width animation and its keyframes in the Graph Editor](_images/graph-editor.png)
+
 ## Layout
 
 - **Properties tree (left)**: A hierarchy of drawables, effects, transforms, nested properties, and value channels. Select a row to change the editing target.

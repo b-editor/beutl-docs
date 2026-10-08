@@ -20,6 +20,8 @@ Open it from the menu bar via **View → Tools → Element Property**.
 
 When you click an element on the timeline to select it, that element's contents appear in this tab. Nothing is shown when no element is selected.
 
+![Expanded rectangle properties with animated width](_images/element-properties.png)
+
 ## Layout
 
 The objects contained in the selected element are listed vertically as **expandable panels**.

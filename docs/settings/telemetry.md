@@ -5,6 +5,8 @@ description: Control the collection of desktop usage and diagnostic information.
 
 Open **Settings → Telemetry** to choose which information Beutl collects.
 
+![Telemetry switches with collection disabled](_images/telemetry-settings.png)
+
 ## Application
 
 The **Application** switch controls detailed desktop usage collection. This includes session starts and running time, project and export outcomes, tool tabs and features used, committed edits and edited property names, and enabled effect types.

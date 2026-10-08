@@ -11,6 +11,8 @@ This page explains how to add effects to elements, move them, and more.
 This page uses the term __Drawing Object__.
 For details, please refer to [here](../advanced/rendering-process.md).
 
+![Scene editor with a selected rectangle](./_images/editor-overview.png)
+
 ## Adding Effects
 First, select the element you want to add on the timeline.
 The properties of the selected element will be displayed in the property editor on the right.

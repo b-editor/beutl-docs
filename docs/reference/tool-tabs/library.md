@@ -17,6 +17,8 @@ A tab for browsing the available **drawables, effects, transforms, easings, node
 
 Open it from the menu bar via **View → Tools → Library**.
 
+![Library tab listing drawables and object categories](_images/library.png)
+
 ## Layout
 
 The top of the tab shows the tab switcher and the bottom shows the contents of the selected tab. There are four tabs:
@@ -46,6 +48,8 @@ Type a keyword into the input box to search across the items in every tab. Resul
 When the input box is empty, all registered items are listed in a flat view.
 
 ### Easings
+
+![Easing library with spline and preset curve previews](_images/easings.png)
 
 A list of easing functions used to interpolate between animation keyframes. Each tile shows a preview of the curve shape.
 
