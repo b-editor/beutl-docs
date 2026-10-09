@@ -59,6 +59,10 @@ The SDK takes care of:
 - Adding `PackageReference`s to `Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, and the `Beutl.Engine.SourceGenerators` analyzer.
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
 
+:::warning
+With `Beutl.Extensibility.Sdk` 2.0.0-preview.8 and earlier, the automatic reference to `Beutl.Engine.SourceGenerators` makes the generator a dependency of your package, and Beutl then fails to install it. See [Pitfalls in Extension Development](pitfalls.md#the-source-generator-becomes-a-package-dependency) for the workaround.
+:::
+
 This completes the creation of an empty C# project for extensions.
 
 ### Customizing references
