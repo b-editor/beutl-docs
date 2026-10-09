@@ -208,9 +208,13 @@ public sealed class MyExtension : Extension
         // Group several items together under one heading.
         LibraryService.Current.RegisterGroup("My Extension", group => group
             .AddEngineObject<MySampleObject>("My Sample Object")
-            .AddDrawable<MyShape>("My Shape"));
+            .AddMultiple("My Shape", item => item.BindDrawable<MyShape>()));
     }
 }
 ```
 
 `KnownLibraryItemFormats` exposes the formats the editor recognizes (`EngineObject`, `Drawable`, `FilterEffect`, `Brush`, `Geometry`, `Pen`, `Sound`, `Transform`, etc.). The `BindDrawable<T>()` shortcut on `AddMultiple` registers a `Drawable` with the shape picker without needing the format string yourself.
+
+:::caution
+`AddDrawable<T>()` and `AddSound<T>()` register only the `Drawable` or `Sound` format, so their items cannot be added to the timeline. Use `AddMultiple` with `BindDrawable<T>()` or `BindSound<T>()` instead. See [Pitfalls in Extension Development](pitfalls.md#library-items-that-cannot-be-added-to-the-timeline).
+:::

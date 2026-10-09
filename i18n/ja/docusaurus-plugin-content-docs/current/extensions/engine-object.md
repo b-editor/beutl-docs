@@ -208,9 +208,13 @@ public sealed class MyExtension : Extension
         // グループを作って複数の項目をまとめる場合。
         LibraryService.Current.RegisterGroup("My Extension", group => group
             .AddEngineObject<MySampleObject>("My Sample Object")
-            .AddDrawable<MyShape>("My Shape"));
+            .AddMultiple("My Shape", item => item.BindDrawable<MyShape>()));
     }
 }
 ```
 
 `KnownLibraryItemFormats` にはエディタが認識するフォーマット（`EngineObject`、`Drawable`、`FilterEffect`、`Brush`、`Geometry`、`Pen`、`Sound`、`Transform` など）の定数が並んでいます。`AddMultiple` の `BindDrawable<T>()` ショートカットを使うと、フォーマット文字列を書かずに `Drawable` を図形ピッカーへ登録できます。
+
+:::caution
+`AddDrawable<T>()` と `AddSound<T>()` は `Drawable` か `Sound` の形式だけを登録するため、その項目はタイムラインに追加できません。代わりに `AddMultiple` と `BindDrawable<T>()`・`BindSound<T>()` を使ってください。詳しくは[拡張機能開発の注意点](pitfalls.md#タイムラインに追加できないライブラリ項目)を参照してください。
+:::

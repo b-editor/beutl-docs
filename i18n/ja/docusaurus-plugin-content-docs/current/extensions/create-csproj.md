@@ -59,6 +59,10 @@ SDK が以下を自動で行います。
 - `Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
 - `DebugApplication` が `true` のとき、出力先を `~/.beutl/sideloads/<AssemblyName>` にリダイレクト。
 
+:::warning
+`Beutl.Extensibility.Sdk` 2.0.0-preview.8 以前では、`Beutl.Engine.SourceGenerators` への自動参照によってジェネレーターがパッケージの依存関係に入り、Beutl がそのパッケージをインストールできません。回避策は[拡張機能開発の注意点](pitfalls.md#ソースジェネレーターがパッケージの依存関係に入る)を参照してください。
+:::
+
 以上で拡張機能用に空のC#プロジェクトを作成することができました。
 
 ### 自動参照のカスタマイズ
