@@ -11,7 +11,7 @@ This page collects behaviors that the API does not make obvious and that extensi
 
 Outside `DebugApplication` builds, `Beutl.Extensibility.Sdk` 2.0.0-preview.8 and earlier reference `Beutl.Engine.SourceGenerators` without `PrivateAssets="all"`. `dotnet pack` then lists the generator as a dependency of your package. Beutl cannot resolve that dependency when it installs the package, and the install fails with `Unable to resolve dependency 'Beutl.Engine.SourceGenerators'`.
 
-Turn off the automatic reference and add your own:
+Turn off the automatic reference and add your own. `$(BeutlPackagesVersion)` is the version of the Beutl packages that the SDK references, so the generator always matches them:
 
 ```xml
 <PropertyGroup>
@@ -22,7 +22,7 @@ Turn off the automatic reference and add your own:
   <PackageReference Include="Beutl.Engine.SourceGenerators"
                     OutputItemType="Analyzer"
                     ReferenceOutputAssembly="false"
-                    Version="2.0.0-preview.8"
+                    Version="$(BeutlPackagesVersion)"
                     PrivateAssets="all" />
 </ItemGroup>
 ```
@@ -64,7 +64,7 @@ After a build, `<AssemblyName>.deps.json` in the output should list your own ass
 
 ### Values that implement `IEnumerable` ignore `[JsonConverter]`
 
-Beutl's serializer checks for `IEnumerable` before it hands a value to `System.Text.Json`, both when saving and when loading. If the value type of a property implements `IEnumerable<T>`, it is saved and read element by element, and a `[JsonConverter]` on the type is never used. A custom collection type then fails to load, and the object comes back as a fallback object.
+Beutl's serializer checks for `IEnumerable` before it hands a value to `System.Text.Json`. When it saves a property whose value implements `IEnumerable`, it writes the elements one by one, and a `[JsonConverter]` on the type is not used. When it loads a JSON array into a type that implements `IEnumerable<T>`, it reads the elements one by one and puts them into a new instance of the type. That works for arrays and for `IList` types with a parameterless constructor; any other type loads as `null`, or the load throws.
 
 Do not implement `IEnumerable` on value types you store in properties; expose the elements through a property such as `Items` instead. Tracked in [b-editor/beutl#2728](https://github.com/b-editor/beutl/issues/2728).
 

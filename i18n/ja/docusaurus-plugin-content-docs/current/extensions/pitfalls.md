@@ -11,7 +11,7 @@ API からは読み取りにくく、拡張機能の作者が実際につまず�
 
 `Beutl.Extensibility.Sdk` 2.0.0-preview.8 以前は、`DebugApplication` 以外のビルドで、`Beutl.Engine.SourceGenerators` への参照に `PrivateAssets="all"` を付けません。そのため `dotnet pack` で作ったパッケージの依存関係に、ジェネレーターが含まれます。Beutl はインストール時にこの依存を解決できず、`Unable to resolve dependency 'Beutl.Engine.SourceGenerators'` というエラーでインストールに失敗します。
 
-自動参照を切り、自分で参照を追加してください。
+自動参照を切り、自分で参照を追加してください。`$(BeutlPackagesVersion)` は SDK が参照する Beutl のパッケージのバージョンなので、ジェネレーターも常に同じバージョンになります。
 
 ```xml
 <PropertyGroup>
@@ -22,7 +22,7 @@ API からは読み取りにくく、拡張機能の作者が実際につまず�
   <PackageReference Include="Beutl.Engine.SourceGenerators"
                     OutputItemType="Analyzer"
                     ReferenceOutputAssembly="false"
-                    Version="2.0.0-preview.8"
+                    Version="$(BeutlPackagesVersion)"
                     PrivateAssets="all" />
 </ItemGroup>
 ```
@@ -64,7 +64,7 @@ API からは読み取りにくく、拡張機能の作者が実際につまず�
 
 ### `IEnumerable` を実装した値では `[JsonConverter]` が使われない
 
-Beutl のシリアライザーは、保存するときも読み込むときも、値を `System.Text.Json` に渡す前に `IEnumerable` かどうかを調べます。プロパティの値の型が `IEnumerable<T>` を実装していると、要素ごとに保存・読み込みされ、型に付けた `[JsonConverter]` は使われません。その結果、独自のコレクション型は読み込みに失敗し、オブジェクトは代替のオブジェクトとして読み込まれます。
+Beutl のシリアライザーは、値を `System.Text.Json` に渡す前に `IEnumerable` かどうかを調べます。保存では、値が `IEnumerable` を実装していると要素を 1 つずつ書き出し、型に付けた `[JsonConverter]` は使いません。読み込みでは、`IEnumerable<T>` を実装した型に JSON の配列を読み込むとき、要素を 1 つずつ読み、その型の新しいインスタンスに入れます。うまくいくのは配列と、引数なしのコンストラクターを持つ `IList` の型だけです。それ以外の型は `null` として読み込まれるか、読み込みが例外で失敗します。
 
 プロパティに保存する値の型には `IEnumerable` を実装せず、`Items` のようなプロパティで要素を公開してください。[b-editor/beutl#2728](https://github.com/b-editor/beutl/issues/2728) で扱っています。
 
