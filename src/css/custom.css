@@ -29,14 +29,15 @@
   --ifm-color-emphasis-800: hsl(240 8% 18%);
   --ifm-font-color-base: hsl(240 8% 5%);
 
-  /* Typography — Noto Sans JP for Japanese, Inter for Latin */
+  /* Typography — the system stacks beutl-web renders with, so the docs read
+     in the same type as the landing page. No web fonts are loaded. */
   --ifm-font-family-base:
-    'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
-    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo',
-    system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    'Noto Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   --ifm-font-family-monospace:
-    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
   --ifm-heading-font-weight: 600;
   --ifm-heading-line-height: 1.25;
   --ifm-h1-font-size: 2.0rem;
@@ -95,7 +96,6 @@
 /* Body refinements */
 html,
 body {
-  font-feature-settings: 'cv11', 'ss01', 'palt';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -261,11 +261,6 @@ article li+li {
 .theme-doc-markdown:has(.home-hero-root)>h1:first-child,
 article:has(.home-hero-root)>h1:first-child {
   display: none;
-}
-
-main:has(.home-hero-root)>.container,
-main:has(.home-hero-root) .container {
-  max-width: 1180px;
 }
 
 /* Hide redundant chrome on the home page */

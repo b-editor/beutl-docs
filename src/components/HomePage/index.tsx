@@ -1,136 +1,197 @@
 import type { ReactNode } from 'react';
 import Link from '@docusaurus/Link';
-import Translate from '@docusaurus/Translate';
+import {
+  findFirstSidebarItemLink,
+  useDoc,
+  useDocsSidebar,
+  useDocsVersion,
+} from '@docusaurus/plugin-content-docs/client';
+import type {
+  PropSidebarItem,
+  PropSidebarItemCategory,
+  PropSidebarItemLink,
+} from '@docusaurus/plugin-content-docs';
 import styles from './styles.module.css';
 
-type Card = {
+const GITHUB_HREF = 'https://github.com/b-editor/beutl';
+const INSTALL_DOC_ID = 'get-started/install';
+
+type Copy = {
   title: string;
-  description: string;
-  to: string;
-  badge: string;
+  version: (label: string) => string;
+  /** Heading for pages that sit at the sidebar's root rather than in a category. */
+  otherPages: string;
+  pageCount: (count: number) => string;
 };
 
-const EN_CARDS: Card[] = [
-  {
-    title: 'Getting Started',
-    description: 'Install Beutl, create your first project, and learn the basic editing flow.',
-    to: '/get-started',
-    badge: '01',
+const COPY: Record<'en' | 'ja', Copy> = {
+  en: {
+    title: 'Beutl Documentation',
+    version: (label) => `Version ${label}`,
+    otherPages: 'Other pages',
+    pageCount: (count) => (count === 1 ? '1 page' : `${count} pages`),
   },
-  {
-    title: 'Advanced',
-    description: 'Rendering pipeline, filter effects, and supported types.',
-    to: '/advanced',
-    badge: '02',
+  ja: {
+    title: 'Beutl ドキュメント',
+    version: (label) => `バージョン ${label}`,
+    otherPages: 'その他のページ',
+    pageCount: (count) => `${count} ページ`,
   },
-  {
-    title: 'Extension Development',
-    description: 'Build your own Beutl extensions and publish them to the store.',
-    to: '/extensions',
-    badge: '03',
-  },
-  {
-    title: 'Settings',
-    description: 'Configure the editor, display, fonts, and extension preferences.',
-    to: '/settings',
-    badge: '04',
-  },
-];
+};
 
-const JA_CARDS: Card[] = [
-  {
-    title: 'はじめに',
-    description: 'インストールから最初のプロジェクト作成まで、基本的な操作を学べます。',
-    to: '/ja/get-started',
-    badge: '01',
-  },
-  {
-    title: 'アドバンスド',
-    description: 'レンダリングパイプライン、フィルターエフェクトを解説します。',
-    to: '/ja/advanced',
-    badge: '02',
-  },
-  {
-    title: '拡張機能開発',
-    description: 'Beutl の拡張機能を自作し、ストアに公開する方法を紹介します。',
-    to: '/ja/extensions',
-    badge: '03',
-  },
-  {
-    title: '設定',
-    description: 'エディター、表示、フォント、拡張機能などの設定項目をまとめています。',
-    to: '/ja/settings',
-    badge: '04',
-  },
-];
+/** These sections are read in order, so their pages are numbered. */
+const ORDERED_SECTIONS = new Set(['get-started']);
+
+type NavItem = PropSidebarItemLink | PropSidebarItemCategory;
+
+function isNavItem(item: PropSidebarItem): item is NavItem {
+  if (item.type === 'link') return !item.unlisted;
+  return item.type === 'category';
+}
+
+/** The last segment of the category's path, e.g. "get-started". */
+function sectionKey(category: PropSidebarItemCategory): string | undefined {
+  return category.href?.replace(/\/$/, '').split('/').pop();
+}
+
+/** A category whose index is unlisted links to its first listed page instead. */
+function itemHref(item: NavItem): string | undefined {
+  return item.type === 'link' ? item.href : findFirstSidebarItemLink(item);
+}
+
+function countPages(category: PropSidebarItemCategory): number {
+  return category.items.reduce((count, item) => {
+    if (item.type === 'category') {
+      return count + countPages(item) + (item.href && !item.linkUnlisted ? 1 : 0);
+    }
+    return item.type === 'link' && !item.unlisted ? count + 1 : count;
+  }, 0);
+}
+
+function findDocLink(items: PropSidebarItem[], docId: string): PropSidebarItemLink | undefined {
+  for (const item of items) {
+    if (item.type === 'link' && item.docId === docId) return item;
+    if (item.type === 'category') {
+      const found = findDocLink(item.items, docId);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+function GithubIcon(): ReactNode {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+      <path d="M9 18c-4.51 2-5-2-5-2" />
+    </svg>
+  );
+}
+
+function Section({
+  title,
+  items,
+  ordered,
+  t,
+}: {
+  title: string;
+  items: NavItem[];
+  ordered: boolean;
+  t: Copy;
+}): ReactNode {
+  const List = ordered ? 'ol' : 'ul';
+
+  return (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>{title}</h2>
+      <List className={styles.pages}>
+        {items.map((item, index) => {
+          const href = itemHref(item);
+          if (!href) return null;
+          return (
+            <li key={href} className={styles.pageItem}>
+              <Link to={href} className={styles.page}>
+                {ordered ? (
+                  <span className={styles.pageIndex} aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                ) : null}
+                <span className={styles.pageLabel}>{item.label}</span>
+                {item.type === 'category' ? (
+                  <span className={styles.pageCount}>{t.pageCount(countPages(item))}</span>
+                ) : null}
+              </Link>
+            </li>
+          );
+        })}
+      </List>
+    </section>
+  );
+}
 
 type Props = {
   locale?: 'en' | 'ja';
 };
 
 export default function HomePage({ locale = 'en' }: Props): ReactNode {
-  const cards = locale === 'ja' ? JA_CARDS : EN_CARDS;
-  const isJa = locale === 'ja';
+  const t = COPY[locale];
+  const version = useDocsVersion();
+  const { metadata } = useDoc();
+  const sidebarItems = useDocsSidebar()?.items ?? [];
+
+  const categories = sidebarItems.filter(
+    (item): item is PropSidebarItemCategory => item.type === 'category',
+  );
+  // This page itself also sits at the root, and listing it would link to itself.
+  const rootLinks = sidebarItems.filter(
+    (item): item is PropSidebarItemLink =>
+      item.type === 'link' && !item.unlisted && item.docId !== metadata.id,
+  );
+  const installLink = findDocLink(sidebarItems, INSTALL_DOC_ID);
 
   return (
     <div className={`${styles.home} home-hero-root`}>
-      <div className={styles.mesh} aria-hidden>
-        <span className={`${styles.blob} ${styles.blob1}`} />
-        <span className={`${styles.blob} ${styles.blob2}`} />
-        <span className={`${styles.blob} ${styles.blob3}`} />
-      </div>
-      <section className={styles.hero}>
-        <div className={styles.heroInner}>
-          <span className={styles.eyebrow}>
-            {isJa ? '公式ドキュメント' : 'Official Documentation'}
-          </span>
-          <h1 className={styles.title}>
-            {isJa ? (
-              <>
-                Beutl で映像を、
-                <br />
-                自由に組み立てよう。
-              </>
-            ) : (
-              <>
-                Build motion graphics with Beutl.
-              </>
-            )}
-          </h1>
-          <p className={styles.subtitle}>
-            {isJa
-              ? '無料・オープンソースの映像制作ソフト Beutl の、使い方・拡張・設定をひとまとめに。'
-              : 'A free, open-source motion graphics editor. Learn the workflow, extend it, and tune every detail.'}
-          </p>
-          <div className={styles.ctaRow}>
-            <Link className={styles.ctaPrimary} to={isJa ? '/ja/get-started/install' : '/get-started/install'}>
-              {isJa ? 'インストール手順を見る' : 'Install Beutl'}
-              <span className={styles.ctaArrow} aria-hidden>→</span>
+      <header className={styles.hero}>
+        <span className={styles.eyebrow}>{t.version(version.label)}</span>
+        <h1 className={styles.title}>{t.title}</h1>
+        <div className={styles.ctaRow}>
+          {installLink ? (
+            <Link to={installLink.href} className={`${styles.button} ${styles.buttonPrimary}`}>
+              {installLink.label}
             </Link>
-            <Link
-              className={styles.ctaSecondary}
-              to="https://github.com/b-editor/beutl"
-            >
-              <Translate id="home.github" description="GitHub link on homepage">
-                GitHub
-              </Translate>
-            </Link>
-          </div>
+          ) : null}
+          <Link to={GITHUB_HREF} className={`${styles.button} ${styles.buttonGhost}`}>
+            <GithubIcon />
+            GitHub
+          </Link>
         </div>
-      </section>
+      </header>
 
-      <section className={styles.cardsSection}>
-        <div className={styles.cardGrid}>
-          {cards.map((card) => (
-            <Link key={card.to} to={card.to} className={styles.card}>
-              <span className={styles.cardBadge}>{card.badge}</span>
-              <h2 className={styles.cardTitle}>{card.title}</h2>
-              <p className={styles.cardDescription}>{card.description}</p>
-              <span className={styles.cardArrow} aria-hidden>→</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <div className={styles.sections}>
+        {categories.map((category) => {
+          const key = sectionKey(category);
+          return (
+            <Section
+              key={category.label}
+              title={category.label}
+              items={category.items.filter(isNavItem)}
+              ordered={key !== undefined && ORDERED_SECTIONS.has(key)}
+              t={t}
+            />
+          );
+        })}
+        {rootLinks.length > 0 ? (
+          <Section title={t.otherPages} items={rootLinks} ordered={false} t={t} />
+        ) : null}
+      </div>
     </div>
   );
 }
