@@ -263,11 +263,6 @@ article:has(.home-hero-root)>h1:first-child {
   display: none;
 }
 
-main:has(.home-hero-root)>.container,
-main:has(.home-hero-root) .container {
-  max-width: 1180px;
-}
-
 /* Hide redundant chrome on the home page */
 main:has(.home-hero-root) .theme-doc-breadcrumbs,
 main:has(.home-hero-root) .theme-edit-this-page,
