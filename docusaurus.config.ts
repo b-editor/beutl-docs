@@ -40,23 +40,6 @@ const config: Config = {
     },
   },
 
-  stylesheets: [
-    {
-      href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap',
-      rel: 'stylesheet',
-    },
-  ],
-  headTags: [
-    {
-      tagName: 'link',
-      attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    },
-    {
-      tagName: 'link',
-      attributes: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
-    },
-  ],
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ja'],
