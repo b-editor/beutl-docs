@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Link from '@docusaurus/Link';
 import {
   findFirstSidebarItemLink,
+  useDoc,
   useDocsSidebar,
   useDocsVersion,
 } from '@docusaurus/plugin-content-docs/client';
@@ -18,6 +19,8 @@ const INSTALL_DOC_ID = 'get-started/install';
 type Copy = {
   title: string;
   version: (label: string) => string;
+  /** Heading for pages that sit at the sidebar's root rather than in a category. */
+  otherPages: string;
   pageCount: (count: number) => string;
 };
 
@@ -25,11 +28,13 @@ const COPY: Record<'en' | 'ja', Copy> = {
   en: {
     title: 'Beutl Documentation',
     version: (label) => `Version ${label}`,
+    otherPages: 'Other pages',
     pageCount: (count) => (count === 1 ? '1 page' : `${count} pages`),
   },
   ja: {
     title: 'Beutl ドキュメント',
     version: (label) => `バージョン ${label}`,
+    otherPages: 'その他のページ',
     pageCount: (count) => `${count} ページ`,
   },
 };
@@ -49,13 +54,16 @@ function sectionKey(category: PropSidebarItemCategory): string | undefined {
   return category.href?.replace(/\/$/, '').split('/').pop();
 }
 
+/** A category whose index is unlisted links to its first listed page instead. */
 function itemHref(item: NavItem): string | undefined {
-  return item.type === 'link' ? item.href : (item.href ?? findFirstSidebarItemLink(item));
+  return item.type === 'link' ? item.href : findFirstSidebarItemLink(item);
 }
 
 function countPages(category: PropSidebarItemCategory): number {
   return category.items.reduce((count, item) => {
-    if (item.type === 'category') return count + countPages(item) + (item.href ? 1 : 0);
+    if (item.type === 'category') {
+      return count + countPages(item) + (item.href && !item.linkUnlisted ? 1 : 0);
+    }
     return item.type === 'link' && !item.unlisted ? count + 1 : count;
   }, 0);
 }
@@ -89,20 +97,21 @@ function GithubIcon(): ReactNode {
 }
 
 function Section({
-  category,
+  title,
+  items,
+  ordered,
   t,
 }: {
-  category: PropSidebarItemCategory;
+  title: string;
+  items: NavItem[];
+  ordered: boolean;
   t: Copy;
 }): ReactNode {
-  const key = sectionKey(category);
-  const ordered = key !== undefined && ORDERED_SECTIONS.has(key);
-  const items = category.items.filter(isNavItem);
   const List = ordered ? 'ol' : 'ul';
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>{category.label}</h2>
+      <h2 className={styles.sectionTitle}>{title}</h2>
       <List className={styles.pages}>
         {items.map((item, index) => {
           const href = itemHref(item);
@@ -135,10 +144,16 @@ type Props = {
 export default function HomePage({ locale = 'en' }: Props): ReactNode {
   const t = COPY[locale];
   const version = useDocsVersion();
+  const { metadata } = useDoc();
   const sidebarItems = useDocsSidebar()?.items ?? [];
 
   const categories = sidebarItems.filter(
     (item): item is PropSidebarItemCategory => item.type === 'category',
+  );
+  // This page itself also sits at the root, and listing it would link to itself.
+  const rootLinks = sidebarItems.filter(
+    (item): item is PropSidebarItemLink =>
+      item.type === 'link' && !item.unlisted && item.docId !== metadata.id,
   );
   const installLink = findDocLink(sidebarItems, INSTALL_DOC_ID);
 
@@ -161,9 +176,21 @@ export default function HomePage({ locale = 'en' }: Props): ReactNode {
       </header>
 
       <div className={styles.sections}>
-        {categories.map((category) => (
-          <Section key={category.label} category={category} t={t} />
-        ))}
+        {categories.map((category) => {
+          const key = sectionKey(category);
+          return (
+            <Section
+              key={category.label}
+              title={category.label}
+              items={category.items.filter(isNavItem)}
+              ordered={key !== undefined && ORDERED_SECTIONS.has(key)}
+              t={t}
+            />
+          );
+        })}
+        {rootLinks.length > 0 ? (
+          <Section title={t.otherPages} items={rootLinks} ordered={false} t={t} />
+        ) : null}
       </div>
     </div>
   );
