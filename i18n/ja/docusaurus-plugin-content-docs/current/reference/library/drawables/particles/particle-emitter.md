@@ -61,7 +61,7 @@ sidebar_position: 1
 
 エミッターの開始前にシミュレーションする時間。パーティクルのシミュレーションだけを進め、プロパティのアニメーションは進めません。
 
-- **型:** `TimeSpan`
+- **型:** `MediaTime`
 - **既定値:** `00:00:00`
 - **アニメーション:** 不可
 - **範囲:** `[00:00:00, 00:01:00]`
@@ -278,4 +278,4 @@ sidebar_position: 1
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)
+[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)

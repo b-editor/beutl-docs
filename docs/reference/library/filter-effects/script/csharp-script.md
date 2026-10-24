@@ -27,6 +27,8 @@ The C# script source.
     // Duration - total duration in seconds
     // Time - current time in seconds
 
+    // Scripts run synchronously: await, await using, and await foreach are not supported.
+
     // Example: Apply a blur effect
     // Context.Blur(new Size(10, 10));
 
@@ -45,7 +47,7 @@ The C# script source.
 
 ## Usage
 
-Treat as an escape hatch for behaviors that the built-in filters can't cover.
+Treat as an escape hatch for behaviors that the built-in filters can't cover. Scripts run synchronously on frame-owned state; `await`, `await using`, and `await foreach` are rejected, including inside nested methods or lambdas. `Time` and `Duration` remain floating-point seconds in this script API; they are not `MediaTime` values.
 
 ### Custom GLSL passes
 
@@ -55,7 +57,8 @@ Compiled programs are reused within the effect, but dispose each returned shader
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
 
-- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
-- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
+- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`SynchronousScriptCompiler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Scripting/SynchronousScriptCompiler.cs)

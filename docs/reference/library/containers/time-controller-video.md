@@ -26,7 +26,7 @@ Drawable whose playback time is controlled.
 
 Time offset added to the local clock before sampling the target.
 
-- **Type:** `TimeSpan`
+- **Type:** `MediaTime`
 - **Default:** `00:00:00`
 - **Animatable:** No
 

@@ -8,6 +8,8 @@ sidebar_position: 1
 
 Every library item inherits properties from one or more base classes. These pages document the inherited properties, so individual item pages can stay focused on what is *new* in that class.
 
+The types below describe property values. Extension code reads or writes the property object's `.Value`, for example `drawable.Opacity.Value`; rendering code reads the evaluated `Resource`. See [EngineObject and properties](../../extensions/engine-object.md).
+
 The diagram below shows how the base classes relate:
 
 ```
@@ -28,7 +30,7 @@ EngineObject
 
 Declared in [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs). Base class: `Hierarchical`.
 
-_This class declares no new properties of its own._
+`IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Drawable
 
@@ -119,7 +121,7 @@ Declared in [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beut
 
 Time offset within the source audio at which playback starts.
 
-- **Type:** `TimeSpan`
+- **Type:** `MediaTime`
 - **Default:** `00:00:00`
 - **Animatable:** No
 
@@ -200,19 +202,19 @@ Per-visualizer gain applied before rendering (1 = unity).
 
 Declared in [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs). Base class: `EngineObject`.
 
-_This class declares no new properties of its own._
+`IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Transform
 
 Declared in [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/Transform.cs). Base class: `EngineObject`.
 
-_This class declares no new properties of its own._
+`IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## AudioEffect
 
 Declared in [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/AudioEffect.cs). Base class: `EngineObject`.
 
-_This class declares no new properties of its own._
+`IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Object3D {/* #object3d */}
 
@@ -272,7 +274,7 @@ When `true`, this object receives shadows.
 
 Declared in [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Group3D.cs). Base class: `Object3D`.
 
-_This class declares no new properties of its own._
+`IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Light3D
 

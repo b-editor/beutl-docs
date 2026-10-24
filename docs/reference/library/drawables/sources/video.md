@@ -18,7 +18,7 @@ Library → Video
 
 Time offset within the source video at which playback starts.
 
-- **Type:** `TimeSpan`
+- **Type:** `MediaTime`
 - **Default:** `00:00:00`
 - **Animatable:** No
 

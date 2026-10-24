@@ -8,6 +8,8 @@ sidebar_position: 1
 
 ライブラリに登録されている各オブジェクトは、共通の基底クラスからプロパティを継承しています。各オブジェクトの個別ページでは、そのクラスで新たに宣言されたプロパティのみを掲載しているため、継承される共通プロパティは本ページを参照してください。
 
+以下の型はプロパティの値の型です。拡張機能のコードでは `drawable.Opacity.Value` のようにプロパティオブジェクトの `.Value` を読み書きし、描画コードでは評価済みの `Resource` を参照します。[EngineObject とプロパティ](../../extensions/engine-object.md)も参照してください。
+
 以下は基底クラスの継承関係です：
 
 ```
@@ -28,7 +30,7 @@ EngineObject
 
 宣言ファイル: [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs)、継承元: `Hierarchical`。
 
-_このクラス自体に新たなプロパティはありません。_
+`IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 描画オブジェクト (Drawable)
 
@@ -119,7 +121,7 @@ _このクラス自体に新たなプロパティはありません。_
 
 ソース音声内のどの時刻から再生を開始するか。
 
-- **型:** `TimeSpan`
+- **型:** `MediaTime`
 - **既定値:** `00:00:00`
 - **アニメーション:** 不可
 
@@ -200,19 +202,19 @@ _このクラス自体に新たなプロパティはありません。_
 
 宣言ファイル: [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs)、継承元: `EngineObject`。
 
-_このクラス自体に新たなプロパティはありません。_
+`IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## トランスフォーム (Transform)
 
 宣言ファイル: [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/Transform.cs)、継承元: `EngineObject`。
 
-_このクラス自体に新たなプロパティはありません。_
+`IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 音声エフェクト (AudioEffect)
 
 宣言ファイル: [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/AudioEffect.cs)、継承元: `EngineObject`。
 
-_このクラス自体に新たなプロパティはありません。_
+`IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 3Dオブジェクト (Object3D) {/* #object3d */}
 
@@ -272,7 +274,7 @@ Beutlの3D座標は、+Xが右、+Yが下、+Zが奥で、1単位は1ピクセ�
 
 宣言ファイル: [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Group3D.cs)、継承元: `Object3D`。
 
-_このクラス自体に新たなプロパティはありません。_
+`IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 3Dライト (Light3D)
 

@@ -3,6 +3,8 @@ title: 拡張機能のサンプル
 description: 拡張機能のサンプルを紹介します
 ---
 
+外部のサンプルを移植するときは、[EngineObject](engine-object.md)、[エディタとの連携](editor-integration.md)、[メディアのプロバイダー](media-providers.md)の preview.9 用 API と照合してください。ツールタブのタイトルは `IToolContext.Header`、コマンドは ID とハンドラーを持つ定義で指定します。
+
 ## [SugarShaker](https://github.com/b-editor/SugarShaker)
 Beutlをより簡単に使うための拡張機能です。  
 例えばキーフレームを使わずに、 フェードインアウトなどのアニメーション効果を付けられるようにします。

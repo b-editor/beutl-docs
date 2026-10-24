@@ -3,7 +3,7 @@ title: エフェクトを実装する
 description: EngineObject パターンに基づくカスタム FilterEffect を実装します。
 ---
 
-`FilterEffect` はレンダーターゲットを後処理する `EngineObject` です。基本的な書き方は[描画オブジェクトを実装](implement-drawing-object.md)と同じで、`partial class` で宣言し、`IProperty<T>` メンバを公開し、`ApplyTo` の中で自動生成された `Resource` からスナップショット値を読み取ります。
+`FilterEffect` はレンダーターゲットを後処理する `EngineObject` です。基本的な書き方は[描画オブジェクトを実装](implement-drawing-object.md)と同じで、`partial class` で宣言し、`IExpressionProperty<T>` メンバを公開し、`ApplyTo` の中で自動生成された `Resource` からスナップショット値を読み取ります。
 
 [EngineObject リファレンス](engine-object.md) を読んでいない場合は先に目を通してください。プロパティシステムや `Resource` のライフサイクルがそこで説明されています。
 
@@ -24,7 +24,7 @@ public sealed partial class MyFilterEffect : FilterEffect
 
     public override void ApplyTo(FilterEffectContext context, FilterEffect.Resource resource)
     {
-        // ここで context にフィルタ操作を追加します。
+        // Add filter operations to context here.
     }
 }
 ```
@@ -36,11 +36,13 @@ public sealed partial class MyFilterEffect : FilterEffect
 
 ## 2. 既存のエフェクトを組み合わせる
 
-最も簡単なカスタムエフェクトは、`FilterEffectContext` の拡張メソッドを使って Beutl 組み込みの操作を重ねていく方法です。境界の自動拡張（例：ブラーは表面を広げる）も内部で処理されるため、サイズ調整を自分で書く必要はほぼありません。
+最も簡単なカスタムエフェクトは、`FilterEffectContext` のメソッドを使って Beutl 組み込みの操作を重ねていく方法です。境界の自動拡張（例：ブラーは表面を広げる）も内部で処理されるため、サイズ調整を自分で書く必要はほぼありません。
 
 ```cs
 using System.ComponentModel.DataAnnotations;
+using Beutl;
 using Beutl.Engine;
+using Beutl.Graphics;
 using Beutl.Graphics.Effects;
 using Beutl.Graphics.Rendering;
 using Beutl.Media;
@@ -56,11 +58,11 @@ public sealed partial class HighContrastBlur : FilterEffect
 
     [Display(Name = "Blur Sigma")]
     [Range(0, float.MaxValue)]
-    public IProperty<float> BlurSigma { get; } = Property.CreateAnimatable<float>(20);
+    public IExpressionProperty<float> BlurSigma { get; } = Property.CreateAnimatable<float>(20);
 
     [Display(Name = "Contrast")]
     [Range(-100, 100)]
-    public IProperty<float> Contrast { get; } = Property.CreateAnimatable<float>(20);
+    public IExpressionProperty<float> Contrast { get; } = Property.CreateAnimatable<float>(20);
 
     public override void ApplyTo(FilterEffectContext context, FilterEffect.Resource resource)
     {
@@ -74,7 +76,7 @@ public sealed partial class HighContrastBlur : FilterEffect
 }
 ```
 
-`FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) を参照してください。
+`FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) と [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs) を参照してください。
 
 `Crop(Rect, GradientSpreadMethod = Decal)` は `Bounds` と同じ座標系の矩形を切り出します。既定の `Decal` は範囲外を透明にして境界を縮めます。`Pad` は端の色を延長し、`Repeat` は繰り返し、`Reflect` は反転して繰り返し、元の境界を保ちます。
 
@@ -82,7 +84,13 @@ public sealed partial class HighContrastBlur : FilterEffect
 
 ## 3. レンダーターゲットを直接処理する
 
-[`FlatShadow.cs](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs) や [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs)、[`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) などを参考にしてください。
+[`FlatShadow.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs) や [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs)、[`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) などを参考にしてください。
+
+`CustomEffect(data, action, transformBounds)` は明示的な状態を受け取り、その状態から出力境界を計算します。記録時に出力境界が決まらない場合、`transformBounds` を渡さないオーバーロードは、所有するターゲットの有限の領域が決まるまで境界を未確定として扱います。メタデータのコールバックから、編集中の変更可能なオブジェクトを直接参照しないでください。
+
+`FilterEffectContext.Shader(ShaderDescription)` と `Geometry(GeometryDescription)` は、境界とヒットテストの契約を持つ遅延操作を記録します。操作の選択判定は `RenderHitTestContract.None`、`OutputBounds`、`AnyInput`、`Custom(...)` で宣言します。`default(RenderHitTestContract)` は無効です。独自のコールバックには `Custom(state, static (state, context, point) => ...)` で状態を渡せます。
+
+`AppendSkiaFilter` の factory はフィルターの生成だけを行い、`Activate`、`Flush` などで自身の `FilterEffectExecutor` に再入してはいけません。ターゲットへの描画は `CustomEffect` の action に移します。
 
 ### メタデータコールバックの診断
 
@@ -121,4 +129,6 @@ public sealed class MyEffectExtension : Extension
 | `src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs` | `CustomEffect` で独自描画を行い、`transformBounds` で境界を拡張する例。 |
 | `src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs` | チェイン可能な組み込み操作の全リスト。 |
 
-- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
+- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
+- [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs)
+- [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)

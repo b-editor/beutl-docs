@@ -8,7 +8,7 @@ description: ThemeExtension で拡張機能から独自のテーマを提供し�
 Beutl 自身の既定のダークテーマもこの仕組みで書かれているため、拡張機能のテーマが機能面で劣ることはありません。組み込みテーマが定義するブラシはすべて差し替えられます。
 
 :::info
-`ThemeExtension` は Beutl 2.0.0-preview.7 で追加されました。プロジェクトには `Beutl.Extensibility.Sdk` のバージョン `2.0.0-preview.7` 以降が必要です。[拡張機能用のC#プロジェクトを作成](create-csproj.md) を参照してください。
+`ThemeExtension` は Beutl 2.0.0-preview.7 で追加されました。このガイドの例は `Beutl.Extensibility.Sdk` のバージョン `2.0.0-preview.9` を対象にしています。[拡張機能用のC#プロジェクトを作成](create-csproj.md) を参照してください。
 :::
 
 ## 1. 最小のテーマ拡張機能
@@ -22,9 +22,7 @@ namespace MyExtension;
 [Export]
 public sealed class MyThemeExtension : ThemeExtension
 {
-    // 拡張機能の生存期間を通して 1 つのインスタンスを使います。レジストリは所有権をディスクリプタの
-    // インスタンスで管理し、ホストはインスタンスが同じなら再適用をスキップするため、呼び出しごとに
-    // 新しいレコードを返すと、再読み込みのたびに解除と適用が一巡してしまいます。
+    // 拡張機能の生存期間を通して同じディスクリプタを返します。
     private static readonly ThemeDescriptor s_descriptor = new(
         Id: "myextension.midnight",
         DisplayName: "Midnight",
