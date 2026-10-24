@@ -16,7 +16,7 @@ sidebar_position: 4
 
 ### ターゲット (Target)
 
-再生時間を制御する対象の描画オブジェクト。
+再生時間を制御する対象の描画オブジェクト。[参照先の選択](../../../get-started/edit-element.md#reference-targets)から既存の描画オブジェクトを指定します。このプロパティでは子オブジェクトを新規作成しません。
 
 - **型:** `Drawable?`
 - **既定値:** なし (`null`)
@@ -26,7 +26,7 @@ sidebar_position: 4
 
 ターゲットをサンプルする前にローカル時刻へ加算するオフセット。
 
-- **型:** `TimeSpan`
+- **型:** `MediaTime`
 - **既定値:** `00:00:00`
 - **アニメーション:** 不可
 
@@ -98,4 +98,6 @@ sidebar_position: 4
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/DrawableTimeController.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/DrawableTimeController.cs)
+[`src/Beutl.Engine/Graphics/DrawableTimeController.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/DrawableTimeController.cs)
+
+- [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)

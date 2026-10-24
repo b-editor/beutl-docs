@@ -27,6 +27,8 @@ The C# script source.
     // Duration - total duration in seconds
     // Time - current time in seconds
 
+    // Scripts run synchronously: await, await using, and await foreach are not supported.
+
     // Example: Apply a blur effect
     // Context.Blur(new Size(10, 10));
 
@@ -47,6 +49,8 @@ The C# script source.
 
 Treat as an escape hatch for behaviors that the built-in filters can't cover.
 
+Render scripts run synchronously. `await`, `await using`, and `await foreach` cause a compilation error, including when they appear inside nested methods or lambdas.
+
 ### Custom GLSL passes
 
 Use `CreateGlslShader(fragmentSource, inputCount: ...)` inside a `Context.CustomEffect` callback for multiple shader inputs or a chain of passes where one pass feeds the next.
@@ -55,7 +59,8 @@ Compiled programs are reused within the effect, but dispose each returned shader
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
 
-- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
-- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
+- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`SynchronousScriptCompiler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Scripting/SynchronousScriptCompiler.cs)

@@ -15,3 +15,11 @@ Beutlで作成したプロジェクトを動画ファイルに出力する方法
 3. 保存先のファイルを選択します。
 4. エンコーダーを指定して、必要であれば詳細設定も変更できます。
 5. エンコードボタンをクリックします。
+
+新しいエンコーダー設定は、プロジェクトのフレームレートと音声のサンプリングレートで開始します。FFmpeg ではコーデックごとのオプション編集を利用でき、Windows では Media Foundation のエンコードにも対応します。設定やプリセットの詳細は [出力](../reference/tool-tabs/output.md) を参照してください。
+
+## ソース
+
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`MFEncodingExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingExtension.cs)
+- [`EncoderOptionsEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.FFmpeg/PropertyEditors/EncoderOptionsEditor.cs)

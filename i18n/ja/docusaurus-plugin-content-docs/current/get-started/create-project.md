@@ -17,7 +17,7 @@ __[次へ]__ をクリックします。
 
 フレームレートとサンプリングレート、初期シーンの横幅、高さを指定します。  
 ![設定](_images/2.create-project/options.png)  
-_Beutl では出力時にここで指定したサンプリングレートを使います。プレビュー再生時には使用しません。_
+プロジェクトのサンプリングレートは、プレビュー音声と新しい出力設定の既定値に使われます。フレームレートは一覧の候補に加え、正の整数や `30000/1001` のような分数を入力できます。
 
 __[新規作成]__ をクリックするとプロジェクトを作成することができます。
 
@@ -33,3 +33,6 @@ Gitが利用できる場合は **Git で履歴を記録** を選択して、作�
 
 - [`EditorHostFallback.axaml`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml.cs)
 - [`ProjectDiskDeletion.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/ProjectDiskDeletion.cs)
+- [`CreateNewProjectViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dialogs/CreateNewProjectViewModel.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)

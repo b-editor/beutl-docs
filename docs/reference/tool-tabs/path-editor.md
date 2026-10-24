@@ -12,7 +12,7 @@ It is only meaningful while you are editing a shape that uses a path.
 ## Tab characteristics
 
 - **Open by default**: No
-- **Allow multiple instances**: No
+- **Allow multiple instances**: Yes
 
 ## How to open
 
@@ -128,14 +128,14 @@ The background grid spacing follows the zoom level. Zoom only affects how the ca
 
 ## Source
 
-- [`PathEditorInteraction.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorInteraction.cs)
-- [`PathPointProperties.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/PathEditorTab/Services/PathPointProperties.cs)
-- [`PathEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/PathEditorTabExtension.cs)
-- [`PathEditorTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/ViewModels/PathEditorTabViewModel.cs)
-- [`PathEditorTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml.cs)
-- [`PathPointDragBehavior.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathPointDragBehavior.cs)
-- [`PathEditorHelper.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorHelper.cs)
-- [`PathGeometryControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathGeometryControl.cs)
-- [`PathEditorGrid.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorGrid.cs)
-- [`ControlPointVisibilityHelper.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PathEditorTab/Views/ControlPointVisibilityHelper.cs)
-- [`PathFigureListItemEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/PathFigureListItemEditor.axaml.cs) (entry point for opening the tab)
+- [`PathEditorInteraction.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorInteraction.cs)
+- [`PathPointProperties.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Services/PathPointProperties.cs)
+- [`PathEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/PathEditorTabExtension.cs)
+- [`PathEditorTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/ViewModels/PathEditorTabViewModel.cs)
+- [`PathEditorTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml.cs)
+- [`PathPointDragBehavior.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathPointDragBehavior.cs)
+- [`PathEditorHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorHelper.cs)
+- [`PathGeometryControl.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathGeometryControl.cs)
+- [`PathEditorViewBase.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorViewBase.cs)
+- [`ControlPointVisibilityHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/ControlPointVisibilityHelper.cs)
+- [`PathFigureListItemEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PathFigureListItemEditor.axaml.cs) (entry point for opening the tab)

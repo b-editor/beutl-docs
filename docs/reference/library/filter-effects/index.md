@@ -8,11 +8,13 @@ description: "Filter effects that post-process a drawable's rendered output. Eff
 Filter effects that post-process a drawable's rendered output. Effects can be chained, animated, and combined with the script subgroup for custom shaders.
 
 - [**Blur**](./blur.md) — Applies a Gaussian blur to the layer.
+- [**Radial Blur**](./radial-blur.md) — Blurs outward from, or around, a center point.
 - [**Drop Shadow**](./drop-shadow.md) — Casts a shadow behind the layer.
 - [**Inner Shadow**](./inner-shadow.md) — Adds a shadow inside the edges of the layer.
 - [**Flat Shadow**](./flat-shadow.md) — Projects a flat (long) shadow from the layer.
 - [**Stroke**](./stroke.md) — Draws an outline (stroke) around the layer.
 - [**Clipping**](./clipping.md) — Clips the layer to a rectangular region.
+- [**Diagonal Clipping**](./diagonal-clipping.md) — Clips the layer along an angled line or band.
 - [**Dilate**](./dilate.md) — Expands opaque regions (morphological dilation).
 - [**Erode**](./erode.md) — Shrinks opaque regions (morphological erosion).
 - [**High Contrast**](./high-contrast.md) — Increases contrast with optional grayscale or invert modes.

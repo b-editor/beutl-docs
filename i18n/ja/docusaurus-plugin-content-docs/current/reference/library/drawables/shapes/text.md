@@ -19,13 +19,15 @@ sidebar_position: 5
 フォントサイズ（ピクセル）。
 
 - **型:** `float`
-- **既定値:** `12`
+- **既定値:** `72`
 - **アニメーション:** 可
 - **範囲:** `[0, ∞)`
 
 ### フォントファミリー (FontFamily)
 
 描画に使用するフォントファミリー。
+
+選択したフォントに文字がない場合は、同梱のフォールバックフォントを探します。対応する絵文字は同梱の Noto Color Emoji で描画されるため、文章と絵文字を別々のテキストオブジェクトに分ける必要はありません。
 
 - **型:** `FontFamily?`
 - **既定値:** システムのデフォルト (`FontFamily.Default`)
@@ -55,6 +57,14 @@ sidebar_position: 5
 
 - **型:** `float`
 - **既定値:** `0`
+- **アニメーション:** 可
+
+### 行揃え (TextAlignment)
+
+最も長い行の幅に合わせて、各行を **左揃え** (`Start`)・**中央揃え** (`Center`)・**右揃え** (`End`) に配置します。テキスト内の行の配置を制御するプロパティです。描画オブジェクト全体の配置には、共通プロパティの `AlignmentX` を使用します。
+
+- **型:** `TextAlignment`
+- **既定値:** `Media.TextAlignment.Start`
 - **アニメーション:** 可
 
 ### 文字ごとに分割 (SplitByCharacters)
@@ -119,6 +129,10 @@ sidebar_position: 5
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
 
-- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Media/Font/FontManager.cs)
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
+- [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
+- [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
+- [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
+- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.ja.resx)

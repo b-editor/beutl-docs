@@ -51,8 +51,7 @@ You can drag the splitters between the columns to change their widths.
 | Cut | `Ctrl + X` | `Cmd + X` |
 | Paste | `Ctrl + V` | `Cmd + V` |
 | Duplicate selected elements | `Ctrl + D` | `Cmd + D` |
-| Exclude (remove from timeline) | `Delete` | `Back` |
-| Delete (also delete the element file from disk) | `Ctrl + Delete` | `Cmd + Back` |
+| Delete selected elements | `Delete` or `Ctrl + Delete` | `Back` or `Cmd + Back` |
 | Split by current frame | `Ctrl + K` | `Cmd + K` |
 | Toggle group / ungroup | `Ctrl + G` | `Cmd + G` |
 | Rename element | `F2` | `Enter` |
@@ -73,7 +72,7 @@ You can drag the splitters between the columns to change their widths.
 | Nudge element 10 frames left / right | `Shift + ,` / `Shift + .` | `Shift + ,` / `Shift + .` |
 | Nudge element 1 second left / right | `Alt + ,` / `Alt + .` | `Alt + ,` / `Alt + .` |
 
-You can also rename an element by double-clicking it.
+You can also rename an element by double-clicking its body. Double-clicking a shared boundary or a transition performs a transition operation instead. The former **Exclude** command has been merged into **Delete**.
 
 ### Playback and playhead navigation
 
@@ -96,6 +95,8 @@ Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an e
 
 Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable command palette that lists the available editor and tool-tab commands, so you can find and run an action — and see its shortcut — without hunting through the menus.
 
+Commands can ask for text or a selection inside the palette. For example, open a recent project, change the theme, or rename the selected element. Rename, split at the current frame, and save as a template can run for the selected element even when the Timeline tab is closed.
+
 ### Element right-click menu
 
 - Toggle **Enable element**
@@ -103,7 +104,8 @@ Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable c
 - Toggle **Razor Tool**
 - Toggle **Ripple Edit**
 - **Split** / **Split by current frame**
-- **Cut** / **Copy** / **Delete** / **Exclude**
+- **Cut** / **Copy** / **Delete**
+- **Transition** submenu: **Start Transition** / **End Transition**
 - **Group selected elements** / **Ungroup selected elements**
 - **Rename**
 - **Change to original length** (restore media elements and the like to their original duration)
@@ -111,6 +113,10 @@ Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable c
 - Toggle **Disable Thumbnails**
 - **Save as Template**
 - **Animation** submenu: **Finish editing** / **Bring to the top**
+
+## Clip transitions
+
+Right-click a clip and choose **Transition → Start Transition** or **End Transition** to open the [Transition](./transition.md) tab. If that edge has no transition, this adds a cross dissolve. Double-click a shared boundary between adjacent clips on the same layer to add a cross dissolve, or double-click an existing transition ramp to edit it. Drag a ramp's handle to adjust its duration.
 
 ## Editing modes
 
@@ -125,7 +131,7 @@ Choose a tool mode from the **Editing Mode** submenu in the empty-area right-cli
 
 **Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later clips on the same layer to close (or open) the resulting space:
 
-- **Delete** / **Exclude** / **Cut**
+- **Delete** / **Cut**
 - Trimming an element's edge
 
 Locked layers stay in place. A locked clip acts as an anchor, so the ripple does not propagate past it.
@@ -268,17 +274,20 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 
 ## Source
 
-- [`TimelineTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.cs)
-- [`TimelineTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.cs)
-- [`TimelineTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs)
-- [`ElementView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
-- [`InlineAnimationLayerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineAnimationLayerViewModel.cs)
-- [`InlineKeyFrameViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineKeyFrameViewModel.cs)
-- [`InlineAnimationLayer.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml.cs)
-- [`InlineAnimationLayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml.cs)
-- [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs)
-- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/PropertyEditorMenu.axaml.cs) (entry point for the inline view)
-- [`LayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml) / [`LayerHeaderViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/LayerHeaderViewModel.cs) (layer lock / mute / solo)
-- [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/RippleHelper.cs) (ripple edit)
-- [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementGapService.cs) (gap operations)
-- [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementResizeService.cs) (slip / roll / slide trims)
+- [`TimelineTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.cs)
+- [`TimelineTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.cs)
+- [`TimelineTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs)
+- [`ElementView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
+- [`InlineAnimationLayerViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineAnimationLayerViewModel.cs)
+- [`InlineKeyFrameViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineKeyFrameViewModel.cs)
+- [`InlineAnimationLayer.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml.cs)
+- [`InlineAnimationLayerHeader.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml.cs)
+- [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs)
+- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) (entry point for the inline view)
+- [`LayerHeader.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml) / [`LayerHeaderViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/LayerHeaderViewModel.cs) (layer lock / mute / solo)
+- [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/RippleHelper.cs) (ripple edit)
+- [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementGapService.cs) (gap operations)
+- [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementResizeService.cs) (slip / roll / slide trims)
+- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
+- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
+- [`ElementStructureService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementStructureService.cs)

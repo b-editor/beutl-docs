@@ -27,6 +27,8 @@ C# スクリプトのソース。
     // Duration - total duration in seconds
     // Time - current time in seconds
 
+    // Scripts run synchronously: await, await using, and await foreach are not supported.
+
     // Example: Apply a blur effect
     // Context.Blur(new Size(10, 10));
 
@@ -47,6 +49,8 @@ C# スクリプトのソース。
 
 組み込みフィルターでは表現できない処理のエスケープハッチとして使います。
 
+描画スクリプトは同期実行されます。`await`、`await using`、`await foreach` はコンパイルエラーになります。入れ子のメソッドやラムダ式の中でも使用できません。
+
 ### GLSLのカスタムパス
 
 `Context.CustomEffect` のコールバック内から `CreateGlslShader(fragmentSource, inputCount: ...)` を使用できます。複数の入力を持つシェーダーや、前のパスの結果を次のパスへ渡す処理に利用します。
@@ -55,7 +59,8 @@ C# スクリプトのソース。
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffect.cs)
 
-- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
-- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`CSharpScriptEffectGlobals.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/CSharpScriptEffectGlobals.cs)
+- [`GLSLShader.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shaders/GLSLShader.cs)
+- [`SynchronousScriptCompiler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Scripting/SynchronousScriptCompiler.cs)

@@ -32,6 +32,8 @@ Beutlアカウントにログインしてください。アカウントでAIを�
 
 動画生成では、対応するモデルで現在のシーンフレームや最初・最後のフレームを入力できます。一般の参照素材には画像・動画・音声を利用でき、使用可能な組み合わせは選択したモデルに応じて表示されます。既存の動画を編集する場合は、長さを別に選択せず入力動画の長さを使います。
 
+対応する入力欄には、ローカルファイルをドラッグ&ドロップできます。参照画像、元の画像や動画、最初・最後のフレーム、キャラクター画像、動画生成の参照素材、字幕の読み込みに対応します。受け付けるファイルの種類や参照数は、選択中の操作とモデルによって異なります。
+
 画像編集の結果には **シーンに追加** と **ファイルに保存** があります。結果を確認してからプロジェクトに追加してください。
 
 ## 関連ドキュメント
@@ -41,7 +43,8 @@ Beutlアカウントにログインしてください。アカウントでAIを�
 
 ## ソース
 
-- [`AiWorkspaceTabExtension.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/PrimitiveImpls/AiWorkspaceTabExtension.cs)
-- [`AiWorkspaceViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Tools/AiWorkspaceViewModel.cs)
-- [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/AiPlanCoordinator.cs)
-- [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Dialogs/AiVideoEditingViewModel.cs)
+- [`AiWorkspaceTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/AiWorkspaceTabExtension.cs)
+- [`AiWorkspaceViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiWorkspaceViewModel.cs)
+- [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiPlanCoordinator.cs)
+- [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
+- [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)

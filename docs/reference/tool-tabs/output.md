@@ -115,8 +115,21 @@ When you change only the destination while keeping the same encoder, the current
 Each encoder provides its own editor for video and audio settings. Each property is edited with a dedicated editor matching its type.
 
 - The video's **source resolution** is linked to the scene's frame size.
+- A newly created encoder configuration starts with the project's frame rate and audio sample rate, and the scene's frame size.
 - The audio sample rate determines the rate to which audio is mixed down at encode time.
 - Even when a preset is applied, **scene-specific values** such as resolution, frame rate, and sample rate are kept.
+
+### FFmpeg encoding options
+
+For FFmpeg encoders, **Encoding options** shows controls based on the selected codec's supported options. Available fields, choices, and ranges therefore vary by encoder. Use **Automatic** to clear an explicit option and return to the encoder's default.
+
+Expand **Advanced options** to add or edit option names and values directly. This also remains available if Beutl cannot retrieve the codec's option descriptions.
+
+### Media Foundation on Windows
+
+**Media Foundation Encoding** uses Windows' built-in encoders. Choose a supported destination such as MP4, WMV, AVI, WAV, MP3, or FLAC. **Auto** chooses a codec for the destination extension; HEVC requires an available Windows HEVC encoder. Audio-only destinations do not output video, and AVI uses uncompressed RGB32 video.
+
+**Use hardware acceleration** is enabled by default. The codecs available in practice depend on the Windows installation and hardware.
 
 ## Running an encode
 
@@ -124,6 +137,8 @@ Each encoder provides its own editor for video and audio settings. Each property
 
 Press the **Encode** button at the top of the editing area to start encoding. The button is disabled until both the destination and the encoder are set.
 When encoding starts, the render cache and frame cache are cleared up front to save memory.
+
+You can continue editing while the encode runs. Export uses a snapshot of the scene and settings taken when you start it; subsequent edits apply to future exports, not the running one.
 
 ### Progress dialog
 
@@ -140,7 +155,7 @@ The tab's editing area also shows the elapsed time, remaining time, and frame pr
 
 ### Cancelling
 
-You can stop the encode with the **Cancel** button on the progress dialog. If a partially written file is left at the destination when you cancel, it is removed automatically.
+You can stop the encode with the **Cancel** button on the progress dialog. Beutl writes to a temporary file and publishes it only after encoding succeeds. Cancelling or failing an encode leaves an existing destination file intact and cleans up the temporary output.
 
 ### Completion notification
 
@@ -178,16 +193,19 @@ These are reasonable starting points. Adjust bitrate, length, and other paramete
 
 ## Source
 
-- [`OutputTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/OutputTabExtension.cs)
-- [`SceneOutputExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/SceneOutputExtension.cs)
-- [`OutputTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/Tools/OutputTabViewModel.cs)
-- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
-- [`OutputPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/Tools/OutputPickerViewModel.cs)
-- [`OutputTab.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/OutputTab.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/OutputTab.axaml.cs)
-- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/OutputView.axaml.cs)
-- [`OutputPickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/OutputPickerFlyout.cs)
-- [`OutputPickerFlyoutPresenter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/OutputPickerFlyoutPresenter.cs)
-- [`OutputProgressDialog.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml.cs)
-- [`AddOutputProfileDialog.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Dialogs/AddOutputProfileDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Dialogs/AddOutputProfileDialog.axaml.cs)
-- [`OutputService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/OutputService.cs)
-- [`OutputPresetService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/OutputPresetService.cs)
+- [`OutputTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputTabExtension.cs)
+- [`SceneOutputExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/SceneOutputExtension.cs)
+- [`OutputTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputTabViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`OutputPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputPickerViewModel.cs)
+- [`OutputTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml.cs)
+- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml.cs)
+- [`OutputPickerFlyout.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputPickerFlyout.cs)
+- [`OutputPickerFlyoutPresenter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/OutputPickerFlyoutPresenter.cs)
+- [`OutputProgressDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml.cs)
+- [`AddOutputProfileDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml.cs)
+- [`OutputService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputService.cs)
+- [`OutputPresetService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/OutputPresetService.cs)
+- [`MFEncodingExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingExtension.cs)
+- [`EncoderOptionsEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.FFmpeg/PropertyEditors/EncoderOptionsEditor.cs)
+- [`StagedOutputFile.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/IO/StagedOutputFile.cs)

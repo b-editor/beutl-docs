@@ -33,7 +33,7 @@ The default setting is __"Off"__.
 
 Adjust the cache size to not exceed this byte size (in megabytes).
 
-The default value is half of the device's memory capacity.
+The default value is half of the memory available to the .NET runtime. This follows a container or job memory limit when one is configured, rather than always using the device's physical memory.
 
 ### Scale
 
@@ -124,6 +124,6 @@ The default setting is __"On"__.
 
 ## Source
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Configuration/EditorConfig.cs)
-- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/EditViewModel.cs)
-- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/AutoSaveService.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
+- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)

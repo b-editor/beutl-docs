@@ -8,88 +8,71 @@ sidebar_position: 6
 
 Beutlでは、**AIコーディングエージェント**(Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot など多数)から **Model Context Protocol (MCP)** を通じてプロジェクトを編集できます。エージェントはシーンを宣言的ドキュメントとして読み取り、JSON Merge PatchをBeutlのアンドゥ履歴経由で適用します。静止画やストーリーボードをレンダリングして、結果を確認することもできます。
 
-Beutlには2つのMCPサーバーがあります。
-
-- **Live MCP サーバー**(推奨): Beutlアプリ内で動作し、エージェントを**実行中のエディタ**に接続します。編集内容は作業中にプレビューとタイムラインへ反映され、すべての変更がアンドゥスタックに記録されます。
-- **Stdio MCP サーバー**(オプション): ヘッドレスプロセスとして動作し、**GUIを起動せずに**プロジェクトファイルを編集します。自動化向けのサーバーです。
+インストールされる MCP サーバーは **`beutl-agent` の1つ**です。Live 編集とヘッドレスのファイル編集の両方に対応し、stdio で通信します。呼び出しごとに対象を指定します。
 
 ## アプリからのセットアップ
 
 **設定 → AI エージェント** を開きます。
 
-1. インストール対象の**エージェント**(Claude Code、Codex、Cursor、Gemini CLI、…、または「カスタム」)と、**インストール範囲**(**プロジェクト**(プロジェクトフォルダーへ)または**グローバル(ユーザープロファイル)**)を選びます。
-2. **コンポーネント**からインストールする項目を選びます。
-   - **スキル**: エージェントが必要に応じて読み込むBeutl編集ノウハウ
-   - **サブエージェント**: タイムライン・ルック用の専用エージェント定義
-   - エージェントのMCP設定への **Stdio MCP サーバー** / **Live MCP サーバー** の登録
-3. **インストール**を押します。
+1. **エージェント**と**インストール範囲**（**プロジェクト**または**グローバル（ユーザープロファイル）**）を選びます。プロジェクトへのインストールでは**プロジェクトフォルダー**も選択します。
+2. **コンポーネント**で**スキル**、**サブエージェント**（対応している場合）、**MCP サーバー**を選びます。
+3. **インストール**を押します。Beutl が設定ファイルを書き込むか、エージェントの CLI で登録します。自動登録に対応していない場合や失敗した場合は、ページに表示された案内に従ってください。
 
-MCP設定を自動で書き込めないエージェントでは、手動登録用のコマンド(例: `claude mcp add --scope user`、`codex mcp add`)が表示されます。
+MCP の実行ファイルは Beutl に同梱されています。見つからない場合は Beutl を再インストールするか、**詳細設定 → コマンド**と**引数（1 行に 1 つ）**で既存のサーバーを指定してください。生成される設定は `BEUTL_HOME` に Beutl のプロファイルディレクトリを指定し、同じプロファイルで起動中のエディターを検出します。Live 接続の URL や Bearer トークンをエージェント設定にコピーする必要はありません。
 
-## Live MCP サーバー
+:::note[以前の連携から更新する場合]
 
-アプリの起動時にLiveエンドポイントも自動で開始されます。待ち受けるのは**ループバックのみ**です。
+Beutl の更新後に連携を再インストールしてください。従来の分離した構成が `beutl-agent` に置き換わり、別の `beutl-live` エントリとそのトークンが削除されます。編集済みのスキル・サブエージェントファイルは、置き換える前に `.bak` としてバックアップされます。JSON 設定にコメントがある場合は変更せず、手動で追加するエントリと削除する旧エントリを表示します。
 
-```text
-http://127.0.0.1:<port>/mcp
-```
+:::
 
-既定のポートは `59737` で、使用中の場合は次の空きポートが使われます。実際の **Live MCP URL** と**認証ヘッダー**は **設定 → AI エージェント** ページに表示されます。
+## 起動中のエディターを編集する
 
-すべてのリクエストで、標準ヘッダーにトークンを含める必要があります。トークンはパスワードと同様に扱ってください。
+1. `list_instances` を呼び出し、プロセス ID、プロジェクト、アクティブなシーンから対象のエディターを確認します。
+2. その `instanceId` を `list_scenes` に渡し、返された `sceneId` を選びます。
+3. 以降の Live 呼び出しには、ジョブの状態確認も含めて毎回 `instanceId` を渡します。シーンの読み取り、編集、履歴操作、レンダリングには `sceneId` も渡します。カタログの問い合わせとジョブの状態確認には `sceneId` は不要です。
 
-```text
-Authorization: Bearer <token>
-```
+アタッチ操作や共有のシーン選択状態はありません。通常、シーン操作は画面で選択中のエディターを切り替えません。**設定 → AI エージェント**の **Live MCP の編集を追跡（実験的）** を有効にすると、編集や静止画のレンダリングに合わせて、シーンタブ、選択、再生位置、プロパティエディターを表示します。
 
-MCPクライアント設定の例:
+インスタンスが利用できなくなった場合は、`list_instances` で検出し直してください。`instanceId` を省略するとヘッドレスのファイル編集になり、アクティブなエディターへの接続にはなりません。
 
-```json
-{
-  "mcpServers": {
-    "beutl-live": {
-      "type": "http",
-      "url": "http://127.0.0.1:59737/mcp",
-      "headers": { "Authorization": "Bearer <token>" }
-    }
-  }
-}
-```
+## ファイルをヘッドレスで編集する
 
-接続すると、エージェントは `attach_active_editor` ツールを呼び出し、エディタで開いているシーンにセッションをバインドします。
+`instanceId` を指定しない場合、同じサーバーがファイルを対象とするセッションを使用します。`open_project` または `create_project` から始めてください。このセッションには `sceneId` も渡しません。編集後は `save_project` で保存します。
 
-## Stdio MCP サーバー
+プロジェクト、入力メディア、出力先など、ツールに渡すファイルパスは**絶対パス**にしてください。従来の `BEUTL_WORKSPACE` 設定は使用されず、相対パスの基準となるワークスペースルートはありません。
 
-ヘッドレスサーバーは独立したプロセスとして動作し、stdio経由でMCP通信を行います。環境変数 `BEUTL_WORKSPACE` で、サーバーがプロジェクトを作成・保存できるフォルダーを指定します(未指定時はカレントディレクトリ)。そのフォルダー外にあるファイルも読み取れます。
+手動登録する場合の一般的な JSON 設定例です。
 
 ```json
 {
   "mcpServers": {
     "beutl-agent": {
       "type": "stdio",
-      "command": "<path-to-stdio-server>",
-      "env": { "BEUTL_WORKSPACE": "/path/to/workspace" }
+      "command": "/absolute/path/to/Beutl.AgentToolkit.Mcp",
+      "env": { "BEUTL_HOME": "/absolute/path/to/beutl-profile" }
     }
   }
 }
 ```
 
-:::note
-設定ファイル名とトップレベルのプロパティ名はエージェントごとに異なります(多くは上記のとおり `mcpServers` ですが、例外もあります)。**設定 → AI エージェント** からインストールすれば、選択したエージェントに合った形式で書き込まれるため、通常は手動で編集する必要はありません。
-:::
+実行ファイルとプロファイルのパスはインストール環境に合わせてください（Windows の実行ファイル名は `Beutl.AgentToolkit.Mcp.exe`）。設定形式はエージェントによって異なります。**設定 → AI エージェント**からのインストールでは、適切な形式が選ばれます。
 
 ## 利用できるツール(概要)
 
-エージェントがMCP URLしか把握していない場合は、最初に `get_started` を呼び出します。このツールから簡潔な利用ガイドが返されます。
+最初に `get_started` を呼び出します。このツールから簡潔な利用ガイドが返されます。
 
 | グループ | ツール |
 |---------|-------|
-| セッション | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status`, `attach_active_editor` (Liveサーバーのみ) |
+| Live 対象の検出 | `list_instances`, `list_scenes` |
+| セッション | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status` |
 | クエリ / スキーマ | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_fonts`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds` |
 | 編集 | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
-| 要素 | `add_element`, `move_element`, `remove_element`, `duplicate_element`, `split_element`, `group_elements`, `ungroup_elements` |
 | 履歴 | `undo`, `redo`, `read_history` |
 | レンダー / 確認 | `render_still`, `render_storyboard`, `measure_frame_differences`, `analyze_audio_rhythm`, `export_video`, `read_render_job`, `cancel_render_job` |
+| AI生成（起動中のエディター） | `list_ai_models`, `generate_image`, `edit_image`, `generate_video`, `edit_video`, `transcribe_audio`, `list_ai_jobs`, `read_ai_job`, `cancel_ai_job` |
+
+AI生成は、起動中の Beutl にサインインしたアカウントとその AI クレジットを使用します。生成の呼び出しごとに課金対象のリクエストが発生します。生成メディアは対象シーンの隣に保存され、`apply_edit` で配置できます。タイムアウト後は生成を繰り返さず、`read_ai_job` で既存ジョブを確認するか、`list_ai_jobs` で探してください。読み込んだ拡張機能がツールを追加することもあります。
 
 `apply_edit` は完全な望ましい状態の `desired` または部分変更の `patch` の、いずれか一方を受け取ります。部分編集にはJSON Merge Patchの `patch` を使用し、`get_schema` で確認した `schemaVersion` も指定してください。完全な `desired` は状態全体を指定するため、省略した子要素の配列が削除されることがあります。
 
@@ -104,8 +87,11 @@ MCPクライアント設定の例:
 
 ## ソース
 
-- [`AgentHostEndpoint.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostEndpoint.cs)（Liveサーバー）
-- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/AgentHost/AgentHostTools.cs)
-- [`Beutl.AgentToolkit.Mcp/Program.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit.Mcp/Program.cs)（Stdioサーバー）
-- [`Beutl.AgentToolkit/Tools/`](https://github.com/b-editor/beutl/tree/v2.0.0-preview.8/src/Beutl.AgentToolkit/Tools)（ツール実装）
-- [`AgentCatalog.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.AgentToolkit/Installation/AgentCatalog.cs)（対応エージェント一覧）
+- [`AgentToolkitMcpServer.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/AgentToolkitMcpServer.cs)
+- [`LiveInstanceTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Live/LiveInstanceTools.cs)
+- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostTools.cs)
+- [`AiAgentSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/SettingsPages/AiAgentSettingsPageViewModel.cs)
+- [`AgentToolkitInstallModels.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Installation/AgentToolkitInstallModels.cs)
+- [`ToolPaths.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Common/ToolPaths.cs)
+- [`AgentHostAiTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostAiTools.cs)
+- [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)

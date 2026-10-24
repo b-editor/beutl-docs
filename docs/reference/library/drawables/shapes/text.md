@@ -19,13 +19,15 @@ Library → Text
 Font size in pixels.
 
 - **Type:** `float`
-- **Default:** `12`
+- **Default:** `72`
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
 ### Font Family (FontFamily)
 
 Font family used to render the text.
+
+If the selected font does not contain a character, Beutl tries its bundled fallback fonts. Emoji use the bundled Noto Color Emoji font when supported, so mixed text and emoji do not require separate text objects.
 
 - **Type:** `FontFamily?`
 - **Default:** `Media.FontFamily.Default`
@@ -55,6 +57,14 @@ Extra horizontal space inserted between characters in pixels.
 
 - **Type:** `float`
 - **Default:** `0`
+- **Animatable:** Yes
+
+### Text Alignment (TextAlignment)
+
+Aligns each line within the width of the longest line: **Align left** (`Start`), **Align center** (`Center`), or **Align right** (`End`). This controls the lines inside the text object; the common `Alignment X` property positions the whole drawable.
+
+- **Type:** `TextAlignment`
+- **Default:** `Media.TextAlignment.Start`
 - **Animatable:** Yes
 
 ### Split by characters (SplitByCharacters)
@@ -119,6 +129,10 @@ Enter the text, pick a font, and adjust the size and other properties. For anima
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
 
-- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Media/Font/FontManager.cs)
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
+- [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
+- [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
+- [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
+- [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.resx)

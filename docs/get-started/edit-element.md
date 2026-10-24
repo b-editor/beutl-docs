@@ -42,19 +42,30 @@ Dragging a handle adds the corresponding transform to the object if it does not 
 
 <video controls muted playsInline title="" src="_images/5.edit-element/add-transform.mp4" />
 
+## Choosing reference targets {/* #reference-targets */}
+
+Properties that refer to an existing scene, drawable, effect, transform, or brush show a target picker. Click the target field and choose a compatible object from the list. Scene references list other scenes in the project; object references list compatible targets in the current scene. Targets that would create a circular reference are excluded.
+
+The field shows the target's name. To clear the reference, open its three-dot menu and select **Null**. Choosing a target links to the existing object; it does not create a copy of it.
+
+## Property units and time fields
+
+Where a property declares a unit, its label includes **(%)** for percentages, **(°)** for degrees, or **(×)** for ratios. These units also appear in node-port editors. For example, 2D scale uses percentages, while 3D scale uses ratios.
+
+Time properties continue to display and accept time text such as `00:00:01.500`. Although preview.9 stores media time as integer flick counts, you do not enter flick counts in these time fields.
+
 ## Editing Element Time
 By dragging with the mouse on the timeline,
 you can edit the start time and duration of elements.
 
 To make editing easier in Beutl, elements snap to the time of other layers during drag operations.
-To temporarily disable this, drag while holding down the `Alt` key.
-This feature __cannot be permanently disabled__ in the settings screen.
+Toggle **Snap** in the timeline's empty-area right-click menu to turn snapping on or off. While resizing an element's edge, hold `Alt` to disable snapping temporarily. Holding `Alt` while dragging the element's body duplicates it.
 
 <video controls muted playsInline title="" src="_images/5.edit-element/move-element.mp4" />
 
 ## Splitting Elements
 Right-click the element you want to split on the timeline and click the split button in the menu to split the element.
-You can also use the `Ctrl + K` shortcut to split the selected element at the current frame.
+You can also use `Ctrl + K` (`Cmd + K` on macOS) to split the selected element at the current frame.
 
 ![Splitting Elements](_images/5.edit-element/split-element.webp)
 
@@ -62,14 +73,26 @@ You can also use the `Ctrl + K` shortcut to split the selected element at the cu
 In Beutl, you can change the color and name of elements,
 both of which can be changed from the right-click menu.
 
-You can change the name with the `F2` key or by double-clicking the element.
+You can change the name with `F2` (`Enter` on macOS) or by double-clicking the element's body. Double-clicking a transition or a shared clip boundary performs a [transition operation](../reference/tool-tabs/transition.md).
+
+## Relinking missing media
+
+If a source file has moved or is missing, choose **Open repair tool** from the missing-media notification. The [Relink missing media](../reference/tool-tabs/missing-media.md) tab lets you select replacement files, review candidates for other missing files, and apply the repairs.
 
 ## Recovering damaged elements
 
-If an element's data is damaged or a required extension is missing, the parts that cannot be loaded appear as placeholder elements or objects. Unreadable elements are disabled, but you can continue editing the rest of the scene.
+If an element's data is damaged or a required extension is missing, the parts that cannot be loaded appear as placeholder elements or objects. When Beutl can preserve the unrecognized data, the element remains editable and that data is kept when saving. Supported common properties on a placeholder can also be edited when the placeholder can save them.
 
-Reinstall the required extension or restore damaged files from a backup, then reopen the project. Original data for parts that could not be recovered is protected from being overwritten by auto-save.
+If saving would lose part of the loaded data, Beutl protects the original element file and makes the element read-only, except for removing or replacing the content that could not be loaded. Restore the required extension or damaged file and reopen the project, or repair that content. You can continue editing the rest of the scene.
 
 ## Source
 
-- [`SceneRecovery.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.cs)
+- [`SceneRecovery.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.cs)
+- [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)
+- [`ReferencePropertyEditor.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/ReferencePropertyEditor.axaml)
+- [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs)
+- [`MediaTimeEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/MediaTimeEditor.cs)
+- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
+- [`SceneRecovery.ElementRestore.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.ElementRestore.cs)
+- [`Element.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
+- [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
