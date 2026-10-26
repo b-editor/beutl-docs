@@ -18,7 +18,7 @@ sidebar_position: 1
 
 ソース動画内のどの時刻から開始するか。
 
-- **型:** `TimeSpan`
+- **型:** `MediaTime`
 - **既定値:** `00:00:00`
 - **アニメーション:** 不可
 
@@ -57,4 +57,4 @@ sidebar_position: 1
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/SourceVideo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/SourceVideo.cs)
+[`src/Beutl.Engine/Graphics/SourceVideo.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/SourceVideo.cs)

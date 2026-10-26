@@ -33,7 +33,7 @@ description: エディター画面に関係する設定
 
 このバイト数 (メガバイト数) を超えないようにキャッシュ数を調整します。
 
-デフォルト値はデバイスのメモリ容量の半分です。
+デフォルト値は .NET ランタイムが利用できるメモリの半分です。コンテナーやジョブのメモリ制限が設定されている場合は、デバイスの物理メモリではなく、その制限を反映します。
 
 ### スケール
 
@@ -125,6 +125,6 @@ YUVはI420を使用します。
 
 ## ソース
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Configuration/EditorConfig.cs)
-- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/EditViewModel.cs)
-- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/AutoSaveService.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
+- [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)

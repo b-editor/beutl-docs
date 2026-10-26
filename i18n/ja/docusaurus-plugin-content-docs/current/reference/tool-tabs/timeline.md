@@ -51,8 +51,7 @@ sidebar_position: 1
 | 切り取り | `Ctrl + X` | `Cmd + X` |
 | 貼り付け | `Ctrl + V` | `Cmd + V` |
 | 選択した要素を複製 | `Ctrl + D` | `Cmd + D` |
-| 除外（タイムラインから外す） | `Delete` | `Back` |
-| 削除（ファイルごと削除） | `Ctrl + Delete` | `Cmd + Back` |
+| 選択した要素を削除 | `Delete` または `Ctrl + Delete` | `Back` または `Cmd + Back` |
 | 現在のフレームで分割 | `Ctrl + K` | `Cmd + K` |
 | グループ化 / 解除のトグル | `Ctrl + G` | `Cmd + G` |
 | 要素のリネーム | `F2` | `Enter` |
@@ -73,7 +72,7 @@ sidebar_position: 1
 | 要素を 10 フレーム左 / 右へ移動 | `Shift + ,` / `Shift + .` | `Shift + ,` / `Shift + .` |
 | 要素を 1 秒左 / 右へ移動 | `Alt + ,` / `Alt + .` | `Alt + ,` / `Alt + .` |
 
-要素のダブルクリックでもリネームできます。
+要素本体のダブルクリックでもリネームできます。隣接クリップとの境界やトランジションのダブルクリックは、トランジションの操作になります。従来の **除外** は **削除** に統合されました。
 
 ### 再生とプレイヘッドの移動
 
@@ -96,6 +95,8 @@ sidebar_position: 1
 
 **`Ctrl + Shift + P`**（macOS では `Cmd + Shift + P`）で検索可能なコマンドパレットを開きます。エディタやツールタブで使えるコマンドが一覧表示され、メニューを探さなくても目的の操作を検索して実行でき、ショートカットも確認できます。
 
+コマンドはパレット内で文字列の入力や項目の選択を求めることがあります。たとえば、最近使ったプロジェクトを開く、テーマを変更する、選択した要素の名前を変更する操作に対応します。選択した要素のリネーム・現在のフレームで分割・テンプレートとして保存は、タイムラインタブを閉じていても実行できます。
+
 ### 要素の右クリックメニュー
 
 - **要素を有効化** のトグル
@@ -103,7 +104,8 @@ sidebar_position: 1
 - **レーザーモード** のトグル
 - **リップル編集** のトグル
 - **分割 / 現在のフレームで分割**
-- **切り取り / コピー / 削除 / 除外**
+- **切り取り / コピー / 削除**
+- **トランジション** サブメニュー: **開始のトランジション** / **終了のトランジション**
 - **選択した要素をグループ化 / グループ化を解除**
 - **リネーム**
 - **オリジナルの長さに変更**（メディア要素などで元の長さに戻す）
@@ -111,6 +113,10 @@ sidebar_position: 1
 - **サムネイルを無効化** のトグル
 - **テンプレートとして保存**
 - **アニメーション**サブメニュー: **編集を終了する** / **一番上に持ってくる**
+
+## クリップのトランジション
+
+クリップを右クリックして **トランジション → 開始のトランジション** または **終了のトランジション** を選ぶと、[トランジション](./transition.md) タブが開きます。その端にトランジションがなければクロスディゾルブを追加します。同じレイヤーで隣接するクリップの境界をダブルクリックしてもクロスディゾルブを追加できます。既存のトランジションの傾斜部分をダブルクリックすると編集でき、ハンドルをドラッグすると長さを調整できます。
 
 ## 編集モード
 
@@ -125,7 +131,7 @@ sidebar_position: 1
 
 **リップル編集** (`B`) はツールモードではなく、オンとオフを切り替える設定です。オフにするまで有効なままで、状態はセッションをまたいで記憶されます。有効な間は、以下の操作に合わせて同じレイヤー上の後続クリップが詰められ(または空けられ)ます。
 
-- **削除** / **除外** / **切り取り**
+- **削除** / **切り取り**
 - 要素の端のトリム
 
 ロックされたレイヤーは動きません。ロックされたクリップはアンカーとして扱われ、そこでリップルの伝播が止まります。
@@ -268,17 +274,20 @@ sidebar_position: 1
 
 ## ソース
 
-- [`TimelineTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.cs)
-- [`TimelineTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.cs)
-- [`TimelineTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs)
-- [`ElementView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
-- [`InlineAnimationLayerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineAnimationLayerViewModel.cs)
-- [`InlineKeyFrameViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineKeyFrameViewModel.cs)
-- [`InlineAnimationLayer.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml.cs)
-- [`InlineAnimationLayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml.cs)
-- [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs)
-- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/PropertyEditorMenu.axaml.cs)（インライン表示の起点）
-- [`LayerHeader.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml) / [`LayerHeaderViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TimelineTab/ViewModels/LayerHeaderViewModel.cs)（レイヤーのロック・ミュート・ソロ）
-- [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/RippleHelper.cs)（リップル編集）
-- [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementGapService.cs)（隙間の操作）
-- [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementResizeService.cs)（スリップ / ロール / スライド）
+- [`TimelineTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.cs)
+- [`TimelineTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.cs)
+- [`TimelineTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs)
+- [`ElementView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
+- [`InlineAnimationLayerViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineAnimationLayerViewModel.cs)
+- [`InlineKeyFrameViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineKeyFrameViewModel.cs)
+- [`InlineAnimationLayer.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayer.axaml.cs)
+- [`InlineAnimationLayerHeader.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineAnimationLayerHeader.axaml.cs)
+- [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs)
+- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs)（インライン表示の起点）
+- [`LayerHeader.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml) / [`LayerHeaderViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/ViewModels/LayerHeaderViewModel.cs)（レイヤーのロック・ミュート・ソロ）
+- [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/RippleHelper.cs)（リップル編集）
+- [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementGapService.cs)（隙間の操作）
+- [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementResizeService.cs)（スリップ / ロール / スライド）
+- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
+- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
+- [`ElementStructureService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementStructureService.cs)

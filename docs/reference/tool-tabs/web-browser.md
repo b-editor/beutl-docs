@@ -21,6 +21,8 @@ Open **View → Tools → Browser**. Each instance can show a different page. If
 
 Enter an HTTP/HTTPS URL or search terms in the address bar. Use back, forward, and reload. On a new tab’s blank page, choose **Add bookmark** to register a URL and name. The tab menu includes **New Tab**, **Find in page**, zoom, **Open in Default Browser**, and **Print**.
 
+While viewing a web page, the tab menu's **Add bookmark** saves its current URL and page title directly to your bookmarks.
+
 - **`Ctrl + F`** (**`Cmd + F`** on macOS): Find in page. `Enter` moves to the next match, `Shift + Enter` to the previous match, and `Esc` closes the search.
 - **`Ctrl + +` / `Ctrl + -`** (**`Cmd`** on macOS): Zoom. **`Ctrl + 0`** (**`Cmd + 0`** on macOS) resets to 100%. Zoom ranges from 50% to 200%.
 
@@ -53,9 +55,9 @@ You can clear local download history and delete browser cookies. Cookie deletion
 
 ## Source
 
-- [`WebBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/WebBrowserTabExtension.cs)
-- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs)
-- [`WebBrowserTabView.PageTools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.PageTools.cs)
-- [`WebBrowserTabView.Tools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Tools.cs)
-- [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs)
-- [`BrowserSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Pages/SettingsPages/BrowserSettingsPage.axaml)
+- [`WebBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/WebBrowserTabExtension.cs)
+- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs)
+- [`WebBrowserTabView.PageTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.PageTools.cs)
+- [`WebBrowserTabView.Tools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Tools.cs)
+- [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs)
+- [`BrowserSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Pages/SettingsPages/BrowserSettingsPage.axaml)

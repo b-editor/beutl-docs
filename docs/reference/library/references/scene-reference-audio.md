@@ -16,7 +16,7 @@ Library → Scene Reference (Audio)
 
 ### Referenced Scene (ReferencedScene)
 
-The scene whose rendered audio is mixed in.
+The scene whose rendered audio is mixed in. Use the [reference target picker](../../../get-started/edit-element.md#reference-targets) to select an existing scene in the project. Scenes that would create a reference cycle are excluded.
 
 - **Type:** `Scene?`
 - **Default:** `null`
@@ -32,4 +32,6 @@ Pair with `SceneDrawable` when you want both video and audio of the referenced s
 
 ## Source
 
-[`src/Beutl.ProjectSystem/ProjectSystem/SceneSound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/SceneSound.cs)
+[`src/Beutl.ProjectSystem/ProjectSystem/SceneSound.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneSound.cs)
+
+- [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)

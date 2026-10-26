@@ -17,7 +17,7 @@ Click __[Next]__.
 
 Specify the frame rate, sample rate, initial scene width, and height.  
 ![Settings](_images/2.create-project/options.png)  
-_In Beutl, the specified sample rate will be used during output. It will not be used during preview playback._
+The project sample rate is used for preview audio and as the default for new exports. Frame rate accepts a positive whole number or a fraction such as `30000/1001`, as well as the listed presets.
 
 Click __[Create]__ to create the project.
 
@@ -33,3 +33,6 @@ On the start screen, right-click a project in the recent list and choose **Delet
 
 - [`EditorHostFallback.axaml`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml.cs)
 - [`ProjectDiskDeletion.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/ProjectDiskDeletion.cs)
+- [`CreateNewProjectViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dialogs/CreateNewProjectViewModel.cs)
+- [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)

@@ -16,7 +16,7 @@ sidebar_position: 1
 
 ### 参照するシーン (ReferencedScene)
 
-出力を取り込む参照先のシーン。
+出力を取り込む参照先のシーン。[参照先の選択](../../../get-started/edit-element.md#reference-targets)から、プロジェクト内の既存のシーンを指定します。循環参照になるシーンは候補に表示されません。
 
 - **型:** `Scene?`
 - **既定値:** なし (`null`)
@@ -32,4 +32,6 @@ sidebar_position: 1
 
 ## ソース
 
-[`src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs)
+[`src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs)
+
+- [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)
