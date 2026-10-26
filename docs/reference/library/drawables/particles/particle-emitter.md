@@ -280,4 +280,4 @@ This object inherits from `Drawable` and exposes the [common properties](../../c
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)
+[`src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Particles/ParticleEmitter.cs)

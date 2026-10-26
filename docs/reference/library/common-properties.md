@@ -28,13 +28,13 @@ EngineObject
 
 ## EngineObject
 
-Declared in [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs). Base class: `Hierarchical`.
+Declared in [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Engine/EngineObject.cs). Base class: `Hierarchical`.
 
 `IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Drawable
 
-Declared in [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Drawable.cs). Base class: `EngineObject`.
 
 ### Transform
 
@@ -95,7 +95,7 @@ Layer opacity in percent (0 = transparent, 100 = fully opaque).
 
 ## Shape
 
-Declared in [`src/Beutl.Engine/Graphics/Shapes/Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs). Base class: `Drawable`.
+Declared in [`src/Beutl.Engine/Graphics/Shapes/Shape.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/Shape.cs). Base class: `Drawable`.
 
 ### Stroke (Pen)
 
@@ -115,7 +115,7 @@ Brush used to fill the interior. When `null`, the shape is hollow.
 
 ## Sound
 
-Declared in [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Sound.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Audio/Sound.cs). Base class: `EngineObject`.
 
 ### Offset Position (OffsetPosition)
 
@@ -153,7 +153,7 @@ The constructor instantiates an empty `AudioEffectGroup` so effects can be appen
 
 ## AudioVisualizerDrawable
 
-Declared in [`src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs). Base class: `Drawable`.
+Declared in [`src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs). Base class: `Drawable`.
 
 ### Source
 
@@ -200,19 +200,19 @@ Per-visualizer gain applied before rendering (1 = unity).
 
 ## FilterEffect
 
-Declared in [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs). Base class: `EngineObject`.
 
 `IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Transform
 
-Declared in [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/Transform.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Transformation/Transform.cs). Base class: `EngineObject`.
 
 `IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## AudioEffect
 
-Declared in [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/AudioEffect.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Audio/Effects/AudioEffect.cs). Base class: `EngineObject`.
 
 `IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
@@ -220,7 +220,7 @@ Declared in [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com
 
 Beutl’s 3D coordinates use +X right, +Y down, and +Z away from the viewer, with one unit per pixel. Models default to scale `(100, 100, 100)`. [2D Drawable](./3d-objects/2d-drawable.md) uses its own unlit material, hides the material editor, and defaults to not casting shadows.
 
-Declared in [`src/Beutl.Engine/Graphics3D/Object3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Object3D.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Graphics3D/Object3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Object3D.cs). Base class: `EngineObject`.
 
 ### Position
 
@@ -240,7 +240,7 @@ Local rotation (Euler angles, degrees).
 
 ### Scale
 
-Local scale per axis.
+Local scale per axis as a ratio (1 = original size).
 
 - **Type:** `Vector3`
 - **Default:** `(1, 1, 1)`
@@ -272,13 +272,13 @@ When `true`, this object receives shadows.
 
 ## Group3D
 
-Declared in [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Group3D.cs). Base class: `Object3D`.
+Declared in [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Group3D.cs). Base class: `Object3D`.
 
 `IsTimeAnchor`, `IsEnabled`, `ZIndex`, and `TimeRange` are value-only property objects (`IProperty<bool>`, `IProperty<bool>`, `IProperty<int>`, and `IProperty<TimeRange>`). They are hidden from the ordinary property list. `Start` and `Duration` are read-only `MediaTime` accessors derived from `TimeRange.Value`.
 
 ## Light3D
 
-Declared in [`src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs). Base class: `EngineObject`.
 
 ### Color
 

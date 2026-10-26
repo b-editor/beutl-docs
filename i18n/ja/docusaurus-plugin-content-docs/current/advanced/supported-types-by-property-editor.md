@@ -21,6 +21,9 @@ sidebar_position: 5
 - `System.Boolean`
 - `System.String`
 - `System.Enum`
+- `Beutl.Media.AlignmentX`
+- `Beutl.Media.AlignmentY`
+- `Beutl.Media.TextAlignment`
 - `Beutl.Media.FontFamily`
 - `System.IO.FileInfo`
 - `Beutl.IO.IFileSource`
@@ -62,9 +65,9 @@ sidebar_position: 5
 - `Beutl.NodeGraph.GraphModel`
 - `Beutl.CoreObject`
 
-`IFileSource` のエディターは、公開の引数なしコンストラクターを持つ、未指定の型パラメーターを含まない非抽象クラスを対象とします。リストのエディターは項目の型を取得するために、`IList` とともに `IList<T>` の実装を必要とします。`CoreObject` 型に対して `Property.CreateReference<T>()` で宣言した参照プロパティには、参照先を選ぶエディターが使われます。
+`IFileSource` のエディターは、公開の引数なしコンストラクターを持つ、未指定の型パラメーターを含まない非抽象クラスを対象とします。リストのエディターは項目の型を取得するために、`IList` とともに `IList<T>` の実装を必要とします。`CoreObject` 型に対して `Property.CreateReference<T>()` で宣言した参照プロパティには、参照先を選ぶエディターが使われます。[要素の編集](../get-started/edit-element.md#reference-targets)を参照してください。
 
-タイムラインの時刻には `MediaTime` を使用してください。以前の `TimeSpan` エディターと汎用の `IParsable<T>` フォールバックは削除されています。別の型に対応するエディターを追加するには、`PropertyEditorExtension.RegisterEditors(PropertyEditorRegistry)` を実装します。[エディターとの連携](../extensions/editor-integration.md)を参照してください。
+タイムラインの時刻には `MediaTime` を使用してください。エディターには読みやすい時間文字列として表示されます。以前の `TimeSpan` エディターと汎用の `IParsable<T>` フォールバックは削除されています。別の型に対応するエディターを追加するには、`PropertyEditorExtension.RegisterEditors(PropertyEditorRegistry)` を実装します。[エディターとの連携](../extensions/editor-integration.md)を参照してください。
 
 ## ファイル選択
 
@@ -94,7 +97,7 @@ public partial class SubtitleFileOptions : EngineObject
 
 ## ソース
 
-- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
+- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
 - [`PropertyEditorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorRegistry.cs)
 - [`FileFilterAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/FileFilterAttribute.cs)
 - [`FileSourceEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FileSourceEditorViewModel.cs)

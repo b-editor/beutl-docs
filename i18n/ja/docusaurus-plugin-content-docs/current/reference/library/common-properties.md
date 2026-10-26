@@ -28,13 +28,13 @@ EngineObject
 
 ## EngineObject
 
-宣言ファイル: [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs)、継承元: `Hierarchical`。
+宣言ファイル: [`src/Beutl.Engine/Engine/EngineObject.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Engine/EngineObject.cs)、継承元: `Hierarchical`。
 
 `IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 描画オブジェクト (Drawable)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Drawable.cs)、継承元: `EngineObject`。
 
 ### トランスフォーム (Transform)
 
@@ -95,7 +95,7 @@ EngineObject
 
 ## シェイプ (Shape)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics/Shapes/Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)、継承元: `Drawable`。
+宣言ファイル: [`src/Beutl.Engine/Graphics/Shapes/Shape.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/Shape.cs)、継承元: `Drawable`。
 
 ### ストローク (Pen)
 
@@ -115,7 +115,7 @@ EngineObject
 
 ## サウンド (Sound)
 
-宣言ファイル: [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Sound.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Audio/Sound.cs)、継承元: `EngineObject`。
 
 ### オフセット位置 (OffsetPosition)
 
@@ -153,7 +153,7 @@ EngineObject
 
 ## オーディオビジュアライザー (AudioVisualizerDrawable)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)、継承元: `Drawable`。
+宣言ファイル: [`src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)、継承元: `Drawable`。
 
 ### ソース (Source)
 
@@ -200,19 +200,19 @@ EngineObject
 
 ## フィルターエフェクト (FilterEffect)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs)、継承元: `EngineObject`。
 
 `IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## トランスフォーム (Transform)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/Transform.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Graphics/Transformation/Transform.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Transformation/Transform.cs)、継承元: `EngineObject`。
 
 `IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 音声エフェクト (AudioEffect)
 
-宣言ファイル: [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/AudioEffect.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Audio/Effects/AudioEffect.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Audio/Effects/AudioEffect.cs)、継承元: `EngineObject`。
 
 `IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
@@ -220,7 +220,7 @@ EngineObject
 
 Beutlの3D座標は、+Xが右、+Yが下、+Zが奥で、1単位は1ピクセルです。モデルの既定スケールは `(100, 100, 100)` です。[2D描画オブジェクト](./3d-objects/2d-drawable.md)は専用の非ライティングマテリアルを使用し、マテリアルの編集欄は表示せず、影の投影は既定で無効です。
 
-宣言ファイル: [`src/Beutl.Engine/Graphics3D/Object3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Object3D.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Graphics3D/Object3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Object3D.cs)、継承元: `EngineObject`。
 
 ### 位置 (Position)
 
@@ -240,7 +240,7 @@ Beutlの3D座標は、+Xが右、+Yが下、+Zが奥で、1単位は1ピクセ�
 
 ### スケール (Scale)
 
-軸ごとのローカルスケール。
+軸ごとのローカルスケール（倍率。1 が元の大きさ）。
 
 - **型:** `Vector3`
 - **既定値:** `(1, 1, 1)`
@@ -272,13 +272,13 @@ Beutlの3D座標は、+Xが右、+Yが下、+Zが奥で、1単位は1ピクセ�
 
 ## 3Dグループ (Group3D)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Group3D.cs)、継承元: `Object3D`。
+宣言ファイル: [`src/Beutl.Engine/Graphics3D/Group3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Group3D.cs)、継承元: `Object3D`。
 
 `IsTimeAnchor`、`IsEnabled`、`ZIndex`、`TimeRange` は値だけを持つプロパティオブジェクトです。型はそれぞれ `IProperty<bool>`、`IProperty<bool>`、`IProperty<int>`、`IProperty<TimeRange>` で、通常のプロパティ一覧には表示されません。`Start` と `Duration` は `TimeRange.Value` から取得する読み取り専用の `MediaTime` です。
 
 ## 3Dライト (Light3D)
 
-宣言ファイル: [`src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs)、継承元: `EngineObject`。
+宣言ファイル: [`src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics3D/Lighting/Light3D.cs)、継承元: `EngineObject`。
 
 ### 色 (Color)
 

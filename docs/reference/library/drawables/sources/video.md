@@ -57,4 +57,4 @@ Drag a video file onto the timeline to add it. Adjust `Offset Position` to start
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/SourceVideo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/SourceVideo.cs)
+[`src/Beutl.Engine/Graphics/SourceVideo.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/SourceVideo.cs)

@@ -21,6 +21,9 @@ The built-in property editors support the following value types. Object editors 
 - `System.Boolean`
 - `System.String`
 - `System.Enum`
+- `Beutl.Media.AlignmentX`
+- `Beutl.Media.AlignmentY`
+- `Beutl.Media.TextAlignment`
 - `Beutl.Media.FontFamily`
 - `System.IO.FileInfo`
 - `Beutl.IO.IFileSource`
@@ -62,9 +65,9 @@ The built-in property editors support the following value types. Object editors 
 - `Beutl.NodeGraph.GraphModel`
 - `Beutl.CoreObject`
 
-The `IFileSource` editor requires a concrete class with no unbound type parameters and a public parameterless constructor. The list editor requires an implementation of `IList<T>` as well as `IList` so it can determine the item type. Reference properties created with `Property.CreateReference<T>()` for a `CoreObject` type use the reference target picker.
+The `IFileSource` editor requires a concrete class with no unbound type parameters and a public parameterless constructor. The list editor requires an implementation of `IList<T>` as well as `IList` so it can determine the item type. Reference properties created with `Property.CreateReference<T>()` for a `CoreObject` type use the reference target picker. See [Editing an Element](../get-started/edit-element.md#reference-targets).
 
-Use `MediaTime` for timeline time values; the former `TimeSpan` editor and the generic `IParsable<T>` fallback are no longer available. To add an editor for another type, implement `PropertyEditorExtension.RegisterEditors(PropertyEditorRegistry)`. See [Editor integration](../extensions/editor-integration.md).
+Use `MediaTime` for timeline time values; the editor displays them as readable time text. The former `TimeSpan` editor and the generic `IParsable<T>` fallback are no longer available. To add an editor for another type, implement `PropertyEditorExtension.RegisterEditors(PropertyEditorRegistry)`. See [Editor integration](../extensions/editor-integration.md).
 
 ## File pickers
 
@@ -94,7 +97,7 @@ The generic file-source editor constructs a new source and calls `ReadFrom(Uri)`
 
 ## Source
 
-- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
+- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
 - [`PropertyEditorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorRegistry.cs)
 - [`FileFilterAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/FileFilterAttribute.cs)
 - [`FileSourceEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FileSourceEditorViewModel.cs)

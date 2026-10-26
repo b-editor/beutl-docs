@@ -16,8 +16,9 @@ sidebar_position: 1
 - [リファレンス](./references/index.md)
 - [ポータル](./portal/index.md)
 - [トランスフォーム](./transforms/index.md)
+- [トランジション](./transitions/index.md)
 - [フィルターエフェクト](./filter-effects/index.md)
 - [オーディオエフェクト](./audio-effects/index.md)
 - [3D（試験的）](./3d-objects/index.md) — [2D描画オブジェクト](./3d-objects/2d-drawable.md)のカード配置にも対応。
 
-このリファレンスの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/LibraryRegistrar.cs` です。
+このリファレンスの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の [`src/Beutl.Editor/Services/LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/LibraryRegistrar.cs) です。

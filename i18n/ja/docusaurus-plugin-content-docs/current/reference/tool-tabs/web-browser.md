@@ -21,6 +21,8 @@ sidebar_position: 20
 
 アドレスバーにHTTP/HTTPSのURLまたは検索語を入力します。戻る・進む・再読み込みを利用できます。新しいタブの空白ページで **ブックマークを追加** を押すと、URLと名前を登録できます。タブのメニューには新しいタブ、**ページ内検索**、ズーム、既定のブラウザーで開く、印刷があります。
 
+Web ページを表示しているときは、タブのメニューの **ブックマークを追加** で現在の URL とページタイトルをそのまま登録できます。
+
 - **`Ctrl + F`**（macOSでは **`Cmd + F`**）: ページ内検索。`Enter`で次の一致、`Shift + Enter`で前の一致に移動し、`Esc`で検索を閉じます。
 - **`Ctrl + +` / `Ctrl + -`**（macOSでは **`Cmd`**）: ズーム。**`Ctrl + 0`**（macOSでは **`Cmd + 0`**）で100%に戻します。範囲は50%〜200%です。
 
@@ -53,9 +55,9 @@ sidebar_position: 20
 
 ## ソース
 
-- [`WebBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/WebBrowserTabExtension.cs)
-- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs)
-- [`WebBrowserTabView.PageTools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.PageTools.cs)
-- [`WebBrowserTabView.Tools.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Tools.cs)
-- [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs)
-- [`BrowserSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Pages/SettingsPages/BrowserSettingsPage.axaml)
+- [`WebBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/WebBrowserTabExtension.cs)
+- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs)
+- [`WebBrowserTabView.PageTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.PageTools.cs)
+- [`WebBrowserTabView.Tools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Tools.cs)
+- [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs)
+- [`BrowserSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Pages/SettingsPages/BrowserSettingsPage.axaml)

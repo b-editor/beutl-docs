@@ -12,13 +12,13 @@ The element's own name, color, start time, and other timeline-level attributes a
 ## Tab characteristics
 
 - **Open by default**: Yes
-- **Allow multiple instances**: No
+- **Allow multiple instances**: Yes
 
 ## How to open
 
-Open it from the menu bar via **View → Tools → Element Property**.
+Select an element on the timeline to open this tab and show its contents. It is not listed in **View → Tools** or the empty-tab picker.
 
-When you click an element on the timeline to select it, that element's contents appear in this tab. Nothing is shown when no element is selected.
+Use **Pin Tab** in the tab header's right-click menu to keep that element visible. Selecting another element then uses another unpinned tab, or opens one when needed. See [Keeping a tab on one object](./index.md#keeping-a-tab-on-one-object).
 
 ![Expanded rectangle properties with animated width](_images/element-properties.png)
 
@@ -68,6 +68,10 @@ Expanding an object reveals a per-property editor.
 
 For animated properties, use the **vertical three-dot menu (⋮)** on the right side of the property to open the [Graph Editor](./graph-editor.md) or to inline-expand the animation onto the timeline.
 
+Reference properties offer a picker for existing targets, and properties with unit metadata show `%`, `°`, or `×` in their labels. See [Choosing reference targets](../../get-started/edit-element.md#reference-targets) and the following section for details.
+
+File fields also accept drag-and-drop: drop a local file of a supported type onto the field to select it. Easing properties provide a preset selector and a curve preview; for spline easing, drag the curve's control points to adjust it directly.
+
 ### Scrubbing number values
 
 Drag horizontally on a number field to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** for fine steps (0.1×).
@@ -75,6 +79,8 @@ Drag horizontally on a number field to scrub its value up or down. Hold **`Shift
 ## Objects of unknown type
 
 When the object's type cannot be resolved — for example because the providing extension is not installed — the view falls back to a placeholder. It shows the original type name along with a command bar for editing and saving the JSON directly, so you can still inspect and make minimal fixes on the spot.
+
+Unrecognized data that can be preserved is kept on save. Common properties remain editable when the placeholder can save those changes. If an element is protected because some data could not be preserved, editing is restricted to repairing, replacing, or removing that content; see [Recovering damaged elements](../../get-started/edit-element.md#recovering-damaged-elements).
 
 ## Related documents
 
@@ -85,9 +91,12 @@ When the object's type cannot be resolved — for example because the providing 
 
 ## Source
 
-- [`ElementPropertyTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/ElementPropertyTabExtension.cs)
-- [`ElementPropertyTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/ElementPropertyTabViewModel.cs)
-- [`EngineObjectPropertyViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/EngineObjectPropertyViewModel.cs)
-- [`ElementPropertyTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/Views/ElementPropertyTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/Views/ElementPropertyTabView.axaml.cs)
-- [`EngineObjectPropertyView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/Views/EngineObjectPropertyView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ElementPropertyTab/Views/EngineObjectPropertyView.axaml.cs)
-- [`FallbackObjectView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/Views/FallbackObjectView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/Views/FallbackObjectView.axaml.cs)
+- [`ElementPropertyTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/ElementPropertyTabExtension.cs)
+- [`ElementPropertyTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/ElementPropertyTabViewModel.cs)
+- [`EngineObjectPropertyViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/EngineObjectPropertyViewModel.cs)
+- [`ElementPropertyTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/Views/ElementPropertyTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/Views/ElementPropertyTabView.axaml.cs)
+- [`EngineObjectPropertyView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/Views/EngineObjectPropertyView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/ElementPropertyTab/Views/EngineObjectPropertyView.axaml.cs)
+- [`FallbackObjectView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Views/FallbackObjectView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Views/FallbackObjectView.axaml.cs)
+- [`StorageFileEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/StorageFileEditor.cs)
+- [`EasingEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingEditor.cs)
+- [`EasingCurveEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingCurveEditor.cs)

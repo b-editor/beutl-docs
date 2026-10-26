@@ -32,6 +32,8 @@ Sign in to your Beutl account. If your account cannot use AI, the workspace offe
 
 Video generation can use the current scene frame or first/last-frame inputs where supported. General references may include images, videos, or audio; supported combinations are shown for the selected model. Editing an existing video uses its duration rather than a separate duration choice.
 
+You can drag local files onto the corresponding input area: reference images, a source image or video, first/last frames, a character image, supported video-generation references, or subtitle imports. The active task and model determine which file types and how many references are accepted.
+
 Image editing results offer **Add to scene** and **Save to file** actions. Review the result before adding it to your project.
 
 ## Related documents
@@ -41,7 +43,8 @@ Image editing results offer **Add to scene** and **Save to file** actions. Revie
 
 ## Source
 
-- [`AiWorkspaceTabExtension.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/PrimitiveImpls/AiWorkspaceTabExtension.cs)
-- [`AiWorkspaceViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Tools/AiWorkspaceViewModel.cs)
-- [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/AiPlanCoordinator.cs)
-- [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/Dialogs/AiVideoEditingViewModel.cs)
+- [`AiWorkspaceTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/AiWorkspaceTabExtension.cs)
+- [`AiWorkspaceViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiWorkspaceViewModel.cs)
+- [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiPlanCoordinator.cs)
+- [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
+- [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)

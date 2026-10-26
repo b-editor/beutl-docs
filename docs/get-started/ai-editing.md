@@ -18,9 +18,11 @@ sidebar_position: 8
 3. Choose the **Install scope**:
    - **Project**: installs into one project folder — useful when trying it out.
    - **Global (user profile)**: available in every folder.
-4. Leave the **Components** (Skills, Subagents, MCP servers) checked and press **Install**.
+4. Leave the **Components** (Skills, Subagents, MCP server) checked and press **Install**.
 
-The installation adds instructions for editing Beutl projects and registers the agent's connection settings. For some agents, the page displays a command instead (for example `claude mcp add --scope user`); copy it and run it in a terminal.
+The installation adds instructions for editing Beutl projects and registers the agent's connection settings. Beutl writes the configuration or runs the agent's registration command. If automatic registration is unavailable or fails, follow the instructions shown on the page.
+
+After upgrading from preview.8, reinstall the integration. The old `beutl-live` connection and token are replaced by the single `beutl-agent` server. Beutl backs up edited skill and subagent files before replacing them.
 
 ## 2. Edit with the agent
 
@@ -32,10 +34,10 @@ The installation adds instructions for editing Beutl projects and registers the 
 Add a dark blue background and a title that fades in over the first second.
 ```
 
-The agent connects to the running editor, attaches to the scene you have open, and applies its edits. The changes appear in the preview and timeline as the agent works.
+The installed `beutl-agent` server discovers running editors with `list_instances` and their scenes with `list_scenes`. The agent passes the chosen `instanceId` and `sceneId` with its scene edits. Tell it which project and scene to use if you have several open. Changes appear in the preview and timeline as it works.
 
 :::tip
-The connection URL and its authentication header are shown in **Settings → AI Agents**. Treat the header like a password — anyone who has it can edit through your running editor.
+Enable **Follow live MCP edits (experimental)** in **Settings → AI Agents** to follow the agent's edits in the visible scene, playhead, and property editor. Without `instanceId`, the server edits project files headlessly instead of the running editor.
 :::
 
 ## 3. Review the result
@@ -45,8 +47,15 @@ The connection URL and its authentication header are shown in **Settings → AI 
 
 ## Learn more
 
-- [Editing with AI Agents (advanced)](../advanced/ai-agents.md) — connection details, the headless server for automation, and the full tool list.
+- [Editing with AI Agents (advanced)](../advanced/ai-agents.md) — connection details, headless editing for automation, and the tool list.
 
 ## Related documents
 
 - [Built-in AI workspace](../reference/tool-tabs/ai-workspace.md)
+
+## Source
+
+- [`AiAgentSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/SettingsPages/AiAgentSettingsPageViewModel.cs)
+- [`LiveInstanceTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Live/LiveInstanceTools.cs)
+- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostTools.cs)
+- [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)

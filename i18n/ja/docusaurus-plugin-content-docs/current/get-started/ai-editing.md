@@ -17,10 +17,12 @@ Claude Code や Codex などの **AIコーディングエージェント** か�
 2. **エージェント**を選びます(Claude Code、Codex、Cursor、Gemini CLI など多数に対応)。
 3. **インストール範囲**を選びます。
    - **プロジェクト**: 1つのプロジェクトフォルダーにインストールします。試してみる場合に向いています。
-   - **グローバル(ユーザープロファイル)**: どのフォルダーからでも使えます。
-4. **コンポーネント**(スキル・サブエージェント・MCPサーバー)はチェックされたまま **インストール** を押します。
+   - **グローバル（ユーザープロファイル）**: どのフォルダーからでも使えます。
+4. **コンポーネント**(スキル・サブエージェント・MCP サーバー)はチェックされたまま **インストール** を押します。
 
-インストールすると、Beutlプロジェクトを編集するための手順とエージェントの接続設定が追加されます。一部のエージェントでは代わりにコマンド(例: `claude mcp add --scope user`)が表示されるので、コピーしてターミナルで実行してください。
+インストールすると、Beutlプロジェクトを編集するための手順とエージェントの接続設定が追加されます。Beutl が設定を書き込むか、エージェントの登録コマンドを実行します。自動登録に対応していない場合や失敗した場合は、ページに表示された案内に従ってください。
+
+preview.8 から更新した場合は連携を再インストールしてください。旧 `beutl-live` 接続とそのトークンは、単一の `beutl-agent` サーバーに置き換わります。編集済みのスキル・サブエージェントファイルは、置き換える前にバックアップされます。
 
 ## 2. エージェントと編集する
 
@@ -32,10 +34,10 @@ Claude Code や Codex などの **AIコーディングエージェント** か�
 濃紺の背景と、最初の1秒でフェードインするタイトルを追加して。
 ```
 
-エージェントは実行中のエディタに接続し、開いているシーンにアタッチして編集を適用します。変更内容は作業中にプレビューとタイムラインへ表示されます。
+インストールされた `beutl-agent` サーバーは、`list_instances` で起動中のエディターを、`list_scenes` でシーンを検出します。エージェントは選んだ `instanceId` と `sceneId` をシーン編集の呼び出しに渡します。複数開いている場合は、どのプロジェクト・シーンを編集するか伝えてください。変更内容は作業中にプレビューとタイムラインへ表示されます。
 
 :::tip
-接続URLと認証ヘッダーは **設定 → AI エージェント** に表示されます。認証ヘッダーはパスワードと同様に扱ってください。これを知っている人は誰でも、実行中のエディタを通じて編集できます。
+**設定 → AI エージェント**の **Live MCP の編集を追跡（実験的）** を有効にすると、エージェントの編集に合わせて画面のシーン、再生位置、プロパティエディターを表示します。`instanceId` を省略すると、起動中のエディターではなく、プロジェクトファイルのヘッドレス編集になります。
 :::
 
 ## 3. 結果を確認する
@@ -45,8 +47,15 @@ Claude Code や Codex などの **AIコーディングエージェント** か�
 
 ## さらに詳しく
 
-- [AIエージェントによる編集(詳細)](../advanced/ai-agents.md) — 接続の詳細、自動化向けヘッドレスサーバー、全ツール一覧。
+- [AIエージェントによる編集(詳細)](../advanced/ai-agents.md) — 接続の詳細、自動化向けのヘッドレス編集、ツール一覧。
 
 ## 関連ドキュメント
 
 - [内蔵のAIワークスペース](../reference/tool-tabs/ai-workspace.md)
+
+## ソース
+
+- [`AiAgentSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/SettingsPages/AiAgentSettingsPageViewModel.cs)
+- [`LiveInstanceTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Live/LiveInstanceTools.cs)
+- [`AgentHostTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostTools.cs)
+- [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)

@@ -16,7 +16,7 @@ Library → Time Controller (Video)
 
 ### Target
 
-Drawable whose playback time is controlled.
+Drawable whose playback time is controlled. Use the [reference target picker](../../../get-started/edit-element.md#reference-targets) to choose an existing drawable; this field does not create a child object.
 
 - **Type:** `Drawable?`
 - **Default:** `null`
@@ -98,4 +98,6 @@ Wrap a video or animated drawable to slow it down, freeze on a poster frame, or 
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/DrawableTimeController.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/DrawableTimeController.cs)
+[`src/Beutl.Engine/Graphics/DrawableTimeController.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/DrawableTimeController.cs)
+
+- [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)
