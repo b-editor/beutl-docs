@@ -8,7 +8,7 @@ A `ThemeExtension` adds a theme to the picker in **Settings → Display → Them
 Beutl's own default dark theme is written this way, so an extension theme is not a second-class citizen: it can replace every brush the built-in themes define.
 
 :::info
-`ThemeExtension` was added in Beutl 2.0.0-preview.7. Your project needs `Beutl.Extensibility.Sdk` version `2.0.0-preview.7` or later — see [Creating a C# Project for Extensions](create-csproj.md).
+`ThemeExtension` was added in Beutl 2.0.0-preview.7. The examples in this guide target `Beutl.Extensibility.Sdk` version `2.0.0-preview.9` — see [Creating a C# Project for Extensions](create-csproj.md).
 :::
 
 ## 1. The minimal theme extension
@@ -22,9 +22,7 @@ namespace MyExtension;
 [Export]
 public sealed class MyThemeExtension : ThemeExtension
 {
-    // One instance for the life of the extension. The registry keys ownership on the descriptor
-    // instance, and the host skips a re-apply when the instance is unchanged, so a fresh record
-    // per call would turn every reload into a full revert/apply cycle.
+    // Return the same descriptor throughout the extension lifetime.
     private static readonly ThemeDescriptor s_descriptor = new(
         Id: "myextension.midnight",
         DisplayName: "Midnight",

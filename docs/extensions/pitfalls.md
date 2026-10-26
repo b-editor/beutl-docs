@@ -3,47 +3,31 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. Everything here was checked against Beutl 2.0.0-preview.8.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.9; rebuild extensions against its SDK after migrating the APIs below.
 
 ## Packaging and loading
 
-### The source generator becomes a package dependency
+### Keep the source generator private
 
-Outside `DebugApplication` builds, `Beutl.Extensibility.Sdk` 2.0.0-preview.8 and earlier reference `Beutl.Engine.SourceGenerators` without `PrivateAssets="all"`. `dotnet pack` then lists the generator as a dependency of your package. Beutl cannot resolve that dependency when it installs the package, and the install fails with `Unable to resolve dependency 'Beutl.Engine.SourceGenerators'`.
+The preview.9 SDK marks `Beutl.Engine.SourceGenerators` as `PrivateAssets="all"`, so the preview.8 workaround that disabled the automatic reference is no longer needed. Remove that workaround when upgrading; the SDK keeps the generator version aligned with `$(BeutlPackagesVersion)`.
 
-Turn off the automatic reference and add your own. `$(BeutlPackagesVersion)` is the version of the Beutl packages that the SDK references, so the generator always matches them:
-
-```xml
-<PropertyGroup>
-  <BeutlAutoReferenceSourceGenerators>false</BeutlAutoReferenceSourceGenerators>
-</PropertyGroup>
-
-<ItemGroup>
-  <PackageReference Include="Beutl.Engine.SourceGenerators"
-                    OutputItemType="Analyzer"
-                    ReferenceOutputAssembly="false"
-                    Version="$(BeutlPackagesVersion)"
-                    PrivateAssets="all" />
-</ItemGroup>
-```
-
-Check the `.nuspec` inside your `.nupkg`: its dependencies should be Beutl's own packages only. The SDK is fixed in [b-editor/beutl#2727](https://github.com/b-editor/beutl/pull/2727); packages already published with the dependency are tracked in [b-editor/beutl#2730](https://github.com/b-editor/beutl/issues/2730).
+Check the `.nuspec` inside your `.nupkg`: the source generator must not appear as an install-time dependency.
 
 ### Libraries that Beutl already ships
 
 Each extension is loaded into its own `AssemblyLoadContext`, but when Beutl ships an assembly of the same name in the same or a newer version, the extension gets Beutl's copy. When you use such a library (FluentIcons, for example):
 
-- Reference the version Beutl ships, as listed in Beutl's [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/Directory.Packages.props). If you ask for a newer version, your copy is loaded separately, and its types do not match Beutl's.
+- Reference the version Beutl ships, as listed in Beutl's [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/main/Directory.Packages.props). If you ask for a newer version, your copy is loaded separately, and its types do not match Beutl's.
 - Exclude its runtime and native assets with `ExcludeAssets="runtime;native" PrivateAssets="all"`. `ExcludeAssets="runtime"` alone still copies native libraries that come in transitively, such as libSkiaSharp and HarfBuzz, into the `runtimes` folder of your output.
 
 ```xml
 <PackageReference Include="FluentIcons.Avalonia.Fluent"
-                  Version="2.1.343"
+                  Version="2.1.344"
                   ExcludeAssets="runtime;native"
                   PrivateAssets="all" />
 ```
 
-After a build, `<AssemblyName>.deps.json` in the output should list your own assembly and only the libraries that Beutl does not ship. A simpler way to reference these libraries is tracked in [b-editor/beutl#2733](https://github.com/b-editor/beutl/issues/2733).
+After a build, `<AssemblyName>.deps.json` in the output should list your own assembly and only the libraries that Beutl does not ship. The SDK also references `Beutl.Controls`; see [project setup](create-csproj.md).
 
 ### Loading is all or nothing
 
@@ -62,35 +46,35 @@ After a build, `<AssemblyName>.deps.json` in the output should list your own ass
 
 ## Saving and editing
 
-### Values that implement `IEnumerable` ignore `[JsonConverter]`
+### Collection converters belong on the value type
 
-Beutl's serializer checks for `IEnumerable` before it hands a value to `System.Text.Json`. When it saves a property whose value implements `IEnumerable`, it writes the elements one by one, and a `[JsonConverter]` on the type is not used. When it loads a JSON array into a type that implements `IEnumerable<T>`, it reads the elements one by one and puts them into a new instance of the type. That works for arrays and for `IList` types with a parameterless constructor; any other type loads as `null`, or the load throws.
+In preview.9, a collection type's own `[JsonConverter]` is honored on both save and load. Without a converter, Beutl still writes collections item by item. `ICoreSerializable` and reference values follow Beutl's own serialization paths.
 
-Do not implement `IEnumerable` on value types you store in properties; expose the elements through a property such as `Items` instead. Tracked in [b-editor/beutl#2728](https://github.com/b-editor/beutl/issues/2728).
-
-```csharp
-[JsonConverter(typeof(CommentListConverter))]
-public sealed class CommentList // Not IEnumerable<Comment>
-{
-    public IReadOnlyList<Comment> Items { get; }
-}
-```
+A `[JsonConverter]` placed on a property member is not read by the property system. Put it on the value type, or implement the appropriate Beutl serialization contract; do not rely on the member attribute.
 
 ### Time-based content and splitting
 
 When the user splits an element, Beutl copies it and calls `ISplittable.NotifySplitted` on the objects of both halves. An object that plays something on its own timeline, such as comments, lyrics or lip sync, should shift its time in the back half, as `SourceVideo` and `SourceSound` do. Without it, the back half starts over from the beginning.
 
 ```csharp
-public sealed partial class MyDrawable : Drawable, ISplittable
-{
-    // The content's time is the time since the element started, minus this offset.
-    public IProperty<TimeSpan> TimeOffset { get; } = Property.Create(TimeSpan.Zero);
+using Beutl;
+using Beutl.Engine;
+using Beutl.Graphics;
 
-    public void NotifySplitted(bool backward, TimeSpan startDelta, TimeSpan durationDelta)
+public abstract partial class TimedDrawable : Drawable, ISplittable
+{
+    protected TimedDrawable()
     {
-        // The back half starts startDelta later, so its content moves back by as much.
+        ScanProperties<TimedDrawable>();
+    }
+
+    public IExpressionProperty<MediaTime> TimeOffset { get; } =
+        Property.CreateExpression(MediaTime.Zero);
+
+    public void NotifySplitted(bool backward, MediaTime startDelta, MediaTime durationDelta)
+    {
         if (backward)
-            TimeOffset.CurrentValue -= startDelta;
+            TimeOffset.Value -= startDelta;
     }
 }
 ```
@@ -99,92 +83,122 @@ public sealed partial class MyDrawable : Drawable, ISplittable
 
 `HideProperties(...)`, a protected method of `EngineObject`, hides properties from the property panel. They are still saved, undone and copied, so use it for values that your own editor sets.
 
-### One undo step for several changes
+### One undo step for several changes {/* #one-undo-step-for-several-changes */}
 
-A property editor receives the `HistoryManager` through the visitor passed to `IPropertyEditorContext.Accept`. Change the properties, then call `Commit` once, so that the user undoes them in one step.
+A property editor can obtain `HistoryManager` from the `IServiceProvider` visitor passed to `IPropertyEditorContext.Accept`. For an explicit edit, call `BeginEdit`, change properties inside `edit.Enter()`, then call `Complete()`. Disposing an unfinished session cancels its changes.
+
+Only one edit session may be open. Call `RunAfterEditAsync` on the UI thread to queue an independent writer behind the active session. Do not hold an `Enter()` scope across `await`.
 
 ```csharp
-public void Accept(IPropertyEditorContextVisitor visitor)
-{
-    visitor.Visit(this);
-    if (visitor is IServiceProvider services)
-        _history = services.GetService(typeof(HistoryManager)) as HistoryManager;
-}
+using Beutl;
+using Beutl.Editor;
+using Beutl.ProjectSystem;
 
-private void Assign(MyDrawable drawable, string path)
+public static class TimingEdits
 {
-    drawable.MouthOpen.CurrentValue = path;
-    drawable.MouthClosed.CurrentValue = "";
-    _history?.Commit("Assign mouth layer");
+    public static Task SetTimingAsync(
+        HistoryManager history, Element element, MediaTime start, MediaTime length)
+        => history.RunAfterEditAsync(() =>
+        {
+            using EditSession edit = history.BeginEdit("Change timing");
+            using (edit.Enter())
+            {
+                element.Start.Value = start;
+                element.Length.Value = length;
+            }
+            edit.Complete();
+        });
 }
 ```
 
 ## Editor integration
 
-### Library items that cannot be added to the timeline
+### Register timeline-compatible library items
 
-`GroupLibraryItem.AddDrawable<T>()` and `AddSound<T>()` register only the `Drawable` or `Sound` format, while the timeline accepts items that carry the `EngineObject` format. Such items appear in the library and in search, but dragging them onto the timeline does nothing. Register with `AddMultiple` and `BindDrawable<T>()` or `BindSound<T>()`, which register both formats. Tracked in [b-editor/beutl#2729](https://github.com/b-editor/beutl/issues/2729).
+In preview.9, `AddDrawable<T>()` and `AddSound<T>()` register the `EngineObject` format as well as their drawable or sound format. The preview.8 `AddMultiple` workaround is no longer necessary. `BindDrawable<T>()` and `BindSound<T>()` still register both formats when building a multiple-format item.
 
 ```csharp
-LibraryService.Current.RegisterGroup("My Extension", group => group
-    .AddMultiple("My Shape", item => item.BindDrawable<MyShape>()));
+using Beutl.Graphics.Shapes;
+using Beutl.Services;
+
+public static class ShapeLibrary
+{
+    public static void Register()
+        => LibraryService.Current.RegisterGroup("My Extension", group => group
+            .AddDrawable<RectShape>("My Rectangle"));
+}
 ```
 
 A test can check that `LibraryService.Current.GetTypesFromFormat(KnownLibraryItemFormats.EngineObject)` contains your type.
 
-### The playhead during playback
+### The playhead during playback {/* #the-playhead-during-playback */}
 
 During playback, `IEditorClock.CurrentTime` advances only when a rendered frame is shown. It moves in whole frames, and it falls behind the audio, or stops, when rendering is slow. Do not use it to time live input during playback; measure the time that has passed since `IPreviewPlayer.IsPlaying` became true instead.
 
-There is no public method that starts playback. Run the editor's `PlayPause` command (the editor context implements `IContextCommandHandler`), and check `IsPlaying` first, because the command toggles. Stop playback with `IPreviewPlayer.Pause()`. A playback API for extensions is tracked in [b-editor/beutl#2731](https://github.com/b-editor/beutl/issues/2731).
+There is no start method on `IPreviewPlayer`. To start through the scene editor, find its `editor.playPause` command definition, check `CanRun`, and call `RunAsync` with the editor context. `IContextCommandHandler` no longer exists. Check `IsPlaying` first because this command toggles playback; await `IPreviewPlayer.Pause()` before changing scene state that playback might still access.
 
 ```csharp
-if (editorContext is IContextCommandHandler commands && !player.IsPlaying.Value)
-    await commands.ExecuteAsync(new ContextCommandExecution("PlayPause"));
+using System.Linq;
+using Beutl.Editor.Services;
+using Beutl.Extensibility;
+
+public static class PlaybackCommands
+{
+    public static async Task StartAsync(IEditorContext editor, IPreviewPlayer player)
+    {
+        if (player.IsPlaying.Value)
+            return;
+
+        ContextCommandDefinition? command = editor.Extension.ContextCommands
+            .FirstOrDefault(item => item.Id == "editor.playPause");
+        var execution = new ContextCommandExecution("editor.playPause")
+        {
+            EditorContext = editor
+        };
+        if (command?.CanRun(editor, execution) == true)
+            await command.RunAsync(editor, execution);
+    }
+}
 ```
+
+`IEditorClock.CurrentTime` is read-only and contains a `MediaTime`; seek with `IEditorClock.Seek(time)`. Likewise, change the selected object with `IEditorSelection.Select(obj)`, and use `SelectedElements` for the shared timeline selection. See [editor integration](editor-integration.md) for registering commands.
 
 ### Tool tabs
 
-- A `ToolTabExtension` whose `Header` returns `null` is not listed in the menu that adds tabs. Open it from your own UI with `IEditorContext.OpenToolTab`.
-- `OpenToolTab` brings a tab that is already open to the front instead of opening another one. Use `FindToolTab<T>()` to reuse an open tab.
+- `ToolTabExtension.Header` labels the tool picker; returning `null` hides the tool there. Open tabs use the per-instance `IToolContext.Header` reactive property.
+- `OpenToolTab` brings an already-open context to the front. Use `FindToolTab<T>()` to reuse one.
+- Implement `IPinnableToolContext` for a tab that can remain on its target instead of following selection. Keep `IsPinned` and `HasTarget` in sync with the target's lifetime.
+- Override `ReuseContentAcrossActivation` only when the same control should survive tab activation changes. It can still leave and re-enter the visual tree; a reused `IDisposable` control is disposed before its context when the tab closes.
+- `GetIcon()` returns a FluentAvalonia 3 `FAIconSource`. Return a new icon source for each call.
 
 ## UI
 
-### `Beutl.Controls` is not available
+### Use the shared controls
 
-`Beutl.Controls` is not published as a package, so controls such as `ToolTabBar` cannot be referenced. To match Beutl's look, rebuild them from the theme resources that Beutl provides at run time. Bind the resources with `GetResourceObservable`, so that the control still works where a resource is missing, for example in tests that use another theme.
+`Beutl.Controls` is now a public package automatically referenced by the SDK. Use `Beutl.Controls.ToolTabBar` instead of rebuilding it from private theme resource keys. For built-in property editor integration, use the [typed registrations](editor-integration.md#property-editors) in `Beutl.Extensibility`.
 
-```csharp
-var bar = new Border
-{
-    MinHeight = 38,
-    Padding = new Thickness(4, 2),
-    BorderThickness = new Thickness(0, 0, 0, 1),
-};
-bar.Bind(Border.BorderBrushProperty, bar.GetResourceObservable("DividerStrokeColorDefaultBrush"));
-
-var add = new Button { Content = new FluentIcon { Icon = Icon.Add, FontSize = 16 } };
-add.Bind(StyledElement.ThemeProperty, add.GetResourceObservable("ToolTabBarIconButtonTheme"));
-```
-
-Tool tabs often need `ToolTabBarIconButtonTheme`, `LiteComboBoxStyle`, `DividerStrokeColorDefaultBrush`, `TextFillColorSecondaryBrush` and the `options-group` style class. None of these are a public API, and they may change. Tracked in [b-editor/beutl#2732](https://github.com/b-editor/beutl/issues/2732).
-
-### Property editor layout
-
-Every property editor has a 4 px margin on the left and right, and its header and value have another 4 px around them. An editor that puts its header above a full-width value lines up with the other rows when it follows the same spacing, as Beutl's `GradientStopsEditor` does.
-
-### `CheckBox` and `RadioButton` padding
-
-If you change the `Padding` of a `CheckBox` or a `RadioButton`, also set `VerticalContentAlignment` to `Center`. FluentAvalonia's radio button puts its label at the top and moves it down to the glyph with a 6 px top padding, so removing that padding lifts the label above the glyph.
-
-### Headless screenshots
-
-Rendering your UI with Avalonia.Headless and Beutl's theme is useful, but the result is not always the same as in the app. A misaligned radio button label, for example, did not reproduce headlessly. Check the layout in Beutl itself before you release.
+When adjusting a property's controls, check their spacing and label alignment under Beutl's theme. Headless rendering is useful for layout checks, but also check the result in Beutl before release.
 
 ## Drawing text and pixels
 
 - `context.DrawText(text, fill, pen)` draws an outline only when `FormattedText.Pen` is set. The pen argument alone draws no outline.
-- `FormattedText.Bounds` is the box of the string's ink, not a line height. Size lines with `Metrics.Ascent`, which is negative, and `Metrics.Descent`, and put the baseline at `top - Ascent`.
-- On macOS the default font family is Helvetica, which measures Japanese far too narrow. Choose a font that covers your text, such as "Noto Sans JP" when `FontManager.Instance.IsRegistered` reports it.
+- `FormattedText.Bounds` includes text advance and spacing; `ActualBounds` includes stroke ink and `RasterBounds` covers rasterized glyph masks. None is a line height. Size lines with `Metrics.Ascent`, which is negative, and `Metrics.Descent`, and put the baseline at `top - Ascent`.
+- Choose a registered font that covers your text instead of assuming a platform-specific default. The font manager provides fallback families; measure with the actual typeface used for rendering.
+- `TextElements.Lines` caches the formatted result on first enumeration. If you change its input afterward, create a new `TextElements` and dispose the old one.
 - The constructor of `Bgra8888` takes `(r, g, b, a)`, although the fields are stored in B, G, R, A order.
-- In SkiaSharp, `SKColors.Transparent` is transparent white (`0x00FFFFFF`). Pixels that nothing was drawn on are `SKColors.Empty`, so check the alpha when you test that nothing was drawn.
+- Check the alpha component when testing transparent pixels; RGB values alone do not establish transparency.
+
+## Source
+
+- [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
+- [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
+- [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
+- [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
+- [`HistoryManager.EditSessions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/HistoryManager.EditSessions.cs)
+- [`EditSession.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/EditSession.cs)
+- [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)
+- [`SceneEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/SceneEditorTabExtension.cs)
+- [`IPinnableToolContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IPinnableToolContext.cs)
+- [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
+- [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)

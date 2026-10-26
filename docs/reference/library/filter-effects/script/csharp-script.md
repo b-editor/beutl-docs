@@ -47,9 +47,7 @@ The C# script source.
 
 ## Usage
 
-Treat as an escape hatch for behaviors that the built-in filters can't cover.
-
-Render scripts run synchronously. `await`, `await using`, and `await foreach` cause a compilation error, including when they appear inside nested methods or lambdas.
+Treat as an escape hatch for behaviors that the built-in filters can't cover. Scripts run synchronously on frame-owned state; `await`, `await using`, and `await foreach` are rejected, including inside nested methods or lambdas. `Time` and `Duration` remain floating-point seconds in this script API; they are not `MediaTime` values.
 
 ### Custom GLSL passes
 

@@ -3,6 +3,8 @@ title: Sample Extensions
 description: Introduction to sample extensions
 ---
 
+When adapting external samples, compare them with the preview.9 APIs in [EngineObject](engine-object.md), [editor integration](editor-integration.md) and [media providers](media-providers.md). Tool tab titles belong to `IToolContext.Header`, and commands use definitions with IDs and handlers.
+
 ## [SugarShaker](https://github.com/b-editor/SugarShaker)
 A set of extensions to make Beutl easier to use.  
 For example, it allows you to add animation effects like fade-in and fade-out without using keyframes.

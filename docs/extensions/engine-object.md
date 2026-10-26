@@ -1,14 +1,14 @@
 ---
 title: EngineObject Reference
-description: How EngineObject, IProperty, and the auto-generated Resource classes work in Beutl 2.x.
+description: How property objects, expressions, and the generated Resource classes work in Beutl 2.x.
 sidebar_position: 4
 ---
 
-`EngineObject` is the base class for every editable object in Beutl 2.x. Most types you can place on the timeline — `Drawable`, `Shape`, `FilterEffect`, `Brush`, `Geometry`, and so on — derive from it. Reading this page first will let you skim the other extension guides much faster.
+`EngineObject` is the base class for renderable and composable objects in Beutl 2.x. Most types you can place on the timeline — `Drawable`, `Shape`, `FilterEffect`, `Brush`, `Geometry`, and so on — derive from it. Reading this page first will let you skim the other extension guides much faster.
 
 ## What `EngineObject` provides
 
-- A property system based on `IProperty<T>` instances.
+- Value properties (`IProperty<T>`), expression properties (`IExpressionProperty<T>`), and list properties (`IListProperty<T>`).
 - A source generator (`Beutl.Engine.SourceGenerators`) that produces the boilerplate every derived class needs (the nested `Resource` class, `ToResource(...)`, and `ScanPropertiesCore<T>()`).
 - Built-in support for shared concerns such as time ranges, Z-index, and enabled/disabled state.
 
@@ -36,146 +36,177 @@ In real extensions you usually inherit from a subclass of `EngineObject` (such a
 
 ## Declaring properties
 
-Declare properties as instance members typed `IProperty<T>` (or `IListProperty<T>`) and create them with the `Property` factory.
+`Property`, `IProperty<T>`, `IExpressionProperty<T>`, and `IListProperty<T>` belong to the `Beutl` namespace in **Beutl.Core**. Import `Beutl.Engine` as well to use the `Property.CreateAnimatable` extension member.
 
 ```cs
 using System.ComponentModel.DataAnnotations;
+using Beutl;
 using Beutl.Engine;
-using Beutl.Media;
 
-public sealed partial class MyShape : Shape
+namespace MyExtension;
+
+public sealed partial class MyProperties : EngineObject
 {
-    public MyShape()
+    public MyProperties()
     {
-        ScanProperties<MyShape>();
+        ScanProperties<MyProperties>();
     }
 
-    // Animatable numeric property with a default value.
     [Display(Name = "Size")]
     [Range(0, float.MaxValue)]
-    public IProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
+    public IExpressionProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
 
-    // Non-animatable reference value.
     [Display(Name = "Caption")]
-    public IProperty<string?> Caption { get; } = Property.Create<string?>();
+    public IExpressionProperty<string?> Caption { get; } = Property.CreateExpression<string?>();
 
-    // Dynamic list that holds nested EngineObjects.
-    public IListProperty<MyShape> Children { get; } = Property.CreateList<MyShape>();
+    public IProperty<bool> ShowLabel { get; } = Property.CreateValue(true);
+
+    public IListProperty<MyProperties> Children { get; } = Property.CreateList<MyProperties>();
 }
 ```
 
-| Factory | Use it for |
-| --- | --- |
-| `Property.CreateAnimatable<T>(default, validator?)` | Values the user animates with keyframes. |
-| `Property.Create<T>(default, validator?)` | Static configuration values or references to other `EngineObject`s. |
-| `Property.CreateList<T>()` | Ordered collections of `EngineObject`-derived items. |
+<div style={{ overflowX: 'auto' }}>
+
+| Factory | Result | Use it for |
+| --- | --- | --- |
+| `Property.CreateAnimatable<T>(defaultValue, validator)` | `IExpressionProperty<T>` | Values that accept keyframes and expressions. Both arguments are optional. |
+| `Property.CreateExpression<T>(defaultValue, validator)` | `IExpressionProperty<T>` | Values that accept expressions but not keyframes. Both arguments are optional. |
+| `Property.CreateValue<T>(defaultValue, validator)` | `IProperty<T>` | Values that accept neither expressions nor keyframes. Both arguments are optional. |
+| `Property.CreateReference<T>()` | `IExpressionProperty<T>` | Non-owning references to objects. The referenced object is not attached as a child. |
+| `Property.CreateList<T>()` | `IListProperty<T>` | Owned, ordered collections; call `Add`, `Remove`, or `Clear` on the property itself. |
+
+</div>
+
+`IProperty<T>` exposes the stored `Value`, `DefaultValue`, `ValueChanged`, and `IsValueSet`. Expression-specific members such as `Expression`, `HasExpression`, `IsAnimatable`, and `Evaluate(EvaluationContext)` belong to `IExpressionProperty<T>`. Test `property is IExpressionProperty` to detect expression support; `SupportsExpression` has been removed. `SimpleProperty<T>`, `ValueOnlyProperty<T>`, and `ListProperty<T>` are the implementations in Beutl.Core.
 
 Validation attributes from `System.ComponentModel.DataAnnotations` (e.g. `[Range]`) are applied automatically. `[Display(Name = ..., ResourceType = ...)]` controls the label shown in the property panel and supports localization through resource types.
+
+Use `[Unit(PropertyUnit.Percent)]`, `[Unit(PropertyUnit.Degrees)]`, or `[Unit(PropertyUnit.Ratio)]` for unit metadata. These types are in `Beutl`; the property editor displays the unit and the Agent Toolkit includes it in schemas.
+
+### Reading and changing values
+
+Read and write the property object's `Value`, including inherited members such as `Name`, `Id`, `IsEnabled`, `ZIndex`, and `TimeRange`. There are no separate static `XxxProperty` fields or scalar accessors for these members.
+
+```cs
+using System;
+using MyExtension;
+
+var obj = new MyProperties
+{
+    Name = { Value = "Example" },
+    Size = { Value = 120 },
+    IsEnabled = { Value = true }
+};
+obj.Children.Add(new MyProperties());
+obj.Size.ValueChanged += (_, change) => Console.WriteLine(change.NewValue);
+```
+
+`property.GetObservable()` emits a scalar property's current value and subsequent value changes. For a list, observe `CollectionChanged`; assigning its `Value` copies the contents into the owner-held list. Observe the property itself; a value change does not generally raise `PropertyChanged("Size")` on its owner. Compare `a.Id.Value == b.Id.Value` when comparing IDs. Comparing property objects instead compares their identity and produces diagnostic `BESG007`; use `ReferenceEquals` only when identity is intended.
+
+When migrating older code, replace `CurrentValue` with `Value`, `GetValue(context)` with `Evaluate(context)`, `ReplaceCurrentValue(value)` with `SetValueEvenIfEqual(value)`, and `HasLocalValue` with `IsValueSet`. `CoreProperty`, `ConfigureProperty`, and the `CoreObject.GetValue` / `SetValue` APIs have been removed. The same property declaration and `ScanProperties<T>()` pattern now applies to `CoreObject` subclasses outside the engine.
+
+### Keyframes and expressions
+
+Keyframes are the bottom of a property's expression chain. Use the extension methods in `Beutl.Animation` instead of the removed `IProperty.Animation` and `AnimationChanged` members:
+
+```cs
+using Beutl;
+using Beutl.Animation;
+using MyExtension;
+
+var obj = new MyProperties();
+var animation = new KeyFrameAnimation<float>();
+animation.KeyFrames.Add(new KeyFrame<float>
+{
+    KeyTime = { Value = MediaTime.Zero },
+    Value = { Value = 100 }
+});
+animation.KeyFrames.Add(new KeyFrame<float>
+{
+    KeyTime = { Value = MediaTime.FromSeconds(1) },
+    Value = { Value = 200 }
+});
+obj.Size.SetKeyFrameAnimation(animation);
+KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
+```
+
+`Expression` returns the keyframes when there is no expression above them, while `HasExpression` excludes keyframes. `IAnimation`, `IAnimation<T>`, and the non-generic `KeyFrameAnimation` have been removed; use `IKeyFrameAnimation` or `KeyFrameAnimation<T>`. `UseGlobalClock` and each keyframe's `KeyTime`, `Value`, and `Easing` are property objects too.
+
+`IExpression`, `IExpression<T>`, `ExpressionContext`, `PropertyLookup`, and `ExpressionException` are also in `Beutl.Core`, namespace `Beutl`. `IExpressionProperty<T>.Evaluate` accepts `EvaluationContext`; an expression implementation's `IExpression<T>.Evaluate` receives `ExpressionContext`. Both expression and composition contexts derive from `EvaluationContext`; `ExpressionContext` does not derive from `CompositionContext`.
+
+Timeline and keyframe times use `MediaTime`, not `TimeSpan`. Create frame times with `MediaTime.FromFrames(frame, rationalRate)` and convert to a display duration with `ToTimeSpan()`. `MediaTime.ToString()` displays a flick count.
 
 ## The auto-generated `Resource` class
 
 For every concrete `partial class : EngineObject`, the source generator emits a nested `Resource` class. The rendering pipeline treats it as a snapshot of the object at a point in time, so the animation, expression, and composition systems can sample values without touching the instance the user is editing.
 
-What the generator produces (conceptually):
-```cs
-// Auto-generated — you don't write this yourself:
-public partial class MyShape
-{
-    public override MyShape.Resource ToResource(CompositionContext context)
-    {
-        var resource = new Resource();
-        bool updateOnly = true;
-        resource.Update(this, context, ref updateOnly);
-        return resource;
-    }
+The generator supplies `ToResource(CompositionContext)`, snapshot properties, and `Reconcile(EngineObject, CompositionContext, ref bool versionBumped)`. `Reconcile` evaluates expression properties for the context's time, updates child resources, and advances `Version` when values change. The old `Update`, `PreUpdate`, and `PostUpdate` names have been replaced by `Reconcile`, `PreReconcile`, and `PostReconcile`.
 
-    public new partial class Resource : Shape.Resource
-    {
-        public float Size { get; set; }
-        public string? Caption { get; set; }
-        public List<MyShape.Resource> Children { get; set; } = [];
-
-        public override void Update(EngineObject obj, CompositionContext context, ref bool updateOnly)
-        {
-            // Pull the current value of each property (with animations and
-            // expressions already evaluated) out of the CompositionContext
-            // and copy it into the fields above.
-            // Increment Version when a value changes.
-        }
-    }
-}
-```
-
-You can extend the generated `Resource` by adding your own `partial class Resource { … }`. The generator exposes two pairs of partial-method hooks:
+You can extend the generated resource with partial-method hooks. Add this partial declaration alongside `MyProperties` above:
 
 ```cs
-public partial class MyShape : Shape
+using Beutl.Composition;
+
+namespace MyExtension;
+
+public sealed partial class MyProperties
 {
     public partial class Resource
     {
-        // Called at the start of the generated Update().
-        partial void PreUpdate(MyShape obj, CompositionContext context)
+        partial void PreReconcile(MyProperties obj, CompositionContext context)
         {
-            // Anything you want to do before Update() runs goes here.
         }
 
-        // Called at the end of the generated Update().
-        partial void PostUpdate(MyShape obj, CompositionContext context)
+        partial void PostReconcile(MyProperties obj, CompositionContext context)
         {
-            // Build child resources, recompute caches, etc.
         }
 
-        // Called at the start of Dispose().
         partial void PreDispose(bool disposing)
         {
-            // Anything you want to do before Dispose() runs goes here.
         }
 
-        // Called at the end of Dispose().
         partial void PostDispose(bool disposing)
         {
-            // Release the resources you allocated in PostUpdate, etc.
         }
     }
 }
 ```
 
-[`RectShape`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) is a good real-world example. It keeps an internal `RectGeometry`, recomputes its size in `PostUpdate`, and disposes of the geometry resource in `PostDispose`.
+Use `PostReconcile` to build derived data from snapshot values, and dispose resources you own in a disposal hook. The generated implementation disposes its own child resources when `disposing` is `true`. [`RectShape`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) follows this pattern; the [drawing-object guide](implement-drawing-object.md) shows a complete extension implementation using public APIs.
 
 ## Edit time vs. render time
 
 Keep these two layers clear in your head:
 
+<div style={{ overflowX: 'auto' }}>
+
 | Layer | Type | Lifetime | Who writes to it |
 | --- | --- | --- | --- |
 | Edit time | `EngineObject` | Lives in the project | UI, scripts, deserialization |
-| Render time | `EngineObject.Resource` | Created per composition pass | The auto-generated `Update()` only |
+| Render time | `EngineObject.Resource` | Created and reconciled for composition; may be reused | Generated `Reconcile()` and custom resource hooks |
 
-Render code (`Drawable.OnDraw`, `FilterEffect.ApplyTo`, etc.) receives a `Resource`, so read values from it. Do not touch `IProperty<T>.CurrentValue` directly — `Resource` already has animations and expressions resolved into a snapshot, which is what you want for efficient rendering. `EngineObject` is the editing object; render code is expected to read values through the `Resource`.
+</div>
+
+Render code (`Drawable.OnDraw`, `FilterEffect.ApplyTo`, etc.) receives a `Resource`, so read values from it. Do not touch `IProperty<T>.Value` directly — `Resource` already has animations and expressions resolved into a snapshot, which is what you want for efficient rendering. `EngineObject` is the editing object; render code is expected to read values through the `Resource`.
 
 ## Fallback handling
 
-Every public `EngineObject`-derived type that Beutl ships with declares a fallback type:
-
-```cs
-public sealed partial class FallbackDrawable : Drawable, IFallback;
-
-[FallbackType(typeof(FallbackDrawable))]
-public abstract partial class Drawable : EngineObject { /* … */ }
-```
-
-If a saved project references a type that is no longer installed (for example, an extension was removed), Beutl can deserialize the data into the corresponding fallback. The data is preserved when the project is saved again.
+Base types such as `Drawable`, `Sound`, and `EngineObject` declare a `[FallbackType]`. If a saved project refers to an unavailable extension type, the corresponding fallback keeps its serialized data so it can be saved again. A fallback drawable produces no drawing; it is not a replacement implementation of the missing extension.
 
 ## Common derived classes
+
+<div style={{ overflowX: 'auto' }}>
 
 | Base class | Namespace | Role | Implementation guide |
 | --- | --- | --- | --- |
 | `Drawable` | `Beutl.Graphics` | Anything that draws to a canvas. Provides `Transform`, `Opacity`, `BlendMode`, `FilterEffect`, and alignment. | [Implementing a Drawing Object](implement-drawing-object.md) |
 | `Shape` | `Beutl.Graphics.Shapes` | A `Drawable` whose appearance is defined by a `Geometry`. Adds `Fill` and `Pen`. | [Implementing a Drawing Object](implement-drawing-object.md) |
 | `FilterEffect` | `Beutl.Graphics.Effects` | Post effect applied to a render target. | [Implementing Effects](implement-effect.md) |
-| `Sound` | `Beutl.Audio` | Anything that produces audio on the timeline. Provides `Gain`, `Speed`, `OffsetPosition`, and `AudioEffect`. |  |
+| `Sound` | `Beutl.Audio` | Anything that produces audio on the timeline. Provides `Gain`, `Speed`, `OffsetPosition`, and `Effect`. |  |
 | `AudioEffect` | `Beutl.Audio.Effects` | Audio effect applied to the output of a `Sound`. | [Implementing audio effects](audio-effects.md) |
 | `Geometry` / `Brush` / `Pen` | `Beutl.Media` | Reusable drawing building blocks. | (Use the `EngineObject` pattern above.) |
+
+</div>
 
 ## Registering with the library
 
@@ -183,6 +214,8 @@ Override `Extension.Load()` and use `LibraryService` to register your types.
 
 ```cs
 using Beutl.Extensibility;
+using Beutl.Graphics.Shapes;
+using Beutl.Media;
 using Beutl.Services;
 
 namespace MyExtension;
@@ -195,26 +228,29 @@ public sealed class MyExtension : Extension
 
     public override void Load()
     {
-        // Register a single object with an explicit category.
         LibraryService.Current.Register<MySampleObject>(
             KnownLibraryItemFormats.EngineObject,
             "My Sample Object");
 
-        // Bundle multiple objects into one library item.
         LibraryService.Current.AddMultiple("My Object", item => item
-            .BindGeometry<MyShapeGeometry>()
-            .BindDrawable<MyShape>());
+            .BindGeometry<RectGeometry>()
+            .BindDrawable<RectShape>());
 
-        // Group several items together under one heading.
         LibraryService.Current.RegisterGroup("My Extension", group => group
             .AddEngineObject<MySampleObject>("My Sample Object")
-            .AddMultiple("My Shape", item => item.BindDrawable<MyShape>()));
+            .AddMultiple("My Shape", item => item.BindDrawable<RectShape>()));
     }
 }
 ```
 
 `KnownLibraryItemFormats` exposes the formats the editor recognizes (`EngineObject`, `Drawable`, `FilterEffect`, `Brush`, `Geometry`, `Pen`, `Sound`, `Transform`, etc.). The `BindDrawable<T>()` shortcut on `AddMultiple` registers a `Drawable` with the shape picker without needing the format string yourself.
 
-:::caution
-`AddDrawable<T>()` and `AddSound<T>()` register only the `Drawable` or `Sound` format, so their items cannot be added to the timeline. Use `AddMultiple` with `BindDrawable<T>()` or `BindSound<T>()` instead. See [Pitfalls in Extension Development](pitfalls.md#library-items-that-cannot-be-added-to-the-timeline).
-:::
+`AddDrawable<T>()` and `AddSound<T>()` now register the `EngineObject` format as well, so their items can be added to the timeline. `AddMultiple` remains useful when one item offers several representations.
+
+## Source
+
+- [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
+- [`EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs) and [`ResourceClassEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Emit/ResourceClassEmitter.cs)
+- [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
+- [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)

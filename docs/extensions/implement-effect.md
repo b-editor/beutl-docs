@@ -3,7 +3,7 @@ title: Implementing Effects
 description: Implement a custom FilterEffect using the EngineObject pattern.
 ---
 
-A `FilterEffect` is an `EngineObject` that post-processes a render target. The shape of the code is the same as in [Implementing a Drawing Object](implement-drawing-object.md): declare a `partial class`, expose `IProperty<T>` members, and read snapshot values from the auto-generated `Resource` inside `ApplyTo`.
+A `FilterEffect` is an `EngineObject` that post-processes a render target. The shape of the code is the same as in [Implementing a Drawing Object](implement-drawing-object.md): declare a `partial class`, expose `IExpressionProperty<T>` members, and read snapshot values from the auto-generated `Resource` inside `ApplyTo`.
 
 If you have not read the [EngineObject reference](engine-object.md) yet, start there. The property system and `Resource` lifecycle are explained on that page.
 
@@ -36,11 +36,13 @@ Two differences compared to `Drawable`:
 
 ## 2. Combining existing effects
 
-The simplest custom effects layer Beutl's built-in operations through the extension methods on `FilterEffectContext`. Bounds expansion (e.g. blur enlarging the surface) is handled internally, so you rarely need to adjust sizes yourself.
+The simplest custom effects layer Beutl's built-in operations through the methods on `FilterEffectContext`. Bounds expansion (e.g. blur enlarging the surface) is handled internally, so you rarely need to adjust sizes yourself.
 
 ```cs
 using System.ComponentModel.DataAnnotations;
+using Beutl;
 using Beutl.Engine;
+using Beutl.Graphics;
 using Beutl.Graphics.Effects;
 using Beutl.Graphics.Rendering;
 using Beutl.Media;
@@ -56,11 +58,11 @@ public sealed partial class HighContrastBlur : FilterEffect
 
     [Display(Name = "Blur Sigma")]
     [Range(0, float.MaxValue)]
-    public IProperty<float> BlurSigma { get; } = Property.CreateAnimatable<float>(20);
+    public IExpressionProperty<float> BlurSigma { get; } = Property.CreateAnimatable<float>(20);
 
     [Display(Name = "Contrast")]
     [Range(-100, 100)]
-    public IProperty<float> Contrast { get; } = Property.CreateAnimatable<float>(20);
+    public IExpressionProperty<float> Contrast { get; } = Property.CreateAnimatable<float>(20);
 
     public override void ApplyTo(FilterEffectContext context, FilterEffect.Resource resource)
     {
@@ -74,7 +76,7 @@ public sealed partial class HighContrastBlur : FilterEffect
 }
 ```
 
-`FilterEffectContext` exposes a method for each built-in operation: `Blur`, `DropShadow`, `InnerShadow`, `Erode`, `Dilate`, `ColorMatrix`, `Saturate`, `HueRotate`, `Brightness`, `HighContrast`, `Lighting`, `MatrixConvolution`, `Transform`, `BlendMode`, and more. See [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) for the complete list.
+`FilterEffectContext` exposes a method for each built-in operation: `Blur`, `DropShadow`, `InnerShadow`, `Erode`, `Dilate`, `ColorMatrix`, `Saturate`, `HueRotate`, `Brightness`, `HighContrast`, `Lighting`, `MatrixConvolution`, `Transform`, `BlendMode`, and more. See [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) and [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs) for the complete list.
 
 `Crop(Rect, GradientSpreadMethod = Decal)` crops in the coordinates of `Bounds`. The default `Decal` makes pixels outside the rectangle transparent and shrinks the bounds. `Pad` extends edge pixels, `Repeat` tiles, and `Reflect` mirrors the crop while retaining the original bounds.
 
@@ -83,6 +85,12 @@ For GLSL with multiple inputs or multiple passes, also see [C# Script](../refere
 ## 3. Processing the render target directly
 
 See [`FlatShadow.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs), [`ColorShift.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorShift.cs), and [`GLSLScriptEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/GLSLScriptEffect.cs) as references.
+
+`CustomEffect(data, action, transformBounds)` receives explicit state and computes output bounds from that state. If output bounds cannot be known during recording, the overload without `transformBounds` leaves them symbolic until the owning target's finite domain is available. Keep metadata callbacks independent of mutable editing objects.
+
+`FilterEffectContext.Shader(ShaderDescription)` and `Geometry(GeometryDescription)` record deferred operations with explicit bounds and hit-test contracts. Use `RenderHitTestContract.None`, `OutputBounds`, `AnyInput`, or `Custom(...)` to state how the operation participates in selection; `default(RenderHitTestContract)` is invalid. A custom callback can receive state through `Custom(state, static (state, context, point) => ...)`.
+
+An `AppendSkiaFilter` factory must only produce its filter. It must not re-enter its `FilterEffectExecutor` through `Activate`, `Flush`, or related methods. Put target drawing in a `CustomEffect` action instead.
 
 ### Metadata callback diagnostics
 
@@ -121,4 +129,6 @@ If you want to bundle several effects together, use the `RegisterGroup` helper d
 | `src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs` | Custom drawing through `CustomEffect`, with `transformBounds` to expand the surface. |
 | `src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs` | The full list of chainable built-in operations. |
 
-- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
+- [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
+- [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs)
+- [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)
