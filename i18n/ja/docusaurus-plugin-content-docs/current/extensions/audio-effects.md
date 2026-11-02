@@ -24,7 +24,7 @@ sidebar_position: 5
 
 `AudioProcessContext.TimeRange` は `MediaTime` を使います。処理用バッファのサンプル数には `context.GetSampleCount()` を使用してください。時間範囲をサンプル単位に切り上げて求めます。逆の変換には `AudioProcessContext.GetDurationForSampleCount(sampleCount, sampleRate)` を使うと、`GetSampleCount` で元のサンプル数に戻せる長さになります。`GetTimeForSample(int)` は `MediaTime` を返し、`GetSampleForTime(MediaTime)` は時刻をブロック内のサンプル位置に変換します。
 
-`context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` は、パラメーターのキーフレームと式を span に読み取ります。式は 10 ms 間隔で評価して間を補間するので、スクリプトがサンプルごとに実行されることはありません。`GetKeyFrameAnimation()` が `null` を返すときに静的な処理へ進むノードは、式が設定されていても保存された値を再生してしまいます。`IExpressionProperty.HasExpression` も確認してください。
+`context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` は、パラメーターのキーフレームと式を span に読み取ります。式は 10 ms 間隔で評価するので、スクリプトがサンプルごとに実行されることはありません。評価の間は、`float` の値を補間し、それ以外の型は直前の値を保ちます。`GetKeyFrameAnimation()` が `null` を返すときに静的な処理へ進むノードは、式が設定されていても保存された値を再生してしまいます。`IExpressionProperty.HasExpression` も確認してください。
 
 ## チャンネル構成 {/* #channel-layouts */}
 

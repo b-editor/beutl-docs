@@ -81,7 +81,7 @@ public static class SequentialConsumers
 
 ## デコーダーと `MediaReader` {/* #decoders */}
 
-`DecodingExtension` は `IDecoderInfo` を返し、その `Open` が `MediaReader` を作成します。`MediaReader.ReadAudio` は `AudioStreamInfo.ChannelLayout` のチャンネルをその順序で返します。組み込みの WAV、Media Foundation、FFmpeg、AVFoundation のデコーダーは、ステレオではなくソース本来のチャンネルを返します。`AudioStreamInfo.NumChannels` はメタデータとしてのソースのチャンネル数で、構成と異なる場合があるため、バッファのサイズの決定には使わないでください。
+`DecodingExtension` は `IDecoderInfo` を返し、その `Open` が `MediaReader` を作成します。`MediaReader.ReadAudio` は `AudioStreamInfo.ChannelLayout` のチャンネルをその順序で返します。組み込みの WAV、Media Foundation、FFmpeg、AVFoundation のデコーダーは、ステレオではなくソース本来のチャンネルを返します。例外は、最初のフレームまでチャンネルが分からない FFmpeg のデコーダーで、ステレオのままになります。`AudioStreamInfo.NumChannels` はメタデータとしてのソースのチャンネル数で、構成と異なる場合があるため、バッファのサイズの決定には使わないでください。
 
 `MediaReader` を直接読むコードは、任意のチャンネル数に対応する必要があります。`AudioChannelMatrix.ConvertOrNull` はデコードしたバッファを必要な構成に変換し、すでにその構成であれば `null` を返します。
 

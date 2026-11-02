@@ -81,7 +81,7 @@ The storage is planar `float` data: `GetChannelData(channel)` returns a `Span<fl
 
 ## Decoders and `MediaReader` {/* #decoders */}
 
-A `DecodingExtension` returns an `IDecoderInfo` whose `Open` creates a `MediaReader`. `MediaReader.ReadAudio` returns `AudioStreamInfo.ChannelLayout` channels in that order, and the built-in WAV, Media Foundation, FFmpeg and AVFoundation decoders return their sources' native channels instead of stereo. `AudioStreamInfo.NumChannels` is the source's channel count as metadata and can differ from the layout, so do not size buffers from it.
+A `DecodingExtension` returns an `IDecoderInfo` whose `Open` creates a `MediaReader`. `MediaReader.ReadAudio` returns `AudioStreamInfo.ChannelLayout` channels in that order, and the built-in WAV, Media Foundation, FFmpeg and AVFoundation decoders return their sources' native channels instead of stereo. The exception is an FFmpeg decoder that learns its channels only from the first frame, which stays stereo. `AudioStreamInfo.NumChannels` is the source's channel count as metadata and can differ from the layout, so do not size buffers from it.
 
 Code that reads a `MediaReader` directly must handle any channel count. `AudioChannelMatrix.ConvertOrNull` converts a decoded buffer to the layout you need, and returns `null` when the buffer already has that layout:
 

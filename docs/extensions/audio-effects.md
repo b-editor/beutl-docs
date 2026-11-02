@@ -24,7 +24,7 @@ The sample rate must be positive. Latency is non-negative; `int.MaxValue` repres
 
 `AudioProcessContext.TimeRange` uses `MediaTime`. Allocate processing buffers with `context.GetSampleCount()`; it rounds the range up to a whole number of samples. For the inverse operation, use `AudioProcessContext.GetDurationForSampleCount(sampleCount, sampleRate)` so a duration converted back with `GetSampleCount` represents exactly that sample count. `GetTimeForSample(int)` returns `MediaTime`, and `GetSampleForTime(MediaTime)` maps a time to the block's sample index.
 
-`context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` reads a parameter's keyframes and expression into a span. It evaluates an expression on a 10 ms grid and interpolates in between, so a script does not run for every sample. A node that takes a static path whenever `GetKeyFrameAnimation()` returns `null` plays the stored value under an expression, so test `IExpressionProperty.HasExpression` as well.
+`context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` reads a parameter's keyframes and expression into a span. It evaluates an expression on a 10 ms grid, so a script does not run for every sample. In between, `float` values are interpolated and other types keep the previous grid value. A node that takes a static path whenever `GetKeyFrameAnimation()` returns `null` plays the stored value under an expression, so test `IExpressionProperty.HasExpression` as well.
 
 ## Channel layouts {/* #channel-layouts */}
 
