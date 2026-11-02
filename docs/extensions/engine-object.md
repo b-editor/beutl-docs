@@ -132,6 +132,8 @@ KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
 
 `Expression` returns the keyframes when there is no expression above them, while `HasExpression` excludes keyframes. `IAnimation`, `IAnimation<T>`, and the non-generic `KeyFrameAnimation` have been removed; use `IKeyFrameAnimation` or `KeyFrameAnimation<T>`. `UseGlobalClock` and each keyframe's `KeyTime`, `Value`, and `Easing` are property objects too.
 
+The property menu's **Separate components** gives a vector, color, or similar property an independent track for each component. Its animation is then an `IComponentAnimation`, so `GetKeyFrameAnimation` returns `null`. Use `GetPropertyAnimation` and `SetPropertyAnimation` when code must handle both kinds: `KeyFrameAnimation<T>` and component animations both implement `IPropertyAnimation`, and `IPropertyAnimation<T>.EvaluateAt(time)` reads either. `IComponentAnimation.Components` lists the component properties. `ComponentAnimations.IsSupported(type)`, `Separate(property)`, and `Unseparate(property, time)` do what the menu does; unseparating keeps the value evaluated at `time`.
+
 `IExpression`, `IExpression<T>`, `ExpressionContext`, `PropertyLookup`, and `ExpressionException` are also in `Beutl.Core`, namespace `Beutl`. `IExpressionProperty<T>.Evaluate` accepts `EvaluationContext`; an expression implementation's `IExpression<T>.Evaluate` receives `ExpressionContext`. Both expression and composition contexts derive from `EvaluationContext`; `ExpressionContext` does not derive from `CompositionContext`.
 
 Timeline and keyframe times use `MediaTime`, not `TimeSpan`. Create frame times with `MediaTime.FromFrames(frame, rationalRate)` and convert to a display duration with `ToTimeSpan()`. `MediaTime.ToString()` displays a flick count.
@@ -151,7 +153,7 @@ namespace MyExtension;
 
 public sealed partial class MyProperties
 {
-    public partial class Resource
+    public new partial class Resource
     {
         partial void PreReconcile(MyProperties obj, CompositionContext context)
         {
@@ -187,7 +189,7 @@ Keep these two layers clear in your head:
 
 </div>
 
-Render code (`Drawable.OnDraw`, `FilterEffect.ApplyTo`, etc.) receives a `Resource`, so read values from it. Do not touch `IProperty<T>.Value` directly — `Resource` already has animations and expressions resolved into a snapshot, which is what you want for efficient rendering. `EngineObject` is the editing object; render code is expected to read values through the `Resource`.
+Render code lives on the `Resource` (`Drawable.Resource.OnDraw`, `FilterEffect.Resource.ApplyTo`, etc.), so read values from its properties. Inside `Resource`, a name such as `Size` is the evaluated value, not the object's `IExpressionProperty<T>`. Do not touch `IProperty<T>.Value` directly — `Resource` already has animations and expressions resolved into a snapshot, which is what you want for efficient rendering. `EngineObject` is the editing object; `RequireOriginal()` returns it when a method needs state that is not a property.
 
 ## Fallback handling
 
@@ -202,7 +204,7 @@ Base types such as `Drawable`, `Sound`, and `EngineObject` declare a `[FallbackT
 | `Drawable` | `Beutl.Graphics` | Anything that draws to a canvas. Provides `Transform`, `Opacity`, `BlendMode`, `FilterEffect`, and alignment. | [Implementing a Drawing Object](implement-drawing-object.md) |
 | `Shape` | `Beutl.Graphics.Shapes` | A `Drawable` whose appearance is defined by a `Geometry`. Adds `Fill` and `Pen`. | [Implementing a Drawing Object](implement-drawing-object.md) |
 | `FilterEffect` | `Beutl.Graphics.Effects` | Post effect applied to a render target. | [Implementing Effects](implement-effect.md) |
-| `Sound` | `Beutl.Audio` | Anything that produces audio on the timeline. Provides `Gain`, `Speed`, `OffsetPosition`, and `Effect`. |  |
+| `Sound` | `Beutl.Audio` | Anything that produces audio on the timeline. Provides `Gain`, `Pan`, `SurroundPan`, `CenterLevel`, `LfeLevel`, `Speed`, `OffsetPosition`, and `Effect`. |  |
 | `AudioEffect` | `Beutl.Audio.Effects` | Audio effect applied to the output of a `Sound`. | [Implementing audio effects](audio-effects.md) |
 | `Geometry` / `Brush` / `Pen` | `Beutl.Media` | Reusable drawing building blocks. | (Use the `EngineObject` pattern above.) |
 
@@ -251,6 +253,7 @@ public sealed class MyExtension : Extension
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
 - [`EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs) and [`ResourceClassEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Emit/ResourceClassEmitter.cs)
+- [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)

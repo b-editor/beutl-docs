@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources 
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.9 exposes these contracts through `Beutl.Extensibility`. Use the [preview.9 SDK](create-csproj.md) and rebuild your extension: several contract types moved between assemblies, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.10 exposes these contracts through `Beutl.Extensibility`. Use the [preview.10 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -166,7 +166,7 @@ public sealed class PlayheadTool : McpToolExtension
 
 `ElementDescription`, `ElementSource` and the source-handler contracts are in **`Beutl.Extensibility`**. Submit descriptions through `IElementAdder.AddAsync` (`Beutl.Editor.Services`). A description uses `MediaTime` for `Start` and nullable `Length`; `Length: null` lets the source handler choose or preserve the length, while zero explicitly requests zero.
 
-Built-in sources are `ElementSource.File`, `ElementSource.EngineObject` and `ElementSource.ElementTemplate`. For example:
+Built-in sources are `ElementSource.File`, `ElementSource.EngineObject`, `ElementSource.ElementTemplate` and `ElementSource.ElementSetTemplate`. `ElementSetTemplate` creates several complete elements, with the groups among them, from a saved `ElementSet`. They keep their names, lengths and transforms, and where each starts and lies relative to the others, so a description that asks for a name, a length or a position is refused. For example:
 
 ```csharp
 using Beutl;
@@ -192,7 +192,7 @@ public static class ElementRequests
 For a new source kind, derive a record from `ElementSource` and contribute `ElementSourceHandlerRegistration` entries from an exported `ElementSourceHandlerExtension`. Each `IElementSourceHandler` declares its exact `SourceType` and implements two stages:
 
 1. `PreflightAsync` validates the request and returns `ElementSourcePreflightResult.Ready(preflight, targetLayers)` or `Rejected(failure)`. Reserve at least one target layer. The host owns and asynchronously disposes the returned `IElementSourcePreflight` after the batch finishes.
-2. `MaterializeAsync` consumes that state and returns `ElementSourceMaterializationResult.Materialized(new ElementMaterialization(...))` or `Rejected(failure)`. The materialization holds the primary element, optional companions, groups and temporary resource leases. Resources that must survive materialization belong to the returned element graph instead of temporary leases.
+2. `MaterializeAsync` consumes that state and returns `ElementSourceMaterializationResult.Materialized(new ElementMaterialization(...))` or `Rejected(failure)`. The materialization holds the primary element, optional companions, groups and temporary resource leases. Resources that must survive materialization belong to the returned element graph instead of temporary leases. Set `KeepsArrangement` to `true` when the elements must keep where they start and lie relative to each other: the host then moves them together to the nearest free place and adds them as they are. Otherwise it fits each element on its own around whatever it overlaps.
 
 Registration defaults to `ElementSourceHandlerRegistrationMode.Add`; use `Replace` only when intentionally replacing an existing handler for that exact source type.
 
@@ -206,7 +206,7 @@ Unread members of saved objects are retained and written back on the next save. 
 
 ## Source
 
-- [`ContextCommandAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ContextCommandAttribute.cs)
+- [`ContextCommands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ContextCommands.cs)
 - [`IContextCommandInteraction.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IContextCommandInteraction.cs)
 - [`PropertyEditorExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorExtension.cs)
 - [`PropertyEditorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorRegistry.cs)

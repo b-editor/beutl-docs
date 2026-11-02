@@ -3,13 +3,32 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.9 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.10 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.9 からの移行 {/* #migrating-from-preview-9 */}
+
+preview.9 の拡張機能を移行するときは、次の変更を確認してください。削除または移動した API に互換用の API はありません。
+
+- **`Drawable` と `FilterEffect` のオーバーライド**: 入れ子の `Resource` に移します。[描画オブジェクト](implement-drawing-object.md#migrating-from-preview-9)と[エフェクト](implement-effect.md#migrating-from-preview-9)を参照してください。
+- **`CustomEffect` のコールバック**: レンダラーが実行するコールバックから別のレンダラーを起動できなくなりました。`RenderDependency` を使います。[エフェクト](implement-effect.md#processing-the-render-target)を参照してください。
+- **`MediaReader` を読むコード**: `ReadAudio` は常にステレオではなく `AudioStreamInfo.ChannelLayout` のチャンネルを返すので、任意のチャンネル数に対応します。[デコーダー](media-providers.md#decoders)を参照してください。
+- **`ISampleProvider` の実装とエンコーダー**: ステレオ以外を返すプロバイダーは `ChannelLayout` を宣言し、エンコーダーはそこからチャンネル数を取得します。[プロバイダーの契約](media-providers.md#provider-contracts)を参照してください。
+- **`AudioEffect` と `AudioNode` の実装**: 5.1 や 7.1 のプロジェクトでは、プロジェクトのチャンネル数を受け取ります。[チャンネル構成](audio-effects.md#channel-layouts)を参照してください。
+- **`StrokeEffect.Style`、`StrokeEffect.StrokeStyles`**: 削除されました。`Style` に `Foreground` を設定していた場合は、ペンの `StrokeOrder` に `StrokeOrder.BelowFill` を設定します。`Background` は既定の `AboveFill` にあたります。
+- **`SourceVideo`、`SourceSound`、`SceneSound`、`SceneDrawable` の `NotifySplitted`**: これらの型は公開メソッドとして宣言しなくなりました。`ISplittable` または `Element.NotifySplitted` を通して呼びます。
+- **`FontFamilyPickerFlyout`、`FontFamilyPickerFlyoutViewModel`**: `SearchablePickerFlyout` に名前が変わり、`ISearchablePickerViewModel` を受け取ります。ビューモデルは internal になりました。[共通のコントロール](#use-the-shared-controls)を参照してください。
+- **独自の `IElementAttributeService`**: `SetTrackMatte(Element, MatteSourceKind, int?, MatteMode)` と `SetVisibleInOutput(Element, bool)` を実装します。
+- **独自の `INodeGraphMutationService`**: `CanConnect(GraphModel, INodePort, INodePort)` と `RewireListSlot(GraphModel, Connection, GraphNode, INodePort?)` を実装します。
+- **独自の `ISceneSettingsService`**: `Apply(Scene, PixelSize, MediaTime, MediaTime, SpeakerLayout)` を実装します。
+- **`ExtensionsStrings`、`Strings`、`GraphicsStrings`**: `ExtensionsStrings.NoLogoImageAvailable`、`Free`、`Description`、`Package_Screenshots`、`Strings.Link`、`GraphicsStrings.StrokeEffect_Style` は削除されました。独自の文字列を用意してください。
+- **`WeakEvents`、`WeakEvent`、`WeakEvent<TSender, TEventArgs>`、`IWeakEventSubscriber<TEventArgs>`**: `Beutl.Utilities` から削除されました。イベントを直接購読し、不要になったら解除してください。
+- **テスト用のプロジェクト**: preview.10 で保存したプロジェクトは、preview.9 以前では開けません。[バージョンの対応表](version-mapping.md)を参照してください。
 
 ## パッケージと読み込み
 
 ### ソースジェネレーターをパッケージの依存関係に含めない
 
-preview.9 の SDK は `Beutl.Engine.SourceGenerators` に `PrivateAssets="all"` を付けます。preview.8 で必要だった自動参照を無効にする回避策は、更新時に削除できます。SDK がジェネレーターのバージョンを `$(BeutlPackagesVersion)` にそろえます。
+preview.9 以降の SDK は `Beutl.Engine.SourceGenerators` に `PrivateAssets="all"` を付けます。preview.8 で必要だった自動参照を無効にする回避策は、更新時に削除できます。SDK がジェネレーターのバージョンを `$(BeutlPackagesVersion)` にそろえます。
 
 `.nupkg` の中の `.nuspec` を確認し、ソースジェネレーターがインストール時の依存関係に含まれていないことを確かめてください。
 
@@ -22,7 +41,7 @@ preview.9 の SDK は `Beutl.Engine.SourceGenerators` に `PrivateAssets="all"` 
 
 ```xml
 <PackageReference Include="FluentIcons.Avalonia.Fluent"
-                  Version="2.1.344"
+                  Version="2.1.345"
                   ExcludeAssets="runtime;native"
                   PrivateAssets="all" />
 ```
@@ -48,36 +67,37 @@ preview.9 の SDK は `Beutl.Engine.SourceGenerators` に `PrivateAssets="all"` 
 
 ### コレクションのコンバーターは値の型に付ける
 
-preview.9 は、コレクション型自身の `[JsonConverter]` を保存・読み込みの両方で使用します。コンバーターがなければ、引き続き要素を 1 つずつ書き出します。`ICoreSerializable` と参照の値は、Beutl 独自のシリアライズ経路を使います。
+preview.9 以降は、コレクション型自身の `[JsonConverter]` を保存・読み込みの両方で使用します。コンバーターがなければ、引き続き要素を 1 つずつ書き出します。`ICoreSerializable` と参照の値は、Beutl 独自のシリアライズ経路を使います。
 
 プロパティメンバーに付けた `[JsonConverter]` は、プロパティシステムでは読み取られません。値の型に付けるか、適切な Beutl のシリアライズ契約を実装してください。メンバーの属性には依存しないでください。
 
 ### 時間で変わる内容と分割
 
-ユーザーが要素を分割すると、Beutl は要素をコピーし、前半と後半のオブジェクトの `ISplittable.NotifySplitted` を呼びます。コメントや歌詞、口パクのように、自分の時間軸で内容を再生するオブジェクトは、`SourceVideo` や `SourceSound` と同じく、後半で時刻をずらしてください。ずらさないと、後半が最初から再生し直されます。
+ユーザーが要素を分割すると、Beutl は要素をコピーし、前半と後半のオブジェクトの `ISplittable.NotifySplitted` を呼びます。コメントや歌詞、口パクのように、自分の時間軸で内容を再生するオブジェクトは、後半を前半の続きから再生する必要があります。そうしないと、後半が最初から再生し直されます。
+
+`SourceVideo`、`SourceSound`、`SceneSound`、`SceneDrawable` が共有する契約 `ITimeMappedSource` を実装してください。必須なのは `OffsetPosition` と `Speed` だけです。既定の `NotifySplitted` が後半の `OffsetPosition` を時間軸の先へ進め、分割、トリム、スリップはこの契約を通じて `OffsetPosition` を書き換えます。`Sound` の派生クラスは両方のプロパティを持っているので、インターフェイスを追加するだけで済みます。
 
 ```csharp
 using Beutl;
 using Beutl.Engine;
 using Beutl.Graphics;
 
-public abstract partial class TimedDrawable : Drawable, ISplittable
+public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 {
     protected TimedDrawable()
     {
         ScanProperties<TimedDrawable>();
     }
 
-    public IExpressionProperty<MediaTime> TimeOffset { get; } =
+    public IExpressionProperty<MediaTime> OffsetPosition { get; } =
         Property.CreateExpression(MediaTime.Zero);
 
-    public void NotifySplitted(bool backward, MediaTime startDelta, MediaTime durationDelta)
-    {
-        if (backward)
-            TimeOffset.Value -= startDelta;
-    }
+    // Null plays the timeline at 100%.
+    IExpressionProperty<float>? ITimeMappedSource.Speed => null;
 }
 ```
+
+クリップのローカル時刻 `t` で、ソースは時間軸の `OffsetPosition` に `[0, t]` の `Speed` の積分を加えた位置を再生します。この位置をもとに描画してください。`GetSourceDuration()` は時間軸の長さを返し、編集はその範囲に収まります。`HasDynamicMapping` の既定は `OffsetPosition.HasExpression` です。式が時間軸そのものを選ぶ場合は `HasDynamicTimeline` をオーバーライドしてください。`ISplittable` を直接実装するのは、このような時間軸を持たないオブジェクトだけにしてください。
 
 ### 保存するがパネルに出さない値
 
@@ -115,7 +135,7 @@ public static class TimingEdits
 
 ### タイムラインに対応するライブラリ項目を登録する
 
-preview.9 の `AddDrawable<T>()` と `AddSound<T>()` は、描画オブジェクト・音声の形式と `EngineObject` の形式を両方登録します。preview.8 で必要だった `AddMultiple` による回避策は不要です。複数形式の項目を作る場合、`BindDrawable<T>()` と `BindSound<T>()` も引き続き両方の形式を登録します。
+preview.9 以降の `AddDrawable<T>()` と `AddSound<T>()` は、描画オブジェクト・音声の形式と `EngineObject` の形式を両方登録します。preview.8 で必要だった `AddMultiple` による回避策は不要です。複数形式の項目を作る場合、`BindDrawable<T>()` と `BindSound<T>()` も引き続き両方の形式を登録します。
 
 ```csharp
 using Beutl.Graphics.Shapes;
@@ -173,9 +193,11 @@ public static class PlaybackCommands
 
 ## UI
 
-### 共通のコントロールを使う
+### 共通のコントロールを使う {/* #use-the-shared-controls */}
 
 `Beutl.Controls` は公開パッケージになり、SDK から自動参照されます。非公開のテーマリソースキーから組み直す代わりに `Beutl.Controls.ToolTabBar` を使ってください。組み込みのプロパティエディタとの連携には、`Beutl.Extensibility` の[型付き登録](editor-integration.md#property-editors)を使います。
+
+フォントやコーデックのピッカーのように検索とピン留めができる一覧には、`SearchablePickerViewModel<TSearchKey>` を継承して `Search` を実装し、`SearchablePickerFlyout` で開きます。外観と文言は `PresenterThemeKey` と `NoResultsText` で設定します。
 
 プロパティのコントロールを調整するときは、Beutl のテーマで余白とラベルの位置を確かめてください。ヘッドレス描画はレイアウトの確認に役立ちますが、公開前には Beutl 本体でも確認してください。
 
@@ -194,11 +216,14 @@ public static class PlaybackCommands
 - [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
 - [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
 - [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
+- [`ITimeMappedSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ITimeMappedSource.cs)
 - [`HistoryManager.EditSessions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/HistoryManager.EditSessions.cs)
 - [`EditSession.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/EditSession.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)
 - [`SceneEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/SceneEditorTabExtension.cs)
 - [`IPinnableToolContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IPinnableToolContext.cs)
+- [`SearchablePickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerFlyout.cs)
+- [`SearchablePickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerViewModel.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)

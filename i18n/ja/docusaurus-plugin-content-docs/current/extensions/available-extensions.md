@@ -10,7 +10,7 @@ Beutlでは以下の機能を拡張できます。
 
 | 型名 | 説明 |
 | --- | --- |
-| DecodingExtension | 動画、音声の対応、入力ファイルを追加します |
+| [DecodingExtension](media-providers.md#decoders) | 動画、音声の対応、入力ファイルを追加します |
 | [ControllableEncodingExtension](media-providers.md) | 動画、音声の対応、出力ファイルを追加します |
 | EditorExtension | ファイルの編集UIを追加します |
 | OutputExtension | 出力UIを追加します。 |

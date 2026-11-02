@@ -10,7 +10,7 @@ This guide introduces the methods using __Visual Studio Code__ or __Visual Studi
 Beutl 2.0 ships an MSBuild SDK called `Beutl.Extensibility.Sdk` that wires up the target framework, language defaults, the standard package references (`Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, `Beutl.Engine.SourceGenerators`), and the sideload output path. Using it keeps the csproj small.
 
 :::tip
-Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.9`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
+Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.10`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.9">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>
@@ -59,7 +59,7 @@ The SDK takes care of:
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
 
 :::info
-The preview.9 SDK references `Beutl.Engine.SourceGenerators` as a build-only analyzer with `PrivateAssets="all"`. The manual workaround needed by preview.8 and earlier to keep the generator out of package dependencies is no longer necessary.
+Since preview.9, the SDK references `Beutl.Engine.SourceGenerators` as a build-only analyzer with `PrivateAssets="all"`. The manual workaround needed by preview.8 and earlier to keep the generator out of package dependencies is no longer necessary.
 :::
 
 This completes the creation of an empty C# project for extensions.
@@ -112,7 +112,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.9">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>

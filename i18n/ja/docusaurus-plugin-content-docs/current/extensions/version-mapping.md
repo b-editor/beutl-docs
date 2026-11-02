@@ -7,6 +7,7 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.10 | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.9  | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.8  | 10.0 | 12.1.3                                             | 8.0    |
 | 2.0.0-preview.4  | 10.0 | 11.3.17                                            | 8.0    |
@@ -33,11 +34,14 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
+preview.9 と preview.10 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
+
+Beutl が書き出すファイルを読める最も古いバージョンを示す `FileFormat.Floor` は、preview.10 では `2.0.0-preview.10` です。preview.10 で保存したプロジェクトは、preview.9 以前では開けません。
 
 ## ソース
 
 - [`Directory.Build.props`](https://github.com/b-editor/beutl/blob/main/Directory.Build.props)
 - [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/main/Directory.Packages.props)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`FFmpegInstallService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.cs)
 - [`FFmpegInstallService.BtbN.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.BtbN.cs) / [`FFmpegInstallService.Homebrew.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.Homebrew.cs)

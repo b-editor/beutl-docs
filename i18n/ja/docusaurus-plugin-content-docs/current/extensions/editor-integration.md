@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.9 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.9 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。名前空間が同じでも、アセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.10 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.10 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。名前空間が同じでも、アセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -166,7 +166,7 @@ public sealed class PlayheadTool : McpToolExtension
 
 `ElementDescription`、`ElementSource` とソースハンドラーの契約は **`Beutl.Extensibility`** にあります。要求は `IElementAdder.AddAsync`（`Beutl.Editor.Services`）に渡します。`Start` は `MediaTime`、`Length` は nullable な `MediaTime` です。`Length: null` ならハンドラーが長さを決めるか維持し、ゼロは明示的に長さゼロを要求します。
 
-組み込みのソースは `ElementSource.File`、`ElementSource.EngineObject`、`ElementSource.ElementTemplate` です。
+組み込みのソースは `ElementSource.File`、`ElementSource.EngineObject`、`ElementSource.ElementTemplate`、`ElementSource.ElementSetTemplate` です。`ElementSetTemplate` は、保存された `ElementSet` から複数の完全な要素とそれらのグループを作成します。名前、長さ、トランスフォームと、互いの開始位置・レイヤーの関係を保つため、名前、長さ、位置を指定した要求は拒否されます。
 
 ```csharp
 using Beutl;
@@ -192,7 +192,7 @@ public static class ElementRequests
 独自のソースを追加するには、`ElementSource` を継承する record を作り、エクスポートした `ElementSourceHandlerExtension` から `ElementSourceHandlerRegistration` を返します。各 `IElementSourceHandler` は対象の型と完全に一致する `SourceType` を宣言し、次の 2 段階を実装します。
 
 1. `PreflightAsync` は要求を検証し、`ElementSourcePreflightResult.Ready(preflight, targetLayers)` または `Rejected(failure)` を返します。対象レイヤーは最低 1 つ予約してください。返した `IElementSourcePreflight` はホストが所有し、バッチ完了後に非同期で破棄します。
-2. `MaterializeAsync` はその状態を使い、`ElementSourceMaterializationResult.Materialized(new ElementMaterialization(...))` または `Rejected(failure)` を返します。結果には主となる要素、付随する要素、グループ、一時リソースのリースを含められます。作成後も必要なリソースは、一時リースではなく、返す要素のグラフに所有させてください。
+2. `MaterializeAsync` はその状態を使い、`ElementSourceMaterializationResult.Materialized(new ElementMaterialization(...))` または `Rejected(failure)` を返します。結果には主となる要素、付随する要素、グループ、一時リソースのリースを含められます。作成後も必要なリソースは、一時リースではなく、返す要素のグラフに所有させてください。要素どうしの開始位置とレイヤーの関係を保つ場合は `KeepsArrangement` を `true` にします。ホストは要素をまとめて最も近い空き位置へ移動し、そのまま追加します。`false` の場合は、重なりに合わせて要素を 1 つずつ配置します。
 
 登録の既定値は `ElementSourceHandlerRegistrationMode.Add` です。同じソース型の既存ハンドラーを意図的に置き換える場合にだけ `Replace` を使ってください。
 
@@ -206,7 +206,7 @@ public static class ElementRequests
 
 ## ソース
 
-- [`ContextCommandAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ContextCommandAttribute.cs)
+- [`ContextCommands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ContextCommands.cs)
 - [`IContextCommandInteraction.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IContextCommandInteraction.cs)
 - [`PropertyEditorExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorExtension.cs)
 - [`PropertyEditorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorRegistry.cs)

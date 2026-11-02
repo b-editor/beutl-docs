@@ -10,7 +10,7 @@ In Beutl, you can extend the following functionalities:
 
 | Type Name | Description |
 | --- | --- |
-| DecodingExtension | Adds support for video and audio decoding, and input files |
+| [DecodingExtension](media-providers.md#decoders) | Adds support for video and audio decoding, and input files |
 | [ControllableEncodingExtension](media-providers.md) | Adds support for video and audio encoding, and output files |
 | EditorExtension | Adds a UI for editing files |
 | OutputExtension | Adds a UI for output |

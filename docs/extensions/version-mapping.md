@@ -9,6 +9,7 @@ This table lists the versions of Beutl along with their corresponding dependenci
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.10 | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.9  | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.8  | 10.0 | 12.1.3                                             | 8.0    |
 | 2.0.0-preview.4  | 10.0 | 11.3.17                                            | 8.0    |
@@ -35,11 +36,14 @@ This table lists the versions of Beutl along with their corresponding dependenci
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 uses FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
+preview.9 and preview.10 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
+
+`FileFormat.Floor`, the oldest version that can read what Beutl writes, is `2.0.0-preview.10` in preview.10. A project saved by preview.10 does not open in preview.9 or earlier.
 
 ## Source
 
 - [`Directory.Build.props`](https://github.com/b-editor/beutl/blob/main/Directory.Build.props)
 - [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/main/Directory.Packages.props)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`FFmpegInstallService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.cs)
 - [`FFmpegInstallService.BtbN.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.BtbN.cs) / [`FFmpegInstallService.Homebrew.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/FFmpegInstallService.Homebrew.cs)
