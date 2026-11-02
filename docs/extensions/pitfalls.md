@@ -3,13 +3,32 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.9; rebuild extensions against its SDK after migrating the APIs below.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.10; rebuild extensions against its SDK after migrating the APIs below.
+
+## Migrating from preview.9 {/* #migrating-from-preview-9 */}
+
+Check these changes when you move an extension from preview.9. Removed and moved APIs have no compatibility shims.
+
+- **`Drawable` and `FilterEffect` overrides:** Move them onto the nested `Resource`. See [drawing objects](implement-drawing-object.md#migrating-from-preview-9) and [effects](implement-effect.md#migrating-from-preview-9).
+- **`CustomEffect` callbacks:** A callback run by the renderer can no longer launch another renderer. Use `RenderDependency`; see [effects](implement-effect.md#processing-the-render-target).
+- **Code that reads a `MediaReader`:** `ReadAudio` returns `AudioStreamInfo.ChannelLayout` channels instead of always stereo, so handle any channel count. See [decoders](media-providers.md#decoders).
+- **`ISampleProvider` implementations and encoders:** Declare `ChannelLayout` when a provider returns anything other than stereo, and take the encoder's channel count from it. See [provider contracts](media-providers.md#provider-contracts).
+- **`AudioEffect` and `AudioNode` implementations:** They receive the project's channel count in a 5.1 or 7.1 project. See [channel layouts](audio-effects.md#channel-layouts).
+- **`StrokeEffect.Style`, `StrokeEffect.StrokeStyles`:** Removed. Where code set `Style` to `Foreground`, set the pen's `StrokeOrder` to `StrokeOrder.BelowFill`. `Background` is the default `AboveFill`.
+- **`NotifySplitted` on `SourceVideo`, `SourceSound`, `SceneSound`, `SceneDrawable`:** These types no longer declare it publicly. Call it through `ISplittable` or `Element.NotifySplitted`.
+- **`FontFamilyPickerFlyout`, `FontFamilyPickerFlyoutViewModel`:** Renamed to `SearchablePickerFlyout`, which takes an `ISearchablePickerViewModel`; the view model is now internal. See [shared controls](#use-the-shared-controls).
+- **Custom `IElementAttributeService`:** Implement `SetTrackMatte(Element, MatteSourceKind, int?, MatteMode)` and `SetVisibleInOutput(Element, bool)`.
+- **Custom `INodeGraphMutationService`:** Implement `CanConnect(GraphModel, INodePort, INodePort)` and `RewireListSlot(GraphModel, Connection, GraphNode, INodePort?)`.
+- **Custom `ISceneSettingsService`:** Implement `Apply(Scene, PixelSize, MediaTime, MediaTime, SpeakerLayout)`.
+- **`ExtensionsStrings`, `Strings`, `GraphicsStrings`:** `ExtensionsStrings.NoLogoImageAvailable`, `Free`, `Description`, `Package_Screenshots`, `Strings.Link` and `GraphicsStrings.StrokeEffect_Style` are gone. Provide your own strings.
+- **`WeakEvents`, `WeakEvent`, `WeakEvent<TSender, TEventArgs>`, `IWeakEventSubscriber<TEventArgs>`:** Removed from `Beutl.Utilities`. Subscribe to the event directly and unsubscribe when done.
+- **Test projects:** A project saved by preview.10 does not open in preview.9 or earlier. See the [version table](version-mapping.md).
 
 ## Packaging and loading
 
 ### Keep the source generator private
 
-The preview.9 SDK marks `Beutl.Engine.SourceGenerators` as `PrivateAssets="all"`, so the preview.8 workaround that disabled the automatic reference is no longer needed. Remove that workaround when upgrading; the SDK keeps the generator version aligned with `$(BeutlPackagesVersion)`.
+Since preview.9, the SDK marks `Beutl.Engine.SourceGenerators` as `PrivateAssets="all"`, so the preview.8 workaround that disabled the automatic reference is no longer needed. Remove that workaround when upgrading; the SDK keeps the generator version aligned with `$(BeutlPackagesVersion)`.
 
 Check the `.nuspec` inside your `.nupkg`: the source generator must not appear as an install-time dependency.
 
@@ -22,7 +41,7 @@ Each extension is loaded into its own `AssemblyLoadContext`, but when Beutl ship
 
 ```xml
 <PackageReference Include="FluentIcons.Avalonia.Fluent"
-                  Version="2.1.344"
+                  Version="2.1.345"
                   ExcludeAssets="runtime;native"
                   PrivateAssets="all" />
 ```
@@ -48,36 +67,37 @@ After a build, `<AssemblyName>.deps.json` in the output should list your own ass
 
 ### Collection converters belong on the value type
 
-In preview.9, a collection type's own `[JsonConverter]` is honored on both save and load. Without a converter, Beutl still writes collections item by item. `ICoreSerializable` and reference values follow Beutl's own serialization paths.
+Since preview.9, a collection type's own `[JsonConverter]` is honored on both save and load. Without a converter, Beutl still writes collections item by item. `ICoreSerializable` and reference values follow Beutl's own serialization paths.
 
 A `[JsonConverter]` placed on a property member is not read by the property system. Put it on the value type, or implement the appropriate Beutl serialization contract; do not rely on the member attribute.
 
 ### Time-based content and splitting
 
-When the user splits an element, Beutl copies it and calls `ISplittable.NotifySplitted` on the objects of both halves. An object that plays something on its own timeline, such as comments, lyrics or lip sync, should shift its time in the back half, as `SourceVideo` and `SourceSound` do. Without it, the back half starts over from the beginning.
+When the user splits an element, Beutl copies it and calls `ISplittable.NotifySplitted` on the objects of both halves. An object that plays something on its own timeline, such as comments, lyrics or lip sync, should continue in the back half from where the front half stopped. Without that, the back half starts over from the beginning.
+
+Implement `ITimeMappedSource`, the contract `SourceVideo`, `SourceSound`, `SceneSound` and `SceneDrawable` share. Only `OffsetPosition` and `Speed` are required: the default `NotifySplitted` moves the back half's `OffsetPosition` further into the timeline, and Split, Trim and Slip rewrite it through this contract. A `Sound` subclass already has both properties, so it only needs to add the interface.
 
 ```csharp
 using Beutl;
 using Beutl.Engine;
 using Beutl.Graphics;
 
-public abstract partial class TimedDrawable : Drawable, ISplittable
+public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 {
     protected TimedDrawable()
     {
         ScanProperties<TimedDrawable>();
     }
 
-    public IExpressionProperty<MediaTime> TimeOffset { get; } =
+    public IExpressionProperty<MediaTime> OffsetPosition { get; } =
         Property.CreateExpression(MediaTime.Zero);
 
-    public void NotifySplitted(bool backward, MediaTime startDelta, MediaTime durationDelta)
-    {
-        if (backward)
-            TimeOffset.Value -= startDelta;
-    }
+    // Null plays the timeline at 100%.
+    IExpressionProperty<float>? ITimeMappedSource.Speed => null;
 }
 ```
+
+At the clip's local time `t`, the source plays its timeline at `OffsetPosition` plus the integral of `Speed` over `[0, t]`, so draw from that position. `GetSourceDuration()` reports the timeline's length, which edits stay within. `HasDynamicMapping` defaults to `OffsetPosition.HasExpression`; override `HasDynamicTimeline` when an expression picks the timeline. Implement `ISplittable` directly only for an object without such a timeline.
 
 ### Saved but not shown
 
@@ -115,7 +135,7 @@ public static class TimingEdits
 
 ### Register timeline-compatible library items
 
-In preview.9, `AddDrawable<T>()` and `AddSound<T>()` register the `EngineObject` format as well as their drawable or sound format. The preview.8 `AddMultiple` workaround is no longer necessary. `BindDrawable<T>()` and `BindSound<T>()` still register both formats when building a multiple-format item.
+Since preview.9, `AddDrawable<T>()` and `AddSound<T>()` register the `EngineObject` format as well as their drawable or sound format. The preview.8 `AddMultiple` workaround is no longer necessary. `BindDrawable<T>()` and `BindSound<T>()` still register both formats when building a multiple-format item.
 
 ```csharp
 using Beutl.Graphics.Shapes;
@@ -173,9 +193,11 @@ public static class PlaybackCommands
 
 ## UI
 
-### Use the shared controls
+### Use the shared controls {/* #use-the-shared-controls */}
 
 `Beutl.Controls` is now a public package automatically referenced by the SDK. Use `Beutl.Controls.ToolTabBar` instead of rebuilding it from private theme resource keys. For built-in property editor integration, use the [typed registrations](editor-integration.md#property-editors) in `Beutl.Extensibility`.
+
+For a searchable, pinnable list like the font and codec pickers, derive from `SearchablePickerViewModel<TSearchKey>`, implement `Search`, and open it with `SearchablePickerFlyout`. Set `PresenterThemeKey` and `NoResultsText` for the look and wording.
 
 When adjusting a property's controls, check their spacing and label alignment under Beutl's theme. Headless rendering is useful for layout checks, but also check the result in Beutl before release.
 
@@ -194,11 +216,14 @@ When adjusting a property's controls, check their spacing and label alignment un
 - [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
 - [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
 - [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
+- [`ITimeMappedSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ITimeMappedSource.cs)
 - [`HistoryManager.EditSessions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/HistoryManager.EditSessions.cs)
 - [`EditSession.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/EditSession.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)
 - [`SceneEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/SceneEditorTabExtension.cs)
 - [`IPinnableToolContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IPinnableToolContext.cs)
+- [`SearchablePickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerFlyout.cs)
+- [`SearchablePickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerViewModel.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)

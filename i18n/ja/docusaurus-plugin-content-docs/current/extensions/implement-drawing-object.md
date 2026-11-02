@@ -79,7 +79,7 @@ public sealed partial class StarShape : Shape
     [Range(0, float.MaxValue)]
     public IExpressionProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
 
-    public partial class Resource
+    public new partial class Resource
     {
         private readonly PathGeometry _geometry = new();
         private PathGeometry.Resource? _geometryResource;
@@ -137,7 +137,7 @@ public sealed partial class StarShape : Shape
 - `Resource` 内の `Size` はスナップショット値です。`Size` プロパティの現在値はジェネレータがフィールドにコピーしてくれます。
 - `ResourceReconciler.ReconcileResource` がジオメトリリソースを生成・更新し、変更があれば `Version++` で親にも伝えます。
 - `_geometry` はフレームをまたいで再利用し、`Size` が変わったときだけ図形を作り直します。`Geometry.Resource` は保持して再利用し、ヘルパーが `Geometry.Resource.Reconcile()` を呼びます。
-- 計測・塗り・線・境界の処理は `Shape` 基底クラスが `GetGeometry()` の戻り値をもとに行ってくれます。
+- 計測・塗り・線・境界の処理は `Shape.Resource` が行います。その `MeasureCore` と `OnDraw` は `GetGeometry()` の戻り値を使います。
 
 ## 4. 拡張機能でクラスを登録する
 
@@ -165,7 +165,7 @@ public sealed class StarShapeExtension : Extension
 
 ## 発展：`Shape` を使わない自由な `Drawable`
 
-ジオメトリベースではなく `GraphicsContext2D` で直接描きたい場合は、`Drawable` を直接継承して `MeasureCore` と `OnDraw` をオーバーライドします。どちらのメソッドも `Drawable.Resource` のスナップショットを受け取るので、自分の生成された `Resource` 型へキャストしてプロパティ値を読み取ります。
+ジオメトリベースではなく `GraphicsContext2D` で直接描きたい場合は、`Drawable` を直接継承し、入れ子の `Resource` で `MeasureCore` と `OnDraw` をオーバーライドします。`Resource` の中でプロパティ名は描画時刻で評価された値を指すので、`Size` をそのまま読み取れます。プロパティ以外の状態が必要なメソッドでは、`RequireOriginal()` で描画オブジェクトを取得できます。
 
 ```cs
 using Beutl;
@@ -185,24 +185,83 @@ public sealed partial class CustomDrawable : Drawable
 
     public IExpressionProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
 
-    protected override Size MeasureCore(Size availableSize, Drawable.Resource resource)
+    public new partial class Resource
     {
-        var r = (Resource)resource;
-        return new Size(r.Size, r.Size);
-    }
+        protected override Size MeasureCore(Size availableSize)
+        {
+            return new Size(Size, Size);
+        }
 
-    protected override void OnDraw(GraphicsContext2D context, Drawable.Resource resource)
-    {
-        var r = (Resource)resource;
-        context.DrawRectangle(new Rect(0, 0, r.Size, r.Size), Brushes.Resource.White, null);
+        protected override void OnDraw(GraphicsContext2D context)
+        {
+            context.DrawRectangle(new Rect(0, 0, Size, Size), Brushes.Resource.White, null);
+        }
     }
 }
 ```
 
+公開された入口は `Resource.Measure(availableSize)` と `Resource.Render(context)` です。`Render` は無効なリソースを描画せず、エフェクトが時間サンプリングした入力に置き換える場合はそちらを描画し、それ以外は `RenderCore` を呼びます。そのため `RenderCore` で `IsEnabled` を確認する必要はありません。既定の `RenderCore` は `OnDraw` の前後でブレンドモード、トランスフォーム、不透明度、フィルターエフェクトを適用します。内容の配置や合成の方法を変える場合にだけオーバーライドしてください。`OnDraw` から子の描画オブジェクトを描くには、そのリソースを `context.DrawDrawable` に渡します。
+
 独自の `RenderNode` を実装する場合は、記録するスレッドで状態を更新し、`MarkChanged()` を呼んで変更を通知します。所有者から明示的に `Dispose()` してください。`RenderNode` には finalizer がなく、放置しても `OnDispose(false)` は呼ばれません。
+
+### preview.9 からの移行 {/* #migrating-from-preview-9 */}
+
+preview.9 では、これらのオーバーライドはオブジェクトのクラスにあり、引数で `resource` を受け取っていました。互換用の API はありません。各メソッドの本体を入れ子の `Resource` に移し、`r.Property` を `Property` に置き換えて再ビルドしてください。
+
+<div style={{ overflowX: 'auto' }}>
+
+| 変更前 | 変更後 |
+| --- | --- |
+| `override Size Drawable.MeasureCore(Size, Resource)` | 描画オブジェクトの `Resource` の `protected override Size MeasureCore(Size)` |
+| `override void Drawable.OnDraw(GraphicsContext2D, Resource)` | 描画オブジェクトの `Resource` の `protected override void OnDraw(GraphicsContext2D)` |
+| `override void Drawable.Render(GraphicsContext2D, Resource)` | 描画オブジェクトの `Resource` の `protected override void RenderCore(GraphicsContext2D)` |
+| `drawable.Render(context, resource)` | `resource.Render(context)` |
+
+</div>
+
+## プレビューで点を編集する {/* #editing-handles */}
+
+`IEditingHandleProvider` を実装すると、プレビューにドラッグできる点を表示できます。ホストはまず選択中のオブジェクトを確認するので、描画オブジェクトだけでなく、その中のエフェクトもハンドルを提供できます。位置は所有する描画オブジェクトのローカルな論理座標で指定します。トランスフォームの適用はホストが行い、ドラッグを離したときに編集を履歴へ確定します。
+
+```cs
+using System.Collections.Generic;
+using Beutl;
+using Beutl.Engine;
+using Beutl.Graphics;
+using Beutl.Graphics.Rendering;
+using Beutl.Media;
+
+namespace MyExtension;
+
+public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
+{
+    public MarkerDrawable()
+    {
+        ScanProperties<MarkerDrawable>();
+    }
+
+    public IExpressionProperty<Point> Marker { get; } = Property.CreateAnimatable(new Point(50, 50));
+
+    public IReadOnlyList<EditingHandle> GetEditingHandles(MediaTime time)
+        => [new EditingHandle("marker", Marker.Evaluate(new EvaluationContext(time)), "Marker") { Property = Marker }];
+
+    public new partial class Resource
+    {
+        protected override Size MeasureCore(Size availableSize) => new(100, 100);
+
+        protected override void OnDraw(GraphicsContext2D context)
+        {
+            context.DrawEllipse(new Rect(Marker.X - 4, Marker.Y - 4, 8, 8), Brushes.Resource.White, null);
+        }
+    }
+}
+```
+
+`Property` を設定すると、ホストがそのプロパティと現在時刻の前後のキーフレームを書き換えます。設定しない場合は、代わりに `MoveEditingHandle(id, position, time)` を呼びます。`Color` を設定すると、ホスト既定のハンドルの色を置き換えます。
 
 ## ソース
 
 - [`RectShape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) and [`Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)
 - [`ResourceReconciler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ResourceReconciler.cs) and [`PathFigure.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Geometry/PathFigure.cs)
+- [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
 - [`Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs), [`GraphicsContext2D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/GraphicsContext2D.cs), and [`RenderNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderNode.cs)

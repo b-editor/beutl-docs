@@ -1,6 +1,6 @@
 ---
 title: 音声エフェクトの実装
-description: 独自のエフェクトで処理遅延の報告と音声末尾の排出を実装します。
+description: 独自のエフェクトで任意のチャンネル構成を扱い、処理遅延の報告と音声末尾の排出を実装します。
 sidebar_position: 5
 ---
 
@@ -24,6 +24,67 @@ sidebar_position: 5
 
 `AudioProcessContext.TimeRange` は `MediaTime` を使います。処理用バッファのサンプル数には `context.GetSampleCount()` を使用してください。時間範囲をサンプル単位に切り上げて求めます。逆の変換には `AudioProcessContext.GetDurationForSampleCount(sampleCount, sampleRate)` を使うと、`GetSampleCount` で元のサンプル数に戻せる長さになります。`GetTimeForSample(int)` は `MediaTime` を返し、`GetSampleForTime(MediaTime)` は時刻をブロック内のサンプル位置に変換します。
 
+`context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` は、パラメーターのキーフレームと式を span に読み取ります。式は 10 ms 間隔で評価して間を補間するので、スクリプトがサンプルごとに実行されることはありません。`GetKeyFrameAnimation()` が `null` を返すときに静的な処理へ進むノードは、式が設定されていても保存された値を再生してしまいます。`IExpressionProperty.HasExpression` も確認してください。
+
+## チャンネル構成 {/* #channel-layouts */}
+
+プロジェクトは `Project.ChannelLayout` の構成（モノラル、ステレオ、5.1、7.1）で描画されます。各サウンドはパンナーでプロジェクトの構成に配置されるまでソース自身のチャンネルで処理され、エフェクトはそのパンナーの後で実行されます。そのため 5.1 のプロジェクトでは、サードパーティ製のものを含めて、エフェクトは 6 チャンネルを受け取ります。サウンドの出力のチャンネル数が異なると `Composer` が `InvalidOperationException` を投げるので、エフェクトはプロジェクトのチャンネル数を返す必要があります。
+
+チャンネルごとの状態はステレオを前提とせず、バッファの `ChannelCount` に合わせて確保し、数が変わったら作り直してください。次のエフェクトは受け取ったバッファのチャンネルをループで処理するので、どの構成でも動作します。
+
+```csharp
+using System;
+using Beutl.Audio;
+using Beutl.Audio.Effects;
+using Beutl.Audio.Graph;
+
+namespace MyExtension;
+
+public sealed partial class PolarityEffect : AudioEffect
+{
+    public PolarityEffect()
+    {
+        ScanProperties<PolarityEffect>();
+    }
+
+    public override AudioNode CreateNode(AudioContext context, AudioNode inputNode)
+    {
+        PolarityNode node = context.AddNode(new PolarityNode());
+        context.Connect(inputNode, node);
+        return node;
+    }
+}
+
+public sealed class PolarityNode : AudioNode
+{
+    public override AudioBuffer Process(AudioProcessContext context)
+    {
+        if (Inputs.Count != 1)
+            throw new InvalidOperationException("The node requires exactly one input.");
+
+        return RecordProcessedOutput(ProcessTail(Inputs[0].Process(context), context, draining: false));
+    }
+
+    protected override AudioBuffer ProcessTail(AudioBuffer input, AudioProcessContext context, bool draining)
+    {
+        for (int channel = 0; channel < input.ChannelCount; channel++)
+        {
+            Span<float> samples = input.GetChannelData(channel);
+            for (int i = 0; i < samples.Length; i++)
+                samples[i] = -samples[i];
+        }
+
+        return input;
+    }
+}
+```
+
+エフェクトがスピーカーの位置を必要とする場合は、`AudioContext.ChannelLayout` でプロジェクトの構成を取得できます。`GetSpeaker(channel)` と `IndexOf(speaker)` でチャンネルと `AudioSpeakers` を相互に変換します。チャンネルはスピーカーマスクのビットの昇順に並びます。
+
+入力を持たず、ステレオ以外を出力するノードは、無音の `Flush` が同じチャンネル数になるよう `RecordProcessedChannelCount` を呼んでください。
+
+`Compose` をオーバーライドする `Sound` は、コンテキストの構成で出力する必要があります。`context.CreateSourceNode(source, channelMap)` は、ソースと `Sound.Resource.GetChannelMap()` が返すマップからクリップの構成を求めます。`context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` はプロジェクトの構成に変換します。
+
 ## 末尾の排出
 
 `Flush(AudioProcessContext)` は連続した終端の `Process` 呼び出し直後に、保持している音声を排出します。単一入力のノードは入力側の末尾を `ProcessTail` で処理します。複数入力のノードでは、`Flush` をオーバーライドして各入力の末尾を排出・混合してください。
@@ -43,6 +104,10 @@ sidebar_position: 5
 - [`AudioEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/AudioEffect.cs)
 - [`AudioNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioNode.cs)
 - [`AudioBuffer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioBuffer.cs)
+- [`AudioChannelLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelLayout.cs)
+- [`AudioChannelMatrix.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelMatrix.cs)
+- [`AnimationSampler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/AnimationSampler.cs)
 - [`AudioProcessContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioProcessContext.cs)
 - [`AudioContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioContext.cs)
+- [`Sound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Sound.cs)
 - [`SoundGroup.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/SoundGroup.cs)

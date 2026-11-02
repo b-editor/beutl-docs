@@ -132,6 +132,8 @@ KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
 
 上位の式がない場合、`Expression` はキーフレームを返しますが、`HasExpression` はキーフレームを数えません。`IAnimation`、`IAnimation<T>`、非ジェネリックの `KeyFrameAnimation` は削除されました。`IKeyFrameAnimation` または `KeyFrameAnimation<T>` を使います。`UseGlobalClock` と、各キーフレームの `KeyTime`、`Value`、`Easing` もプロパティオブジェクトです。
 
+プロパティのメニューの **成分を分離** を使うと、ベクトルや色などのプロパティは成分ごとに独立したトラックを持ちます。このときアニメーションは `IComponentAnimation` になり、`GetKeyFrameAnimation` は `null` を返します。両方の種類を扱うコードでは `GetPropertyAnimation` と `SetPropertyAnimation` を使ってください。`KeyFrameAnimation<T>` と成分のアニメーションはどちらも `IPropertyAnimation` を実装し、`IPropertyAnimation<T>.EvaluateAt(time)` でどちらの値も読み取れます。`IComponentAnimation.Components` は成分のプロパティの一覧です。`ComponentAnimations.IsSupported(type)`、`Separate(property)`、`Unseparate(property, time)` はメニューと同じ操作を行います。分離を解除すると、`time` で評価した値が保持されます。
+
 `IExpression`、`IExpression<T>`、`ExpressionContext`、`PropertyLookup`、`ExpressionException` も Beutl.Core の `Beutl` 名前空間にあります。`IExpressionProperty<T>.Evaluate` は `EvaluationContext`、式の実装の `IExpression<T>.Evaluate` は `ExpressionContext` を受け取ります。式とコンポジションのコンテキストはともに `EvaluationContext` を継承します。`ExpressionContext` は `CompositionContext` を継承しません。
 
 タイムラインとキーフレームの時刻には `TimeSpan` ではなく `MediaTime` を使います。フレームの時刻は `MediaTime.FromFrames(frame, rationalRate)` で作り、時間として表示するときは `ToTimeSpan()` で変換します。`MediaTime.ToString()` は flick 数を表示します。
@@ -151,7 +153,7 @@ namespace MyExtension;
 
 public sealed partial class MyProperties
 {
-    public partial class Resource
+    public new partial class Resource
     {
         partial void PreReconcile(MyProperties obj, CompositionContext context)
         {
@@ -187,7 +189,7 @@ public sealed partial class MyProperties
 
 </div>
 
-レンダリング処理（`Drawable.OnDraw`、`FilterEffect.ApplyTo` など）では `Resource` を引数に受け取るので、値はそこから読み取ります。`IProperty<T>.Value` を直接参照しないでください。`Resource` はアニメーションや式を考慮した「ある時点での値のスナップショット」なので、これを使うことで効率的に描画できます。`EngineObject` はあくまで編集用のオブジェクトで、描画処理中は `Resource` を通じて値を取得することが前提です。
+レンダリング処理（`Drawable.Resource.OnDraw`、`FilterEffect.Resource.ApplyTo` など）は `Resource` の中に書くので、値はそのプロパティから読み取ります。`Resource` の中で `Size` のような名前が指すのは評価済みの値で、オブジェクトの `IExpressionProperty<T>` ではありません。`IProperty<T>.Value` を直接参照しないでください。`Resource` はアニメーションや式を考慮した「ある時点での値のスナップショット」なので、これを使うことで効率的に描画できます。`EngineObject` はあくまで編集用のオブジェクトです。プロパティ以外の状態が必要なメソッドでは、`RequireOriginal()` で取得できます。
 
 ## フォールバック処理
 
@@ -202,7 +204,7 @@ public sealed partial class MyProperties
 | `Drawable` | `Beutl.Graphics` | キャンバスに描画される任意のオブジェクト。`Transform` / `Opacity` / `BlendMode` / `FilterEffect` / アライメントを提供。 | [描画オブジェクトを実装](implement-drawing-object.md) |
 | `Shape` | `Beutl.Graphics.Shapes` | 見た目が `Geometry` で決まる `Drawable`。`Fill` と `Pen` を追加で持ちます。 | [描画オブジェクトを実装](implement-drawing-object.md) |
 | `FilterEffect` | `Beutl.Graphics.Effects` | レンダーターゲットへ適用するポストエフェクト。 | [エフェクトを実装する](implement-effect.md) |
-| `Sound` | `Beutl.Audio` | タイムラインに配置される任意の音源。`Gain` / `Speed` / `OffsetPosition` / `Effect` を提供。 |  |
+| `Sound` | `Beutl.Audio` | タイムラインに配置される任意の音源。`Gain` / `Pan` / `SurroundPan` / `CenterLevel` / `LfeLevel` / `Speed` / `OffsetPosition` / `Effect` を提供。 |  |
 | `AudioEffect` | `Beutl.Audio.Effects` | `Sound` の出力に適用されるオーディオエフェクト。 | [音声エフェクトの実装](audio-effects.md) |
 | `Geometry` / `Brush` / `Pen` | `Beutl.Media` | 再利用可能な描画ビルディングブロック。 | （上記の `EngineObject` パターンを使用） |
 
@@ -251,6 +253,7 @@ public sealed class MyExtension : Extension
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
 - [`EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs) and [`ResourceClassEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Emit/ResourceClassEmitter.cs)
+- [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)

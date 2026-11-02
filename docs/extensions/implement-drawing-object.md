@@ -79,7 +79,7 @@ public sealed partial class StarShape : Shape
     [Range(0, float.MaxValue)]
     public IExpressionProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
 
-    public partial class Resource
+    public new partial class Resource
     {
         private readonly PathGeometry _geometry = new();
         private PathGeometry.Resource? _geometryResource;
@@ -137,7 +137,7 @@ Key points:
 - `Size` inside `Resource` is the snapshot value — the generator copies the current value of the `Size` property into a field for you.
 - `ResourceReconciler.ReconcileResource` creates or reconciles the geometry resource; `Version++` propagates a detected change to the parent resource.
 - `_geometry` is reused across frames; the figures are rebuilt only when `Size` changes. The `Geometry.Resource` is retained and reused; the helper calls `Geometry.Resource.Reconcile()`.
-- Measurement, fill, pen, and bounds are all handled by the `Shape` base class based on the geometry returned from `GetGeometry()`.
+- Measurement, fill, pen, and bounds are all handled by `Shape.Resource`, whose `MeasureCore` and `OnDraw` use the geometry returned from `GetGeometry()`.
 
 ## 4. Register the class in your extension
 
@@ -165,7 +165,7 @@ The `[Export]` attribute lets Beutl's loader discover the extension. `AddMultipl
 
 ## Going further: a free-form `Drawable` without `Shape`
 
-If you want to draw directly with `GraphicsContext2D` instead of using a geometry, derive from `Drawable` directly and override `MeasureCore` and `OnDraw`. Both methods receive a snapshot through `Drawable.Resource`, which you cast to your generated `Resource` type to read property values.
+If you want to draw directly with `GraphicsContext2D` instead of using a geometry, derive from `Drawable` directly and override `MeasureCore` and `OnDraw` on the nested `Resource`. Inside `Resource`, a property name is the value evaluated at the rendered time, so read `Size` directly. `RequireOriginal()` returns the drawable when a method needs state that is not a property.
 
 ```cs
 using Beutl;
@@ -185,24 +185,83 @@ public sealed partial class CustomDrawable : Drawable
 
     public IExpressionProperty<float> Size { get; } = Property.CreateAnimatable<float>(100);
 
-    protected override Size MeasureCore(Size availableSize, Drawable.Resource resource)
+    public new partial class Resource
     {
-        var r = (Resource)resource;
-        return new Size(r.Size, r.Size);
-    }
+        protected override Size MeasureCore(Size availableSize)
+        {
+            return new Size(Size, Size);
+        }
 
-    protected override void OnDraw(GraphicsContext2D context, Drawable.Resource resource)
-    {
-        var r = (Resource)resource;
-        context.DrawRectangle(new Rect(0, 0, r.Size, r.Size), Brushes.Resource.White, null);
+        protected override void OnDraw(GraphicsContext2D context)
+        {
+            context.DrawRectangle(new Rect(0, 0, Size, Size), Brushes.Resource.White, null);
+        }
     }
 }
 ```
 
+`Resource.Measure(availableSize)` and `Resource.Render(context)` are the public entry points. `Render` skips a disabled resource and lets an effect replace the drawable's time-sampled input before it falls back to `RenderCore`, so `RenderCore` does not check `IsEnabled`. The default `RenderCore` applies the blend mode, transform, opacity and filter effect around `OnDraw`; override it only to change how the content is placed or composited. To draw a child drawable from `OnDraw`, pass its resource to `context.DrawDrawable`.
+
 If you implement a custom `RenderNode`, update its state and call `MarkChanged()` on the thread that records it. Its owner must explicitly call `Dispose()`. `RenderNode` has no finalizer, so an abandoned node does not receive `OnDispose(false)`.
+
+### Migrating from preview.9 {/* #migrating-from-preview-9 */}
+
+In preview.9 these overrides lived on the object class and received a `resource` argument. There are no compatibility shims: move each body into the nested `Resource`, replace `r.Property` with `Property`, and rebuild.
+
+<div style={{ overflowX: 'auto' }}>
+
+| Before | After |
+| --- | --- |
+| `override Size Drawable.MeasureCore(Size, Resource)` | `protected override Size MeasureCore(Size)` in the drawable's `Resource` |
+| `override void Drawable.OnDraw(GraphicsContext2D, Resource)` | `protected override void OnDraw(GraphicsContext2D)` in the drawable's `Resource` |
+| `override void Drawable.Render(GraphicsContext2D, Resource)` | `protected override void RenderCore(GraphicsContext2D)` in the drawable's `Resource` |
+| `drawable.Render(context, resource)` | `resource.Render(context)` |
+
+</div>
+
+## Editing points in the preview {/* #editing-handles */}
+
+Implement `IEditingHandleProvider` to show draggable points on the preview. The host asks the selected object first, so an effect inside a drawable can provide handles as well as the drawable itself. Positions are in the owning drawable's local logical coordinates; the host applies its transform and commits each drag to the history on release.
+
+```cs
+using System.Collections.Generic;
+using Beutl;
+using Beutl.Engine;
+using Beutl.Graphics;
+using Beutl.Graphics.Rendering;
+using Beutl.Media;
+
+namespace MyExtension;
+
+public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
+{
+    public MarkerDrawable()
+    {
+        ScanProperties<MarkerDrawable>();
+    }
+
+    public IExpressionProperty<Point> Marker { get; } = Property.CreateAnimatable(new Point(50, 50));
+
+    public IReadOnlyList<EditingHandle> GetEditingHandles(MediaTime time)
+        => [new EditingHandle("marker", Marker.Evaluate(new EvaluationContext(time)), "Marker") { Property = Marker }];
+
+    public new partial class Resource
+    {
+        protected override Size MeasureCore(Size availableSize) => new(100, 100);
+
+        protected override void OnDraw(GraphicsContext2D context)
+        {
+            context.DrawEllipse(new Rect(Marker.X - 4, Marker.Y - 4, 8, 8), Brushes.Resource.White, null);
+        }
+    }
+}
+```
+
+With `Property` set, the host writes that property and the keyframes surrounding the current time. Without it, the host calls `MoveEditingHandle(id, position, time)` instead. `Color` replaces the host's default handle color.
 
 ## Source
 
 - [`RectShape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) and [`Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)
 - [`ResourceReconciler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ResourceReconciler.cs) and [`PathFigure.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Geometry/PathFigure.cs)
+- [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
 - [`Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs), [`GraphicsContext2D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/GraphicsContext2D.cs), and [`RenderNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderNode.cs)
