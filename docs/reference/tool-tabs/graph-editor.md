@@ -35,6 +35,7 @@ You can also open the same animation in the Graph Editor tab from the **Open** i
 
 - Expand a drawable to navigate effects, transforms, nested properties, and value channels.
 - Use the timer button to enable animation and the diamond button to insert or remove a keyframe at the playhead.
+- On properties with several values, the button immediately left of the timer button separates or unseparates components. See [Properties with multiple components](#properties-with-multiple-components).
 - Remove an animation from its context menu. The tab remains when animations are removed; it closes when the target element is deleted.
 
 ## Graph and selection tools
@@ -121,6 +122,8 @@ For properties that contain multiple inner values, such as coordinates, sizes, a
 - Use **View** in the right-click menu to switch the component being edited. Only the keyframes and handles of the selected component become interactive; the other components are drawn faintly as guides.
 - Color graphs draw each channel in red, green, and blue.
 
+Those components share keyframe times and easing. To give each one its own track, press the separation button in the properties tree. Separating expands the property and selects a component track, with its own keyframes and easing. Unseparating keeps the value at the current time and removes the component keyframes and expressions, and Undo restores them. See [Animating components separately](../../get-started/keyframe.md#separate-components).
+
 ## Selection and keyboard shortcuts
 
 Hold `Ctrl` (`Cmd` on macOS) and drag an empty area to box-select, adding `Shift` to extend the selection. Use `Space` + left drag or middle-button drag to pan.
@@ -183,3 +186,4 @@ According to the **Settings > Editor settings > Timeline auto-scroll during play
 - [`GraphEditorResources.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Resources/GraphEditorResources.axaml)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) (entry point for opening the tab)
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
+- [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)

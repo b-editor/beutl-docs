@@ -9,6 +9,8 @@ sidebar_position: 12
 シーンの **音声を可視化** するためのタブです。
 波形・スペクトラム・レベルメーター・スペクトログラム・位相スコープといった複数の表示モードがあり、再生中はもちろん、停止中でも再生位置周辺の音声を解析して表示します。
 
+[5.1ch / 7.1ch のプロジェクト](../../get-started/multichannel-audio.md)では、メーターはすべてのチャンネルを測定し、ほかのモードはミックスをステレオにダウンミックスして表示します。
+
 ## タブの特性
 
 - **デフォルトで開く**: いいえ
@@ -56,13 +58,13 @@ FFT によるリアルタイム周波数スペクトルです。
 
 ### メーター
 
-L/R ステレオレベルメーターです。放送用の各種読み値をまとめて表示します。
+放送用の各種読み値をまとめて表示するレベルメーターです。モノラルとステレオのプロジェクトでは L と R のバーを表示します。3 チャンネル以上のプロジェクトでは、チャンネルの順序で `L`、`R`、`C`、`LFE`、`Ls`、`Rs` などのラベルが付いたバーをチャンネルごとに表示します。
 
-- **L / R バー**: RMS（短期平均レベル）。0 dB を上端、約 −60 dB を下端としたスケールで、`0 / -3 / -6 / -12 / -24 / -36 / -48 / -60` dB の目盛りが右側に表示されます。
+- **バー**: RMS（短期平均レベル）。0 dB を上端、約 −60 dB を下端としたスケールで、`0 / -3 / -6 / -12 / -24 / -36 / -48 / -60` dB の目盛りが右側に表示されます。
 - **ピークホールドマーカー**: 各バーに重ねて表示され、約 6 dB/秒で減衰します。0 dB 付近に達すると赤色になります。
 - **クリップ LED（バー上部の赤い帯）**: 0 dBFS（±1.0）に達したときに点灯し、約 2 秒間ホールドされます。
-- **M（瞬時 LUFS）**: BS.1770-4 K-weighting に基づくモメンタリ値（400 ms ウィンドウ）。バー下に数値表示されます。
-- **TP L / TP R（True Peak）**: 4 倍ポリフェーズオーバーサンプリングによる左右のインターサンプルピーク（dBTP）。ピークホールドと同様に減衰します。
+- **M（瞬時 LUFS）**: BS.1770 K-weighting に基づくモメンタリ値（400 ms ウィンドウ）。バー下に数値表示されます。サラウンドのプロジェクトでは BS.1770-5 のチャンネル重みを使います。LFE は含まず、5.1ch のサラウンドと 7.1ch のサイドサラウンドは 1.41、7.1ch のリアサラウンドは 1.0 です。
+- **TP L / TP R（True Peak）**: BS.1770-5 Annex 2 のフィルターを使った 4 倍ポリフェーズオーバーサンプリングによる、チャンネルごとのインターサンプルピーク（dBTP）。ピークホールドと同様に減衰します。サラウンドのプロジェクトでは、最も高いチャンネルとその名前を `TP -1.0 (C)` のように表示します。
 - 配信向けラウドネス目標（YouTube は −14 LUFS、EBU R128 は −23 LUFS など）のチェックや、エンコード前のインターサンプルピーク検出に使えます。
 
 ### スペクトログラム
@@ -137,5 +139,6 @@ L/R ステレオレベルメーターです。放送用の各種読み値をま�
 - [`WaveformControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/WaveformControl.cs)
 - [`SpectrumControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/SpectrumControl.cs)
 - [`LevelMeterControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/LevelMeterControl.cs)
+- [`LoudnessMeter.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/AudioVisualizerTab/Utilities/LoudnessMeter.cs) / [`TruePeakDetector.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/AudioVisualizerTab/Utilities/TruePeakDetector.cs)
 - [`SpectrogramControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/SpectrogramControl.cs)
 - [`PhaseScopeControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/PhaseScopeControl.cs)

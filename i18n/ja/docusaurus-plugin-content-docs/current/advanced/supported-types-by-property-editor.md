@@ -57,6 +57,7 @@ sidebar_position: 5
 - `Beutl.Graphics.Effects.FilterEffect`
 - `Beutl.Media.Geometry`
 - `Beutl.Audio.Effects.AudioEffect`
+- `Beutl.Audio.AudioChannelMap`
 - `Beutl.Graphics.Transformation.Transform`
 - `Beutl.Graphics.CurveMap`
 - `Beutl.Collections.ICoreList<Beutl.Media.GradientStop>`

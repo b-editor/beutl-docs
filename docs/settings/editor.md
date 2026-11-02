@@ -122,8 +122,68 @@ Locks the cursor and hides it during drag operations in the property editor (Win
 
 The default setting is __"On"__.
 
+## Tone Mapping
+
+These settings control how the preview fits frames to the display. They affect the preview, the [preview window](../reference/tool-tabs/preview-settings.md#show-the-preview-in-another-window), and the mobile preview's SDR stream, but not exports.
+
+### HDR Preview
+
+Uses HDR rendering for the preview, so values above SDR white can show on a display with headroom. Mouse operations on the preview are restricted, and transform handles, the path editor, and [guides](#guides) do not appear over it, because the HDR preview is a native view that covers the editor's overlays. On macOS it draws at the display's device pixels.
+
+The default setting is __"Off"__.
+
+### Tone mapping
+
+Selects how the preview fits values the display cannot show.
+
+- None __(default value)__
+- Reinhard
+- ACES
+- Hable
+- Fit to display
+
+__Fit to display__ rolls off only what the display cannot show and keeps hue, where the other modes clip each channel or compress the whole range. Colors outside the display's gamut move toward the gray of their own luminance, and colors the display can show stay as they are. It treats content as peaking at 1000 nits with reference white at 203 nits.
+
+| Preview | Highlights | Colors |
+|---------|------------|--------|
+| HDR Preview on macOS | Core Animation tone maps the frame into the screen's current headroom and follows brightness changes. | Fit into the screen's own gamut, so P3 colors show on a P3 screen. |
+| HDR Preview on Windows, display in HDR mode | Rolled off into the display's peak, or __Display peak luminance__ when set. | Fit into the display's primaries. |
+| HDR Preview on Windows, display not in HDR mode | Rolled off into the display's white. | Fit into sRGB in SDR mode, or the display's primaries with Auto Color Management. |
+| HDR Preview on Linux | Passed through, because the display's headroom is not known. | Left as they are. |
+| Without HDR Preview, on a surface without HDR support, and the mobile preview's SDR stream | Rolled off into SDR white. | Fit into sRGB. |
+
+:::note
+__Fit to display__ is not the default because on a display with no headroom the curve also lowers SDR white to about 0.78. An SDR project looks darker in the preview than it exports.
+:::
+
+On a Windows HDR display, the HDR preview shows reference white at the display's SDR white level in every mode, so it matches the white of the editor's UI.
+
+### Exposure
+
+Adjusts the exposure level for tone mapping, from `-5` to `5`.
+
+The default value is __"0"__.
+
+### Display peak luminance (nits)
+
+The peak that __Fit to display__ rolls highlights off into on a Windows HDR display, for a monitor that reports a wrong peak or none. `0` uses the peak Windows reports. Values range from `0` to `10000`. The description shows what the display reports, or that it is not in HDR mode.
+
+This setting appears on Windows only. The default value is __"0"__.
+
+## Guides
+
+The safe areas and composition guides over the preview. These are the same settings as in the [Preview Settings](../reference/tool-tabs/preview-settings.md#guides) tab, which describes each guide.
+
+- __Show guides__: turns all guides on or off. The default setting is __"Off"__.
+- __Guides to show__: Title safe, Action safe, Rule of thirds, Center cross, Diagonals, Custom grid, and Aspect ratios.
+- __Guide color__, __Guide opacity__, __Grid columns__, __Grid rows__, and __Aspect ratio frames__.
+
 ## Source
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Configuration/EditorConfig.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)
+- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
+- [`VulkanSwapchainRenderer.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/VulkanSwapchainRenderer.cs)
+- [`WindowsDisplayLuminance.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/WindowsDisplayLuminance.cs)
+- [`HdrBitmapView.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/HdrBitmapView.cs)

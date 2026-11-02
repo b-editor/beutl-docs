@@ -9,6 +9,8 @@ sidebar_position: 12
 A tab for **visualizing the audio** of a scene.
 It provides several display modes — Waveform, Spectrum, Meter, Spectrogram, and Phase Scope — and analyzes audio not only during playback but also around the playhead while playback is stopped.
 
+In a [5.1 or 7.1 project](../../get-started/multichannel-audio.md), the Meter measures every channel. The other modes show a stereo fold of the mix.
+
 ## Tab characteristics
 
 - **Open by default**: No
@@ -56,13 +58,13 @@ The available shapes are:
 
 ### Meter
 
-A stereo L/R level meter that combines several broadcast-standard readouts.
+A level meter that combines several broadcast-standard readouts. Mono and stereo projects show L and R bars. Projects with more than two channels show one bar per channel in channel order, labeled `L`, `R`, `C`, `LFE`, `Ls`, `Rs`, and so on.
 
-- **L / R bars**: RMS (short-term average level). The scale runs from 0 dB at the top to about −60 dB at the bottom, with `0 / -3 / -6 / -12 / -24 / -36 / -48 / -60` dB gridlines on the right.
+- **Bars**: RMS (short-term average level). The scale runs from 0 dB at the top to about −60 dB at the bottom, with `0 / -3 / -6 / -12 / -24 / -36 / -48 / -60` dB gridlines on the right.
 - **Peak-hold marker**: Drawn over each bar, decaying at about 6 dB/sec. It turns red as it approaches 0 dB.
 - **Clip LED (red strip at the top of each bar)**: Latches on for about 2 seconds when the channel reaches 0 dBFS (±1.0).
-- **M (momentary LUFS)**: Momentary loudness based on BS.1770-4 K-weighting (400 ms window), shown as a number below the bars.
-- **TP L / TP R (true peak)**: Inter-sample peak in dBTP for each channel, computed by 4× polyphase oversampling. Decays similarly to the peak-hold marker.
+- **M (momentary LUFS)**: Momentary loudness based on BS.1770 K-weighting (400 ms window), shown as a number below the bars. Surround projects use the BS.1770-5 channel weights: the LFE is excluded, the 5.1 surrounds and the 7.1 side surrounds weigh 1.41, and the 7.1 rear surrounds weigh 1.0.
+- **TP L / TP R (true peak)**: Inter-sample peak in dBTP for each channel, computed by 4× polyphase oversampling with the BS.1770-5 Annex 2 filter. Decays similarly to the peak-hold marker. Surround projects show the highest channel and its name, for example `TP -1.0 (C)`.
 - Useful for verifying loudness against delivery targets (e.g. −14 LUFS for YouTube, −23 LUFS for EBU R128) and for catching inter-sample peaks before encoding.
 
 ### Spectrogram
@@ -137,5 +139,6 @@ The selected display mode, FFT size, shape, smoothing, and Min dB are saved alon
 - [`WaveformControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/WaveformControl.cs)
 - [`SpectrumControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/SpectrumControl.cs)
 - [`LevelMeterControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/LevelMeterControl.cs)
+- [`LoudnessMeter.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/AudioVisualizerTab/Utilities/LoudnessMeter.cs) / [`TruePeakDetector.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/AudioVisualizerTab/Utilities/TruePeakDetector.cs)
 - [`SpectrogramControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/SpectrogramControl.cs)
 - [`PhaseScopeControl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/AudioVisualizerTab/Views/PhaseScopeControl.cs)

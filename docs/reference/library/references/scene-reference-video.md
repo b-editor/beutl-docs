@@ -22,16 +22,24 @@ The scene whose rendered output is composited. Use the [reference target picker]
 - **Default:** `null`
 - **Animatable:** No
 
+### Offset Position (OffsetPosition)
+
+Time offset within the referenced scene at which playback starts.
+
+- **Type:** `MediaTime`
+- **Default:** `00:00:00`
+- **Animatable:** No
+
 ## Common properties
 
 This object inherits from `Drawable` and exposes the [common properties](../common-properties.md) declared on its base classes.
 
 ## Usage
 
-Use to compose multi-scene projects: render reusable elements (logos, lower-thirds, intros) once and instantiate them across scenes.
+Use to compose multi-scene projects: render reusable elements (logos, lower-thirds, intros) once and instantiate them across scenes. Slip, roll, slide, edge trims, and **Change to original length** use the referenced scene's length. If an expression other than a plain reference picks the scene, its length is unknown, so slip and trim are refused.
 
 ## Source
 
-[`src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs)
+[`src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/SceneDrawable.cs)
 
 - [`ReferencePropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/ViewModels/ReferencePropertyEditorViewModel.cs)

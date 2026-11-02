@@ -35,6 +35,7 @@ sidebar_position: 7
 
 - 描画オブジェクトから、エフェクト・トランスフォーム・入れ子のプロパティや値の成分へ展開します。
 - タイマーのボタンでアニメーションを有効にし、ダイヤモンドのボタンで現在の再生位置にキーフレームを追加／削除します。
+- 複数の値を持つプロパティでは、タイマーのボタンのすぐ左のボタンで成分の分離と解除を切り替えます。[複数の成分を持つプロパティ](#複数の成分を持つプロパティ)を参照してください。
 - 右クリックメニューからアニメーションを削除できます。アニメーションがなくなってもタブは残り、編集対象の要素を削除した場合は閉じます。
 
 ## グラフと選択のツール
@@ -121,6 +122,8 @@ sidebar_position: 7
 - 右クリックメニューの **「表示」** から、編集対象の成分を切り替えます。選択中の成分のキーフレームとハンドルだけが操作可能になり、ほかの成分はガイドとして薄く描画されます。
 - 色のグラフは各チャンネルを赤・緑・青で色分けして表示します。
 
+これらの成分はキーフレームの時刻とイージングを共有します。成分ごとに個別のトラックを持たせるには、プロパティツリーの分離ボタンを押します。分離するとプロパティが展開され、成分のトラックが選択されて、それぞれにキーフレームとイージングを設定できます。解除すると現在時刻の値を保持して成分のキーフレームと式を削除し、元に戻すと復元されます。[成分ごとにアニメーションする](../../get-started/keyframe.md#separate-components)を参照してください。
+
 ## 選択とキーボード操作
 
 `Ctrl`（macOSでは `Cmd`）を押しながら空白をドラッグすると矩形選択し、さらに `Shift` を押すと選択を追加します。`Space` + 左ドラッグまたは中ボタンドラッグでパンできます。
@@ -183,3 +186,4 @@ sidebar_position: 7
 - [`GraphEditorResources.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Resources/GraphEditorResources.axaml)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs)（タブを開く起点）
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
+- [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)

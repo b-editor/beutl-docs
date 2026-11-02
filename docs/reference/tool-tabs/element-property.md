@@ -70,11 +70,15 @@ For animated properties, use the **vertical three-dot menu (⋮)** on the right 
 
 Reference properties offer a picker for existing targets, and properties with unit metadata show `%`, `°`, or `×` in their labels. See [Choosing reference targets](../../get-started/edit-element.md#reference-targets) and the following section for details.
 
+On properties with several values, such as a position or a color, the same menu offers **Separate components** to animate each value on its own. See [Animating components separately](../../get-started/keyframe.md#separate-components).
+
+Sounds also have collapsible **Panner** and **Channel assignment** sections. See [Multichannel Audio](../../get-started/multichannel-audio.md).
+
 File fields also accept drag-and-drop: drop a local file of a supported type onto the field to select it. Easing properties provide a preset selector and a curve preview; for spline easing, drag the curve's control points to adjust it directly.
 
 ### Scrubbing number values
 
-Drag horizontally on a number field to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** for fine steps (0.1×).
+Drag horizontally on a number field to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** for fine steps (0.1×). On a macOS trackpad, a scrub gives [haptic feedback](./timeline.md#trackpad-haptic-feedback) at zero and at the property's default value.
 
 ## Objects of unknown type
 
@@ -100,3 +104,6 @@ Unrecognized data that can be preserved is kept on save. Common properties remai
 - [`StorageFileEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/StorageFileEditor.cs)
 - [`EasingEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingEditor.cs)
 - [`EasingCurveEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingCurveEditor.cs)
+- [`ComponentEditors.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/ComponentEditors.cs)
+- [`SoundPannerEditor.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/SoundPannerProperties/Views/SoundPannerEditor.axaml)
+- [`ChannelMapEditor.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/ChannelMapProperties/Views/ChannelMapEditor.axaml)

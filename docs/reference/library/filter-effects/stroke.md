@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Stroke
 
-Adds an outline (stroke) around the layer's opaque region. Use `Style` to choose whether the stroke is drawn behind or in front of the source.
+Adds an outline (stroke) around the layer's opaque region. The pen's **Stroke order** chooses whether the stroke is drawn over or under the source.
 
 ## Library location
 
@@ -16,10 +16,10 @@ Library → Filter Effect → Stroke
 
 ### Stroke (Pen)
 
-Pen describing the stroke (color, thickness, dash, etc.).
+Pen describing the stroke (color, thickness, dash, etc.). Its **Stroke order** (`StrokeOrder`) sets the drawing order: **Above fill** (the default) draws the stroke over the source, and **Below fill** draws the source over the stroke. See [Stroke (Pen)](../common-properties.md#stroke-pen).
 
 - **Type:** `Pen?`
-- **Default:** `null`
+- **Default:** A new `Pen`
 - **Animatable:** No
 
 ### Offset
@@ -30,13 +30,9 @@ Offset of the stroke relative to the source.
 - **Default:** `(0, 0)`
 - **Animatable:** Yes
 
-### Border Style (Style)
+## Projects from earlier versions
 
-Whether the stroke is rendered behind (Background) or in front (Foreground) of the source.
-
-- **Type:** `StrokeStyles`
-- **Default:** `StrokeStyles.Background`
-- **Animatable:** Yes
+The former **Border Style** (`Style`) property moved to the pen's **Stroke order**. A saved `Foreground` loads as **Below fill**, and a saved `Background` loads as **Above fill**, so the drawing order stays the same. **Stroke order** cannot be animated, so a `Style` driven by keyframes or an expression loads as its base value. See [Version compatibility](../../../get-started/project-structure.md#version-compatibility).
 
 ## Source
 

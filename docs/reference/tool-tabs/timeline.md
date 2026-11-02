@@ -95,7 +95,7 @@ Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an e
 
 Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable command palette that lists the available editor and tool-tab commands, so you can find and run an action — and see its shortcut — without hunting through the menus.
 
-Commands can ask for text or a selection inside the palette. For example, open a recent project, change the theme, or rename the selected element. Rename, split at the current frame, and save as a template can run for the selected element even when the Timeline tab is closed.
+Commands can ask for text or a selection inside the palette. For example, open a recent project, change the theme, or rename the selected element. Rename, split at the current frame, and save as a template can run for the selected element even when the Timeline tab is closed. With the tab closed, saving as a template takes the selection the editor keeps, with each clip's group.
 
 ### Element right-click menu
 
@@ -104,19 +104,47 @@ Commands can ask for text or a selection inside the palette. For example, open a
 - Toggle **Razor Tool**
 - Toggle **Ripple Edit**
 - **Split** / **Split by current frame**
+- **Auto Split by Silence** (for elements with audio; opens the [Auto Split by Silence](./silence-split.md) tab)
 - **Cut** / **Copy** / **Delete**
+- **Track Matte** submenu (see [Track mattes](#track-mattes))
 - **Transition** submenu: **Start Transition** / **End Transition**
 - **Group selected elements** / **Ungroup selected elements**
 - **Rename**
 - **Change to original length** (restore media elements and the like to their original duration)
 - **Change color**
 - Toggle **Disable Thumbnails**
-- **Save as Template**
+- **Save as Template** (see [Saving clips as a template](#saving-clips-as-a-template))
 - **Animation** submenu: **Finish editing** / **Bring to the top**
 
 ## Clip transitions
 
 Right-click a clip and choose **Transition → Start Transition** or **End Transition** to open the [Transition](./transition.md) tab. If that edge has no transition, this adds a cross dissolve. Double-click a shared boundary between adjacent clips on the same layer to add a cross dissolve, or double-click an existing transition ramp to edit it. Drag a ramp's handle to adjust its duration.
+
+## Track mattes
+
+A track matte uses another layer's alpha or luminance to decide which parts of a clip show. For example, a hidden text clip can cut lettering out of a video, and an animated source updates with each frame.
+
+1. Right-click the clip to mask and open **Track Matte**.
+2. Choose a mode: **Alpha**, **Luma**, **Inverted Alpha**, or **Inverted Luma**. **None** (the default) turns the matte off.
+3. Under **Source layer**, choose **Layer above** (the default), **Layer below**, or a specific layer. Choosing a source while the mode is **None** switches the mode to **Alpha**. Choosing **None** as the source turns the matte off.
+4. To keep the source from drawing, right-click the source clip and turn off **Track Matte → Show in output**.
+
+How the source is chosen:
+
+- **Layer above** and **Layer below** use the nearest layer in that direction that has a clip at the current frame. They skip empty layers, so the source changes as clips begin and end.
+- A specific layer stays selected when you reorder layers.
+
+When there is no source clip at a frame, **Alpha** and **Luma** show nothing and the inverted modes show the whole clip.
+
+A matte source ignores **Solo** and **Show in output**, but a layer with **Video** (video mute) on supplies nothing. **Show in output** affects the picture only, so a hidden clip's audio still plays. The masked clip keeps its blend mode against the layers below it.
+
+A clip with a matte shows the source on the timeline: **↑ Layer above**, **↓ Layer below**, or an arrow and a layer number such as **↑ 3**. All of these settings are recorded in the undo history and are unavailable on a locked clip.
+
+## Saving clips as a template
+
+**Save as Template** saves the clips **Copy** would take, which are the selection plus every group it touches. A single clip saves on its own. Several clips save as one template, which the [Files](./file-browser.md) tab identifies as **Multiple Elements**.
+
+Add it with **Add from Template**, from the Library, or by dropping the template file. Beutl recreates every clip with new IDs and keeps their relative start times, layers, names, lengths, and groups as one undo step. If the requested place is taken, the clips go to the nearest free place together; a locked requested layer refuses the template. Clips that overlap on one layer stay overlapped. A matte that names its source layer moves with the set, so it keeps the same source.
 
 ## Editing modes
 
@@ -140,8 +168,8 @@ Locked layers stay in place. A locked clip acts as an anchor, so the ripple does
 
 Empty spaces between clips on the same layer are treated as **gaps**. Use the **Gaps** submenu in the empty-area right-click menu or the keyboard shortcuts below:
 
-- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element.
-- **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped.
+- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element. The clips move by exactly the gap's width. If a clip would then overlap a locked clip, nothing moves and Beutl shows **There are no gaps to close**.
+- **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped. A locked clip stops the shift: nothing moves across it, the gaps after it close towards it, and a gap stays open if closing it would overlap a locked clip.
 - **Go to Next Gap** (`Shift + ;`) / **Go to Previous Gap** (`Alt + ;`): moves the playback position to the next or previous gap from the current frame.
 
 ## Locking, muting, and soloing
@@ -260,6 +288,17 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 - Change the layer color with the color picker.
 - Change the layer name in the text box.
 
+## Trackpad haptic feedback
+
+On a macOS trackpad, Beutl gives a haptic pulse when a drag reaches an alignment target:
+
+- **Timeline**: a clip move, an edge trim, or a roll or slide trim reaches a new snap target.
+- **Preview**: a `Shift` rotation with the transform handles reaches a new 15° step.
+- **Number fields**: a [scrub](./element-property.md#scrubbing-number-values) reaches or crosses zero or the property's default value, including each component of a vector.
+- **[Node Graph](./node-graph.md)**: a wire enters a port it can connect to.
+
+Staying on a target, releasing the drag, keyboard edits, and undo or redo do not repeat the pulse. Beutl has no setting for it; macOS applies your own trackpad feedback settings.
+
 ## Auto-scroll during playback
 
 Depending on the **Settings > Editor > Timeline auto-scroll during playback** setting, the timeline scrolls automatically to follow the playback position during playback.
@@ -291,3 +330,7 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 - [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
 - [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
 - [`ElementStructureService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementStructureService.cs)
+- [`Scene.Gaps.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/Scene.Gaps.cs)
+- [`ElementView.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.TrackMatte.cs) / [`SceneCompositor.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/SceneCompositor.TrackMatte.cs)
+- [`TemplateSaving.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/Helpers/TemplateSaving.cs) / [`ElementSet.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/ElementSet.cs)
+- [`NativeHapticFeedback.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/Helpers/NativeHapticFeedback.cs)

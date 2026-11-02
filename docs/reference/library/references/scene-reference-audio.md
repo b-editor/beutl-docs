@@ -28,7 +28,7 @@ This object inherits from `Sound` and exposes the [common properties](../common-
 
 ## Usage
 
-Pair with `SceneDrawable` when you want both video and audio of the referenced scene.
+Pair with `SceneDrawable` when you want both video and audio of the referenced scene. Slip, roll, slide, edge trims, and **Change to original length** use the referenced scene's length. If an expression other than a plain reference picks the scene, its length is unknown, so slip and trim are refused. The panner works on the mix in the project's speaker layout, so in a [5.1 or 7.1 project](../../../get-started/multichannel-audio.md) only `Pan` applies.
 
 ## Source
 

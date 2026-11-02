@@ -57,6 +57,7 @@ The built-in property editors support the following value types. Object editors 
 - `Beutl.Graphics.Effects.FilterEffect`
 - `Beutl.Media.Geometry`
 - `Beutl.Audio.Effects.AudioEffect`
+- `Beutl.Audio.AudioChannelMap`
 - `Beutl.Graphics.Transformation.Transform`
 - `Beutl.Graphics.CurveMap`
 - `Beutl.Collections.ICoreList<Beutl.Media.GradientStop>`

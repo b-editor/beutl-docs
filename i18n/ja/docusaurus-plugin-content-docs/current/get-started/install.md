@@ -68,7 +68,14 @@ Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロー�
 
 ## 更新する前に
 
-**2.0.0-preview.9 で保存したプロジェクトは、preview.8 以前では開けません。** 古い Beutl に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.10 で保存したプロジェクトは、preview.9 以前では開けません。** 古い Beutl に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+
+preview.10 に更新すると、既存のプロジェクトの見た目や音が変わることがあります。
+
+- **SDR の動画は色のタグに従います。** FFmpeg デコーダーは SDR の動画を sRGB として扱わなくなりました。カメラやスマートフォンの動画など BT.709 のタグを持つ素材は、以前より中間調が明るく表示されます。タグのない動画と sRGB のタグを持つ動画は変わりません。
+- **HDR の動画は正しい明るさで表示されます。** PQ と HLG のクリップは明るすぎる状態でデコードされ、HDR10 の書き出しでは SDR の白が暗すぎる値で書き込まれていました。露出や色補正で補っていたプロジェクトは、更新後に暗く見えます。
+- **サウンドと音声エフェクトの式が適用されます。** サウンドのゲイン、パン、スピード、オフセットや、音声エフェクトのパラメーターに設定した式は、これまで保存された値で再生されていましたが、式の値で再生されるようになりました。
+- **プロキシは破棄されます。** [プロキシ](../reference/tool-tabs/proxies.md)タブからもう一度生成してください。生成するまで、プレビューには元のメディアが使われます。
 
 AIコーディングエージェントを使用している場合は、更新後に [Beutl との連携を再インストール](../advanced/ai-agents.md)してください。
 
@@ -80,3 +87,6 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`build-debian-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-debian-package.yml)
 - [`build-flatpak-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-flatpak-package.yml)
 - [`Build.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/nukebuild/Build.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)
+- [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs)

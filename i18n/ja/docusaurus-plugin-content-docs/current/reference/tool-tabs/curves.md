@@ -118,4 +118,4 @@ RGB 各チャンネルのカーブ編集に加えて、特定の色相だけ色�
 - [`CurveEditor.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Curves/CurveEditor.cs)（制御点とハンドルの操作ロジック）
 - [`CurveVisualizationRenderer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Curves/CurveVisualizationRenderer.cs)（背景のヒストグラム/グラデーション描画）
 - [`Curves.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/Curves.cs)（フィルターエフェクト本体）
-- [`CurveMapEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/CurveMapEditor.axaml.cs)（プロパティ側の「カーブ」ボタン）
+- [`CurveMapEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/CurveMapEditor.axaml.cs)（プロパティ側の「カーブ」ボタン）

@@ -9,10 +9,13 @@ The package store includes **Extensions**, **Materials**, and **Templates**. A p
 ## Install a package
 
 1. Open the **Extensions** window.
-2. Choose **Materials** or **Templates** in the category filter.
-3. Open the package you want, select a release, and press **Install**.
+2. On **Home**, choose **Materials** or **Templates** in the tabs at the top.
+3. Click a package card to open its details.
+4. Select a release in the version picker under the buttons in the header, and press **Install**.
 
-Installed packages also offer update and uninstall actions.
+The details page is a single column: the header with the install, update, and uninstall buttons and the version picker, then any screenshots, the description, the selected release's notes, and an **Info** list of the name, versions, website, and tags. Installed packages also offer update and uninstall actions.
+
+**Library** lists your packages in the same kind of tabs: **Packages** and **Local Packages**. **Check update** is on the tab row.
 
 ## Use the installed files
 
@@ -38,6 +41,9 @@ An extension that requires APIs absent from your installed Beutl cannot be loade
 - [`PackageKind.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageKind.cs)
 - [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)
 - [`PackageDetailsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/ExtensionsPages/DiscoverPages/PackageDetailsPageViewModel.cs)
+- [`DiscoverPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/DiscoverPage.axaml)
+- [`PackageDetailsPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/DiscoverPages/PackageDetailsPage.axaml)
+- [`LibraryPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/LibraryPage.axaml)
 - [`PackageChangesQueue.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Api/Services/PackageChangesQueue.cs)
 - [`MainViewModel.Shutdown.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/MainViewModel.Shutdown.cs)
 - [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs)

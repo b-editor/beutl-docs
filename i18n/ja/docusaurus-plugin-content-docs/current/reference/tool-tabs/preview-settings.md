@@ -1,12 +1,12 @@
 ---
 title: "プレビュー設定"
-description: "エディタのプレビューにのみ影響する設定（プレビュー解像度・オニオンスキン・レンダーキャッシュ）。"
+description: "エディタのプレビューにのみ影響する設定（プレビュー解像度・オニオンスキン・ガイド・レンダーキャッシュ）と、プレビューを別画面に表示する方法。"
 sidebar_position: 14
 ---
 
 # プレビュー設定
 
-**エディタのプレビューにのみ影響する設定** をまとめたタブです。プレビュー解像度、オニオンスキン表示、フレーム／ノードのレンダーキャッシュを扱います。これらの設定はシーンの一部ではないため、エンコード結果には影響しません。
+**エディタのプレビューにのみ影響する設定** をまとめたタブです。プレビュー解像度、オニオンスキン表示、ガイド、フレーム／ノードのレンダーキャッシュを扱います。これらの設定はシーンの一部ではないため、エンコード結果には影響しません。
 
 ## タブの特徴
 
@@ -15,7 +15,7 @@ sidebar_position: 14
 
 ## 開き方
 
-メニューバーの **「表示」→「ツール」→「プレビュー設定」** から開きます。
+メニューバーの **「表示」→「ツール」→「プレビュー設定」**、またはプレビューの歯車ボタンから開きます。
 
 ![プレビュー解像度・オニオンスキン・キャッシュの設定](_images/preview-settings.png)
 
@@ -49,6 +49,46 @@ sidebar_position: 14
 - **前フレーム不透明度** — 前フレームのゴーストの不透明度（既定 `0.35`）。
 - **後フレーム不透明度** — 後フレームのゴーストの不透明度（既定 `0.35`）。
 
+## ガイド
+
+プレビューにセーフエリアや構図のガイドを重ねて表示し、編集中にフレーミングを確認できます。このタブ、または **`Alt + G`** ショートカットで切り替えられます。既定ではオフです。同じ設定は[エディタの設定](../../settings/editor.md#ガイド)ページにもあります。
+
+ガイドはエディタのプレビューにだけ描画されます。書き出し、[別画面のプレビュー](#show-the-preview-in-another-window)、[スマホプレビュー](./mobile-preview.md)には表示されません。HDR プレビューでも表示されません。
+
+- **タイトルセーフ** — フレーム中央の 90% の範囲（既定でオン）。
+- **アクションセーフ** — フレーム中央の 95% の範囲（既定でオン）。
+- **三分割線** — フレームを三等分する線。
+- **中心十字** — フレーム中央の十字（既定でオン）。
+- **対角線** — 向かい合う角を結ぶ線。
+- **カスタムグリッド** — **グリッドの列数** × **グリッドの行数** のグリッド。それぞれ `1`〜`64`（既定は `4` × `4`）。
+- **アスペクト比** — **アスペクト比の枠** で指定した比率の枠を中央に表示します。
+- **ガイドの色** — 線の色（既定は白）。どのフレームでも見えるよう、各線には暗い縁取りが付きます。
+- **ガイドの不透明度** — 線の不透明度（既定 80%）。
+
+**アスペクト比の枠** には比率をカンマ区切りで入力します（既定は `9:16, 1:1, 4:5, 2.39:1`）。それぞれの比率で収まる最大の枠を中央に表示します。**プリセット** では YouTube、YouTube Shorts、TikTok、Instagram Feed、Instagram Reels、X の枠を入力できます。
+
+## プレビューを別画面に表示する {/* #show-the-preview-in-another-window */}
+
+プレビューのディスプレイボタン（**別画面にプレビューを表示**）で、プレビューの出力を別のウィンドウに表示できます。セカンドモニターでの確認などに使います。このウィンドウはエディタの再生、音声、再生位置を共有し、選択範囲の枠、オニオンスキン、3D の編集ハンドルは表示しません。HDR とトーンマッピングの設定は引き継ぎます。
+
+- **ウィンドウで開く** はエディタのあるディスプレイに開きます。
+- **全画面: *ディスプレイ* (*幅* × *高さ*)** はそのディスプレイに全画面で開きます。接続中のディスプレイがそれぞれ表示されます。
+- 開いている間、メニューには **全画面を切り替え (F11)** と **プレビュー出力を閉じる** が表示されます。
+- **スマホプレビュー** は[スマホプレビュー](./mobile-preview.md)タブを開きます。
+
+| プレビューウィンドウのキー | 動作 |
+|----------------------------|------|
+| `Space` | 再生 / 一時停止 |
+| `←` / `→` | 一時停止して 1 フレーム戻る / 進む |
+| `F11` | 全画面の切り替え |
+| `Esc` | ウィンドウを閉じる |
+
+エディタのタブを切り替える、元のタブを閉じる、エディタを閉じると、このウィンドウも閉じます。ウィンドウだけを閉じても再生は止まりません。
+
+## トーンマッピングと HDR プレビュー
+
+**HDRプレビュー** と、**ディスプレイに合わせる** を含むトーンマッピングのモードは、[エディタの設定](../../settings/editor.md#トーンマッピング)にあります。
+
 ## フレームキャッシュ／ノードキャッシュ
 
 この2つのセクションでは、エディタのレンダーキャッシュの有効化と調整を行います。各キャッシュが保持する内容とサイズの目安は [レンダーキャッシュ](../../advanced/render-cache.md) を参照してください。
@@ -58,4 +98,7 @@ sidebar_position: 14
 - [`PreviewSettingsTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PreviewSettingsTab/PreviewSettingsTabExtension.cs)
 - [`PreviewSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PreviewSettingsTab/ViewModels/PreviewSettingsTabViewModel.cs)
 - [`PreviewSettingsTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PreviewSettingsTab/Views/PreviewSettingsTabView.axaml)
+- [`PreviewGuideSettingsViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PreviewSettingsTab/ViewModels/PreviewGuideSettingsViewModel.cs)
+- [`PreviewGuideOverlay.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PreviewGuideOverlay.cs)
+- [`PlayerView.axaml.Presentation.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PlayerView.axaml.Presentation.cs) / [`PresentationWindow.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PresentationWindow.cs)
 - [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/EditorConfig.cs)（オニオンスキン・キャッシュ設定）

@@ -43,7 +43,7 @@ sidebar_position: 18
 
 ## ソース
 
-- [`DockLayoutTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/DockLayoutTabExtension.cs)
-- [`DockLayoutViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/Tools/DockLayoutViewModel.cs)
-- [`DockLayoutPresetService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/DockLayoutPresetService.cs)
-- [`DockLayoutView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/DockLayoutView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/DockLayoutView.axaml.cs)
+- [`DockLayoutTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/DockLayoutTab/DockLayoutTabExtension.cs)
+- [`DockLayoutViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/DockLayoutTab/ViewModels/DockLayoutViewModel.cs)
+- [`DockLayoutPresetService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/DockLayoutTab/DockLayoutPresetService.cs)
+- [`DockLayoutView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/DockLayoutTab/Views/DockLayoutView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/DockLayoutTab/Views/DockLayoutView.axaml.cs)

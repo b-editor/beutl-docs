@@ -31,6 +31,6 @@ sidebar_position: 15
 
 ## ソース
 
-- [`HistoryTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/HistoryTabExtension.cs)
-- [`HistoryViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/Tools/HistoryViewModel.cs)
-- [`HistoryView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/HistoryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Tools/HistoryView.axaml.cs)
+- [`HistoryTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/HistoryTab/HistoryTabExtension.cs)
+- [`HistoryViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/HistoryTab/ViewModels/HistoryViewModel.cs)
+- [`HistoryView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/HistoryTab/Views/HistoryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/HistoryTab/Views/HistoryView.axaml.cs)

@@ -16,14 +16,20 @@ Library → Transition
 | --- | --- | --- |
 | Cross Dissolve | Fades between the two clips while keeping opaque clips opaque. | None |
 | Fade | Fades the outgoing clip to transparent, then fades the incoming clip in. Lower layers show through at the midpoint. | None |
-| Wipe | Reveals the incoming clip behind a straight moving edge. | Direction |
+| Wipe | Reveals the incoming clip behind a moving edge: a straight line, a growing box or diamond, or a sweeping clock hand. | Shape, Linear direction, Clockwise |
 | Dip to Color | Fades through a chosen solid color. | Color, default black (`Colors.Black`) |
 | Dip to White | Fades through white. | None |
 | Push | Moves both clips together as the incoming clip pushes the outgoing clip out. | Direction |
 | Slide | Slides the incoming clip over the stationary outgoing clip. | Direction |
-| Cross Zoom | Zooms the outgoing clip in while the incoming clip zooms out and the two dissolve. | None |
-| Iris | Reveals the incoming clip through a circle growing from the frame center. | None |
+| Cross Zoom | Zooms the outgoing clip while the incoming clip zooms to full size and the two dissolve. | Direction, Tile Mode |
+| Iris | Reveals the incoming clip through a circle growing from the frame center, or outside a circle closing toward the center. | Direction |
 | Split | Reveals the incoming clip through a band widening from the frame center. | Orientation |
+| Blinds | Reveals the incoming clip through parallel slats that widen together. | Angle, Slats |
+| Checkerboard | Reveals the incoming clip through a grid of squares, opening alternate squares first. | Columns, Rows |
+| Zoom Blur | Blends the clips through a zoom with a radial blur. | Strength, Direction, Tile Mode |
+| Whip Pan | Slides the clips across the frame with a directional blur, like a fast camera pan. | Strength, Direction |
+| Glitch | Cuts between the clips in shifted scan bands with a color split. | Strength |
+| Light Leak | Blends the clips under a warm band of light that sweeps across the frame. | Strength |
 
 ## Properties
 
@@ -48,11 +54,82 @@ Controls how transition progress changes over its duration. Overshooting easing 
 
 ### Direction
 
-Available for Wipe, Push, and Slide. Choose **Left to Right**, **Right to Left**, **Top to Bottom**, or **Bottom to Top**.
+Available for Push, Slide, Whip Pan, and Wipe, where it is called **Linear direction** and applies to the **Linear** shape. Choose **Left to Right**, **Right to Left**, **Top to Bottom**, or **Bottom to Top**.
 
 - **Type:** `ClipTransitionDirection`
 - **Default:** `LeftToRight`
 - **Animatable:** No
+
+For Iris, **Direction** chooses **Iris In (open)** or **Iris Out (close)**.
+
+- **Type:** `IrisTransitionDirection`
+- **Default:** `In`
+- **Animatable:** No
+
+For Cross Zoom and Zoom Blur, **Direction** chooses **Zoom in** or **Zoom out**.
+
+- **Type:** `ZoomTransitionDirection`
+- **Default:** `In`
+- **Animatable:** No
+
+### Shape
+
+Available for Wipe. **Linear** moves a straight edge along **Linear direction**. **Box** and **Diamond** grow from the frame center. **Clock** sweeps around the frame center from the top.
+
+- **Type:** `WipeTransitionShape`
+- **Default:** `Linear`
+- **Animatable:** No
+
+### Clockwise (clock wipe) (Clockwise)
+
+Available for Wipe. Sets the direction of the **Clock** shape's sweep.
+
+- **Type:** `bool`
+- **Default:** `true`
+- **Animatable:** No
+
+### Tile Mode (TileMode)
+
+Available for Cross Zoom and Zoom Blur. Fills the frame edges that a shrinking clip leaves empty: `Pad` extends the edge, `Reflect` mirrors the frame, `Repeat` tiles it, and `Decal` leaves them transparent.
+
+- **Type:** `GradientSpreadMethod`
+- **Default:** `Decal`
+- **Animatable:** No
+
+### Angle
+
+Available for Blinds. The direction each slat opens in, in degrees. `0` opens left to right; diagonal and negative angles are allowed.
+
+- **Type:** `float`
+- **Default:** `0`
+- **Animatable:** No
+
+### Slats (Count)
+
+Available for Blinds.
+
+- **Type:** `int`
+- **Default:** `8`
+- **Animatable:** No
+- **Range:** `[1, 64]`
+
+### Columns / Rows
+
+Available for Checkerboard.
+
+- **Type:** `int`
+- **Default:** `8` columns, `6` rows
+- **Animatable:** No
+- **Range:** `[1, 64]`
+
+### Strength (%) (Strength)
+
+Available for Zoom Blur, Whip Pan, Glitch, and Light Leak. `0` is a plain cross dissolve.
+
+- **Type:** `float`
+- **Default:** `65` for Zoom Blur and Glitch, `75` for Whip Pan, `70` for Light Leak
+- **Animatable:** No
+- **Range:** `[0, 100]`
 
 ### Color
 
@@ -76,8 +153,8 @@ If both sides of a cut have a transition, the incoming element's enter transitio
 
 ## Source
 
-- [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/LibraryRegistrar.cs)
-- [`ClipTransition.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Transitions/ClipTransition.cs)
-- [`Built-in transitions`](https://github.com/b-editor/beutl/tree/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Transitions)
+- [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/LibraryRegistrar.cs)
+- [`ClipTransition.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Transitions/ClipTransition.cs)
+- [`Built-in transitions`](https://github.com/b-editor/beutl/tree/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Transitions)
 - [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.resx)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
