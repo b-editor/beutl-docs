@@ -15,9 +15,11 @@ sidebar_position: 2
 
 __[次へ]__ をクリックします。  
 
-フレームレートとサンプリングレート、初期シーンの横幅、高さを指定します。  
+フレームレートとサンプリングレート、音声チャンネル、初期シーンの横幅、高さを指定します。  
 ![設定](_images/2.create-project/options.png)  
 プロジェクトのサンプリングレートは、プレビュー音声と新しい出力設定の既定値に使われます。フレームレートは一覧の候補に加え、正の整数や `30000/1001` のような分数を入力できます。
+
+**音声チャンネル** はプロジェクトのスピーカー配置です。**モノラル**、**ステレオ**（既定）、**5.1ch サラウンド**、**7.1ch サラウンド** から選びます。後から[シーン設定](../reference/tool-tabs/scene-settings.md)で変更できます。[マルチチャンネル音声](./multichannel-audio.md)を参照してください。
 
 __[新規作成]__ をクリックするとプロジェクトを作成することができます。
 
@@ -33,6 +35,6 @@ Gitが利用できる場合は **Git で履歴を記録** を選択して、作�
 
 - [`EditorHostFallback.axaml`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Views/EditorHostFallback.axaml.cs)
 - [`ProjectDiskDeletion.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/Services/ProjectDiskDeletion.cs)
-- [`CreateNewProjectViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dialogs/CreateNewProjectViewModel.cs)
+- [`CreateNewProjectViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/ViewModels/Dialogs/CreateNewProjectViewModel.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)

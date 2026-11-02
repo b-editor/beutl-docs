@@ -105,6 +105,8 @@ Outline pen (stroke). When `null`, no outline is drawn.
 - **Default:** `null`
 - **Animatable:** No
 
+The pen's **Stroke order** (`StrokeOrder`), right under **Location** in the pen editor, chooses whether the stroke is drawn on top of the fill. **Above fill** (`AboveFill`) is the default. **Below fill** (`BelowFill`) draws it under the fill, for an outlined look where a thick stroke never eats into the shape. It cannot be animated.
+
 ### Fill
 
 Brush used to fill the interior. When `null`, the shape is hollow.
@@ -115,7 +117,7 @@ Brush used to fill the interior. When `null`, the shape is hollow.
 
 ## Sound
 
-Declared in [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Audio/Sound.cs). Base class: `EngineObject`.
+Declared in [`src/Beutl.Engine/Audio/Sound.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Audio/Sound.cs). Base class: `EngineObject`.
 
 ### Offset Position (OffsetPosition)
 
@@ -127,7 +129,7 @@ Time offset within the source audio at which playback starts.
 
 ### Gain
 
-Audio gain in percent (100 = unity).
+Audio gain in percent (100 = unity). The master output holds every sample within full scale, so a large gain cannot exceed 0 dBFS.
 
 - **Type:** `float`
 - **Default:** `100`
@@ -150,6 +152,42 @@ The constructor instantiates an empty `AudioEffectGroup` so effects can be appen
 - **Type:** `AudioEffect?`
 - **Default:** Empty `AudioEffectGroup`
 - **Animatable:** No
+
+### Pan
+
+Balance between the left and right sides. `0` leaves both sides at full level, `-100` silences the right side, and `100` silences the left side. This and the following three properties are edited in the **Panner** section; see [Multichannel Audio](../../get-started/multichannel-audio.md#place-a-sound-with-the-panner).
+
+- **Type:** `float`
+- **Default:** `0`
+- **Animatable:** Yes
+- **Range:** `[-100, 100]`
+
+### Front / back (SurroundPan)
+
+In 5.1 and 7.1 projects, moves a mono or stereo clip from the front speakers to the surrounds at equal power. In 7.1, `50` is the side speakers and `100` is the rear speakers.
+
+- **Type:** `float`
+- **Default:** `0`
+- **Animatable:** Yes
+- **Range:** `[0, 100]`
+
+### Center (CenterLevel)
+
+In 5.1 and 7.1 projects, moves part of a mono or stereo clip's front image into the center speaker, less as `Pan` moves off-center.
+
+- **Type:** `float`
+- **Default:** `0`
+- **Animatable:** Yes
+- **Range:** `[0, 100]`
+
+### LFE (LfeLevel)
+
+In 5.1 and 7.1 projects, sends a 120 Hz low-pass of a mono or stereo clip to the LFE channel.
+
+- **Type:** `float`
+- **Default:** `0`
+- **Animatable:** Yes
+- **Range:** `[0, 100]`
 
 ## AudioVisualizerDrawable
 

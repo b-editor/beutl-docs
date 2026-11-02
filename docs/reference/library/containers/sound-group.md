@@ -24,7 +24,7 @@ The sound sources that belong to the group. They are mixed together and shared p
 
 ## Common properties
 
-This object inherits from `Sound` and exposes the [common properties](../common-properties.md) declared on its base classes. `Offset Position` and `Speed` are hidden from the editor for this object.
+This object inherits from `Sound` and exposes the [common properties](../common-properties.md) declared on its base classes. `Offset Position` and `Speed` are hidden from the editor for this object. The group's panner works on the mix in the project's speaker layout, so in a [5.1 or 7.1 project](../../../get-started/multichannel-audio.md) only `Pan` applies.
 
 ## Usage
 

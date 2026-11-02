@@ -75,7 +75,7 @@ Lists the contents of the selected folder using the display mode chosen in the t
 
 ### Thumbnails and tooltips
 
-Object templates can also display thumbnails.
+Object templates can also display thumbnails. A template of several elements is identified as **Multiple Elements**.
 
 Thumbnails are generated automatically for images (png / jpg / jpeg / gif / bmp / webp / ico / tiff / tif) and videos (mp4 / avi / mov / mkv / wmv / flv / webm). Files for which a thumbnail cannot be generated are shown with an icon based on their extension.
 
@@ -102,6 +102,8 @@ Hovering an item shows a tooltip with media information.
 | **Delete** | Permanently deletes the item after confirmation — it does not go to the trash. Multiple selections are deleted in one go |
 | **Add to Favorites / Remove from Favorites** | The label changes depending on whether the item is already a favorite |
 
+Beutl refuses to rename, delete, or move a file the open project uses, or a folder that contains one, and shows a notification instead. This covers the scene and element files, the media and model files that clips play, and the textures and other files a model refers to. Close the file or remove it from the project first.
+
 ## Online storage
 
 Choose **Storage locations → Beutl storage** to open online storage. If you are not signed in, use **Open account settings** to sign in. Choose **This device** to return to local files.
@@ -127,6 +129,7 @@ Dragging items between folders or sections inside the File Browser performs a **
 - Drop on the **Project Directory** section in the home view -> moves into the project folder
 - Drop on the **Media Files** section in the home view -> moves into the `resources` folder inside the project folder (created automatically if missing)
 - Drops into the same folder, or moving a folder onto itself or one of its descendants, are skipped
+- Moving a file the open project uses is refused, as for rename and delete
 
 ### From outside into the File Browser
 
@@ -147,6 +150,8 @@ Dropping items from an OS file manager performs a **copy** (existing files with 
 
 - [`FileBrowserTabViewModel.Storage.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.Storage.cs)
 - [`FileManagerLauncher.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/Services/FileManagerLauncher.cs)
+- [`FileBrowserTabViewModel.FileOperations.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.FileOperations.cs)
+- [`FileSourceFiles.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/FileSourceFiles.cs)
 
 - [`FileBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/FileBrowserTabExtension.cs)
 - [`FileBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.cs)

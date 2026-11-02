@@ -67,6 +67,14 @@ Aligns each line within the width of the longest line: **Align left** (`Start`),
 - **Default:** `Media.TextAlignment.Start`
 - **Animatable:** Yes
 
+### Writing mode (WritingMode)
+
+**Horizontal** (`HorizontalTb`) or **Vertical** (`VerticalRl`), for Japanese vertical text. In vertical text, glyphs flow from top to bottom and each manual line break starts a new column to the left. Japanese punctuation, brackets, and prolonged sound marks use vertical glyph forms, and Latin runs are rotated clockwise. `Text Alignment` aligns each column within the height of the tallest column. Automatic wrapping, ruby, and tate-chu-yoko are not supported.
+
+- **Type:** `WritingMode`
+- **Default:** `Media.WritingMode.HorizontalTb`
+- **Animatable:** No
+
 ### Split by characters (SplitByCharacters)
 
 When `true`, each character is rendered as a separate object so effects can be applied per character.
@@ -105,7 +113,7 @@ is not wrapped to a new line.
 
 ### Stroke (Pen)
 
-Optional outline pen. Set to draw an outline.
+Optional outline pen. Set to draw an outline. With the pen's [**Stroke order**](../../common-properties.md#stroke-pen) set to **Below fill**, every stroke is drawn before any fill, so the thick stroke of one glyph, run, or line never covers a neighbor's fill. This also holds with `Split by characters`, inline styles, and vertical text.
 
 - **Type:** `Pen?`
 - **Default:** `null`
@@ -133,6 +141,9 @@ Enter the text, pick a font, and adjust the size and other properties. For anima
 
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
 - [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
+- [`WritingMode.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/WritingMode.cs)
+- [`VerticalTextLayout.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/TextFormatting/VerticalTextLayout.cs)
+- [`StrokeOrder.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/StrokeOrder.cs)
 - [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
 - [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
 - [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.resx)

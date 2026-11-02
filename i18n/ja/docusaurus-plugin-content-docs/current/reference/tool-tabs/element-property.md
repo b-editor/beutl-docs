@@ -72,9 +72,13 @@ sidebar_position: 4
 
 ファイルの入力欄には、対応する種類のローカルファイルをドラッグ&ドロップして指定することもできます。イージングのプロパティには種類の選択とカーブのプレビューがあり、スプラインイージングではカーブの制御点をドラッグして直接調整できます。
 
+複数の値を持つプロパティ（位置や色など）では、同じメニューの **成分を分離** で値ごとに別々にアニメーションできます。[成分ごとにアニメーションする](../../get-started/keyframe.md#separate-components)を参照してください。
+
+サウンドには折りたたみ可能な **パンナー** と **チャンネルの割り当て** のセクションもあります。[マルチチャンネル音声](../../get-started/multichannel-audio.md)を参照してください。
+
 ### 数値のスクラブ
 
-数値フィールドを左右にドラッグすると、値を増減できます。**`Shift`** を押しながらで粗く（10 倍）、**`Alt`** を押しながらで細かく（0.1 倍）調整できます。
+数値フィールドを左右にドラッグすると、値を増減できます。**`Shift`** を押しながらで粗く（10 倍）、**`Alt`** を押しながらで細かく（0.1 倍）調整できます。macOS のトラックパッドでは、ゼロとプロパティの既定値で[触覚フィードバック](./timeline.md#トラックパッドの触覚フィードバック)が返ります。
 
 ## 不明な型のオブジェクト
 
@@ -100,3 +104,6 @@ sidebar_position: 4
 - [`StorageFileEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/StorageFileEditor.cs)
 - [`EasingEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingEditor.cs)
 - [`EasingCurveEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/EasingCurveEditor.cs)
+- [`ComponentEditors.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/ComponentEditors.cs)
+- [`SoundPannerEditor.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/SoundPannerProperties/Views/SoundPannerEditor.axaml)
+- [`ChannelMapEditor.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/ChannelMapProperties/Views/ChannelMapEditor.axaml)

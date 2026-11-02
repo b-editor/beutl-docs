@@ -9,6 +9,10 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 
 - [**Blur**](./blur.md) — Applies a Gaussian blur to the layer.
 - [**Radial Blur**](./radial-blur.md) — Blurs outward from, or around, a center point.
+- [**Motion blur**](./motion-blur.md) — Averages the drawable at several times within a shutter interval to blur its motion.
+- [**Bloom**](./bloom.md) — Adds a linear-light glow around the bright parts of the layer.
+- [**Light rays**](./light-rays.md) — Stretches the layer's highlights away from a center point.
+- [**Wave refraction**](./wave-refraction.md) — Refracts the layer through a wave field.
 - [**Drop Shadow**](./drop-shadow.md) — Casts a shadow behind the layer.
 - [**Inner Shadow**](./inner-shadow.md) — Adds a shadow inside the edges of the layer.
 - [**Flat Shadow**](./flat-shadow.md) — Projects a flat (long) shadow from the layer.

@@ -9,10 +9,13 @@ sidebar_position: 10
 ## パッケージをインストールする
 
 1. **拡張機能** ウィンドウを開きます。
-2. カテゴリーフィルターで **素材** または **テンプレート** を選びます。
-3. 使いたいパッケージを開いてリリースを選び、**インストール** を押します。
+2. **ホーム** の上部にあるタブで **素材** または **テンプレート** を選びます。
+3. パッケージのカードをクリックして詳細を開きます。
+4. ヘッダーのボタンの下にあるバージョンの選択欄でリリースを選び、**インストール** を押します。
 
-インストール済みのパッケージには、更新とアンインストールの操作もあります。
+詳細ページは 1 列にまとまっています。インストール・更新・アンインストールのボタンとバージョンの選択欄があるヘッダーの下に、スクリーンショット（ある場合）、説明、選択中のリリースのノート、名前・バージョン・ウェブサイト・タグを示す **情報** の一覧が続きます。インストール済みのパッケージには、更新とアンインストールの操作もあります。
+
+**ライブラリ** には自分のパッケージが同じ形のタブ（**パッケージ** と **ローカルパッケージ**）で表示されます。**アップデートを確認** はタブの行にあります。
 
 ## インストールしたファイルを使う
 
@@ -38,6 +41,9 @@ sidebar_position: 10
 - [`PackageKind.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageKind.cs)
 - [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)
 - [`PackageDetailsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/ExtensionsPages/DiscoverPages/PackageDetailsPageViewModel.cs)
+- [`DiscoverPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/DiscoverPage.axaml)
+- [`PackageDetailsPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/DiscoverPages/PackageDetailsPage.axaml)
+- [`LibraryPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/ExtensionsPages/LibraryPage.axaml)
 - [`PackageChangesQueue.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Api/Services/PackageChangesQueue.cs)
 - [`MainViewModel.Shutdown.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/MainViewModel.Shutdown.cs)
 - [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs)

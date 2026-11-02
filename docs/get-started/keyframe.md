@@ -54,7 +54,25 @@ The easing list also includes a **Hold** easing, which keeps the value fixed unt
 If the control points overlap with the keyframe display and you cannot move the control points, hold down the `Alt` key while dragging to move the control points.
 :::
 
+## Animating Components Separately {/* #separate-components */}
+
+Properties with several values, such as a position's X and Y or a color's channels, share one set of keyframe times and easings by default. To give each value its own animation:
+
+1. Click the ︙ on the property. If it is already animated, right-click the ◇ instead.
+2. Click __Separate components__.
+
+Each component then has its own row and its own menu for keyframes, easing, and expressions. Existing keyframes and easing are kept. Points and rectangles with relative values keep a shared unit selector, **Relative (1 = 100%)** or **Absolute (px)**.
+
+__Unseparate components__ keeps the value at the current time and removes the component keyframes and expressions. Undo restores them.
+
+In the [Graph Editor](../reference/tool-tabs/graph-editor.md#properties-with-multiple-components), the toggle to the left of a property's timer button does the same.
+
 ## Deleting Animation
 To delete all keyframes and disable animation, right-click the ◇ icon and click __Delete Animation__ from the menu.
 
 In complex scenes, deleting unused animations can improve rendering speed.
+
+## Source
+
+- [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Animation/ComponentAnimations.cs)
+- [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)

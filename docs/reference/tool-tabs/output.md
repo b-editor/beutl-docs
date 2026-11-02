@@ -33,10 +33,10 @@ The first time you open the tab, if the scene has no existing profile and only o
 
 The Output tab manages encoding settings in two forms: **profiles** and **presets**.
 
-- **Profile**: A set of settings saved per scene. It is stored in the Beutl folder created next to the scene and is restored the next time you open the same scene.
+- **Profile**: A set of settings saved per scene. It is stored in the Beutl folder created next to the scene and is restored the next time you open the same scene, including after you move or rename the project.
 - **Preset**: A settings template shared across all of your work. It is stored in the application's home directory and can be applied to any scene.
 
-A profile includes the destination path and the full encoder state, while a preset only carries **items that make sense to share** — the encoder type and the video/audio settings. Applying a preset does not overwrite values that belong to the current profile, such as the destination, resolution, frame rate, or sample rate.
+A profile includes the destination path and the full encoder state, while a preset only carries **items that make sense to share** — the encoder type and the video/audio settings. Applying a preset does not overwrite values that belong to the current profile, such as the destination and the audio channels. Resolution, frame rate, and sample rate also stay as they are, except with the built-in platform presets, which apply the ones they are named after.
 
 ## Profile picker
 
@@ -50,7 +50,7 @@ Pressing the profile selector button opens a dialog for choosing a profile or pr
 - **Search box**: Fuzzy search by name (space-separated terms are AND'd together).
 - **Item list**: Hovering an item reveals a **pin button** and a **more menu (...)**.
 - **Check / cross buttons**: Confirm or cancel the selection and close the dialog.
-- **X button**: Closes the dialog without applying any change.
+- **X button**: Closes the dialog without applying any change. Pressing the profile selector button again does the same.
 
 ### Behavior
 
@@ -115,15 +115,33 @@ When you change only the destination while keeping the same encoder, the current
 Each encoder provides its own editor for video and audio settings. Each property is edited with a dedicated editor matching its type.
 
 - The video's **source resolution** is linked to the scene's frame size.
-- A newly created encoder configuration starts with the project's frame rate and audio sample rate, and the scene's frame size.
+- A newly created encoder configuration starts with the project's frame rate, audio sample rate, and audio channels, and the scene's frame size.
 - The audio sample rate determines the rate to which audio is mixed down at encode time.
-- Even when a preset is applied, **scene-specific values** such as resolution, frame rate, and sample rate are kept.
+- A preset keeps the source resolution and the audio channels. The built-in platform presets set the output size, frame rate, and sample rate they are named after; other presets keep those too.
+
+### Audio channels {/* #audio-channels */}
+
+**Channels** selects the speaker layout the export writes: **Mono**, **Stereo**, **5.1 surround**, or **7.1 surround**. A new export starts with the project's layout, and a layout that differs from the project's is folded with the same downmix as playback. See [Multichannel Audio](../../get-started/multichannel-audio.md#export-it) for the limits of each encoder.
+
+Changing the channel count scales the audio bitrate with it, so 128 kbps at stereo becomes 384 kbps at 5.1 and 512 kbps at 7.1. An automatic bitrate stays automatic. Applying a preset keeps the current channel count and converts the preset's bitrate to it. A saved channel count outside this list appears as an extra item and exports as before.
+
+### FFmpeg codec picker
+
+The FFmpeg encoder's video and audio **Codec** fields open a searchable picker. Codecs are listed by their long names, with the short name (`libx264`) on a second line. A search matches either name and ignores case, full-width and half-width forms, and punctuation, so `h264` finds `H.264`. Pin the codecs you use often to keep them at the top; video and audio codecs are pinned separately.
+
+The codec changes when you confirm the picker, not while an item is highlighted. Pressing the field again closes the picker without changing the codec. Media Foundation codecs stay in a drop-down list.
 
 ### FFmpeg encoding options
 
 For FFmpeg encoders, **Encoding options** shows controls based on the selected codec's supported options. Available fields, choices, and ranges therefore vary by encoder. Use **Automatic** to clear an explicit option and return to the encoder's default.
 
 Expand **Advanced options** to add or edit option names and values directly. This also remains available if Beutl cannot retrieve the codec's option descriptions.
+
+New FFmpeg video settings and the built-in presets pair a bitrate with `crf`. H.264 and H.265 then encode at `crf`'s quality and do not use the bitrate, and a note under the options says so while both are set. Remove `crf` to export at the bitrate.
+
+### Color tags
+
+Color settings you leave unspecified get the same tags with every encoder. SDR video is tagged BT.709 with limited range. HDR video uses BT.2020. JPEG-family codecs use sRGB code values with the BT.601 matrix at full range, and RGB output is tagged sRGB. An SDR output that cannot record tags, such as AVI, WMV, or FLV, stays untagged. Settings you choose are kept.
 
 ### Media Foundation on Windows
 
@@ -209,3 +227,6 @@ These are reasonable starting points. Adjust bitrate, length, and other paramete
 - [`MFEncodingExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingExtension.cs)
 - [`EncoderOptionsEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.FFmpeg/PropertyEditors/EncoderOptionsEditor.cs)
 - [`StagedOutputFile.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/IO/StagedOutputFile.cs)
+- [`AudioChannelsEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/OutputTab/AudioChannelsEditorViewModel.cs) / [`AudioEncoderSettings.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/Encoding/AudioEncoderSettings.cs)
+- [`CodecEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecEditorViewModel.cs) / [`CodecPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecPickerViewModel.cs)
+- [`VideoColorDefaults.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/VideoColorDefaults.cs)

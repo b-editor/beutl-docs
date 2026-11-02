@@ -41,7 +41,7 @@ The video file to play.
 
 ### Loop (IsLoop)
 
-When `true`, the video restarts from the beginning after it ends.
+When `true`, the video restarts from the beginning of the source after it ends. `Offset Position` only sets where the first pass starts; every later pass plays the whole source.
 
 - **Type:** `bool`
 - **Default:** `false`

@@ -68,7 +68,14 @@ Beutl's built-in updater can download and install the new Flatpak bundle into th
 
 ## Before updating
 
-**Projects saved by 2.0.0-preview.9 cannot be opened in preview.8 or earlier.** Keep a copy of the whole project folder before saving it in the new version if you need to return to an older Beutl. See [Project Structure](./project-structure.md#version-compatibility).
+**Projects saved by 2.0.0-preview.10 cannot be opened in preview.9 or earlier.** Keep a copy of the whole project folder before saving it in the new version if you need to return to an older Beutl. See [Project Structure](./project-structure.md#version-compatibility).
+
+Existing projects can look or sound different after updating to preview.10:
+
+- **SDR video follows its color tags.** The FFmpeg decoder no longer treats SDR video as sRGB, so footage tagged BT.709, such as camera or phone video, shows brighter midtones than before. Untagged and sRGB-tagged video is unchanged.
+- **HDR video shows at the right brightness.** PQ and HLG clips were decoded too bright, and HDR10 exports wrote SDR white far too dark. A project that compensated with exposure or color correction now looks darker.
+- **Expressions on sounds and audio effects now apply.** An expression on a sound's gain, pan, speed, or offset, or on an audio effect's parameter, used to play the stored value and now plays the expression's value.
+- **Proxies are discarded.** Generate them again from the [Proxies](../reference/tool-tabs/proxies.md) tab. Until then the preview uses the original media.
 
 If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-agents.md) after updating.
 
@@ -80,3 +87,6 @@ If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-
 - [`build-debian-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-debian-package.yml)
 - [`build-flatpak-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-flatpak-package.yml)
 - [`Build.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/nukebuild/Build.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)
+- [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs)

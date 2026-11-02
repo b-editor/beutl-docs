@@ -20,7 +20,7 @@ Drag the tabs to rearrange, stack, or tile them as needed.
 - Choose **View → Reset dock layout** to restore the tab arrangement to its initial state.
 - Save the current arrangement under a name and re-apply it to any scene from the [Dock layout](./dock-layout.md) tab.
 
-Some tabs open from their editing context rather than **View → Tools**: **Element Property**, **Properties**, **Scene settings**, **Graph Editor**, **Transition**, and **Relink missing media**. See their respective pages for instructions on opening them.
+Some tabs open from their editing context rather than **View → Tools**: **Element Property**, **Properties**, **Scene settings**, **Graph Editor**, **Transition**, **Relink missing media**, **Mobile preview**, and **Auto Split by Silence**. See their respective pages for instructions on opening them.
 
 - Hover the selected tab to show its close button. The extension icon appears to the left of the tab title.
 
@@ -49,7 +49,7 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Files](./file-browser.md) | Browse files in the project folder or any folder |
 | [Element Property](./element-property.md) | Edit the drawables, sounds, and other objects inside an element |
 | [Output](./output.md) | Manage encoding settings and output profiles |
-| [Scene settings](./scene-settings.md) | Configure scene size, start time, length, and layer count |
+| [Scene settings](./scene-settings.md) | Configure scene size, start time, length, layer count, and the project's audio channels |
 | [Graph Editor](./graph-editor.md) | Edit time curves of animations |
 | [Node Graph](./node-graph.md) | Place and connect nodes to edit a processing graph |
 | [Scopes](./color-scopes.md) | Waveform / Histogram / Vectorscope / False Color / Zebra displays for video |
@@ -57,7 +57,7 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Curves](./curves.md) | Adjust tones with tone curves |
 | [Audio Visualizer](./audio-visualizer.md) | Waveform / Spectrum / Meter / Spectrogram / Phase Scope displays for audio |
 | [Path editor](./path-editor.md) | Edit control points of path shapes |
-| [Preview Settings](./preview-settings.md) | Preview render quality, onion skin, and the render caches |
+| [Preview Settings](./preview-settings.md) | Preview render quality, onion skin, guides, and the render caches |
 | [History](./history.md) | Browse the edit history and jump back to any step |
 | [Terminal](./terminal.md) | Run a shell in the project folder without leaving the editor |
 | [Proxies](./proxies.md) | Generate and manage low-resolution proxy media for smooth preview |
@@ -67,6 +67,8 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [AI](./ai-workspace.md) | Generate and edit images and videos, create subtitles, and manage jobs |
 | [Relink missing media](./missing-media.md) | Repair references to moved or missing media and fonts |
 | [Transition](./transition.md) | Edit transitions at the start or end of a clip |
+| [Mobile preview](./mobile-preview.md) | Preview video and audio and control playback from your phone |
+| [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio clip, then split or remove them |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).
 

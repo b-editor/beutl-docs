@@ -77,6 +77,7 @@ The small circles at the left and right ends of each row inside a node are ports
 
 - Left-drag a port to draw a line to another port and release to connect them.
 - Only input/output combinations can be connected. If the types differ, an automatic conversion is attempted; when no conversion is possible, the connection line is shown in an error color.
+- On a macOS trackpad, a wire gives [haptic feedback](./timeline.md#trackpad-haptic-feedback) when it enters a port it can connect to.
 
 ### Disconnecting
 
@@ -106,7 +107,7 @@ Right-click menu on a port (when it is a dynamic port)
 On a list-type port that accepts multiple ordered connections, each connection has its own point arranged vertically.
 
 - **Vertical drag** reorders the connection slots within the list.
-- **Horizontal drag** reconnects that connection to a different port.
+- **Horizontal drag** reconnects that connection to a different output in one undo step. The connection keeps its place in the list, and if the target cannot take it the slot stays connected as it was.
 - **Double-click** disconnects only that single connection.
 
 ## Nested properties and node guidance
@@ -184,4 +185,4 @@ Node positions, expansion states, and the graph's pan/zoom position are kept eve
 - [`NodeGraphBackground.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodeGraphBackground.cs) / [`NodeGraphOverlay.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodeGraphOverlay.cs)
 - [`ConnectionLine.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ConnectionLine.cs) / [`NodePortPoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodePortPoint.cs)
 - [`ListPortDragBehavior.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ListPortDragBehavior.cs)
-- [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/GraphModelEditor.axaml.cs) (entry point for opening the tab from the property side)
+- [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml.cs) (entry point for opening the tab from the property side)

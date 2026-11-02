@@ -69,7 +69,7 @@ Representative categories:
 - **Particles, node-graph rendering, scene rendering, groups, decorators, time control**, and other objects used for compositing and control
 - **Audio visualizers**: Audio waveform, spectrum, spectrogram
 - **Transforms**: Translate, scale, rotate, 3D rotate, skew
-- **Filter effects**: Blur, drop shadow, stroke, color correction, curves, LUT, blend, mosaic, displacement map, scripted effects (C# / SKSL / GLSL), and more
+- **Filter effects**: Blur, motion blur, bloom, drop shadow, stroke, color correction, curves, LUT, blend, mosaic, displacement map, scripted effects (C# / SKSL / GLSL), and more
 - **Audio effects**: Delay, equalizer, and more
 
 For details on each item, see the [Library reference](../library/index.md).

@@ -75,7 +75,7 @@ sidebar_position: 3
 
 ### サムネイルとツールチップ
 
-オブジェクトテンプレートにもサムネイルが表示されます。
+オブジェクトテンプレートにもサムネイルが表示されます。複数の要素を保存したテンプレートは、種類が **複数の要素** として示されます。
 
 画像（png / jpg / jpeg / gif / bmp / webp / ico / tiff / tif）と動画（mp4 / avi / mov / mkv / wmv / flv / webm）はサムネイルが自動生成されます。サムネイルを生成できないファイルは拡張子に応じたアイコンで表示されます。
 
@@ -102,6 +102,8 @@ sidebar_position: 3
 | **削除** | 確認ダイアログを経てゴミ箱ではなく完全削除。複数選択中は一括削除 |
 | **お気に入りに追加 / お気に入りから削除** | お気に入りの登録状態に応じて表示が切り替わる |
 
+開いているプロジェクトが使っているファイルと、それを含むフォルダは、名前の変更・削除・移動ができず、通知が表示されます。対象はシーンや要素のファイル、クリップが再生するメディアやモデルのファイル、モデルが参照するテクスチャなどのファイルです。先にファイルを閉じるか、プロジェクトから取り除いてください。
+
 ## オンラインストレージ
 
 **ストレージの切り替え → Beutlストレージ** を選択するとオンラインストレージを開きます。未ログインの場合は **アカウント設定を開く** からログインしてください。**このデバイス** を選ぶとローカルファイルに戻ります。
@@ -127,6 +129,7 @@ sidebar_position: 3
 - ホームビューの **プロジェクトディレクトリ** セクションにドロップ → プロジェクトフォルダへ移動
 - ホームビューの **メディアファイル** セクションにドロップ → プロジェクトフォルダ内の `resources` フォルダへ移動（無ければ自動作成）
 - 同じフォルダ内へのドロップや、自分自身/自分の子孫へのフォルダ移動はスキップされます
+- 開いているプロジェクトが使っているファイルの移動は、名前の変更や削除と同様に拒否されます
 
 ### 外部からファイルブラウザへ
 
@@ -147,6 +150,8 @@ OSのファイラーなどからドロップすると **コピー** になりま
 
 - [`FileBrowserTabViewModel.Storage.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.Storage.cs)
 - [`FileManagerLauncher.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor.Components/FileBrowserTab/Services/FileManagerLauncher.cs)
+- [`FileBrowserTabViewModel.FileOperations.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.FileOperations.cs)
+- [`FileSourceFiles.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/FileSourceFiles.cs)
 
 - [`FileBrowserTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/FileBrowserTabExtension.cs)
 - [`FileBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/FileBrowserTab/ViewModels/FileBrowserTabViewModel.cs)

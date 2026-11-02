@@ -67,6 +67,14 @@ sidebar_position: 5
 - **既定値:** `Media.TextAlignment.Start`
 - **アニメーション:** 可
 
+### 書字方向 (WritingMode)
+
+**横書き**（`HorizontalTb`）または **縦書き**（`VerticalRl`）を選びます。縦書きでは文字が上から下へ並び、手動の改行ごとに左へ新しい列を作ります。句読点、括弧、長音記号には縦書き用の字形を使い、欧文は時計回りに回転します。`行揃え` は最も長い列の高さに合わせて各列を配置します。自動折り返し、ルビ、縦中横には対応していません。
+
+- **型:** `WritingMode`
+- **既定値:** `Media.WritingMode.HorizontalTb`（横書き）
+- **アニメーション:** 不可
+
 ### 文字ごとに分割 (SplitByCharacters)
 
 `true` のとき、各文字が個別のオブジェクトとして描画され、文字ごとにエフェクトを適用できます。
@@ -105,7 +113,7 @@ sidebar_position: 5
 
 ### ストローク (Pen)
 
-輪郭線（任意）。アウトラインを描く場合に設定します。
+輪郭線（任意）。アウトラインを描く場合に設定します。ペンの[**重ね順**](../../common-properties.md#ストローク-pen)を **塗りの背面** にすると、すべてのストロークを塗りより先に描画するので、ある文字や行の太いストロークが隣の塗りを覆いません。`文字ごとに分割`、インラインスタイル、縦書きでも同様です。
 
 - **型:** `Pen?`
 - **既定値:** なし (`null`)
@@ -133,6 +141,9 @@ sidebar_position: 5
 
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
 - [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
+- [`WritingMode.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/WritingMode.cs)
+- [`VerticalTextLayout.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/TextFormatting/VerticalTextLayout.cs)
+- [`StrokeOrder.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/StrokeOrder.cs)
 - [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
 - [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
 - [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.ja.resx)

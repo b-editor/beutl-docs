@@ -18,24 +18,6 @@ description: 拡張機能の設定
 
 ![](_images/ffmpeg-decoder-settings.png)
 
-#### Scaling
-
-スケーリングアルゴリズムを設定します。
-
-詳しくは[こちら](https://ffmpeg.org/ffmpeg-scaler.html#toc-Scaler-Options)をご覧ください。
-
-- FastBilinear
-- Bilinear
-- Bicubic __(デフォルト値)__
-- X
-- Point
-- Area
-- Bicublin
-- Gauss
-- Sinc
-- Lanczos
-- Spline
-
 #### ThreadCount
 
 デコードに使用するスレッド数を設定します。
@@ -44,6 +26,28 @@ description: 拡張機能の設定
 0を指定すると、FFmpegが自動でスレッド数を検出するらしいです。
 
 デフォルト値は __"-1"__ です。
+
+#### Acceleration
+
+デコードに使用するハードウェアアクセラレーションを設定します。
+
+- Software __(デフォルト値)__
+- Auto
+- VDPAU
+- CUDA
+- VAAPI
+- DXVA2
+- QSV
+- VideoToolbox
+- D3D11VA
+- DRM
+- OpenCL
+- MediaCodec
+- Vulkan
+
+:::note
+スクリーンショットにある **ForceSrgbGamma** の設定は 2.0.0-preview.10 で削除され、保存された値は無視されます。デコーダーは SDR の動画を色のタグに従って読み込みます。[更新する前に](../get-started/install.md#更新する前に)を参照してください。
+:::
 
 ### Media Foundation デコーディング
 
@@ -74,3 +78,7 @@ DirectX ビデオ アクセラレータ 2.0を使用して高速に動画をデ�
 #### キャッシュするサンプル数
 
 デフォルト値は __"20"__ です。
+
+## ソース
+
+- [`FFmpegDecodingSettings.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg.Core/Decoding/FFmpegDecodingSettings.cs)

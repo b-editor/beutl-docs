@@ -38,13 +38,13 @@ While the preview's **Move** tool is active and playback is stopped, Beutl shows
 - Drag a **corner or edge** handle to scale it (adds/updates a `Scale` transform).
 - Drag the **rotation** handle just outside a corner to rotate it (adds/updates a `Rotation` transform).
 
-Dragging a handle adds the corresponding transform to the object if it does not have one yet. Transforms added inside a filter effect cannot be edited from the preview.
+Dragging a handle adds the corresponding transform to the object if it does not have one yet. Transforms added inside a filter effect cannot be edited from the preview. On a macOS trackpad, Shift rotation snaps give [haptic feedback](../reference/tool-tabs/timeline.md#trackpad-haptic-feedback).
 
 <video controls muted playsInline title="" src="_images/5.edit-element/add-transform.mp4" />
 
 ## Choosing reference targets {/* #reference-targets */}
 
-Properties that refer to an existing scene, drawable, effect, transform, or brush show a target picker. Click the target field and choose a compatible object from the list. Scene references list other scenes in the project; object references list compatible targets in the current scene. Targets that would create a circular reference are excluded.
+Properties that refer to an existing scene, drawable, effect, transform, or brush show a target picker. Click the target field and choose a compatible object from the list. Click the field again to close the list without changing the target. Scene references list other scenes in the project; object references list compatible targets in the current scene. Targets that would create a circular reference are excluded.
 
 The field shows the target's name. To clear the reference, open its three-dot menu and select **Null**. Choosing a target links to the existing object; it does not create a copy of it.
 
@@ -68,6 +68,8 @@ Right-click the element you want to split on the timeline and click the split bu
 You can also use `Ctrl + K` (`Cmd + K` on macOS) to split the selected element at the current frame.
 
 ![Splitting Elements](_images/5.edit-element/split-element.webp)
+
+To cut an audio clip at its silent parts, choose **Auto Split by Silence** from its right-click menu. See [Auto Split by Silence](../reference/tool-tabs/silence-split.md).
 
 ## Renaming Elements
 In Beutl, you can change the color and name of elements,

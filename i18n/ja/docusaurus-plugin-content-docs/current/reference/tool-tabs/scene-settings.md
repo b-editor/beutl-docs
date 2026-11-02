@@ -6,7 +6,7 @@ sidebar_position: 6
 
 # シーン設定
 
-開いているシーンの **解像度・開始時間・長さ・レイヤー数** など、シーン全体に関わる設定を行うタブです。
+開いているシーンの **解像度・開始時間・長さ・レイヤー数** など、シーン全体に関わる設定と、プロジェクトの音声チャンネルを設定するタブです。
 入力した値はそのままシーンに反映されるのではなく、**「適用」ボタンを押したタイミング** でまとめて反映されます。
 
 ## タブの特性
@@ -33,6 +33,7 @@ sidebar_position: 6
 - **開始時間**: シーンの開始時刻。`hh:mm:ss` 形式の文字列で指定します。
 - **長さ**: シーンの尺。`hh:mm:ss` 形式の文字列で指定します。
 - **レイヤー数**: タイムラインで使用できるレイヤーの最大数。
+- **プロジェクトの音声チャンネル**: プロジェクト全体をミックスするスピーカー配置。**モノラル**、**ステレオ**、**5.1ch サラウンド**、**7.1ch サラウンド** から選びます。[マルチチャンネル音声](../../get-started/multichannel-audio.md)を参照してください。
 - **適用**: 入力中の値をシーンに反映します。すべての項目が有効な値になっているときだけ押せます。
 - **破棄**: 入力中の値を、現在シーンに保存されている値に戻します。
 
@@ -46,7 +47,7 @@ sidebar_position: 6
 
 ## 適用と履歴
 
-「適用」を押したときに、サイズ・開始時間・長さのいずれかが変更されていれば、その変更は **取り消し（Undo）/ やり直し（Redo）** の履歴に記録されます。レイヤー数の変更は履歴には残らず、即座に反映されます。
+「適用」を押したときに、サイズ・開始時間・長さ・プロジェクトの音声チャンネルのいずれかが変更されていれば、その変更は 1 回の操作として **取り消し（Undo）/ やり直し（Redo）** の履歴に記録されます。レイヤー数の変更は履歴には残らず、即座に反映されます。音声チャンネルの変更はプロジェクト内のすべてのシーンに適用され、取り消しややり直しの場合も含めて、すぐにプロジェクトファイルへ書き込まれます。
 
 ## 関連ドキュメント
 
@@ -59,4 +60,5 @@ sidebar_position: 6
 - [`SceneSettingsTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/SceneSettingsTabExtension.cs)
 - [`SceneSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/ViewModels/SceneSettingsTabViewModel.cs)
 - [`SceneSettingsTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml.cs)
+- [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SceneSettingsService.cs)
 - [`MenuBarViewModel.Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/MenuBarViewModel.Scene.cs)（メニューからの起動）

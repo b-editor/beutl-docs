@@ -77,6 +77,7 @@ sidebar_position: 8
 
 - ポートを左ドラッグして、相手ポートまで線を引いて離すと接続されます。
 - 入力と出力の組み合わせのみ繋がります。型が違っても自動変換が試みられ、変換できないときは接続線がエラー色になります。
+- macOS のトラックパッドでは、接続できるポートにワイヤーが入ると[触覚フィードバック](./timeline.md#トラックパッドの触覚フィードバック)が返ります。
 
 ### 切断する
 
@@ -106,7 +107,7 @@ sidebar_position: 8
 複数の接続を順序付きで受け取るリスト型のポートでは、接続ごとに別々のポイントが縦に並びます。
 
 - **縦方向のドラッグ**で、リスト内の接続スロットの順序を入れ替えます。
-- **横方向のドラッグ**で、その接続を別のポートに繋ぎ直します。
+- **横方向のドラッグ**で、その接続を 1 回の取り消し単位で別の出力に繋ぎ直します。接続はリスト内の位置を保ち、繋ぎ先が受け付けない場合はスロットの接続は元のままです。
 - **ダブルクリック**で、その接続だけを切断します。
 
 ## 入れ子のプロパティとノードの案内
@@ -184,4 +185,4 @@ sidebar_position: 8
 - [`NodeGraphBackground.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodeGraphBackground.cs) / [`NodeGraphOverlay.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodeGraphOverlay.cs)
 - [`ConnectionLine.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ConnectionLine.cs) / [`NodePortPoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodePortPoint.cs)
 - [`ListPortDragBehavior.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ListPortDragBehavior.cs)
-- [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Views/Editors/GraphModelEditor.axaml.cs)（プロパティ側からタブを開く起点）
+- [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml.cs)（プロパティ側からタブを開く起点）

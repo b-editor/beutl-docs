@@ -48,6 +48,8 @@ The GLSL fragment shader source.
 
 Provide a fragment shader that writes the output color from the input source texture and any animatable uniforms.
 
+The script must keep to the interface in the default template: `srcTexture` at binding 0 and the push constants above. A script that declares more, such as a second sampler or a larger push constant block, fails validation. The script editor shows the error, and the effect stays inactive until you repair the script.
+
 ## Resolution scaling
 
 Beutl can render at a working density that differs from the project resolution — for example a downscaled preview or a supersampled export. `width` / `height` report the **device-pixel** size of the render target at that density, and `scale` is the working density in device pixels per logical pixel (`1.0` when unscaled).

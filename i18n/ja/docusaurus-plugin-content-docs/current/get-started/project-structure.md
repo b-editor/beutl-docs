@@ -17,7 +17,7 @@ MyProject/
 
 ## `MyProject.bep`
 
-プロジェクトに含まれるシーンと、フレームレートやサンプルレートなどの共通設定を記録します。
+プロジェクトに含まれるシーンと、フレームレートやサンプルレート、[スピーカー配置](./multichannel-audio.md)などの共通設定を記録します。
 
 ## `MyProject.scene`
 
@@ -39,9 +39,11 @@ MyProject/
 
 ## バージョン間の互換性 {/* #version-compatibility */}
 
-**2.0.0-preview.9 で保存すると、プロジェクト形式の最低対応バージョンが 2.0.0-preview.9 になります。preview.9 で保存したプロジェクトは、preview.8 以前では開けません。** 古いバージョンでも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
+**2.0.0-preview.10 で保存すると、プロジェクト形式の最低対応バージョンが 2.0.0-preview.10 になります。preview.10 で保存したプロジェクトは、preview.9 以前では開けません。** 古いバージョンでも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
 
-プロジェクト・シーン・要素のファイルには、開くために必要な最低バージョンが記録されます。preview.9 ではタイムラインとメディアの時刻を整数の flick 数で保存します。以前の時刻文字列は読み込み時に変換され、エディター上では引き続き読みやすい時間表示を使います。フレームレートとサンプルレートはプロジェクトの設定として保存され、分数のフレームレートは有理数のまま保持されます。
+プロジェクト・シーン・要素のファイルには、開くために必要な最低バージョンが記録されます。preview.10 で最低対応バージョンが上がるのは、[ストローク](../reference/library/filter-effects/stroke.md)エフェクトの描画順が `Style` プロパティからペンの **重ね順** に移ったためです。保存済みの `Style` は読み込み時に変換されますが、古いバージョンは新しい設定を無視し、ストロークを内容の上に描画してしまいます。引き継がれるのは保存された値だけです。**重ね順** はアニメーションできないので、キーフレームや式で変化する `Style` は基準の値で読み込まれます。
+
+preview.9 ではタイムラインとメディアの時刻を整数の flick 数で保存します。以前の時刻文字列は読み込み時に変換され、エディター上では引き続き読みやすい時間表示を使います。フレームレートとサンプルレートはプロジェクトの設定として保存され、分数のフレームレートは有理数のまま保持されます。
 
 ## 関連ドキュメント
 
@@ -57,5 +59,6 @@ MyProject/
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`EditorConstants.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/EditorConstants.cs)
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
+- [`StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)
