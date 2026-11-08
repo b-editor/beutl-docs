@@ -71,6 +71,56 @@ public static class SequentialConsumers
 }
 ```
 
+## Writing several files {/* #writing-several-files */}
+
+When it exports, Beutl creates a new controller whose `OutputFile` has the name of the chosen file but lies in a temporary folder beside it, and moves what `Encode` wrote to the chosen folder after `Encode` returns. Since preview.11, an encoder can write several files, such as an image sequence: write each one directly in the folder of `OutputFile`, and return their paths from `OutputFiles`. It defaults to `OutputFile` alone, and it need not contain `OutputFile`.
+
+Beutl reads `OutputFiles` after `Encode` returns, on any thread, and checks every file before it moves the first one: a file in another folder, or one that was not written, fails the export. Each file then reaches the chosen folder under its own name, and `OutputFile` under the chosen name. When a move fails part way, Beutl puts back the files it replaced, so a failed or cancelled export leaves that folder as it was; if an earlier file cannot be put back, the error names it. The output tab shows the total size of the files.
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Beutl.Extensibility;
+using Beutl.Graphics;
+using Beutl.Media;
+using Beutl.Media.Encoding;
+
+public sealed class FrameSequenceController(string outputFile) : EncodingController(outputFile)
+{
+    private readonly List<string> _files = [];
+
+    public override VideoEncoderSettings VideoSettings { get; } = new();
+
+    public override AudioEncoderSettings AudioSettings { get; } = new();
+
+    public override bool IsAudioEnabled => false;
+
+    public override IReadOnlyList<string> OutputFiles => _files;
+
+    public override async ValueTask Encode(
+        IFrameProvider frameProvider, ISampleProvider sampleProvider, CancellationToken cancellationToken)
+    {
+        string folder = Path.GetDirectoryName(OutputFile)!;
+        string name = Path.GetFileNameWithoutExtension(OutputFile);
+        for (long frame = 0; frame < frameProvider.FrameCount; frame++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            using Bitmap? bitmap = await frameProvider.ReadNextFrame();
+            if (bitmap is null)
+                throw new InvalidOperationException("The frame stream ended early.");
+
+            string file = Path.Combine(folder, $"{name}_{frame:D5}.png");
+            if (!bitmap.Save(file, EncodedImageFormat.Png))
+                throw new IOException($"Could not write '{file}'.");
+            _files.Add(file);
+        }
+    }
+}
+```
+
 ## AudioBuffer
 
 `Beutl.Audio.AudioBuffer` replaces `Pcm<T>`. Construct it with `(int sampleRate, int channelCount, int sampleCount)`. The sample rate and channel count must be positive; the per-channel sample count must be non-negative. A new buffer is zero-filled.
@@ -150,6 +200,7 @@ Use `MediaTime.FromTimeSpan` and `ToTimeSpan()` at an API or display boundary. `
 - [`IFrameProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IFrameProvider.cs)
 - [`ISampleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ISampleProvider.cs)
 - [`EncodingController.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/EncodingController.cs)
+- [`StagedOutputFile.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/IO/StagedOutputFile.cs)
 - [`AudioEncoderSettings.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Encoding/AudioEncoderSettings.cs)
 - [`VideoColorDefaults.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/VideoColorDefaults.cs)
 - [`SampleProviderImpl.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Models/SampleProviderImpl.cs)

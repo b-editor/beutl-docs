@@ -138,6 +138,39 @@ KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
 
 タイムラインとキーフレームの時刻には `TimeSpan` ではなく `MediaTime` を使います。フレームの時刻は `MediaTime.FromFrames(frame, rationalRate)` で作り、時間として表示するときは `ToTimeSpan()` で変換します。`MediaTime.ToString()` は flick 数を表示します。
 
+### 2 つか 3 つのプロパティを 1 行で編集する {/* #combined-editor */}
+
+アニメーション可能な 2 つの `float` または `int` プロパティのうち、1 つ目に `[CombinedEditor(nameof(Second))]` を付けると、両方がプロパティパネルではベクトルエディタの 1 行に、インライン表示では 1 つのレイヤーに、グラフエディタでは 1 行にまとまります。`[CombinedEditor(nameof(Second), nameof(Third))]` は、3 つの `float` プロパティを同じようにまとめます。各プロパティは、モデルでもファイルでも、それぞれの値、範囲、キーフレーム、式を保ちます。行の名前は `[Display]` と同じく `Name` と `ResourceType` で指定し、指定しない場合は 1 つ目のプロパティの名前になります。
+
+```cs
+using System.ComponentModel.DataAnnotations;
+using Beutl;
+using Beutl.Engine;
+
+namespace MyExtension;
+
+public sealed partial class MyPanel : EngineObject
+{
+    public MyPanel()
+    {
+        ScanProperties<MyPanel>();
+    }
+
+    [Display(Name = "Width")]
+    [Range(0, float.MaxValue)]
+    [CombinedEditor(nameof(Height), Name = "Size")]
+    public IExpressionProperty<float> Width { get; } = Property.CreateAnimatable<float>(100);
+
+    [Display(Name = "Height")]
+    [Range(0, float.MaxValue)]
+    public IExpressionProperty<float> Height { get; } = Property.CreateAnimatable<float>(100);
+}
+```
+
+1 つ目のプロパティの名前が `Width` で終わる場合、行は 2 つのプロパティを `Size` として編集し、それ以外の場合は `Point` として編集します（`int` では `PixelSize` と `PixelPoint`）。3 つの場合は `Vector3` になります。プロパティは同じ `EngineObject` に `Property.CreateAnimatable` で宣言し、名前を一致させる必要があります。そうでない場合、各プロパティは別々の行のままです。ノードでは、各プロパティがそれぞれの行とポートを持ちます。
+
+キーフレームの時刻、イージング、クロックが異なる間や、1 つの式を共有していない間は、行がプロパティごとに分かれ、一致すると再び 1 行にまとまります。メニューの **成分を分離** を使うと手動で分けられます。まとめた行では、これは表示だけを変え、パネルの表示状態として保存されます。まとめた行には、`new Size(Sin(Time) * 100, 100)` のように値全体を返す 1 つの式を設定できます。このような式のために、`Size` と `Point` に `double, double` のコンストラクターが追加されました。各プロパティは、この式を `ComponentExpression<TValue, TComponent>`（名前空間 `Beutl.Engine.Expressions`）として保存します。これは共有された式を評価してプロパティの成分を取り出し、プロパティのキーフレームをその下に保ちます。1 つのプロパティの `Expression` を読むコードは、これを受け取ることがあります。`IComponentExpression` からは `Source`、`Component`、`ComponentIndex` を取得できます。古いバージョンはこの新しい種類の式を失うため、preview.11 で[ファイル形式の下限](version-mapping.md)を引き上げました。
+
 ## 自動生成される `Resource` クラス
 
 具象 `partial class : EngineObject` ごとに、ソースジェネレータが入れ子の `Resource` クラスを出力します。レンダリングパイプラインはこれを「ある時点でのオブジェクトのスナップショット」として扱うため、アニメーション・式・コンポジションシステムは編集中のインスタンスに触らずに値をサンプリングできます。
@@ -257,3 +290,4 @@ public sealed class MyExtension : Extension
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
+- [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)

@@ -185,6 +185,7 @@ public sealed partial class InvertGraphEffect : FilterEffect
 - `graph.Image2D(name, like, format, padding, resolutionScale)` declares an image with the bounds of another one. `graph.Fullscreen`, `graph.Render` and `graph.Compute` record passes, and `ShaderProgram.Fullscreen`, `Graphics` and `Compute` create their programs.
 - `pass.ImageParameters(binding, image)` binds three std140 `vec4` values: the logical bounds, the raster bounds in the same coordinates, and (pixel width, pixel height, raster scale, 0).
 - `pass.PushConstants(value)` copies an unmanaged value of up to 128 bytes, in multiples of four.
+- `pass.DispatchImage(image)`, new in preview.11, runs one compute invocation per texel of `image`, rounded up to the compiled local size. The size is resolved when the graph executes, so it covers an image the size of the composition at any working scale; the shader must guard the extra invocations.
 - `pass.InputRegion(binding, region)` declares the complete sampling footprint of a sampled image and enables partial rendering. Without it or `PartialRendering()`, the pass runs in full.
 - `graph.Output(image)` selects the result, which is linear premultiplied unless you pass another `ColorEncoding`.
 

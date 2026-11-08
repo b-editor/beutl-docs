@@ -10,7 +10,7 @@ This guide introduces the methods using __Visual Studio Code__ or __Visual Studi
 Beutl 2.0 ships an MSBuild SDK called `Beutl.Extensibility.Sdk` that wires up the target framework, language defaults, the standard package references (`Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, `Beutl.Engine.SourceGenerators`), and the sideload output path. Using it keeps the csproj small.
 
 :::tip
-Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.10`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
+Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.11`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>
@@ -57,6 +57,7 @@ The SDK takes care of:
 - Setting `TargetFramework` to `net10.0`, plus `ImplicitUsings` and `Nullable` to `enable`.
 - Adding `PackageReference`s to `Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, and the `Beutl.Engine.SourceGenerators` analyzer.
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
+- Turning each `BeutlHostPackageReference` into a compile-only reference at the version Beutl ships (since preview.11).
 
 :::info
 Since preview.9, the SDK references `Beutl.Engine.SourceGenerators` as a build-only analyzer with `PrivateAssets="all"`. The manual workaround needed by preview.8 and earlier to keep the generator out of package dependencies is no longer necessary.
@@ -78,6 +79,16 @@ Set any of these properties to `false` if you want to opt out of a specific auto
 - `BeutlAutoReferenceSourceGenerators`
 
 Override `BeutlSideloadPath` to choose the sideload directory. Otherwise, the SDK uses `sideloads/<AssemblyName>` under `BEUTL_HOME`, or under `~/.beutl` when that environment variable is unset.
+
+### Libraries Beutl ships {/* #libraries-beutl-ships */}
+
+To use a library that Beutl also ships, such as FluentIcons, add a `BeutlHostPackageReference` with its package ID and no version. The SDK references it at the version Beutl ships and keeps it out of your output and package. A name Beutl does not ship stops the restore; see [libraries that Beutl already ships](pitfalls.md#libraries-that-beutl-already-ships).
+
+```xml
+<ItemGroup>
+  <BeutlHostPackageReference Include="FluentIcons.Avalonia.Fluent" />
+</ItemGroup>
+```
 
 ## Visual Studio
 1. Open Visual Studio and click __File > New > Project__.
@@ -112,7 +123,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>
@@ -136,4 +147,5 @@ This completes the creation of an empty C# project for extensions.
 
 - [`Sdk.props`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.props) / [`Sdk.targets`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.targets)
 - [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
+- [`host-libraries.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/host-libraries.md)
 - [`Beutl.Controls.csproj`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Beutl.Controls.csproj)

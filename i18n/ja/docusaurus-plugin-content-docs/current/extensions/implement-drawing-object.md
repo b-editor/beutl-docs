@@ -163,6 +163,8 @@ public sealed class StarShapeExtension : Extension
 
 `[Export]` 属性を付けることで Beutl のローダーから検出されます。`AddMultiple`, `BindDrawable<T>()` を使えば、`StarShape` を ライブラリへ登録できます。登録系ヘルパーの全体は [EngineObject リファレンス](engine-object.md#ライブラリへの登録) を参照してください。
 
+preview.11 以降、ユーザーがライブラリ、タイムライン、プレビューから `StarShape` を追加すると、Beutl は空のトランスフォームのグループに `TranslateTransform`、`RotationTransform`、`ScaleTransform` を追加します。そのため、プロパティパネルには最初から位置、回転、スケールが表示されます。コンストラクターで `Transform` を設定するのは、別のトランスフォームが必要な場合だけにしてください。その場合、Beutl はそのトランスフォームを保ちます。
+
 ## 発展：`Shape` を使わない自由な `Drawable`
 
 ジオメトリベースではなく `GraphicsContext2D` で直接描きたい場合は、`Drawable` を直接継承し、入れ子の `Resource` で `MeasureCore` と `OnDraw` をオーバーライドします。`Resource` の中でプロパティ名は描画時刻で評価された値を指すので、`Size` をそのまま読み取れます。プロパティ以外の状態が必要なメソッドでは、`RequireOriginal()` で描画オブジェクトを取得できます。

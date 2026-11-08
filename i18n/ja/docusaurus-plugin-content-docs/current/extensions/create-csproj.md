@@ -10,7 +10,7 @@ Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明�
 Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
 
 :::tip
-ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.10`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
+ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.11`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -57,6 +57,7 @@ SDK が以下を自動で行います。
 - `TargetFramework` を `net10.0` に、`ImplicitUsings` と `Nullable` を `enable` に設定。
 - `Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
 - `DebugApplication` が `true` のとき、出力先を `~/.beutl/sideloads/<AssemblyName>` にリダイレクト。
+- `BeutlHostPackageReference` を、Beutl が同梱しているバージョンのコンパイル専用の参照に変換（preview.11 以降）。
 
 :::info
 preview.9 以降の SDK は `Beutl.Engine.SourceGenerators` を `PrivateAssets="all"` のビルド専用アナライザーとして参照します。preview.8 以前で必要だった、ジェネレーターをパッケージ依存関係から除外するための手動設定は不要です。
@@ -78,6 +79,16 @@ preview.9 以降の SDK は `Beutl.Engine.SourceGenerators` を `PrivateAssets="
 - `BeutlAutoReferenceSourceGenerators`
 
 `BeutlSideloadPath` でサイドロード先を上書きできます。指定しない場合は、`BEUTL_HOME`（未設定なら `~/.beutl`）の `sideloads/<AssemblyName>` が使われます。
+
+### Beutl が同梱しているライブラリ {/* #libraries-beutl-ships */}
+
+FluentIcons のように Beutl も同梱しているライブラリを使う場合は、パッケージ ID を指定し、バージョンを指定せずに `BeutlHostPackageReference` を追加します。SDK は Beutl が同梱しているバージョンで参照し、そのライブラリを出力先やパッケージに含めません。Beutl が同梱していない名前を指定すると、復元が止まります。[Beutl が同梱しているライブラリ](pitfalls.md#libraries-that-beutl-already-ships)を参照してください。
+
+```xml
+<ItemGroup>
+  <BeutlHostPackageReference Include="FluentIcons.Avalonia.Fluent" />
+</ItemGroup>
+```
 
 ## Visual Studio
 1. Visual Studio を開いて、__ファイル &gt; 新規作成 &gt; プロジェクト__ をクリックします。
@@ -112,7 +123,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.10">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -136,4 +147,5 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 - [`Sdk.props`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.props) / [`Sdk.targets`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.targets)
 - [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
+- [`host-libraries.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/host-libraries.md)
 - [`Beutl.Controls.csproj`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Beutl.Controls.csproj)

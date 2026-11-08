@@ -163,6 +163,8 @@ public sealed class StarShapeExtension : Extension
 
 The `[Export]` attribute lets Beutl's loader discover the extension. `AddMultiple` plus `BindDrawable<T>()` is enough to expose `StarShape` in the library. See the [EngineObject reference](engine-object.md#registering-with-the-library) for the full set of registration helpers.
 
+Since preview.11, when the user adds `StarShape` from the library, the timeline or the preview, Beutl gives its empty transform group a `TranslateTransform`, a `RotationTransform` and a `ScaleTransform`, so the property panel offers position, rotation and scale from the start. Set `Transform` in the constructor only when the shape needs another transform; Beutl then keeps it.
+
 ## Going further: a free-form `Drawable` without `Shape`
 
 If you want to draw directly with `GraphicsContext2D` instead of using a geometry, derive from `Drawable` directly and override `MeasureCore` and `OnDraw` on the nested `Resource`. Inside `Resource`, a property name is the value evaluated at the rendered time, so read `Size` directly. `RequireOriginal()` returns the drawable when a method needs state that is not a property.
