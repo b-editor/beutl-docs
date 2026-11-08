@@ -34,6 +34,8 @@ Video generation can use the current scene frame or first/last-frame inputs wher
 
 You can drag local files onto the corresponding input area: reference images, a source image or video, first/last frames, a character image, supported video-generation references, or subtitle imports. The active task and model determine which file types and how many references are accepted.
 
+Subtitles take a **Text template**: the default look, or a saved template that holds text, whether of a TextBlock, an element, or several elements. Its formatting, effects, animation, and placement apply to every subtitle; see [Subtitle files](./timeline.md#subtitle-files) for how the elements of a template fit each cue. **Import captions** reads SRT, WebVTT, and ASS/SSA files, including UTF-16 files with a byte order mark and files in the system's legacy code page.
+
 Image editing results offer **Add to scene** and **Save to file** actions. Review the result before adding it to your project.
 
 ## Related documents
@@ -48,3 +50,4 @@ Image editing results offer **Add to scene** and **Save to file** actions. Revie
 - [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiPlanCoordinator.cs)
 - [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
 - [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)
+- [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)

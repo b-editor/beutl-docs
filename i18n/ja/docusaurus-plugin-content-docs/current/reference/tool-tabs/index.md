@@ -22,7 +22,10 @@ sidebar_position: 2
 
 **要素プロパティ**、**プロパティ**、**シーン設定**、**グラフエディタ**、**トランジション**、**欠損メディアを再リンク**、**スマホプレビュー**、**無音区間で自動分割** は、**「表示」→「ツール」** ではなく、それぞれの編集操作から開きます。開き方は各ページを参照してください。
 
+**アニメーションを編集** で開くグラフエディタのように、こうして開いたタブは、同じツールの開いているタブの隣に開きます。ない場合は、既定の配置が同じツールを含むドックに開き、それもなければツールの既定のドックに開きます。既定のドックは、中のタブをすべて閉じた後も、元の位置と大きさで戻ります。
+
 - 選択中のタブにマウスを乗せると閉じるボタンが表示されます。タブ名の左には拡張機能のアイコンが表示されます。
+- `Ctrl + W`（macOS では `Cmd + W`）で、フォーカスのあるツールタブを閉じます。フローティングウィンドウ内のタブも閉じられます。プレビューのように閉じられないタブは開いたままです。
 
 ## キーボードでタブを切り替える
 
@@ -31,6 +34,7 @@ sidebar_position: 2
 | 次 / 前のタブ | `Ctrl + Tab` / `Ctrl + Shift + Tab` |
 | 次 / 前のツールタブ | `Alt + F7` / `Alt + Shift + F7` |
 | ツールタブを作成 | `Ctrl + T`（macOS では `Cmd + T`） |
+| フォーカスのあるツールタブを閉じる | `Ctrl + W`（macOS では `Cmd + W`） |
 
 切り替え画面では、開いているタブを **ツールタブ** と **ファイル** に分けて表示します。左右の矢印キーでグループ、上下の矢印キーでタブを選びます。ショートカットの修飾キーを離すか `Enter` を押すと確定し、`Esc` でキャンセルします。**ツールタブを作成** はツールの一覧を開き、`Enter` で確定します。`Alt + Tab` / `Alt + Shift + Tab` もツール切り替えに割り当てられていますが、OS が Beutl にキーを渡す場合に限り利用できます。
 
@@ -49,7 +53,7 @@ sidebar_position: 2
 | [ファイル](./file-browser.md) | プロジェクトフォルダや任意のフォルダのファイルを参照する |
 | [要素プロパティ](./element-property.md) | 要素に含まれる描画オブジェクトやサウンドなどを編集する |
 | [出力](./output.md) | エンコード設定と出力プロファイルを管理する |
-| [シーン設定](./scene-settings.md) | シーンのサイズ・開始時間・長さ・レイヤー数と、プロジェクトの音声チャンネルを設定する |
+| [シーン設定](./scene-settings.md) | シーンのサイズ・開始時間・長さ・レイヤー数・マスター音量と、プロジェクトの音声チャンネルを設定する |
 | [グラフエディタ](./graph-editor.md) | アニメーションの時間カーブを編集する |
 | [ノードグラフ](./node-graph.md) | ノードを配置・接続して処理の流れを編集する |
 | [スコープ](./color-scopes.md) | 映像の波形・ヒストグラム・ベクトルスコープ・フォルスカラー・ゼブラを表示する |
@@ -74,7 +78,8 @@ sidebar_position: 2
 
 ## ソース
 
-- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
+- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs) / [`MainViewModel.Menu.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/MainViewModel.Menu.cs)
+- [`DockHostViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/DockHostViewModel.cs)
 - [`TabSwitcherViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TabSwitcherViewModel.cs) / [`TabSwitcherView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TabSwitcherView.axaml.cs)
 - [`NewToolTabDockable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dock/NewToolTabDockable.cs)
 - [`DockStyles.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dock/DockStyles.axaml) / [`ToolTabPin.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Helpers/ToolTabPin.cs)

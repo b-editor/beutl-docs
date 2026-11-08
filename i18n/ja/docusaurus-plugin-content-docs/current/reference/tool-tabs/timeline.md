@@ -42,6 +42,9 @@ sidebar_position: 1
 
 - 要素のクリックで単一選択、`Ctrl` (macOS では `Cmd`) + クリックで選択の追加/解除
 - 何もない場所を `Ctrl` (`Cmd`) + ドラッグで矩形範囲選択
+- `Ctrl + A` (`Cmd + A`) ですべてのクリップを選択、`Ctrl + Shift + A` (`Cmd + Shift + A`) で選択を解除
+
+[エディターの設定](../../settings/editor.md#タイムラインのクリックで再生位置を移動)で **タイムラインのクリックで再生位置を移動** をオフにすると、タイムラインをクリックしても再生位置は動かず、何もない場所をそのままドラッグするとクリップを範囲選択します。このとき再生位置は、目盛りの操作か、再生位置のバーのドラッグで動かします。バーの上では、掴めることがカーソルで示されます。
 
 ### キーボードショートカット
 
@@ -51,6 +54,9 @@ sidebar_position: 1
 | 切り取り | `Ctrl + X` | `Cmd + X` |
 | 貼り付け | `Ctrl + V` | `Cmd + V` |
 | 選択した要素を複製 | `Ctrl + D` | `Cmd + D` |
+| すべて選択 / すべての選択を解除 | `Ctrl + A` / `Ctrl + Shift + A` | `Cmd + A` / `Cmd + Shift + A` |
+| 再生位置を中心に拡大 / 縮小 | `Ctrl + =` / `Ctrl + -` | `Cmd + =` / `Cmd + -` |
+| 拡大率をリセット | `Ctrl + 0` | `Cmd + 0` |
 | 選択した要素を削除 | `Delete` または `Ctrl + Delete` | `Back` または `Cmd + Back` |
 | 現在のフレームで分割 | `Ctrl + K` | `Cmd + K` |
 | グループ化 / 解除のトグル | `Ctrl + G` | `Cmd + G` |
@@ -138,7 +144,7 @@ sidebar_position: 1
 
 マットのソースは **ソロ** と **出力に表示** の影響を受けませんが、**動画**（映像ミュート）をオンにしたレイヤーは何も供給しません。**出力に表示** が影響するのは映像だけなので、非表示のクリップの音声は再生されます。マスクしたクリップは、下のレイヤーに対するブレンドモードを保ちます。
 
-マットを設定したクリップには、タイムライン上にソースが **↑ 上のレイヤー**、**↓ 下のレイヤー**、または **↑ 3** のような矢印とレイヤー番号で表示されます。これらの設定はすべて元に戻す履歴に記録され、ロックしたクリップでは変更できません。
+マットを設定したクリップには、タイムライン上にソースが表示されます。上のレイヤーは **↑**、下のレイヤーは **↓**、特定のレイヤーは **↑ 3** のような矢印とレイヤー番号です。これらの設定はすべて元に戻す履歴に記録され、ロックしたクリップでは変更できません。
 
 ## クリップをテンプレートとして保存する
 
@@ -200,7 +206,7 @@ sidebar_position: 1
 - **編集モード** サブメニュー: **レーザーモード** / **スリップツール** / **ロールツール** / **スライドツール** / **リップル編集** のトグル
 - **要素を追加** / **テンプレートから追加**（ライブラリの登録項目から選択）
 - **調整レイヤーを追加**（[バックドロップ](../library/drawables/sources/backdrop.md)ベースの要素を追加。付けたフィルターエフェクトが下のレイヤーに適用される）
-- **貼り付け**（要素・ファイル・クリップボードの画像）
+- **貼り付け**（要素・ファイル・クリップボードの画像）。ロックしたレイヤーへの貼り付けや、プロジェクトを保存する前など、貼り付けられないときはその理由が表示されます。
 - **開始時間を設定 / 終了時間を設定**（クリック位置に合わせる）
 - **隙間** サブメニュー: **隙間を詰める**（クリック位置の隙間）/ **すべての隙間を詰める** / **次の隙間へ移動** / **前の隙間へ移動**
 - **自動でシーンの長さを調整** のトグル
@@ -212,7 +218,19 @@ sidebar_position: 1
 ### ドラッグ&ドロップ
 
 - ライブラリの項目（描画オブジェクト・テンプレートなど）をドロップして要素を追加
-- ファイル（画像・動画・音声・テンプレート JSON）をドロップして要素を追加
+- ファイル（[SVG](../library/drawables/sources/image.md) を含む画像・動画・音声・テンプレート JSON）をドロップして要素を追加
+- 複数のファイルをドロップすると、1 回の取り消し単位ですべて追加します。ファイル名の順（数字は `1`、`2`、`10` の順）に、ドロップ位置から順に並べます。音声だけのファイルは同じフレームから別のレイヤーに置くので、BGM が映像の下で流れます。どのデコーダーでも開けないファイルは追加しません。
+- 字幕ファイル（SRT、WebVTT、ASS/SSA）をドロップすると、字幕ごとに 1 つのテキストクリップを、ファイルが指定する時刻でシーンの上の新しいレイヤーに追加します。[字幕ファイル](#subtitle-files)を参照してください。
+
+### 字幕ファイル {/* #subtitle-files */}
+
+ドロップした字幕ファイルは、字幕ごとに 1 つのテキストクリップになり、クリップにはファイル名が付きます。時間が重なる字幕は別々のレイヤーに置き、ロックしたレイヤーは避けます。1 回の取り消しでドロップ全体を元に戻せます。Windows の字幕ツールが書き出したファイル（BOM 付きの UTF-16 や、システムの従来のコードページ）も正しく読み込めます。
+
+テキストを含む[テンプレート](#クリップをテンプレートとして保存する)を保存している場合は、ドロップした位置に **テキストテンプレート** のメニューが開きます。**既定** かテンプレートをクリックするとクリップを追加し、`Esc` を押すかほかの場所をクリックするとドロップ全体を取りやめます。前回選んだテンプレートが先頭の、ポインターの下に表示されます。テンプレートには、保存したテキストオブジェクト、要素、複数の要素を使えます。
+
+- テンプレート内のすべてのテキストオブジェクトが、字幕のテキストになります。描画オブジェクトのグループ内のテキストも対象です。
+- 要素 1 つのテンプレートは、字幕の開始時刻と長さに合わせ、位置はそのまま保ちます。
+- 複数の要素のテンプレートでは、テキスト要素と同じ長さの要素（文字の後ろの帯など）が、テキストと一緒に字幕の長さに合わせられます。飾りなどほかの要素は長さを保ち、字幕より後にはみ出す部分だけが削られます。相対的なレイヤー、グループ、トラックマットは保たれます。
 
 ## インラインアニメーション編集
 
@@ -277,6 +295,7 @@ sidebar_position: 1
 
 ## タイムラインスケール（上部目盛り）
 
+- スケールをクリックまたはドラッグで再生位置を移動
 - 赤いシーン開始/終了バーをドラッグでシーンの開始時間・尺を変更
 - スケール上端のマーカーをクリックで編集、ドラッグで移動
 - 下端のフレームキャッシュ表示を右クリックで **すべて削除 / 削除 / ロック / ロック解除**
@@ -295,7 +314,7 @@ macOS のトラックパッドでは、ドラッグが揃える対象に達す�
 - **タイムライン**: クリップの移動、端のトリム、ロールやスライドのトリムが新しいスナップ先に達したとき。
 - **プレビュー**: トランスフォームハンドルの `Shift` による回転が新しい 15° の刻みに達したとき。
 - **数値フィールド**: [スクラブ](./element-property.md#数値のスクラブ)がゼロまたはプロパティの既定値に達した、または通過したとき。ベクトルの各成分も対象です。
-- **[ノードグラフ](./node-graph.md)**: ワイヤーが接続できるポートに入ったとき。
+- **[ノードグラフ](./node-graph.md)**: ワイヤーが接続できるポートに吸い付いたとき。
 
 対象に留まっている間、ドラッグを離したとき、キーボードでの編集、元に戻す・やり直しでは繰り返されません。Beutl に設定項目はなく、macOS のトラックパッドのフィードバック設定に従います。
 
@@ -327,10 +346,12 @@ macOS のトラックパッドでは、ドラッグが揃える対象に達す�
 - [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/RippleHelper.cs)（リップル編集）
 - [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementGapService.cs)（隙間の操作）
 - [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementResizeService.cs)（スリップ / ロール / スライド）
-- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
+- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
 - [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
 - [`ElementStructureService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementStructureService.cs)
 - [`Scene.Gaps.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/Scene.Gaps.cs)
 - [`ElementView.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.TrackMatte.cs) / [`SceneCompositor.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/SceneCompositor.TrackMatte.cs)
 - [`TemplateSaving.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/Helpers/TemplateSaving.cs) / [`ElementSet.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/ElementSet.cs)
 - [`NativeHapticFeedback.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/Helpers/NativeHapticFeedback.cs)
+- [`FileDropLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/FileDropLayout.cs) / [`CaptionFileDrop.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/CaptionFileDrop.cs)（ドロップしたファイルと字幕ファイル）
+- [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)（要素のテンプレートを字幕に使う処理）

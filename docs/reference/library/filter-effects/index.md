@@ -8,8 +8,10 @@ description: "Filter effects that post-process a drawable's rendered output. Eff
 Filter effects that post-process a drawable's rendered output. Effects can be chained, animated, and combined with the script subgroup for custom shaders.
 
 - [**Blur**](./blur.md) — Applies a Gaussian blur to the layer.
+- [**Sharpen**](./sharpen.md) — Makes details stand out by strengthening the difference between each pixel and its surroundings.
 - [**Radial Blur**](./radial-blur.md) — Blurs outward from, or around, a center point.
 - [**Motion blur**](./motion-blur.md) — Averages the drawable at several times within a shutter interval to blur its motion.
+- [**Bokeh**](./bokeh.md) — Blurs the layer into the shape of a lens aperture, so bright points stand out as circles or polygons.
 - [**Bloom**](./bloom.md) — Adds a linear-light glow around the bright parts of the layer.
 - [**Light rays**](./light-rays.md) — Stretches the layer's highlights away from a center point.
 - [**Wave refraction**](./wave-refraction.md) — Refracts the layer through a wave field.
@@ -27,6 +29,7 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**LumaColor**](./lumacolor.md) — Maps the layer's luminance to alpha to produce a luma matte.
 - [**Saturate**](./saturate.md) — Adjusts color saturation.
 - [**Threshold**](./threshold.md) — Converts the layer to two tones based on luminance threshold.
+- [**Edge Detection**](./edge-detection.md) — Draws lines where the layer's lightness, color, or transparency changes, for line art and masks.
 - [**Brightness**](./brightness.md) — Adjusts overall brightness.
 - [**Gamma**](./gamma.md) — Applies gamma correction to the layer.
 - [**Color Grading**](./color-grading.md) — Performs professional color grading with curves, lift/gamma/gain, temperature and tint.
@@ -37,8 +40,10 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Negaposi**](./negaposi.md) — Selectively inverts individual color channels.
 - [**Chroma key**](./chroma-key.md) — Removes a hue range to perform green/blue screen keying.
 - [**Color key**](./color-key.md) — Removes a specific color range based on RGB distance.
+- [**Luma key**](./luma-key.md) — Keeps the parts of the layer whose brightness lies between two limits and makes the rest transparent.
 - [**Split equally**](./split-equally.md) — Splits the layer into a regular grid of tiles with spacing.
 - [**Split by parts**](./split-by-parts.md) — Splits the layer into separate sub-targets per connected part.
+- [**Repeat**](./repeat.md) — Repeats the layer in a grid of copies, with spacing, an offset, and flipping every other copy.
 - [**Transform**](./transform.md) — Applies a 2D transform as a filter effect (separately from the layer's own Transform).
 - [**Mosaic**](./mosaic.md) — Pixelates the layer into mosaic blocks.
 - [**Color Shift**](./color-shift.md) — Shifts each RGB and alpha channel independently to create a chromatic aberration look.

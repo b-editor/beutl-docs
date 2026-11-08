@@ -16,11 +16,13 @@ Beutlで作成したプロジェクトを動画ファイルに出力する方法
 4. エンコーダーを指定して、必要であれば詳細設定も変更できます。
 5. エンコードボタンをクリックします。
 
+編集を続けている間、進捗、経過時間と残り時間、フレーム、サイズが出力タブに表示され、書き出しが終わるまでエンコードボタンの位置に **キャンセル** が表示されます。[出力](../reference/tool-tabs/output.md#進捗)を参照してください。
+
 新しいエンコーダー設定は、プロジェクトのフレームレート、音声のサンプリングレート、音声チャンネルで開始します。そのため 5.1ch / 7.1ch のプロジェクトは、既定で[サラウンドのチャンネルを書き出します](./multichannel-audio.md#書き出す)。FFmpeg では検索できるコーデックピッカーとコーデックごとのオプション編集を利用でき、Windows では Media Foundation のエンコードにも対応します。設定やプリセットの詳細は [出力](../reference/tool-tabs/output.md) を参照してください。
 
 ## ソース
 
-- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
 - [`MFEncodingExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingExtension.cs)
 - [`EncoderOptionsEditor.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Extensions.FFmpeg/PropertyEditors/EncoderOptionsEditor.cs)
 - [`CodecPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecPickerViewModel.cs)

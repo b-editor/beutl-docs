@@ -34,6 +34,8 @@ Beutlアカウントにログインしてください。アカウントでAIを�
 
 対応する入力欄には、ローカルファイルをドラッグ&ドロップできます。参照画像、元の画像や動画、最初・最後のフレーム、キャラクター画像、動画生成の参照素材、字幕の読み込みに対応します。受け付けるファイルの種類や参照数は、選択中の操作とモデルによって異なります。
 
+字幕には **テキストテンプレート** を使います。既定の見た目か、テキストを含む保存済みのテンプレート（TextBlock、要素、複数の要素）を選べます。テンプレートの書式、エフェクト、アニメーション、配置がすべての字幕に適用されます。テンプレートの要素を各字幕にどう合わせるかは[字幕ファイル](./timeline.md#subtitle-files)を参照してください。**字幕を読み込む** は SRT、WebVTT、ASS/SSA のファイルに対応し、BOM 付きの UTF-16 や、システムの従来のコードページのファイルも読み込めます。
+
 画像編集の結果には **シーンに追加** と **ファイルに保存** があります。結果を確認してからプロジェクトに追加してください。
 
 ## 関連ドキュメント
@@ -48,3 +50,4 @@ Beutlアカウントにログインしてください。アカウントでAIを�
 - [`AiPlanCoordinator.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiPlanCoordinator.cs)
 - [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
 - [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)
+- [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)

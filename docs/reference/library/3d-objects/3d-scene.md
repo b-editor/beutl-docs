@@ -63,6 +63,8 @@ Height in pixels at which the scene is rasterized.
 - **Animatable:** Yes
 - **Range:** `[1, 8192]`
 
+In the property panel, **Render Width** and **Render Height** share one **Render Size** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ### Background Color (BackgroundColor)
 
 Background fill color of the rendered scene.

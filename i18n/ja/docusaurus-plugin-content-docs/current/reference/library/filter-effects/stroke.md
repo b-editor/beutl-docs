@@ -8,6 +8,10 @@ sidebar_position: 5
 
 レイヤーの不透明領域の周囲にアウトライン（ストローク）を描画します。ペンの **重ね順** で、ストロークを元レイヤーの上に描くか下に描くかを選べます。
 
+輪郭は、縁のピクセルが半分覆われている見えている縁に沿って、サブピクセルの精度でなぞります。半透明の内容は、それ自体の縁で輪郭を取ります。これによって削られる角は辺が交わる位置に戻すので、マイター結合のペンは角を保ち、半径が約 2.4 ピクセルを超える丸い角は丸いままです。約 3% 未満のアルファと 1 ピクセルより小さな島には輪郭を付けません。
+
+マイター結合のとき、エフェクトの出力は内容の外側へ、まっすぐな辺でペンが届く距離の最大 3 倍（中央揃えのペンでは太さの 1.5 倍）まで、ペンのマイター制限のほうが小さければそこまで広がります。約 39° 以上の角が切れることはありません。エディターでの要素の選択範囲も同じだけ広がります。
+
 ## ライブラリでの場所
 
 「ライブラリ」 → フィルターエフェクト → ストローク
@@ -34,6 +38,10 @@ sidebar_position: 5
 
 以前の **ボーダースタイル**（`Style`）プロパティは、ペンの **重ね順** に移りました。保存された `Foreground` は **塗りの背面** として、`Background` は **塗りの前面** として読み込まれるので、描画の順序は変わりません。**重ね順** はアニメーションできないため、キーフレームや式で変化する `Style` は基準の値で読み込まれます。[バージョン間の互換性](../../../get-started/project-structure.md#version-compatibility)を参照してください。
 
+2.0.0-preview.11 からは、ストロークが見えている縁に沿うようになり、輪郭を 1 ピクセル単位でなぞっていた以前のバージョンより約 0.5 ピクセル内側になりました。
+
 ## ソース
 
 [`src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)
+
+- [`AlphaOutlineTracer.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/FilterEffects/AlphaOutlineTracer.cs)

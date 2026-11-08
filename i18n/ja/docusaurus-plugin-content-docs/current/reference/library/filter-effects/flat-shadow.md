@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # フラットシャドウ
 
-指定した角度と長さでフラット（ロング）シャドウを投影します。
+指定した角度と長さでフラット（ロング）シャドウを投影します。影は[ストローク](./stroke.md)と同じ、見えている縁に沿ってなぞった輪郭から伸ばし、1 つの図形として塗るので、長さにかかわらず側面の縁は滑らかです。
 
 ## ライブラリでの場所
 
@@ -53,3 +53,5 @@ sidebar_position: 4
 ## ソース
 
 [`src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FlatShadow.cs)
+
+- [`AlphaOutlineTracer.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/FilterEffects/AlphaOutlineTracer.cs)

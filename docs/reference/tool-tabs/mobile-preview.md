@@ -29,9 +29,22 @@ Press **Stop** to end sharing. Sharing also stops when you close the tab or swit
 
 ## What the phone receives
 
-- **Video**: VP8 in SDR, or 10-bit VP9 with BT.2020 PQ when the phone can play HDR. The SDR stream follows the preview's [tone mapping](../../settings/editor.md#tone-mapping) mode.
+- **Video**: VP8 in SDR, or 10-bit VP9 with BT.2020 PQ when the phone can play HDR. The SDR stream follows the preview's [tone mapping](../../settings/editor.md#tone-mapping) mode, where **Auto** works as **None**.
 - **Audio**: Opus. A [5.1 or 7.1 project](../../get-started/multichannel-audio.md) is folded to stereo.
 - **Playback**: play, pause, step between frames, and seek from the phone.
+
+## Picture quality
+
+How sharp and smooth the video is depends on how the phone connects:
+
+| Connection | Long edge | Frame rate | Bitrate (SDR / HDR) |
+|------------|-----------|------------|---------------------|
+| Local network or STUN | Up to 1920 px | 30 fps | 8 / 12 Mbps |
+| TURN relay | Up to 1280 px | 15 fps | 2 / 4 Mbps |
+
+- Every phone gets the same stream for its dynamic range, so while any phone is relayed, all of them get the relayed settings. When the last relayed phone leaves, a paused frame is sent again at the direct settings.
+- A phone on a direct connection that keeps losing packets, asking for three key frames within 10 seconds, puts the stream on the relayed settings for 30 seconds. A hold that starts within 5 minutes of the end of the previous one lasts twice as long, up to 5 minutes. Requests in the first 5 seconds after a phone connects do not count.
+- While playback is paused, Beutl keeps coding the paused frame, up to 30 times from its last key frame, so the still sharpens until it stops improving.
 
 ## Network requirements
 
@@ -47,5 +60,6 @@ The connection tries the local network first, then STUN, then TURN. Beutl needs 
 - [`MobilePreviewTabExtension.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Services/PrimitiveImpls/MobilePreviewTabExtension.cs)
 - [`MobilePreviewTabViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/ViewModels/MobilePreviewTabViewModel.cs)
 - [`MobilePreviewTabView.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/MobilePreviewTabView.axaml)
-- [`MobilePreviewServer.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/PreviewStreaming/MobilePreviewServer.cs)
+- [`MobilePreviewServer.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/PreviewStreaming/MobilePreviewServer.cs) / [`MobilePreviewServer.Congestion.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/PreviewStreaming/MobilePreviewServer.Congestion.cs) / [`MobilePreviewServer.Frames.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/PreviewStreaming/MobilePreviewServer.Frames.cs)
+- [`PreviewEncodingMessages.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.FFmpegIpc/Protocol/Messages/PreviewEncodingMessages.cs) / [`PreviewEncodingHandler.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.FFmpegWorker/Handlers/PreviewEncodingHandler.cs)
 - [`PlayerView.axaml.Presentation.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PlayerView.axaml.Presentation.cs)

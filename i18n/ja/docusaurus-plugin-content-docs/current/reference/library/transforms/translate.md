@@ -30,6 +30,8 @@ sidebar_position: 1
 - **既定値:** `0`
 - **アニメーション:** 可
 
+プロパティパネルでは、**X** と **Y** が 1 つの **位置** の行にまとめて表示されます。[1 行にまとめて表示される値](../../../get-started/keyframe.md#joined-rows)を参照してください。
+
 ## ソース
 
 [`src/Beutl.Engine/Graphics/Transformation/TranslateTransform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/TranslateTransform.cs)

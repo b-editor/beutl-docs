@@ -149,6 +149,8 @@ FFmpeg の新しい動画設定と組み込みプリセットでは、ビット�
 
 **ハードウェアアクセラレーションを使用** は既定で有効です。実際に利用できるコーデックは Windows の構成とハードウェアによって異なります。
 
+FFmpeg でも、`.wav` や `.mp3` のような音声専用の保存先ではフレームを描画せず、動画ファイルが見つからなくても書き出しは止まりません。
+
 ## エンコードの実行
 
 ### 開始
@@ -158,22 +160,22 @@ FFmpeg の新しい動画設定と組み込みプリセットでは、ビット�
 
 エンコード中も編集を続けられます。書き出しは開始時のシーンと設定のスナップショットを使用し、その後の編集は実行中の書き出しには反映されません。次の書き出しから反映されます。
 
-### 進捗ダイアログ
+### 進捗
 
-エンコード中は専用のダイアログが表示され、以下が確認できます。
+進捗はダイアログではなくタブに表示されるので、エディターが覆われることはありません。エンコードを開始すると **エンコード** の位置に **キャンセル** が表示され、その下に以下が表示されます。
 
-- **状態テキスト**（「エンコード中...」「完了しました」「キャンセル」など）
+- **状態テキスト**（「エンコード中...」「完了しました」「キャンセルされました」など）
 - **進捗バー**
 - **経過時間**
 - **残り時間**（経過と進捗から推定）
 - **フレーム**（現在 / 総フレーム）
 - **サイズ**（現在の出力サイズ / 推定総サイズ）
 
-タブ側の編集領域にも、エンコード中は経過・残り時間・フレーム進捗が表示されます。
+これらの値は実行後もタブに残ります。連番画像のように複数のファイルを書き出すエンコーダーでは、**サイズ** はすべてのファイルを合計します。
 
 ### キャンセル
 
-進捗ダイアログの **キャンセル** ボタンで中断できます。Beutl は一時ファイルに書き出し、エンコードの成功後に保存先へ反映します。中断・失敗した場合は保存先にある既存のファイルを維持し、一時出力を削除します。
+エンコード中に **エンコード** の位置に表示される **キャンセル** ボタンで中断できます。Beutl は一時ファイルに書き出し、エンコードの成功後に保存先へ反映します。中断・失敗した場合は保存先にある既存のファイルを維持し、一時出力を削除します。
 
 ### 完了通知
 
@@ -214,13 +216,12 @@ FFmpeg の新しい動画設定と組み込みプリセットでは、ビット�
 - [`OutputTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputTabExtension.cs)
 - [`SceneOutputExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/SceneOutputExtension.cs)
 - [`OutputTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputTabViewModel.cs)
-- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
 - [`OutputPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputPickerViewModel.cs)
 - [`OutputTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml.cs)
-- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml.cs)
+- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/Tools/OutputView.axaml.cs)
 - [`OutputPickerFlyout.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputPickerFlyout.cs)
 - [`OutputPickerFlyoutPresenter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/OutputPickerFlyoutPresenter.cs)
-- [`OutputProgressDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml.cs)
 - [`AddOutputProfileDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml.cs)
 - [`OutputService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputService.cs)
 - [`OutputPresetService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/OutputPresetService.cs)

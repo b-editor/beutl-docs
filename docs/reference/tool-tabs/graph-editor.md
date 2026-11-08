@@ -124,9 +124,11 @@ For properties that contain multiple inner values, such as coordinates, sizes, a
 
 Those components share keyframe times and easing. To give each one its own track, press the separation button in the properties tree. Separating expands the property and selects a component track, with its own keyframes and easing. Unseparating keeps the value at the current time and removes the component keyframes and expressions, and Undo restores them. See [Animating components separately](../../get-started/keyframe.md#separate-components).
 
+Values stored as separate properties but shown in one row, such as a Translate's X and Y or a shape's Width and Height, appear the same way: one row with a channel for each value. The properties tree groups them under the row's name, where the separation button shows them apart or joins them again. When they stand apart because their keyframes differ, the selection moves to the first animated property, and back to the joined row when they match again. See [Values shown in one row](../../get-started/keyframe.md#joined-rows).
+
 ## Selection and keyboard shortcuts
 
-Hold `Ctrl` (`Cmd` on macOS) and drag an empty area to box-select, adding `Shift` to extend the selection. Use `Space` + left drag or middle-button drag to pan.
+Hold `Ctrl` (`Cmd` on macOS) and drag an empty area to box-select, adding `Shift` to extend the selection. Use `Space` + left drag or middle-button drag to pan. A tap on `Space` plays or pauses, as the key map binds it.
 
 | Action | Keys |
 |--------|------|

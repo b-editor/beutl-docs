@@ -32,6 +32,8 @@ Vertical extent — the bounding box height in pixels.
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
+In the property panel, **Width** and **Height** share one **Size** row. See [Values shown in one row](../../../../get-started/keyframe.md#joined-rows).
+
 ## Common properties
 
 This object inherits from `Shape` and exposes the [common properties](../../common-properties.md) declared on its base classes.

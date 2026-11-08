@@ -22,7 +22,10 @@ Drag the tabs to rearrange, stack, or tile them as needed.
 
 Some tabs open from their editing context rather than **View → Tools**: **Element Property**, **Properties**, **Scene settings**, **Graph Editor**, **Transition**, **Relink missing media**, **Mobile preview**, and **Auto Split by Silence**. See their respective pages for instructions on opening them.
 
+A tab opened this way, such as the Graph Editor from **Edit animation**, goes next to an open tab of the same tool. Otherwise it goes to a dock that holds a tool with the same default place, and then to its tool's default dock, which comes back where you left it even after you closed every tab in it.
+
 - Hover the selected tab to show its close button. The extension icon appears to the left of the tab title.
+- Press `Ctrl + W` (`Cmd + W` on macOS) to close the focused tool tab, also in a floating window. A tab that cannot close, such as the preview, stays open.
 
 ## Switching tabs with the keyboard
 
@@ -31,6 +34,7 @@ Some tabs open from their editing context rather than **View → Tools**: **Elem
 | Next / previous tab | `Ctrl + Tab` / `Ctrl + Shift + Tab` |
 | Next / previous tool tab | `Alt + F7` / `Alt + Shift + F7` |
 | Create tool tab | `Ctrl + T` (`Cmd + T` on macOS) |
+| Close the focused tool tab | `Ctrl + W` (`Cmd + W` on macOS) |
 
 The switcher groups open tabs into **Tool tabs** and **Files**. Use the left/right arrows to change groups and the up/down arrows to select a tab. Release the shortcut's modifier key or press `Enter` to activate it; `Esc` cancels. **Create tool tab** opens a list of tools and waits for `Enter`. `Alt + Tab` / `Alt + Shift + Tab` are also registered for tool switching when the operating system passes those keys to Beutl.
 
@@ -49,7 +53,7 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Files](./file-browser.md) | Browse files in the project folder or any folder |
 | [Element Property](./element-property.md) | Edit the drawables, sounds, and other objects inside an element |
 | [Output](./output.md) | Manage encoding settings and output profiles |
-| [Scene settings](./scene-settings.md) | Configure scene size, start time, length, layer count, and the project's audio channels |
+| [Scene settings](./scene-settings.md) | Configure scene size, start time, length, layer count, master volume, and the project's audio channels |
 | [Graph Editor](./graph-editor.md) | Edit time curves of animations |
 | [Node Graph](./node-graph.md) | Place and connect nodes to edit a processing graph |
 | [Scopes](./color-scopes.md) | Waveform / Histogram / Vectorscope / False Color / Zebra displays for video |
@@ -74,7 +78,8 @@ The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPr
 
 ## Source
 
-- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
+- [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs) / [`MainViewModel.Menu.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/MainViewModel.Menu.cs)
+- [`DockHostViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/DockHostViewModel.cs)
 - [`TabSwitcherViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TabSwitcherViewModel.cs) / [`TabSwitcherView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TabSwitcherView.axaml.cs)
 - [`NewToolTabDockable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dock/NewToolTabDockable.cs)
 - [`DockStyles.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dock/DockStyles.axaml) / [`ToolTabPin.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Helpers/ToolTabPin.cs)

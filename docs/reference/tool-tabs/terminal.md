@@ -35,6 +35,10 @@ The working directory is the **folder of the current project**; if no project is
 On macOS and Linux, apps launched from the GUI often have no locale in their environment, so multi-byte output would be garbled. If none of `LC_ALL` / `LC_CTYPE` / `LANG` are set, Beutl passes the shell a fallback `LANG` derived from the current UI culture (e.g. `ja_JP.UTF-8`).
 :::
 
+## Copying and pasting
+
+Press `Ctrl + Shift + C` to copy the selected text and `Ctrl + Shift + V` to paste. On macOS, `Cmd + C` and `Cmd + V` do the same, and `Ctrl` keys go to the shell.
+
 ## Session lifecycle
 
 - When the shell process exits, a banner saying **"The terminal session has ended."** and a **Restart** button appear at the top of the tab. Click the button to start a new session with the same shell and working directory.
@@ -51,5 +55,5 @@ On macOS and Linux, apps launched from the GUI often have no locale in their env
 
 - [`TerminalTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/TerminalTabExtension.cs)
 - [`TerminalTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/ViewModels/TerminalTabViewModel.cs)
-- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs)
+- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs)
 - The terminal control itself is provided by the external [`Iciclecreek.Avalonia.Terminal`](https://github.com/b-editor/beutl/tree/main/external) submodule.

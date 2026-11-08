@@ -42,6 +42,9 @@ You can drag the splitters between the columns to change their widths.
 
 - Click an element to select it; `Ctrl` (or `Cmd` on macOS) + click to add to or remove from the selection.
 - `Ctrl` (`Cmd`) + drag on an empty area to select with a rectangular marquee.
+- `Ctrl + A` (`Cmd + A`) selects every clip, and `Ctrl + Shift + A` (`Cmd + Shift + A`) clears the selection.
+
+When **Move the playhead with a click on the timeline** is turned off in the [Editor settings](../../settings/editor.md#move-the-playhead-with-a-click-on-the-timeline), a click on the timeline leaves the playhead where it is, and a plain drag on an empty area selects clips. The playhead then moves from the ruler, or by dragging its line, where the cursor shows that it can be taken.
 
 ### Keyboard shortcuts
 
@@ -51,6 +54,9 @@ You can drag the splitters between the columns to change their widths.
 | Cut | `Ctrl + X` | `Cmd + X` |
 | Paste | `Ctrl + V` | `Cmd + V` |
 | Duplicate selected elements | `Ctrl + D` | `Cmd + D` |
+| Select all / deselect all | `Ctrl + A` / `Ctrl + Shift + A` | `Cmd + A` / `Cmd + Shift + A` |
+| Zoom in / out around the playhead | `Ctrl + =` / `Ctrl + -` | `Cmd + =` / `Cmd + -` |
+| Reset zoom | `Ctrl + 0` | `Cmd + 0` |
 | Delete selected elements | `Delete` or `Ctrl + Delete` | `Back` or `Cmd + Back` |
 | Split by current frame | `Ctrl + K` | `Cmd + K` |
 | Toggle group / ungroup | `Ctrl + G` | `Cmd + G` |
@@ -138,7 +144,7 @@ When there is no source clip at a frame, **Alpha** and **Luma** show nothing and
 
 A matte source ignores **Solo** and **Show in output**, but a layer with **Video** (video mute) on supplies nothing. **Show in output** affects the picture only, so a hidden clip's audio still plays. The masked clip keeps its blend mode against the layers below it.
 
-A clip with a matte shows the source on the timeline: **↑ Layer above**, **↓ Layer below**, or an arrow and a layer number such as **↑ 3**. All of these settings are recorded in the undo history and are unavailable on a locked clip.
+A clip with a matte shows its source on the timeline: **↑** for the layer above, **↓** for the layer below, or an arrow and a layer number such as **↑ 3** for a specific layer. All of these settings are recorded in the undo history and are unavailable on a locked clip.
 
 ## Saving clips as a template
 
@@ -200,7 +206,7 @@ Each layer header includes four toggle buttons:
 - **Editing Mode** submenu: toggle **Razor Tool** / **Slip Tool** / **Roll Tool** / **Slide Tool** / **Ripple Edit**
 - **Add Element** / **Add from Template** (pick from items registered in the library)
 - **Add Adjustment Layer** (adds a [Backdrop](../library/drawables/sources/backdrop.md)-based element; filter effects you add to it apply to the layers below it)
-- **Paste** (elements, files, or images on the clipboard)
+- **Paste** (elements, files, or images on the clipboard). When nothing can be pasted, for example onto a locked layer or before the project is saved, the timeline says why.
 - **Set start time** / **Set end time** (snap to the click position)
 - **Gaps** submenu: **Close Gap** (the gap at the click position) / **Close All Gaps** / **Go to Next Gap** / **Go to Previous Gap**
 - Toggle **Automatically adjusts scene duration**
@@ -212,7 +218,19 @@ Each layer header includes four toggle buttons:
 ### Drag and drop
 
 - Drop an item from the Library (drawables, templates, etc.) to add an element.
-- Drop a file (image, video, audio, or template JSON) to add an element.
+- Drop a file (image, including [SVG](../library/drawables/sources/image.md), video, audio, or template JSON) to add an element.
+- Drop several files to add them all in one undo step. They line up one after another from the drop point, in name order with numbers in order (`1`, `2`, `10`). Sound-only files go on a layer of their own from the same frame, so background music runs under the pictures. Files that no decoder can open are left out.
+- Drop a subtitle file (SRT, WebVTT, or ASS/SSA) to add one text clip per cue at the times the file gives, on new layers above the scene. See [Subtitle files](#subtitle-files).
+
+### Subtitle files {/* #subtitle-files */}
+
+A dropped subtitle file becomes one text clip per cue, named after the file. Cues that overlap in time go on separate layers, and locked layers are skipped. One undo removes the whole drop. Files written by Windows subtitle tools also read correctly: UTF-16 with a byte order mark, and the system's legacy code page.
+
+When you have saved [templates](#saving-clips-as-a-template) that hold text, a **Text template** menu opens where you dropped the file. Click **Default** or a template to add the clips; press `Esc` or click elsewhere to give up the whole drop. The template you chose last comes first, under the pointer. A template can be a saved text object, an element, or several elements:
+
+- Every text object in the template takes the cue's text, including those inside a drawable group.
+- A single element follows the cue's start and length and keeps its position.
+- In a set of elements, elements as long as a text element fit the cue with it, like a band behind the text. Other elements, such as a flourish, keep their length and lose only what would outlast the cue. A set keeps its relative layers, groups, and track mattes.
 
 ## Inline animation editing
 
@@ -277,6 +295,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 
 ## Timeline scale (top ruler)
 
+- Click or drag on the scale to move the playhead.
 - Drag the red scene start/end bars to change the scene's start time and duration.
 - Click a marker on the upper part of the scale to edit it; drag to move it.
 - Right-click the frame-cache display along the bottom edge for **Delete All / Delete / Lock / Unlock**.
@@ -295,7 +314,7 @@ On a macOS trackpad, Beutl gives a haptic pulse when a drag reaches an alignment
 - **Timeline**: a clip move, an edge trim, or a roll or slide trim reaches a new snap target.
 - **Preview**: a `Shift` rotation with the transform handles reaches a new 15° step.
 - **Number fields**: a [scrub](./element-property.md#scrubbing-number-values) reaches or crosses zero or the property's default value, including each component of a vector.
-- **[Node Graph](./node-graph.md)**: a wire enters a port it can connect to.
+- **[Node Graph](./node-graph.md)**: a wire snaps to a port it can connect to.
 
 Staying on a target, releasing the drag, keyboard edits, and undo or redo do not repeat the pulse. Beutl has no setting for it; macOS applies your own trackpad feedback settings.
 
@@ -327,10 +346,12 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 - [`RippleHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/RippleHelper.cs) (ripple edit)
 - [`ElementGapService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementGapService.cs) (gap operations)
 - [`ElementSlipService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementSlipService.cs) / [`ElementResizeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementResizeService.cs) (slip / roll / slide trims)
-- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
+- [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs)
 - [`MainViewExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/MainViewExtension.cs)
 - [`ElementStructureService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementStructureService.cs)
 - [`Scene.Gaps.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/Scene.Gaps.cs)
 - [`ElementView.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.TrackMatte.cs) / [`SceneCompositor.TrackMatte.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/SceneCompositor.TrackMatte.cs)
 - [`TemplateSaving.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/Helpers/TemplateSaving.cs) / [`ElementSet.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.ProjectSystem/ProjectSystem/ElementSet.cs)
 - [`NativeHapticFeedback.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/Helpers/NativeHapticFeedback.cs)
+- [`FileDropLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/FileDropLayout.cs) / [`CaptionFileDrop.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/CaptionFileDrop.cs) (dropped files and subtitle files)
+- [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs) (element templates as subtitle templates)

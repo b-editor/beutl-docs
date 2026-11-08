@@ -25,6 +25,10 @@ Choose **Open repair tool** in the missing-media notification. This tab is not l
 
 Expand **Show details** to inspect the original reference, replacement file, and elements that use it. A candidate is not applied until you accept it and choose **Apply and save**.
 
+A video's picture and its sound are listed as separate rows. Choosing a file for one row also gives it to the other rows with the same original file; a row whose kind the file does not hold keeps waiting. The search for candidates also finds linked files.
+
+If the scene changed after the list was made, so that a listed file is no longer used, **Apply and save** changes nothing. The list is refreshed, a message says why, and the other rows keep the replacements chosen for them.
+
 Use **Keep offline** in an item's more menu to leave that item unresolved while repairing other files. **Refresh** checks again after a file has been restored to its original location.
 
 ## Related documents
@@ -35,7 +39,7 @@ Use **Keep offline** in an item's more menu to leave that item unresolved while 
 ## Source
 
 - [`MissingMediaTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/MissingMediaTabExtension.cs)
-- [`MissingMediaViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/ViewModels/MissingMediaViewModel.cs)
+- [`MissingMediaViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/MissingMediaTab/ViewModels/MissingMediaViewModel.cs)
 - [`MissingMediaView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/Views/MissingMediaView.axaml)
 - [`EditViewModel.MissingMedia.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.MissingMedia.cs)
 - [`MissingMediaStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/MissingMediaStrings.resx)

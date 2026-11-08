@@ -7,7 +7,7 @@ sidebar_position: 10
 # カラーグレーディング
 
 映像の **色調補正・色味の調整** を行うためのタブです。
-カラーホイールと数値ボックスを使って、トーン領域別（シャドウ・ミッドトーン・ハイライトなど）に色味と明るさを調整できます。
+[ベクトルスコープ](./color-scopes.md)と同じ配置のカラーホイールでトーン領域別（シャドウ・ミッドトーン・ハイライトなど）の色味を動かし、スライダーでホワイトバランス、トーン、カラーを調整できます。
 
 ## タブの特性
 
@@ -25,54 +25,69 @@ sidebar_position: 10
 
 ## 画面構成
 
-タブは大きく 3 つのエリアに分かれています。
+タブは 3 つの部分でできています。
 
-- **ヘッダー（上部）**: タブ名、数値エディタの表示切替ボタン、ホイールモード切替
-- **数値エディタ列（中段）**: 各種補正値を数値で入力するエリア（折り返し配置）
-- **カラーホイール（下部）**: ドラッグ操作で色味を調整するホイールが並ぶエリア
+- **ツールバー（上部）**: タブ名、**調整スライダーを表示**、**すべてリセット**、ホイールモード切替
+- **調整スライダー**: **ホワイトバランス**、**トーン**、**カラー** の 3 つのグループに分かれたスライダー
+- **カラーホイール**: 選んだモードのホイール。**シャドウ / ミッドトーン / ハイライト** モードでは、下に **輝度範囲** のバーが付きます。
+
+配置はタブの形に合わせて変わります。
+
+- 下部にドッキングしたときのような横長で低いタブでは、スライダーはホイールの横にスクロールできる列として並び、ホイールは 1 行のままです。
+- 低いタブでその列を置く幅がないときは、スライダーの名前と数値ボックスだけをホイールの横に並べます。
+- それ以外では、スライダーはホイールの上に並びます。
+
+ホイールは使える高さの中央に配置されます。パッドが大きくなる場合は、操作部をパッドの横に移したり、列数を減らしたりします。表示される数値が配置を変えることはないので、ドラッグ中にホイールが動くことはありません。
 
 カラーグレーディングのエフェクトが削除された場合、このタブは自動的に閉じます。
 
-## ヘッダー
+## ツールバー
 
-### 数値エディタの表示切替
+### 調整スライダーを表示
 
-ヘッダー右側のえんぴつアイコンのトグルボタンで、数値エディタ列の表示/非表示を切り替えられます。
-ホイールでざっくり調整するときは数値エディタを隠して画面を広く使い、細かい数値調整が必要なときだけ表示する、といった使い分けができます。
+トグルボタンで調整スライダーの表示/非表示を切り替えます。ホイールを大きく表示したいときはスライダーを隠します。
+
+### すべてリセット
+
+エフェクトのすべての値を既定値に戻します。元に戻す操作 1 回で取り消せます。各プロパティのリセットと同じく、既定値を値、または編集中のキーフレームに書き込み、式やほかのキーフレームはそのまま残します。
 
 ### ホイールモード切替
 
-ヘッダー右端のプルダウンで、下段のカラーホイールの構成を切り替えます。
+ツールバー右端のプルダウンで、カラーホイールの構成を切り替えます。
 
 - **シャドウ / ミッドトーン / ハイライト**: 輝度の領域別に 3 つのホイールを表示
 - **リフト / ガンマ / ゲイン / オフセット**: トーンカーブの底上げ・中間域の伸び・最大値・全体オフセットを 4 つのホイールで操作
 
-## 数値エディタ
+## 調整スライダー
 
-数値エディタの表示が有効な場合、以下の項目が折り返し配置で表示されます。値はドラッグやキー入力で変更できます。
-値をアニメーションさせたい場合は、このタブではなくプロパティタブから操作してください。
+| グループ | スライダー | 範囲 |
+|----------|------------|------|
+| ホワイトバランス | 色温度 | -100 〜 100 |
+| ホワイトバランス | 色かぶり補正 | -100 〜 100 |
+| トーン | 露出 | -5 〜 5 EV |
+| トーン | コントラスト | -100 〜 100 |
+| トーン | ピボット | 0 〜 1 |
+| カラー | 彩度 | -100 〜 100 |
+| カラー | バイブランス | -100 〜 100 |
+| カラー | 色相 | -180 〜 180 |
 
-| 項目 | 範囲 | 説明 |
-|------|------|------|
-| 色温度 | -100 〜 100 | 寒色 / 暖色のバランス |
-| 色合い | -100 〜 100 | 緑 / マゼンタのバランス |
-| 露出 | -5 〜 +5 EV | 全体の明るさ（指数的に効く） |
-| コントラスト | -100 〜 100 | コントラストの強弱 |
-| コントラストの中心点 | 0 〜 1 | コントラストをかける際の基準輝度 |
-| 彩度 | -100 〜 100 | 全体の彩度 |
-| 自然な彩度 | -100 〜 100 | 彩度が低い色を優先的に持ち上げる |
-| 色相 | -180 〜 180 | 全体の色相回転（度） |
-| 低域範囲 | 0 〜 100 | シャドウとミッドトーンの境界 |
-| 高域範囲 | 0 〜 100 | ミッドトーンとハイライトの境界 |
+**ピボット** はエフェクトの **コントラストのピボット** で、コントラストをかける際の基準輝度です。色温度は寒色と暖色、色かぶり補正は緑とマゼンタのバランスを調整し、バイブランスは彩度の低い色を優先的に持ち上げます。
 
-低域範囲・高域範囲は、ホイールモードが「シャドウ / ミッドトーン / ハイライト」のときの領域分割に使われます。
+各スライダーはプロパティの範囲全体にわたり、塗りは既定値から始まります。レールを押すとその位置の値になり、つまみを押すとその位置のまま掴みます。ドラッグはポインターに追従し、`Alt`（macOS では `Command`）を押すと 10 分の 1 の速さになります。ダブルクリックで既定値に戻ります。横の数値ボックスに値を入力することもできます。
+
+各スライダーにはプロパティタブと同じ **⋮** メニューがあり、ここからキーフレームの追加、アニメーションの編集、式の設定ができます。式で決まる値は読み取り専用になります。
 
 ## カラーホイール
 
-### 共通操作
+各ホイールは、ベクトルスコープと同じ配置の円盤上のパックです。Cb 軸が右、Cr 軸が上を向いているので、パックをある色相へ動かすと、スコープの軌跡も同じ方向に動きます。
 
-- **ホイール上をドラッグ**: ドラッグした方向に色味を移動
-- **ホイール下のスライダーをドラッグ**: 明るさを変更
+- **円盤をドラッグ**: 輝度を保ったまま色の彩度成分（クロマ）を動かします。`Alt`（macOS では `Command`）を押すと 10 分の 1 の距離だけ動きます。数値フィールドのスクラブと同じく、ドラッグ中にカーソルを隠すことがあります。[エディター設定](../../settings/editor.md#プロパティエディター)の **ポインターロックを有効化** を参照してください。
+- **円盤をダブルクリック**: 輝度を保ったままクロマを取り除きます。
+- **円盤の下のジョグをドラッグ**: R、G、B に同じ量を加え、その領域を明るく、または暗くします。
+- **数値ボックス**: R、G、B を個別に `0.01` 刻みで設定します。
+- **リセットボタン**: ホイールをニュートラルに戻します。ガンマとゲインは `1`、それ以外は `0` です。
+
+各ホイールにも、キーフレームと式を扱う **⋮** メニューがあります。
 
 ### モード別のホイール
 
@@ -80,7 +95,7 @@ sidebar_position: 10
   - **シャドウ**: 暗部の色味
   - **ミッドトーン**: 中間調の色味
   - **ハイライト**: 明部の色味
-  - 各領域の境界は数値エディタの「低域範囲」「高域範囲」で調整します。
+  - **輝度範囲** のバーで、各領域の境界である **ローレンジ** と **ハイレンジ** を設定します。2 つのハンドル（互いを越えずに止まります）をドラッグするか、横のボックスに値を入力します。
 - **リフト / ガンマ / ゲイン / オフセット** モード
   - **リフト**: 暗部を持ち上げる調整
   - **ガンマ**: 中間調のカーブ調整
@@ -92,7 +107,7 @@ sidebar_position: 10
 タブを閉じても、次回開いたときに以下の状態は復元されます。
 
 - ホイールモードの選択
-- 数値エディタの表示状態
+- 調整スライダーの表示状態
 - 関連付けられているカラーグレーディングエフェクト
 
 ## 関連ドキュメント
@@ -104,9 +119,10 @@ sidebar_position: 10
 ## ソース
 
 - [`ColorGradingTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingTab/ColorGradingTabExtension.cs)
-- [`ColorGradingTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingTab/ViewModels/ColorGradingTabViewModel.cs)
-- [`ColorGradingTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingTab/Views/ColorGradingTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingTab/Views/ColorGradingTabView.axaml.cs)
-- [`ColorGradingResources.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingTab/Resources/ColorGradingResources.axaml)
+- [`ColorGradingTabViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingTab/ViewModels/ColorGradingTabViewModel.cs)
+- [`ColorGradingTabView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingTab/Views/ColorGradingTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingTab/Views/ColorGradingTabView.axaml.cs)
+- [`ColorGradingResources.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingTab/Resources/ColorGradingResources.axaml)
 - [`ColorGrading.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ColorGrading.cs)（フィルターエフェクト本体）
-- [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`GradingColorPicker.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/GradingColorPicker.cs)（ホイールの操作ロジック）
-- [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs)（プロパティ側の「タブを開く」ボタン）
+- [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)（ホイールの操作ロジック）
+- [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`TonalRangeSlider.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/TonalRangeSlider.cs)（スライダー）
+- [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs)（プロパティ側の「タブで編集」ボタン）

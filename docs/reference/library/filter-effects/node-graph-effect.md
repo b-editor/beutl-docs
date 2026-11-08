@@ -24,7 +24,7 @@ Node graph model that defines the filter.
 
 ## Usage
 
-Open the node graph editor and design the post-process pipeline visually.
+Open the node graph editor and design the post-process pipeline visually. To write your own GPU passes in GLSL, place [shader nodes](../../tool-tabs/node-graph.md#shader-nodes) between **Effect input** and **Graph output**.
 
 ## Source
 

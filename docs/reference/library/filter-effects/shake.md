@@ -30,6 +30,8 @@ Vertical shake amplitude.
 - **Default:** `50`
 - **Animatable:** Yes
 
+In the property panel, **Strength X** and **Strength Y** share one **Strength** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ### Speed
 
 Speed at which the underlying noise evolves over time.

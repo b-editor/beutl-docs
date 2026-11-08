@@ -38,7 +38,7 @@ Declared in [`src/Beutl.Engine/Graphics/Drawable.cs`](https://github.com/b-edito
 
 ### Transform
 
-Optional 2D transform applied to the drawable (translate / scale / rotate / skew). The constructor instantiates an empty `TransformGroup` so additional transforms can be appended.
+Optional 2D transform applied to the drawable (translate / scale / rotate / skew). The constructor instantiates an empty `TransformGroup` so additional transforms can be appended. An object you add in the editor starts with Translate, Rotation, and Scale in that group; see [Transforms and effects](../tool-tabs/element-property.md#transforms-and-effects).
 
 - **Type:** `Transform?`
 - **Default:** Empty `TransformGroup`
@@ -114,6 +114,8 @@ Brush used to fill the interior. When `null`, the shape is hollow.
 - **Type:** `Brush?`
 - **Default:** `#FFFFFFFF` (white)
 - **Animatable:** No
+
+A gradient brush also chooses how it mixes the colors between its stops. **Interpolation** (`InterpolationSpace`) is **Linear sRGB** (`LinearSrgb`, the default), which mixes light, so the middle of black and white is 188 in 8-bit sRGB; **sRGB** (`Srgb`), which mixes the stored values as CSS does by default, so the middle is 128; or **OKLab** (`Oklab`), whose lightness changes evenly to the eye and whose colors in between stay clean. **Interpolate Premultiplied** (`InterpolatePremultiplied`, off by default) mixes the colors premultiplied by alpha, so a transparent stop brings no color of its own into the blend. Neither can be animated. The brush editor's swatch and stop bar show the gradient as it renders. Declared in [`GradientBrush.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/Brushes/GradientBrush.cs).
 
 ## Sound
 
@@ -219,6 +221,8 @@ Visualization height in pixels.
 - **Animatable:** Yes
 - **Range:** `[1, ∞)`
 
+In the property panel, **Width** and **Height** share one **Size** row. See [Values shown in one row](../../get-started/keyframe.md#joined-rows).
+
 ### Fill
 
 Brush used to draw the bars / lines.
@@ -291,6 +295,13 @@ Material that defines the surface's shading.
 - **Type:** `Material3D?`
 - **Default:** `PBRMaterial` (overridden to `null` on `Group3D`)
 - **Animatable:** No
+
+An **Unlit Material** ([`UnlitMaterial.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics3D/Materials/UnlitMaterial.cs)) shows its color and color map without lighting. Its **Alpha Mode** (`AlphaMode`, not animatable) decides how alpha is treated:
+
+- **Auto** (the default): the material decides from its color and opacity, as earlier versions did.
+- **Opaque**: alpha is ignored and depth is written. A color map shows the colors it stores under alpha 0.
+- **Mask**: pixels whose alpha is below **Alpha Cutoff** (`AlphaCutoff`, `0.5` by default, from `0` to `1`) are dropped and the rest are opaque, and depth is written. Light passes through the cut-out parts, so they cast no shadow, and with an image as the color map, so does the pointer.
+- **Blend**: the material is blended with what is behind it and writes no depth.
 
 ### Cast Shadows (CastShadows)
 

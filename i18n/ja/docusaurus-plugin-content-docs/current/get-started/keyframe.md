@@ -72,6 +72,34 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 
 [グラフエディタ](../reference/tool-tabs/graph-editor.md#複数の成分を持つプロパティ)では、プロパティのタイマーボタンの左にあるトグルで同じ操作ができます。
 
+## 1 行にまとめて表示される値 {/* #joined-rows */}
+
+移動の X と Y や図形の幅と高さのように、組になる値でも別々のプロパティとして保存されているものがあります。プロパティパネルではこれらを値ごとのボックスを持つ 1 つの行にまとめ、インライン表示と[グラフエディタ](../reference/tool-tabs/graph-editor.md)では値ごとのチャンネルを持つ 1 つのレーンや行として表示します。各プロパティは、それぞれの値、キーフレーム、式を保ったままです。
+
+- 入力した値はそれぞれのプロパティに入り、そのプロパティの範囲に従います。
+- リセットと、行のキーフレーム操作（◇ ボタン、`<` と `>` ボタン、アニメーションの編集と削除）は、すべての値に対する 1 回の取り消し単位として働きます。
+- 行には、値をまとめて返す式を 1 つ設定します。位置なら `new Point(Sin(Time) * 100, 0)`、サイズなら `new Size(Sin(Time) * 100, 100)` のように書きます。回転3D の 3 つの値には、`new System.Numerics.Vector3((float)Sin(Time) * 100, 100, 100)` のように `System.Numerics.Vector3` を返します。
+- 行のメニューでは、**プロパティパスをコピー** と **GetPropertyコードをコピー** が、各プロパティを並べたサブメニューになります。
+
+キーフレームの時刻、イージング、時計が値によって違うときや、式を共有していないときは、値は分かれて表示されます。プロパティパネルでは **幅** と **高さ** のような通常の行として並び、インライン表示とグラフエディタではそれぞれのレーンや行になります。揃うと再び 1 行にまとまります。行のメニューの __成分を分離__ で、分けて表示することもできます。これは表示を変えるだけで、取り消し履歴には残りません。再びまとめるには、どちらかの行のメニューから __成分の分離を解除__ を選びます。すべての値でキーフレーム時刻とイージングが同じで、式が共通か式がないときに使え、値とキーフレームはすべてそのまま残ります。ノードグラフでは、各プロパティがそれぞれの行とポートを持ちます。
+
+| 行 | プロパティ | オブジェクト |
+|----|------------|--------------|
+| 位置 | X、Y | 移動、ディスプレイスメントマップの移動 |
+| XY拡大率 | X拡大率、Y拡大率 | スケール、ディスプレイスメントマップの拡大 |
+| 歪み | X傾き、Y傾き | 歪み |
+| 回転 | X回転、Y回転、Z回転 | 回転3D |
+| 中心 | 中心X、中心Y（と中心Z） | 回転3D、ディスプレイスメントマップの拡大と回転 |
+| サイズ | 幅、高さ | 矩形、楕円、角丸四角形、それらのジオメトリー、オーディオビジュアライザー、平面 |
+| エミッタサイズ | エミッタ幅、エミッタ高さ | パーティクルエミッタ |
+| レンダリングサイズ | レンダリング幅、レンダリング高さ | 3Dシーン |
+| テクスチャサイズ | テクスチャ幅、テクスチャ高さ | 描画テクスチャ |
+| 半径 | 半径X、半径Y | 膨張、収縮 |
+| 強さ | 強さX、強さY | 振動 |
+| 基本周波数 | 基本周波数X、基本周波数Y | パーリンノイズのブラシ |
+
+1 行にまとめた式は新しい種類の式として保存されるため、2.0.0-preview.11 で保存したプロジェクトはそれより前のバージョンでは開けません。[バージョン間の互換性](./project-structure.md#version-compatibility)を参照してください。
+
 ## アニメーションを削除
 すべてのキーフレームを削除して、アニメーションを無効化するには、
 ◇ を右クリックしてメニューの __アニメーション削除__ をクリックします。
@@ -82,3 +110,5 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 
 - [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
+- [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
+- [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)

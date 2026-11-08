@@ -30,6 +30,8 @@ Vertical offset in pixels.
 - **Default:** `0`
 - **Animatable:** Yes
 
+In the property panel, **X** and **Y** share one **Position** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ## Source
 
 [`src/Beutl.Engine/Graphics/Transformation/TranslateTransform.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/TranslateTransform.cs)

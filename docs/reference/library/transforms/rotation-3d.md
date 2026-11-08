@@ -62,6 +62,8 @@ Pivot Z coordinate.
 - **Default:** `0`
 - **Animatable:** Yes
 
+In the property panel, **Rotation X**, **Rotation Y**, and **Rotation Z** share one **Rotation** row, and **Center X**, **Center Y**, and **Center Z** share one **Center** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ### Depth
 
 Perspective depth — larger values produce stronger foreshortening.

@@ -6,7 +6,7 @@ sidebar_position: 6
 
 # Scene settings
 
-A tab for configuring scene-wide settings of the open scene, such as **resolution, start time, duration, and layer count**, and the project's audio channels.
+A tab for configuring scene-wide settings of the open scene, such as **resolution, start time, duration, layer count, and master volume**, and the project's audio channels.
 The values you enter are not applied to the scene immediately; they are committed together **when you press the Apply button**.
 
 ## Tab characteristics
@@ -34,6 +34,7 @@ The settings are listed vertically, with the **Apply** and **Discard changes** b
 - **Duration Time**: The length of the scene. Specified as a string in `hh:mm:ss` format.
 - **Number of Layers**: The maximum number of layers available on the timeline.
 - **Project audio channels**: The speaker layout the whole project mixes in: **Mono**, **Stereo**, **5.1 surround**, or **7.1 surround**. See [Multichannel Audio](../../get-started/multichannel-audio.md).
+- **Master volume (%)**: The volume of the scene's whole mix, in percent (`100` by default). It applies before the master limiter, in the preview, in exports, and when the scene is embedded in another scene. A running preview picks up the change without stopping playback.
 - **Apply**: Commits the entered values to the scene. Available only when every field holds a valid value.
 - **Discard changes**: Reverts the entered values to those currently saved in the scene.
 
@@ -44,10 +45,11 @@ Each field has the following constraints. If a value does not satisfy them, an e
 - **Width / Height / Number of Layers**: Integer of 1 or greater
 - **Start Time**: A duration that can be parsed as `hh:mm:ss`, and must be 0 or greater.
 - **Duration Time**: A duration that can be parsed as `hh:mm:ss`, and must be greater than 0.
+- **Master volume**: 0 or greater.
 
 ## Apply and history
 
-When you press **Apply**, if the size, start time, duration, or project audio channels have changed, the change is recorded in the **undo/redo** history as one step. Changes to the number of layers are not recorded in the history and take effect immediately. A change of audio channels applies to every scene in the project and is written to the project file at once, including when you undo or redo it.
+When you press **Apply**, if the size, start time, duration, master volume, or project audio channels have changed, the change is recorded in the **undo/redo** history as one step. Changes to the number of layers are not recorded in the history and take effect immediately. A change of audio channels applies to every scene in the project and is written to the project file at once, including when you undo or redo it.
 
 ## Related documents
 
@@ -58,7 +60,7 @@ When you press **Apply**, if the size, start time, duration, or project audio ch
 ## Source
 
 - [`SceneSettingsTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/SceneSettingsTabExtension.cs)
-- [`SceneSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/ViewModels/SceneSettingsTabViewModel.cs)
+- [`SceneSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/SceneSettingsTab/ViewModels/SceneSettingsTabViewModel.cs)
 - [`SceneSettingsTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml.cs)
-- [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SceneSettingsService.cs)
+- [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/SceneSettingsService.cs) / [`Scene.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`MenuBarViewModel.Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/MenuBarViewModel.Scene.cs) (launched from the menu)

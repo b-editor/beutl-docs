@@ -67,6 +67,34 @@ __Unseparate components__ keeps the value at the current time and removes the co
 
 In the [Graph Editor](../reference/tool-tabs/graph-editor.md#properties-with-multiple-components), the toggle to the left of a property's timer button does the same.
 
+## Values Shown in One Row {/* #joined-rows */}
+
+Some values that belong together are stored as separate properties, such as a Translate's X and Y or a shape's Width and Height. The property panel shows them in one row with a box for each, and the inline view and the [Graph Editor](../reference/tool-tabs/graph-editor.md) show them as one lane or row with a channel for each value. Each property still keeps its own value, keyframes, and expression.
+
+- A typed value goes to its own property and follows that property's range.
+- Reset and the row's keyframe commands (the ◇ button, the `<` and `>` buttons, and editing or deleting the animation) act on all of the values as one undo step.
+- A row takes one expression that returns the values together, such as `new Point(Sin(Time) * 100, 0)` for a position or `new Size(Sin(Time) * 100, 100)` for a size. The three values of a Rotation 3D take a `System.Numerics.Vector3`, such as `new System.Numerics.Vector3((float)Sin(Time) * 100, 100, 100)`.
+- In the row's menu, **Copy property path** and **Copy GetProperty code** open a submenu that lists each property.
+
+When the values differ in keyframe times, easings, or clock, or do not share one expression, they stand apart: the property panel lists them as plain rows, such as **Width** and **Height**, and the inline view and the Graph Editor show a lane or a row for each. They join again once they match. You can also choose __Separate components__ from the row's menu to show them apart; this only changes the view and takes no undo step. To join them again, choose __Unseparate components__ from the menu of either row. It is available while the values have the same keyframe times and easings and share one expression or have none, and it keeps every value and keyframe. In a node graph, each property keeps a row and a port of its own.
+
+| Row | Properties | Objects |
+|-----|------------|---------|
+| Position | X, Y | Translate, Displacement Map's translate |
+| Scale XY | Scale X, Scale Y | Scale, Displacement Map's scale |
+| Skew | Skew X, Skew Y | Skew |
+| Rotation | Rotation X, Rotation Y, Rotation Z | Rotation 3D |
+| Center | Center X, Center Y (and Center Z) | Rotation 3D, Displacement Map's scale and rotation |
+| Size | Width, Height | Rectangle, Ellipse, Rounded rectangle, their geometries, audio visualizers, Plane |
+| Emitter Size | Emitter Width, Emitter Height | Particle Emitter |
+| Render Size | Render Width, Render Height | 3D Scene |
+| Texture Size | Texture Width, Texture Height | Drawable Texture |
+| Radius | Radius X, Radius Y | Dilate, Erode |
+| Strength | Strength X, Strength Y | Shake |
+| Base Frequency | Base Frequency X, Base Frequency Y | Perlin noise brush |
+
+A joined expression is saved as a new kind of expression, which is why projects saved by 2.0.0-preview.11 do not open in earlier versions. See [Version compatibility](./project-structure.md#version-compatibility).
+
 ## Deleting Animation
 To delete all keyframes and disable animation, right-click the ◇ icon and click __Delete Animation__ from the menu.
 
@@ -76,3 +104,5 @@ In complex scenes, deleting unused animations can improve rendering speed.
 
 - [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
+- [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
+- [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)

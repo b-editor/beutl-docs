@@ -21,7 +21,7 @@ Open it from the menu bar via **View → Tools → Path editor**.
 In the property editor, click the fountain pen button next to a shape's path entry and choose
 **Edit in tab** to automatically open this tab and start editing that shape.
 Performing the same action again ends editing.
-Choosing **Edit in frame** instead enters a separate mode where you edit directly on the preview (the Path editor tab is not used).
+Choosing **Edit in frame** instead enters a separate mode where you edit directly on the preview (the Path editor tab is not used). While you edit in the frame, the preview hides the selection's boundary and transform handles, so they do not cover the points.
 
 ## Layout
 
@@ -109,7 +109,7 @@ Show only what you need depending on how you want to inspect the shape.
 
 - **Mouse wheel**: Pan the canvas.
 - **`Ctrl` + wheel** (**`Cmd` + wheel** on macOS): Zoom in / out around the pointer.
-- **Hand (`H`), `Space` + drag, or middle-button drag**: Pan the canvas.
+- **Hand (`H`), `Space` + drag, or middle-button drag**: Pan the canvas. A tap on `Space` plays or pauses instead.
 - **`+` / `-`**: Zoom in / out. **`0`** resets the view.
 - **`Shift + 1`**: Fit the whole path. **`Shift + 2`**: Fit the selection.
 - **Right-click menu → Reset zoom**: Reset the zoom level and position.

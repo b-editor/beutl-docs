@@ -1,6 +1,6 @@
 ---
 title: "Preview Settings"
-description: "Per-editor preview options: preview render quality, onion skin, guides, and the render caches. Also covers showing the preview in another window."
+description: "Per-editor preview options: preview render quality, onion skin, guides, and the render caches. Also covers the controls on the preview and showing the preview in another window."
 sidebar_position: 14
 ---
 
@@ -28,7 +28,7 @@ Selects the resolution at which the editor renders the preview, trading image qu
 - **Quarter (1/4)** — render at quarter resolution (`0.25`).
 - **Fit to previewer** — scale the frame to fit the on-screen previewer, capped at full resolution.
 
-This setting **cannot be changed during playback**, and it is not saved with the project. Thanks to the [resolution-independent rendering pipeline](../../advanced/rendering-process.md), lowering the preview quality keeps vector shapes, text, and most effects sharp at the reduced size rather than simply pixelating the result.
+In this tab the setting **cannot be changed during playback**. The [resolution box](#controls-on-the-preview) on the preview pauses playback first. The setting is not saved with the project. Thanks to the [resolution-independent rendering pipeline](../../advanced/rendering-process.md), lowering the preview quality keeps vector shapes, text, and most effects sharp at the reduced size rather than simply pixelating the result.
 
 ## Preview source
 
@@ -41,7 +41,7 @@ The change takes effect on the next frame without reloading the project. The sam
 
 ## Onion skin
 
-Overlays neighboring frames as translucent ghosts so you can see motion across frames — useful for hand-drawn animation and timing. Toggle it from this tab or with the **`Alt + O`** shortcut.
+Overlays neighboring frames as translucent ghosts so you can see motion across frames — useful for hand-drawn animation and timing. Toggle it from this tab, with the **Onion skin** button on the preview, or with the **`Alt + O`** shortcut.
 
 - **Onion skin** — master switch (off by default).
 - **Previous frames** — how many frames before the current one to overlay (default `1`).
@@ -51,9 +51,9 @@ Overlays neighboring frames as translucent ghosts so you can see motion across f
 
 ## Guides
 
-Draws safe areas and composition guides over the preview so you can check framing while you edit. Toggle them from this tab or with the **`Alt + G`** shortcut. Guides are off by default. The same settings are on the [Editor settings](../../settings/editor.md#guides) page.
+Draws safe areas and composition guides over the preview so you can check framing while you edit. Toggle them from this tab, with the **Guides** button on the preview, or with the **`Alt + G`** shortcut. Guides are off by default. The same settings are on the [Editor settings](../../settings/editor.md#guides) page.
 
-Guides are drawn over the editor's preview only. They never appear in an export, the [preview window](#show-the-preview-in-another-window), or the [mobile preview](./mobile-preview.md). The HDR preview does not show them.
+Guides are drawn over the editor's preview only, including the HDR preview. They never appear in an export, the [preview window](#show-the-preview-in-another-window), or the [mobile preview](./mobile-preview.md).
 
 - **Title safe** — the centered 90% of the frame (on by default).
 - **Action safe** — the centered 95% of the frame (on by default).
@@ -66,6 +66,37 @@ Guides are drawn over the editor's preview only. They never appear in an export,
 - **Guide opacity** — the opacity of the lines (default 80%).
 
 **Aspect ratio frames** takes ratios separated by commas (default `9:16, 1:1, 4:5, 2.39:1`). Each one is outlined as the largest frame of that shape, centered. **Preset** fills in the frames of a platform: YouTube, YouTube Shorts, TikTok, Instagram Feed, Instagram Reels, or X.
+
+## Controls on the preview {/* #controls-on-the-preview */}
+
+The preview has its own controls for the settings you change most often.
+
+- **Zoom box** (beside the transport buttons): Shows the current zoom. Choose **Fit preview** to fit the frame to the panel, or `10%` to `800%`. At `100%`, one pixel of the frame takes one pixel of the screen.
+- **Resolution box**: The same choices as [Preview render quality](#preview-render-quality). **Fit to previewer** shows as **Auto** in the box.
+- **Guides**, **Onion skin**, and **Checkerboard** buttons (in the column right of the frame): Toggle those overlays. The column also has **Show Preview in Another Window** and **Preview Settings**.
+
+### Zooming and panning
+
+| Action | How |
+|--------|-----|
+| Zoom in / out | `Ctrl` + wheel (`Cmd` + wheel on macOS) with any tool, a pinch, or `Alt + =` / `Alt + -` |
+| Fit the frame to the panel | `Alt + 0`, or **Fit preview** in the zoom box |
+| Pan a zoomed frame | The wheel with the **Move** or **Crop selection** tool (`Shift` for horizontal), or a drag with the **Hand** tool |
+
+Zoom ranges from 0.05× to 64× of the fitted size. With the **Move** or **Crop selection** tool, the plain wheel does nothing while the frame fits; with the **Hand** tool it zooms. With **3D camera control**, `Ctrl` + wheel (`Cmd` + wheel) zooms the preview rather than moving the camera. Zoomed in far enough that a frame pixel is two screen pixels wide or more, the preview draws the frame's pixels as sharp squares. At fit, the frame stays smooth.
+
+### Checkerboard
+
+The **Checkerboard** button, or **`Alt + T`**, shows the frame's transparent parts over a checkerboard instead of black, so they stand apart from black ones. The squares are 8 pixels on screen in two grays, keep their size at any zoom, and move with the frame. Only the editor's preview changes: the preview window, exports, and saved images keep their transparency as before. The setting applies to every editor and is off by default.
+
+### Seek bar and time
+
+- Each marker shows as a mark in its color on the seek bar.
+- Hover the seek bar to see the time under the pointer. Near a mark, the tip shows the marker's name above its time.
+- A click on a mark moves the playhead exactly to the marker's time.
+- The seek bar takes no keyboard focus, so after a click the arrow keys still step one frame.
+- While you shuttle with `J` / `L`, the rate, such as `2×` or `−4×`, appears in place of the total time.
+- Each transport button's tooltip shows its current shortcut.
 
 ## Show the preview in another window {/* #show-the-preview-in-another-window */}
 
@@ -102,3 +133,6 @@ These two sections enable and tune the editor's render caches. See [Render cache
 - [`PreviewGuideOverlay.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PreviewGuideOverlay.cs)
 - [`PlayerView.axaml.Presentation.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PlayerView.axaml.Presentation.cs) / [`PresentationWindow.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Views/PresentationWindow.cs)
 - [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/EditorConfig.cs) (onion-skin and cache settings)
+- [`PlayerView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/PlayerView.axaml) / [`PlayerView.axaml.Viewport.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/PlayerView.axaml.Viewport.cs)
+- [`PlayerSeekBar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PlayerSeekBar.cs) / [`PreviewCheckerboard.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/PreviewCheckerboard.cs)
+- [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs) (preview shortcuts)

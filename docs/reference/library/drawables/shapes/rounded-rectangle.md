@@ -32,6 +32,8 @@ Rectangle height in pixels.
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
+In the property panel, **Width** and **Height** share one **Size** row. See [Values shown in one row](../../../../get-started/keyframe.md#joined-rows).
+
 ### Corner Radius (CornerRadius)
 
 Per-corner radius (TopLeft / TopRight / BottomRight / BottomLeft).

@@ -6,7 +6,7 @@ sidebar_position: 6
 
 # シーン設定
 
-開いているシーンの **解像度・開始時間・長さ・レイヤー数** など、シーン全体に関わる設定と、プロジェクトの音声チャンネルを設定するタブです。
+開いているシーンの **解像度・開始時間・長さ・レイヤー数・マスター音量** など、シーン全体に関わる設定と、プロジェクトの音声チャンネルを設定するタブです。
 入力した値はそのままシーンに反映されるのではなく、**「適用」ボタンを押したタイミング** でまとめて反映されます。
 
 ## タブの特性
@@ -34,6 +34,7 @@ sidebar_position: 6
 - **長さ**: シーンの尺。`hh:mm:ss` 形式の文字列で指定します。
 - **レイヤー数**: タイムラインで使用できるレイヤーの最大数。
 - **プロジェクトの音声チャンネル**: プロジェクト全体をミックスするスピーカー配置。**モノラル**、**ステレオ**、**5.1ch サラウンド**、**7.1ch サラウンド** から選びます。[マルチチャンネル音声](../../get-started/multichannel-audio.md)を参照してください。
+- **マスター音量 (%)**: シーンのミックス全体の音量をパーセントで指定します（既定は `100`）。マスターリミッターの前にかかり、プレビュー、書き出し、ほかのシーンに埋め込んだときのすべてに適用されます。再生中のプレビューは、再生を止めずに変更を反映します。
 - **適用**: 入力中の値をシーンに反映します。すべての項目が有効な値になっているときだけ押せます。
 - **破棄**: 入力中の値を、現在シーンに保存されている値に戻します。
 
@@ -44,10 +45,11 @@ sidebar_position: 6
 - **幅 / 高さ / レイヤー数**: 1 以上の整数
 - **開始時間**: `hh:mm:ss` 形式で解釈できる時間。0 以上であること。
 - **長さ**: `hh:mm:ss` 形式で解釈できる時間。0 より大きいこと。
+- **マスター音量**: 0 以上
 
 ## 適用と履歴
 
-「適用」を押したときに、サイズ・開始時間・長さ・プロジェクトの音声チャンネルのいずれかが変更されていれば、その変更は 1 回の操作として **取り消し（Undo）/ やり直し（Redo）** の履歴に記録されます。レイヤー数の変更は履歴には残らず、即座に反映されます。音声チャンネルの変更はプロジェクト内のすべてのシーンに適用され、取り消しややり直しの場合も含めて、すぐにプロジェクトファイルへ書き込まれます。
+「適用」を押したときに、サイズ・開始時間・長さ・マスター音量・プロジェクトの音声チャンネルのいずれかが変更されていれば、その変更は 1 回の操作として **取り消し（Undo）/ やり直し（Redo）** の履歴に記録されます。レイヤー数の変更は履歴には残らず、即座に反映されます。音声チャンネルの変更はプロジェクト内のすべてのシーンに適用され、取り消しややり直しの場合も含めて、すぐにプロジェクトファイルへ書き込まれます。
 
 ## 関連ドキュメント
 
@@ -58,7 +60,7 @@ sidebar_position: 6
 ## ソース
 
 - [`SceneSettingsTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/SceneSettingsTabExtension.cs)
-- [`SceneSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/ViewModels/SceneSettingsTabViewModel.cs)
+- [`SceneSettingsTabViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/SceneSettingsTab/ViewModels/SceneSettingsTabViewModel.cs)
 - [`SceneSettingsTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/SceneSettingsTab/Views/SceneSettingsTabView.axaml.cs)
-- [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SceneSettingsService.cs)
+- [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/SceneSettingsService.cs) / [`Scene.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`MenuBarViewModel.Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/ViewModels/MenuBarViewModel.Scene.cs)（メニューからの起動）

@@ -73,6 +73,8 @@ Treats the displacement value as a 2D translation offset.
 - **X:** `float`, default `0`, animatable. Maximum horizontal offset (pixels) at full displacement.
 - **Y:** `float`, default `0`, animatable. Maximum vertical offset (pixels) at full displacement.
 
+In the property panel, **X** and **Y** share one **Position** row.
+
 ### Scale Transform
 
 Treats the displacement value as a per-pixel scale around a pivot point.
@@ -83,6 +85,8 @@ Treats the displacement value as a per-pixel scale around a pivot point.
 - **Center X (CenterX):** `float`, default `0`, animatable. Pivot X offset from the image center (pixels).
 - **Center Y (CenterY):** `float`, default `0`, animatable. Pivot Y offset from the image center (pixels).
 
+In the property panel, **Scale X** and **Scale Y** share one **Scale XY** row, and **Center X** and **Center Y** share one **Center** row.
+
 ### Rotation Transform
 
 Treats the displacement value as a per-pixel rotation around a pivot point.
@@ -90,6 +94,8 @@ Treats the displacement value as a per-pixel rotation around a pivot point.
 - **Rotation:** `float`, default `0`, animatable. Rotation amount in degrees at full displacement.
 - **Center X (CenterX):** `float`, default `0`, animatable. Pivot X offset from the image center (pixels).
 - **Center Y (CenterY):** `float`, default `0`, animatable. Pivot Y offset from the image center (pixels).
+
+In the property panel, **Center X** and **Center Y** share one **Center** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
 
 ### Extension-defined transforms
 
