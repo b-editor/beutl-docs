@@ -13,10 +13,10 @@ Reference documentation for Beutl.
 
 ## Application status
 
-Open **Status** beside **Feedback** in the title bar to inspect rendering capabilities, memory and frame-cache usage, background tasks, Live MCP status and endpoint, and your Beutl account. Choose **Open AI jobs** to open the job center. The button shows a progress indicator while startup, an export, or an AI job is running.
+Open **Status** beside **Feedback** in the title bar to inspect rendering capabilities, memory and frame-cache usage, background tasks, Live MCP status and endpoint, and your Beutl account. Choose **Open AI jobs** to open the job center. The button shows a progress indicator while startup, an export, an AI job, or an [app update](../get-started/install.md#updating-beutl) is running. While an update downloads, the ring shows its percentage when nothing else is running, and the popup and the tooltip show the percentage and the sizes.
 
 ## Source
 
 - [`TitleBarStatusView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TitleBarStatusView.axaml)
-- [`TitleBarStatusViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TitleBarStatusViewModel.cs)
+- [`TitleBarStatusViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/TitleBarStatusViewModel.cs)
 - [`StatusStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/StatusStrings.resx)

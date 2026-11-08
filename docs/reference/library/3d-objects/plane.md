@@ -38,6 +38,8 @@ Plane height along the local Z axis (the plane lies on the XZ plane with a −Y 
 - **Animatable:** Yes
 - **Range:** `[0.001, ∞)`
 
+In the property panel, **Width** and **Height** share one **Size** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ### Width Segments (WidthSegments)
 
 Subdivision count along the width.

@@ -31,6 +31,8 @@ Some install, update, or uninstall actions are scheduled for application exit. W
 
 An extension that requires APIs absent from your installed Beutl cannot be loaded, installed, or updated. Open **Details** in the error notification to see the affected package and compatibility report. Choose an extension release compatible with your Beutl version, or update Beutl to the version the extension targets. A rejected update leaves the previously installed version in place.
 
+When such packages have a newer release, Beutl shows one short warning instead of an error for each: **Package updates are required.** It appears once the update check has finished, and its **Open** button opens the library and checks for updates, so the update buttons are ready. A package without an update, and a side-loaded package, keep the full error.
+
 ## Related documents
 
 - [Files](../reference/tool-tabs/file-browser.md)
@@ -48,3 +50,4 @@ An extension that requires APIs absent from your installed Beutl cannot be loade
 - [`MainViewModel.Shutdown.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/MainViewModel.Shutdown.cs)
 - [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs)
 - [`AfterLoadingExtensionsTask.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/StartupTasks/AfterLoadingExtensionsTask.cs)
+- [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs)

@@ -38,6 +38,8 @@ Vertical scale multiplier (multiplied with `Scale`).
 - **Default:** `100`
 - **Animatable:** Yes
 
+In the property panel, **Scale X** and **Scale Y** share one **Scale XY** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ## Usage
 
 Animate `Scale` from `0` to `100` for a "pop in" reveal, or use negative values on a single axis to mirror the layer.

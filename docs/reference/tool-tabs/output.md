@@ -149,6 +149,8 @@ Color settings you leave unspecified get the same tags with every encoder. SDR v
 
 **Use hardware acceleration** is enabled by default. The codecs available in practice depend on the Windows installation and hardware.
 
+With FFmpeg too, an audio-only destination such as `.wav` or `.mp3` renders no frames, and a missing video file does not stop the export.
+
 ## Running an encode
 
 ### Starting
@@ -158,22 +160,22 @@ When encoding starts, the render cache and frame cache are cleared up front to s
 
 You can continue editing while the encode runs. Export uses a snapshot of the scene and settings taken when you start it; subsequent edits apply to future exports, not the running one.
 
-### Progress dialog
+### Progress
 
-While encoding is in progress a dedicated dialog is shown, displaying:
+The progress shows in the tab rather than in a dialog, so nothing covers the editor. When encoding starts, **Cancel** takes the place of **Encode**, and the following appear below it:
 
-- **Status text** ("Encoding...", "Completed", "Cancel", and so on)
+- **Status text** ("Encoding...", "Completed", "Canceled.", and so on)
 - **Progress bar**
 - **Elapsed time**
 - **Remaining** time (estimated from the elapsed time and the progress)
 - **Frames** (current / total)
 - **Size** (current output size / estimated total size)
 
-The tab's editing area also shows the elapsed time, remaining time, and frame progress while encoding is in progress.
+The figures stay in the tab after the run. When an encoder writes several files, such as an image sequence, **Size** counts all of them.
 
 ### Cancelling
 
-You can stop the encode with the **Cancel** button on the progress dialog. Beutl writes to a temporary file and publishes it only after encoding succeeds. Cancelling or failing an encode leaves an existing destination file intact and cleans up the temporary output.
+You can stop the encode with the **Cancel** button, which takes the place of **Encode** while the encode runs. Beutl writes to a temporary file and publishes it only after encoding succeeds. Cancelling or failing an encode leaves an existing destination file intact and cleans up the temporary output.
 
 ### Completion notification
 
@@ -214,13 +216,12 @@ These are reasonable starting points. Adjust bitrate, length, and other paramete
 - [`OutputTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputTabExtension.cs)
 - [`SceneOutputExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/PrimitiveImpls/SceneOutputExtension.cs)
 - [`OutputTabViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputTabViewModel.cs)
-- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
 - [`OutputPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/ViewModels/OutputPickerViewModel.cs)
 - [`OutputTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputTabView.axaml.cs)
-- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Tools/OutputView.axaml.cs)
+- [`OutputView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/Tools/OutputView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/Tools/OutputView.axaml.cs)
 - [`OutputPickerFlyout.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/OutputPickerFlyout.cs)
 - [`OutputPickerFlyoutPresenter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Controls/PropertyEditors/OutputPickerFlyoutPresenter.cs)
-- [`OutputProgressDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dialogs/OutputProgressDialog.axaml.cs)
 - [`AddOutputProfileDialog.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/Views/AddOutputProfileDialog.axaml.cs)
 - [`OutputService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/OutputTab/OutputService.cs)
 - [`OutputPresetService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/OutputPresetService.cs)

@@ -35,6 +35,10 @@ macOSとLinuxでは、Beutlがシェルを**ログインシェル**として起�
 macOSとLinuxでは、GUIから起動したアプリの環境にロケールが含まれないことが多いため、そのままではマルチバイト出力が文字化けします。`LC_ALL` / `LC_CTYPE` / `LANG` のいずれも設定されていない場合、Beutlは現在のUIカルチャから導出した `LANG` のフォールバック値(例: `ja_JP.UTF-8`)をシェルに渡します。
 :::
 
+## コピーと貼り付け
+
+選択したテキストは `Ctrl + Shift + C` でコピーし、`Ctrl + Shift + V` で貼り付けます。macOS では `Cmd + C` と `Cmd + V` でも同じ操作ができ、`Ctrl` キーはシェルに渡されます。
+
 ## セッションのライフサイクル
 
 - シェルプロセスが終了すると、タブ上部に**「ターミナルセッションは終了しました。」**というバナーと**「再起動」**ボタンが表示されます。ボタンをクリックすると、同じシェルと作業ディレクトリで新しいセッションを開始します。
@@ -51,5 +55,5 @@ macOSとLinuxでは、GUIから起動したアプリの環境にロケールが�
 
 - [`TerminalTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/TerminalTabExtension.cs)
 - [`TerminalTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/ViewModels/TerminalTabViewModel.cs)
-- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs)
+- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs)
 - ターミナルコントロール自体は外部サブモジュール [`Iciclecreek.Avalonia.Terminal`](https://github.com/b-editor/beutl/tree/main/external) が提供しています。

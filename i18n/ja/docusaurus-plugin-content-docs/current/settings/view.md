@@ -33,7 +33,16 @@ Beutl 1.x の設定は自動的に移行されます。**ライト**・**ハイ�
 
 ![アクセントカラーの設定画面のスクリーンショット](_images/accent-color.png)
 
+## ネイティブのコンテキストメニューを使用
+
+右クリックメニューを macOS 標準のメニューで表示します。見た目、キーボード操作、アクセシビリティはシステムのものになります。テキストボックスのメニューもネイティブのメニューになります。変更は再起動なしで、次に開くメニューから反映されます。
+
+ネイティブのメニューは Beutl のテーマではなくシステムのライト/ダークの外観に従い、項目のアイコンは表示されません。テキスト以外の見出しなど、ネイティブのメニューで表示できないものを含むメニューは、Beutl のメニューのまま表示されます。すべて Beutl のメニューに戻すには、この設定をオフにします。
+
+この設定は macOS でのみ表示されます。デフォルト値は __"オン"__ です。
+
 ## ソース
 
 - [`LocalizeService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Language/LocalizeService.cs)
-- [`ViewSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl/ViewModels/SettingsPages/ViewSettingsPageViewModel.cs)
+- [`ViewSettingsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/ViewModels/SettingsPages/ViewSettingsPageViewModel.cs)
+- [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs)

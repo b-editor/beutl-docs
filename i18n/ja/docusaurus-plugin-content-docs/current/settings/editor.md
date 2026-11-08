@@ -19,6 +19,18 @@ description: エディター画面に関係する設定
 
 四角形などのオブジェクトは、境界線と描画内容が被さるため、境界線が見えなくなります。
 
+## タイムラインのクリックで再生位置を移動
+
+オンにすると、タイムラインのクリックで再生位置が移動します。オフにすると、再生位置は目盛りの操作かバーのドラッグでのみ移動します。タイムラインの何もない場所をうっかりクリックしても再生位置は動かず、何もない場所をそのままドラッグすると、修飾キーなしでクリップを範囲選択します。[タイムライン](../reference/tool-tabs/timeline.md#選択)を参照してください。
+
+デフォルト値は __"オン"__ です。
+
+## タイムラインのサムネイルを既定で表示する
+
+タイムラインのクリップにフィルムストリップと波形を表示します。オフにするとサムネイルは表示されず、クリップの右クリックメニューで **サムネイルを無効化** をオフにしたクリップにだけ表示されるので、メディアの多いタイムラインでも拡大縮小が軽くなります。クリップごとの設定はこの設定と異なる場合にだけ保存されるので、ほかのクリップは設定の変更に従います。
+
+デフォルト値は __"オン"__ です。
+
 ## フレームキャッシュ
 
 ![](_images/frame-cache.png)
@@ -129,7 +141,7 @@ YUVはI420を使用します。
 
 ### HDRプレビュー
 
-プレビューに HDR レンダリングを使い、余裕のあるディスプレイでは SDR の白を超える値を表示します。HDR プレビューはエディターのオーバーレイを覆うネイティブビューなので、プレビュー上のマウス操作が制限され、トランスフォームハンドル、パスエディタ、[ガイド](#ガイド)は表示されません。macOS ではディスプレイのデバイスピクセルで描画します。
+プレビューに HDR レンダリングを使い、余裕のあるディスプレイでは SDR の白を超える値を表示します。HDR プレビューは SDR のプレビューと同じように使えます。トランスフォームハンドル、パスエディタ、[ガイド](#ガイド)、切り抜きの枠がフレームに重なって表示され、フレームの拡大・移動ができ、クリック、ドラッグ、ホイール、右クリックメニューも使えます。macOS ではディスプレイのデバイスピクセルで描画します。
 
 デフォルト値は __"オフ"__ です。
 
@@ -137,11 +149,14 @@ YUVはI420を使用します。
 
 ディスプレイで表示できない値をプレビューでどう合わせるかを選びます。
 
-- なし __(デフォルト値)__
+- 自動 __(デフォルト値)__
+- なし
 - Reinhard
 - ACES
 - Hable
 - ディスプレイに合わせる
+
+__自動__ は、HDR プレビューを HDR を表示できるディスプレイに表示しているときは __ディスプレイに合わせる__、それ以外（SDR のプレビュー、スマホプレビューの SDR ストリーム、SDR ディスプレイ上の HDR プレビュー）では __なし__ として動作します。macOS ではプレビューがある画面に従い、ウィンドウを別の画面へ移したときも追従します。Windows では SDR モードのディスプレイを SDR として扱います。
 
 __ディスプレイに合わせる__ は、ディスプレイで表示できない部分だけを丸めて色相を保ちます。ほかのモードはチャンネルごとにクリップするか、全体の範囲を圧縮します。ディスプレイの色域の外にある色は、その色の輝度のグレーに向かって移動し、表示できる色は変わりません。素材のピークは 1000 nit、基準の白は 203 nit として扱います。
 
@@ -154,7 +169,7 @@ __ディスプレイに合わせる__ は、ディスプレイで表示できな
 | HDR プレビューなし、HDR に対応しないサーフェス、スマホプレビューの SDR ストリーム | SDR の白に丸めます。 | sRGB に合わせます。 |
 
 :::note
-__ディスプレイに合わせる__ が既定でないのは、余裕のないディスプレイでは SDR の白も約 0.78 に下がるためです。SDR のプロジェクトは、書き出しよりもプレビューのほうが暗く見えます。
+__自動__ が HDR を表示できるディスプレイでだけ __ディスプレイに合わせる__ を使うのは、余裕のないディスプレイではこのカーブが SDR の白も約 0.78 に下げ、SDR のプロジェクトが書き出しよりもプレビューで暗く見えてしまうためです。以前のバージョンで保存した __なし__（以前の既定値）は __自動__ として読み込まれます。
 :::
 
 Windows の HDR ディスプレイでは、HDR プレビューはどのモードでも基準の白をディスプレイの SDR 白レベルで表示するので、エディターの UI の白と揃います。
@@ -181,10 +196,11 @@ Windows の HDR ディスプレイで、__ディスプレイに合わせる__ �
 
 ## ソース
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Configuration/EditorConfig.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)
-- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
+- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
 - [`VulkanSwapchainRenderer.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/VulkanSwapchainRenderer.cs)
 - [`WindowsDisplayLuminance.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/WindowsDisplayLuminance.cs)
-- [`HdrBitmapView.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/HdrBitmapView.cs)
+- [`HdrBitmapView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrBitmapView.cs)
+- [`HdrOverlay.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrOverlay.cs)

@@ -30,6 +30,8 @@ Using transform, you can express movement, rotation, scaling, distortion, and mo
 To set a transform directly on a drawing object,
 click the `+` button in __Transform__ and select the type of transform you want to add.
 
+A new object already has **Translate**, **Rotation**, and **Scale** transforms, so you can set its position, rotation, and scale right away. The `+` button always adds another transform rather than replacing one. See [Transforms and effects](../reference/tool-tabs/element-property.md#transforms-and-effects).
+
 ### Editing transforms on the preview
 
 While the preview's **Move** tool is active and playback is stopped, Beutl shows transform handles around the selected object so you can edit it directly on screen:
@@ -38,7 +40,7 @@ While the preview's **Move** tool is active and playback is stopped, Beutl shows
 - Drag a **corner or edge** handle to scale it (adds/updates a `Scale` transform).
 - Drag the **rotation** handle just outside a corner to rotate it (adds/updates a `Rotation` transform).
 
-Dragging a handle adds the corresponding transform to the object if it does not have one yet. Transforms added inside a filter effect cannot be edited from the preview. On a macOS trackpad, Shift rotation snaps give [haptic feedback](../reference/tool-tabs/timeline.md#trackpad-haptic-feedback).
+Dragging a handle adds the corresponding transform to the object if it does not have one yet. Transforms added inside a filter effect cannot be edited from the preview. The handles also appear over the [HDR preview](../settings/editor.md#hdr-preview). On a macOS trackpad, Shift rotation snaps give [haptic feedback](../reference/tool-tabs/timeline.md#trackpad-haptic-feedback).
 
 <video controls muted playsInline title="" src="_images/5.edit-element/add-transform.mp4" />
 

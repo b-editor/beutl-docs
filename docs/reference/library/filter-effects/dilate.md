@@ -30,6 +30,8 @@ Vertical dilation radius in pixels.
 - **Default:** `0`
 - **Animatable:** Yes
 
+In the property panel, **Radius X** and **Radius Y** share one **Radius** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ## Source
 
 [`src/Beutl.Engine/Graphics/FilterEffects/Dilate.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/Dilate.cs)

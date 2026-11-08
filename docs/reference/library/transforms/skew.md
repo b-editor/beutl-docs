@@ -30,6 +30,8 @@ Vertical skew in degrees.
 - **Default:** `0`
 - **Animatable:** Yes
 
+In the property panel, **Skew X** and **Skew Y** share one **Skew** row. See [Values shown in one row](../../../get-started/keyframe.md#joined-rows).
+
 ## Usage
 
 Use small angles (5–20°) for stylized type or fake-italic effects; combine with `Transform Origin` on `Drawable` to control the pivot.

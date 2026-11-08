@@ -25,6 +25,10 @@ sidebar_position: 22
 
 **詳細を表示** を開くと、元の参照・新しいファイル・参照元の要素を確認できます。候補は、使用を選んで **適用して保存** を押すまで適用されません。
 
+動画の映像と音声は別々の行に表示されます。ある行にファイルを選ぶと、元のファイルが同じほかの行にもそのファイルが使われます。そのファイルが持たない種類の行は、選択待ちのままです。候補の検索では、リンクしたファイルも見つかります。
+
+一覧を作った後にシーンが変更され、一覧のファイルが使われなくなっていた場合、**適用して保存** は何も変更しません。一覧が更新されて理由が表示され、ほかの行で選んだ差し替えはそのまま残ります。
+
 項目の三点メニューで **無視（オフライン）** を選ぶと、その項目を未解決のままにして他のファイルを修復できます。元の場所にファイルを戻した場合は、**更新** で再確認します。
 
 ## 関連ドキュメント
@@ -35,7 +39,7 @@ sidebar_position: 22
 ## ソース
 
 - [`MissingMediaTabExtension.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/MissingMediaTabExtension.cs)
-- [`MissingMediaViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/ViewModels/MissingMediaViewModel.cs)
+- [`MissingMediaViewModel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/MissingMediaTab/ViewModels/MissingMediaViewModel.cs)
 - [`MissingMediaView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/Views/MissingMediaView.axaml)
 - [`EditViewModel.MissingMedia.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.MissingMedia.cs)
 - [`MissingMediaStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/MissingMediaStrings.ja.resx)

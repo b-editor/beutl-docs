@@ -31,6 +31,8 @@ sidebar_position: 10
 
 インストール済みの Beutl に存在しない API を必要とする拡張機能は、読み込み・インストール・更新が拒否されます。エラー通知の **詳細** から、対象のパッケージと互換性のレポートを確認してください。使用中の Beutl に対応する拡張機能のリリースを選ぶか、拡張機能が対象とするバージョンに Beutl を更新します。更新が拒否された場合、以前のインストール済みバージョンは残ります。
 
+そうしたパッケージに新しいリリースがある場合は、パッケージごとのエラーではなく、**パッケージの更新が必要です。** という短い警告を 1 つ表示します。警告は更新の確認が終わってから表示され、**開く** ボタンでライブラリを開いて更新を確認するので、すぐに更新ボタンを使えます。更新がないパッケージと、サイドロードしたパッケージには、これまでどおり詳しいエラーが表示されます。
+
 ## 関連ドキュメント
 
 - [ファイル](../reference/tool-tabs/file-browser.md)
@@ -48,3 +50,4 @@ sidebar_position: 10
 - [`MainViewModel.Shutdown.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/MainViewModel.Shutdown.cs)
 - [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs)
 - [`AfterLoadingExtensionsTask.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/StartupTasks/AfterLoadingExtensionsTask.cs)
+- [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs)

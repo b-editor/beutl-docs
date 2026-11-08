@@ -48,6 +48,8 @@ Height of the emitter shape.
 - **Animatable:** Yes
 - **Range:** `[0, ∞)`
 
+In the property panel, **Emitter Width** and **Emitter Height** share one **Emitter Size** row. See [Values shown in one row](../../../../get-started/keyframe.md#joined-rows).
+
 ### Max Particles (MaxParticles)
 
 Hard cap on the number of simultaneously alive particles.

@@ -32,6 +32,8 @@ Web ページを表示しているときは、タブのメニューの **ブッ�
 
 保存先としてプロジェクト内の `resources/downloads` または共有の **素材** フォルダーを選択できます。効果音やフォント、LUT をまとめた ZIP など、どのファイルも保存できます。例外は、サインインページなどファイルの代わりに返された Web ページだけです。対応する画像・動画・音声ファイルはタイムラインにも追加できます。
 
+Windows と macOS では、タブが保存するすべてのファイルに、表示される前にインターネットからダウンロードした印を付けます。Windows では取得元のアドレスを含む `Zone.Identifier` ストリーム、macOS では `com.apple.quarantine` 属性です。これにより SmartScreen、保護ビュー、Gatekeeper が、Web ブラウザーでダウンロードしたファイルと同じように確認します。FAT など印を保持できないボリュームではファイルに印が付かず、Linux にはこの印がありません。
+
 ページがスクリプトで生成したファイル（`blob:` や `data:` の URL）も同じバーに、ページが付けた名前で表示されます。バーと履歴ではファイルの提供元がそのページとして表示され、ブラウザーエンジンが作成元として別のサイトを示す場合はそのサイトとして表示されます。
 
 タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルは再試行できません。項目の削除ではダウンロード済みファイルは残ります。**ファイルをダウンロード** では、現在のページのダウンロード方法を選択できます。
@@ -67,3 +69,4 @@ Web ページを表示しているときは、タブのメニューの **ブッ�
 - [`BrowserSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Pages/SettingsPages/BrowserSettingsPage.axaml)
 - [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
+- [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)

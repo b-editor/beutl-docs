@@ -65,7 +65,7 @@ The background of the edit area is rendered from the current preview image. What
 - **Luminance vs Saturation**: A black-to-white **luminance gradient**, plus a luminance histogram.
 - **Saturation vs Saturation**: A black-to-white **saturation gradient**, plus a saturation histogram.
 
-The histograms are recalculated automatically each time the preview updates. They are not refreshed while the tab is hidden.
+The histograms are recalculated automatically each time the preview updates. They are not refreshed while the tab is hidden. Every pixel of the frame is counted, in the background, so small or thin areas show up too; while frames arrive faster than they can be counted, as during playback, the ones still waiting are skipped.
 
 ## Working with control points
 
