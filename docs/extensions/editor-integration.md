@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources 
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.10 exposes these contracts through `Beutl.Extensibility`. Use the [preview.10 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.11 exposes these contracts through `Beutl.Extensibility`. Use the [preview.11 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -43,7 +43,7 @@ public sealed class SeekCommands : ViewExtension
 }
 ```
 
-Before executing another extension's definition, check `CanRun(context, execution)` and then call `RunAsync(context, execution)`. The scene editor's playback ID is `editor.playPause`; see [playback integration](pitfalls.md#the-playhead-during-playback).
+Before executing another extension's definition, check `CanRun(context, execution)` and then call `RunAsync(context, execution)`. The scene editor's play and pause toggle is `editor.playPause`; to start playback, call `IPreviewPlayer.Play()` instead, as [playback integration](pitfalls.md#the-playhead-during-playback) shows.
 
 ## Property editors {/* #property-editors */}
 
@@ -189,6 +189,33 @@ public static class ElementRequests
 }
 ```
 
+The built-in file and engine-object handlers require a `Length`; a video or a sound file then takes its own length instead. Since preview.11, a new drawable whose transform group is still the empty one `Drawable` creates starts with a `TranslateTransform`, a `RotationTransform` and a `ScaleTransform`, like the drawables the user adds, and `Position` goes into that `TranslateTransform`. A drawable that sets its own transform keeps it, and `Position` adds a `TranslateTransform` to it. `IElementObjectService.Add` and `InsertAt`, which add an object to an existing element, fill an empty group the same way, so do not add your own `TranslateTransform` to a drawable you add through them.
+
+Since preview.11, two flags place a request among the others of its batch. With `FollowsPrevious`, it starts where the previous request on the same `Layer` ended, which is known only once that request's source has opened; the first request on a layer starts at `Start`. With `StacksAboveScene`, it goes above what the scene holds when the first such request of the batch goes in, and `Layer` counts up from there, leaving out locked layers, so none of them refuses it.
+
+```csharp
+using Beutl;
+using Beutl.Editor.Services;
+using Beutl.Extensibility;
+
+public static class SequenceRequests
+{
+    // Places the files one after another on layer 0.
+    public static ValueTask<ElementAddResult> AddInSequenceAsync(
+        IElementAdder adder, IReadOnlyList<string> files, CancellationToken cancellationToken)
+        => adder.AddAsync(
+            [.. files.Select(file => new ElementDescription(
+                Start: MediaTime.Zero,
+                Length: MediaTime.FromSeconds(5),
+                Layer: 0,
+                Source: new ElementSource.File(file))
+            {
+                FollowsPrevious = true
+            })],
+            cancellationToken);
+}
+```
+
 For a new source kind, derive a record from `ElementSource` and contribute `ElementSourceHandlerRegistration` entries from an exported `ElementSourceHandlerExtension`. Each `IElementSourceHandler` declares its exact `SourceType` and implements two stages:
 
 1. `PreflightAsync` validates the request and returns `ElementSourcePreflightResult.Ready(preflight, targetLayers)` or `Rejected(failure)`. Reserve at least one target layer. The host owns and asynchronously disposes the returned `IElementSourcePreflight` after the batch finishes.
@@ -218,7 +245,8 @@ Unread members of saved objects are retained and written back on the next save. 
 - [`McpToolResult.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/McpToolResult.cs)
 - [`ElementDescription.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementDescription.cs)
 - [`ElementSourceHandlerExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementSourceHandlerExtension.cs)
-- [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs)
+- [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
+- [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)

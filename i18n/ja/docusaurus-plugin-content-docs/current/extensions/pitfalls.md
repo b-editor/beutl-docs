@@ -3,7 +3,29 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.10 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.11 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.10 からの移行 {/* #migrating-from-preview-10 */}
+
+preview.10 の拡張機能を移行するときは、次の変更を確認してください。削除した API に互換用の API はありません。
+
+- **テスト用のプロジェクト**: preview.11 で保存したプロジェクトは、preview.10 以前では開けません。[バージョンの対応表](version-mapping.md)を参照してください。
+- **`FAColorPicker`、`ColorPickerButton`、`ColorPickerFlyout`**: `FluentAvalonia.UI.Controls` にあった FluentAvalonia のカラーピッカーの複製とともに、`Beutl.Controls` から削除されました。ほかに `ColorButtonColorChangedEventArgs`、`ColorChangedEventArgs`、`ColorComponent`、`ColorPickerComponent`、`ColorRamp`、`ColorSpectrum`、`ColorSpectrumComponents`、`ColorSpectrumShape`、`ColorTextType` と、テーマの `ColorPickerStyles.axaml`、`ColorPickerButtonStyles.axaml` も削除されています。`SimpleColorPicker` を使い、オブジェクトのプロパティではない色には `SimpleColorPickerButton` を使ってください。[共通のコントロール](#use-the-shared-controls)を参照してください。
+- **`ColorPaletteItem`**: `FluentAvalonia.UI.Controls` から `Beutl.Controls.PropertyEditors` に移動しました。周りの `FAColorPicker` の色を設定する代わりに、`Click` を発生させます。`Beutl.Controls.Behaviors.ColorPaletteItemBehavior` とリソースの `ColorPaletteItemTemplate` は削除されました。
+- **`SimpleColorPicker.SetColor`**: ピッカーの `Color` も設定するようになりました。以前はイベントを発生させるだけでした。
+- **`ColorGradingWheel`**: `InputType`、`InputTypeProperty`、`ShowDetails`、`ShowDetailsProperty` は削除されました。テンプレートのパーツが `PART_GradingColorPicker` から `PART_Layout`、`PART_Header`、`PART_Pad`、`PART_MasterWheel`、`PART_Components`、`PART_ResetButton` に変わったため、独自のテーマはこれらを用意する必要があります。プロパティの既定値がゼロでない場合は、新しい `Neutral` にその既定値を設定してください。`MaxChroma`、`MasterRange`、`IsSideBySide` も追加されています。
+- **テーマとアプリのリソース**: `BeutlDarkBorder.axaml` と `BeutlDarkColors.axaml` は、FluentAvalonia のピッカーだけが読んでいたキーを定義しなくなりました。対象は `ColorPickerBackground`、`ColorPickerComponentLabelBackground`、`ColorPickerTabsBackground`、`ColorPickerTabItemForeground`、`ColorPickerTabItemForegroundPointerOver`、`ColorPickerTabItemForegroundSelected`、`ColorPickerTabItemSelectionIndicatorColor`、`ColorPickerTabItemSelectionIndicatorPointerOver`、`ColorPickerColorTypeButtonBackground`、`ColorPickerMoreButtonForeground`、`ColorPickerMoreButtonForegroundPressed`、`ColorPickerColorPaletteItemBorderBrushPointerOver` です。アプリのリソース `PaletteColors` と、カラーグレーディングタブの `MinimalNumberEditor`、`PropertiesVisibilityToggleButtonStyle` も削除されました。
+- **`UIToneMappingOperator`**: `None` は `0` から `5` に変わり、`0` は新しい `Auto` になりました。`default(UIToneMappingOperator)` も `Auto` です。古い値でコンパイルした拡張機能は再ビルドし、`default` を None の意味で使っていたコードでは `None` を明示してください。`EditorConfig.ToneMappingMode` の既定値は `Auto` で、保存された `0` は `Auto` として読み込まれます。プレビューが適用する演算子は `UIToneMappingOperatorExtensions.Resolve(mode, showsHdr)` で求められます。
+- **`DynamicsNode.MapChannels`**: 削除されました。`DynamicsNode` の派生クラスは、各チャンネルを `AudioBuffer.GetChannelData(channel)` で読み取ります。
+- **`MessageStrings`、`Strings`、`TutorialStrings`**: `MessageStrings.ConfirmInstall`、`UpdateCompletedLaunchConfirm`、`UpdateCompletedLaunchPrompt`、`ApplicationNotLaunched`、`ApplicationPathNotSpecified`、`Strings.CreateNewProjectOrScene`、`OpenAFileYouHaveAlreadyCreated`、`StartEditing`、`All`、`Projects`、`Files`、`Recently`、`NoFilesUsedRecently`、`Previous`、`TutorialStrings.StartTutorial` は削除されました。独自の文字列を用意してください。
+- **再生の開始**: `editor.playPause` を実行する代わりに `IPreviewPlayer.Play()` を呼び、入力の時刻は `GetPlaybackTime()` で計ってください。[再生中の再生位置](#the-playhead-during-playback)を参照してください。
+- **複数のファイルを書き出すエンコーダー**: Beutl の一時フォルダーからファイルを自分で移動する代わりに、`EncodingController.OutputFiles` で列挙してください。[複数のファイルを書き出す](media-providers.md#writing-several-files)を参照してください。
+- **Beutl が同梱しているライブラリの参照**: `ExcludeAssets` と `PrivateAssets` を指定した `PackageReference` や、Beutl のバージョンに固定した `PackageReference` は、`BeutlHostPackageReference` に置き換えてください。[Beutl が同梱しているライブラリ](#libraries-that-beutl-already-ships)を参照してください。
+- **`IElementAdder` や `IElementObjectService` で追加する描画オブジェクト**: トランスフォームのグループが空の新しい描画オブジェクトには、`TranslateTransform`、`RotationTransform`、`ScaleTransform` が追加されます。そのあとで独自に `TranslateTransform` を追加すると、2 つになります。[要素のソース](editor-integration.md#element-sources)を参照してください。
+- **プロパティ以外に保存する状態**: 明示的な保存では、前回の保存以降にプロパティが変更された要素だけを書き出します。[保存する状態はプロパティに持たせる](#keep-saved-state-in-properties)を参照してください。
+- **macOS のコンテキストメニュー**: `ContextMenu` とコンテキストフライアウトは、既定でネイティブのメニューとして開きます。[macOS のコンテキストメニュー](#context-menus-on-macos)を参照してください。
+- **独自の `ISceneSettingsService`**: `masterVolume` を受け取る新しい `Apply` のオーバーロードには既定の実装があり、`Scene.MasterVolume` を書き込んでから、`masterVolume` のないオーバーロードを呼びます。マスター音量だけを変更したときもコミットされるように、オーバーライドしてください。
+- **独自の `INodeGraphMutationService`**: 新しい `CanConnect(GraphModel, GraphNode, INodePort?, GraphNode, INodePort?)` には既定の実装があり、ポートが `null` のときは `false` を返します。動的ポートのノードにポートを追加するサービスでは、オーバーライドしてください。
 
 ## preview.9 からの移行 {/* #migrating-from-preview-9 */}
 
@@ -32,21 +54,25 @@ preview.9 以降の SDK は `Beutl.Engine.SourceGenerators` に `PrivateAssets="
 
 `.nupkg` の中の `.nuspec` を確認し、ソースジェネレーターがインストール時の依存関係に含まれていないことを確かめてください。
 
-### Beutl が同梱しているライブラリ
+### Beutl が同梱しているライブラリ {/* #libraries-that-beutl-already-ships */}
 
-拡張機能はそれぞれ専用の `AssemblyLoadContext` に読み込まれます。ただし、同じ名前のアセンブリを Beutl が同じかより新しいバージョンで同梱している場合は、Beutl のものが使われます。そのようなライブラリ（たとえば FluentIcons）を使うときは、次の 2 点に注意してください。
+拡張機能はそれぞれ専用の `AssemblyLoadContext` に読み込まれます。ただし、同じ名前のアセンブリを Beutl が同じかより新しいバージョンで同梱している場合は、Beutl のものが使われます。拡張機能がより新しいバージョンを要求すると、拡張機能のコピーが別に読み込まれ、Beutl の型と一致しなくなります。また、`ExcludeAssets="runtime;native"` を指定しないと、推移的に入る libSkiaSharp や HarfBuzz などのネイティブライブラリも、出力先の `runtimes` フォルダーにコピーされます。
 
-- Beutl の [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/main/Directory.Packages.props) にあるバージョンと同じものを参照します。より新しいバージョンを要求すると、拡張機能のコピーが別に読み込まれ、Beutl の型と一致しなくなります。
-- `ExcludeAssets="runtime;native" PrivateAssets="all"` で、実行時の資産とネイティブの資産を除外します。`ExcludeAssets="runtime"` だけでは、推移的に入る libSkiaSharp や HarfBuzz などのネイティブライブラリが、出力先の `runtimes` フォルダーにコピーされます。
+preview.11 以降は、このようなライブラリ（たとえば FluentIcons）を、バージョンを指定せずに `BeutlHostPackageReference` で参照してください。
 
 ```xml
-<PackageReference Include="FluentIcons.Avalonia.Fluent"
-                  Version="2.1.345"
-                  ExcludeAssets="runtime;native"
-                  PrivateAssets="all" />
+<ItemGroup>
+  <BeutlHostPackageReference Include="FluentIcons.Avalonia.Fluent" />
+</ItemGroup>
 ```
 
+SDK はこれを、Beutl が同梱しているバージョンの `PackageReference` に変換し、`ExcludeAssets="runtime;native"` と `PrivateAssets="all"` を付けます。拡張機能はそのライブラリに対してコンパイルされ、実行時には Beutl のコピーを使います。ライブラリのファイルが出力先やパッケージに入ることはありません。指定できる名前は、Beutl の [`Directory.Packages.props`](https://github.com/b-editor/beutl/blob/main/Directory.Packages.props) にあるパッケージのうち、ビルド・テスト・パッケージ作成用のツールと、FFmpeg のワーカーか Windows x64 の Media Foundation 拡張機能だけが読み込むライブラリを除いたものです。Beutl が同梱していない名前を指定すると、復元がエラーで止まります。拡張機能独自のライブラリは、通常の `PackageReference` で参照してください。
+
 ビルド後、出力先の `<AssemblyName>.deps.json` に載っているのが、自分のアセンブリと Beutl が同梱していないライブラリだけであることを確かめてください。SDK は `Beutl.Controls` も参照します。[プロジェクトの作成](create-csproj.md)を参照してください。
+
+### 既定のコンテキストを通して読み込むライブラリ
+
+preview.11 以降は、ライブラリが `AssemblyLoadContext.Default` に要求したアセンブリが拡張機能のパッケージにしかない場合、Beutl はそれを拡張機能のパッケージから見つけます。既定のコンテキストは独自のコピーを読み込み、そのコピーは Beutl の終了まで読み込まれたままになります。拡張機能のコンテキストは、そのコピーが十分に新しければそれを使うため、型が 2 種類になることはありません。ただし、拡張機能のコンテキストに読み込まれたライブラリが、自身を参照するアセンブリを既定のコンテキストを通して読み込むことは、まだできません（[#3921](https://github.com/b-editor/beutl/issues/3921)）。
 
 ### 読み込みは全部成功するか、全部取り消されるか
 
@@ -103,6 +129,10 @@ public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 
 `EngineObject` の protected メソッド `HideProperties(...)` を使うと、プロパティをプロパティパネルに表示しないようにできます。保存・元に戻す・コピーの対象には残るので、独自のエディタで設定する値に使えます。
 
+### 保存する状態はプロパティに持たせる {/* #keep-saved-state-in-properties */}
+
+preview.11 以降、明示的な保存では、前回の保存以降にプロパティ（キーフレームとリストを含みます）が変更された要素だけを書き出します。シーンを開いてから最初の保存と、ファイルを移動する保存やメディアを修復する保存では、引き続きすべての要素を書き出します。オブジェクトが保存する値はプロパティに持たせてください。フィールドだけに保持し、独自の `Serialize` で書き出す値は、同じ要素のほかの部分が変更されるまでファイルに反映されません。独自のエディタで設定するプロパティは、`HideProperties(...)` でパネルに表示しないようにできます。
+
 ### 複数の変更を 1 回の「元に戻す」にまとめる {/* #one-undo-step-for-several-changes */}
 
 プロパティエディタは、`IPropertyEditorContext.Accept` に渡される `IServiceProvider` の visitor から `HistoryManager` を取得できます。明示的な編集では `BeginEdit` を呼び、`edit.Enter()` の中でプロパティを変更してから `Complete()` で確定します。未完了のセッションを破棄すると、その変更は取り消されます。
@@ -153,31 +183,40 @@ public static class ShapeLibrary
 
 ### 再生中の再生位置 {/* #the-playhead-during-playback */}
 
-再生中の `IEditorClock.CurrentTime` は、描画済みのフレームを表示したときにだけ進みます。フレーム単位でしか動かず、描画が重いと音声より遅れたり止まったりします。再生に合わせて入力の時刻を計る場合は使わず、`IPreviewPlayer.IsPlaying` が true になってからの経過時間で計ってください。
+再生中の `IEditorClock.CurrentTime` は、描画済みのフレームを表示したときにだけ進みます。フレーム単位でしか動かず、描画が重いと音声より遅れたり止まったりします。再生に合わせて入力の時刻を計る場合は、代わりに `IPreviewPlayer.GetPlaybackTime()` を読んでください。ユーザーが聞いている音声に従い、音声を再生していない間は実時間に従います。再生が止まっている間は `null` を返します。再生を開始している途中と、音声を再生しない早送りや逆再生の間は、再生位置を返します。
 
-`IPreviewPlayer` には再生開始メソッドがありません。シーンエディタの `editor.playPause` コマンド定義を取得し、`CanRun` を確認してから、エディタのコンテキストを渡して `RunAsync` を呼んでください。`IContextCommandHandler` は削除されています。このコマンドは再生と停止を切り替えるため、先に `IsPlaying` を確認します。再生側が参照するシーンの状態を変更する前には、`IPreviewPlayer.Pause()` の完了を待ってください。
+`IPreviewPlayer.Play()` は、再生位置から通常の速度で再生を開始します。再生中に呼んでも何もしません。再生側が参照するシーンの状態を変更する前には、`IPreviewPlayer.Pause()` の完了を待ってください。シーンエディタは、プレーヤーを `IEditorContext` のサービスとして提供します。`Play()` と `GetPlaybackTime()` には既定の実装があるため、ほかの `IPreviewPlayer` の実装もそのままコンパイルできます。その実装がオーバーライドするまで、`Play()` は何もせず、`GetPlaybackTime()` は `null` を返します。
 
 ```csharp
-using System.Linq;
+using Beutl;
 using Beutl.Editor.Services;
 using Beutl.Extensibility;
 
-public static class PlaybackCommands
+public sealed class TapRecorder(IPreviewPlayer player)
 {
-    public static async Task StartAsync(IEditorContext editor, IPreviewPlayer player)
-    {
-        if (player.IsPlaying.Value)
-            return;
+    private readonly List<MediaTime> _taps = [];
 
-        ContextCommandDefinition? command = editor.Extension.ContextCommands
-            .FirstOrDefault(item => item.Id == "editor.playPause");
-        var execution = new ContextCommandExecution("editor.playPause")
-        {
-            EditorContext = editor
-        };
-        if (command?.CanRun(editor, execution) == true)
-            await command.RunAsync(editor, execution);
+    public IReadOnlyList<MediaTime> Taps => _taps;
+
+    public static TapRecorder? Create(IEditorContext editor)
+        => editor.GetService(typeof(IPreviewPlayer)) is IPreviewPlayer player
+            ? new TapRecorder(player)
+            : null;
+
+    public void Start()
+    {
+        _taps.Clear();
+        player.Play();
     }
+
+    // Call this from the key or pointer handler of each tap.
+    public void Tap()
+    {
+        if (player.GetPlaybackTime() is { } time)
+            _taps.Add(time);
+    }
+
+    public Task StopAsync() => player.Pause();
 }
 ```
 
@@ -199,7 +238,31 @@ public static class PlaybackCommands
 
 フォントやコーデックのピッカーのように検索とピン留めができる一覧には、`SearchablePickerViewModel<TSearchKey>` を継承して `Search` を実装し、`SearchablePickerFlyout` で開きます。外観と文言は `PresenterThemeKey` と `NoResultsText` で設定します。
 
+`Beutl.Controls.EmptyState` は、ビューに表示するものがまだないことを伝えます。`Icon`、`Title`、`Description` を設定し、ボタンなどの操作をコンテンツに置きます。設定していない部分は場所を取りません。`Beutl.Controls.StatusLabel` は、一覧や行の項目の状態を示します。`Text` に表示する文字列を指定し、`Kind`（`Neutral`、`Accent`、`Success`、`Caution`、`Critical`）で色を選びます。どちらも `AutomationProperties.LiveSetting` を、読み上げるテキストに引き継ぎます。
+
+```xml
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:Beutl.Controls"
+            xmlns:icons="using:FluentIcons.Avalonia.Fluent"
+            Spacing="8">
+    <controls:EmptyState Title="No markers"
+                         Description="Markers you add to the timeline appear here.">
+        <controls:EmptyState.Icon>
+            <icons:SymbolIcon Symbol="Bookmark" />
+        </controls:EmptyState.Icon>
+        <Button Content="Add a marker" />
+    </controls:EmptyState>
+    <controls:StatusLabel Kind="Success" Text="Ready" />
+</StackPanel>
+```
+
+設定の色のように、オブジェクトのプロパティではない色には `Beutl.Controls.PropertyEditors.SimpleColorPickerButton` を使ってください。パレット付きの `SimpleColorPicker` を開き、ユーザーが確定すると色を適用してから `ColorConfirmed` を発生させます。`IsAlphaEnabled` を `false` にすると、色は不透明に保たれ、不透明度は表示されません。
+
 プロパティのコントロールを調整するときは、Beutl のテーマで余白とラベルの位置を確かめてください。ヘッドレス描画はレイアウトの確認に役立ちますが、公開前には Beutl 本体でも確認してください。
+
+### macOS のコンテキストメニュー {/* #context-menus-on-macos */}
+
+preview.11 以降の macOS では、**「設定」→「表示」→「ネイティブのコンテキストメニューを使用」** がオンの間（既定ではオンです）、`ContextMenu` と、`MenuFlyout`、`FAMenuFlyout`、`FACommandBarFlyout` を使った `ContextFlyout` が、ネイティブのメニューとして開きます。Avalonia のメニューも見えない状態で開くため、バインディング、`Opening` のハンドラー、`IsOpen` はそのまま機能します。`MenuItem` はテキスト、チェックマーク、入力ジェスチャーを表示しますが、`Icon` は表示しません。FluentAvalonia の項目は `IconSource` も表示します。それ以外のもの（ヘッダーがテキストでない `MenuItem` など）を含むメニューは Avalonia のメニューのまま開き、`Button.Flyout` や `ShowAt` で開いたフライアウトも同様です。macOS では、設定のオンとオフの両方でメニューを確認してください。
 
 ## テキストと画素の描画
 
@@ -213,17 +276,23 @@ public static class PlaybackCommands
 ## ソース
 
 - [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
+- [`Sdk.targets`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.targets) and [`host-libraries.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/host-libraries.md)
+- [`PluginLoadContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Api/Services/PluginLoadContext.cs)
 - [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
 - [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
 - [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
 - [`ITimeMappedSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ITimeMappedSource.cs)
 - [`HistoryManager.EditSessions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/HistoryManager.EditSessions.cs)
 - [`EditSession.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/EditSession.cs)
+- [`EditedElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/EditedElements.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`IPreviewPlayer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IPreviewPlayer.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)
 - [`SceneEditorTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/SceneEditorTabExtension.cs)
 - [`IPinnableToolContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IPinnableToolContext.cs)
 - [`SearchablePickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerFlyout.cs)
 - [`SearchablePickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerViewModel.cs)
+- [`EmptyState.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/EmptyState.cs), [`StatusLabel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/StatusLabel.cs) and [`SimpleColorPickerButton.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SimpleColorPickerButton.cs)
+- [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)

@@ -185,6 +185,7 @@ public sealed partial class InvertGraphEffect : FilterEffect
 - `graph.Image2D(name, like, format, padding, resolutionScale)` は、別の画像と同じ境界を持つ画像を宣言します。パスは `graph.Fullscreen`、`graph.Render`、`graph.Compute` で記録し、そのプログラムは `ShaderProgram.Fullscreen`、`Graphics`、`Compute` で作成します。
 - `pass.ImageParameters(binding, image)` は 3 つの std140 `vec4` 値をバインドします。論理的な境界、同じ座標系でのラスター境界、(ピクセル幅, ピクセル高さ, ラスタースケール, 0) です。
 - `pass.PushConstants(value)` はアンマネージ値をコピーします。サイズは 128 バイトまでの 4 の倍数です。
+- preview.11 で追加された `pass.DispatchImage(image)` は、`image` のテクセルごとに 1 回ずつコンピュートシェーダーを呼び出します。呼び出しの数は、コンパイル済みのローカルサイズの倍数に切り上げられます。サイズはグラフの実行時に決まるため、どの作業スケールでも、コンポジションと同じ大きさの画像に対応できます。余分な呼び出しはシェーダー側で除外してください。
 - `pass.InputRegion(binding, region)` はサンプリングする画像の範囲全体を宣言し、部分描画を有効にします。これも `PartialRendering()` も呼ばないパスは、全体を描画します。
 - `graph.Output(image)` は結果を選択します。別の `ColorEncoding` を渡さなければ、結果はリニアの乗算済みアルファです。
 

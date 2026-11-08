@@ -18,7 +18,7 @@ In Beutl, you can extend the following functionalities:
 | ToolWindowExtension | Adds a tool window that can be opened from the Window menu |
 | [PropertyEditorExtension](editor-integration.md#property-editors) | Adds a UI for editing specific property types |
 | [ToolTabExtension](sample-extensions.md#tooltabextension) | Adds tabs to the scene editing screen |
-| [ThemeExtension](implement-theme.md) | Adds a theme to the picker in Settings → Display |
+| [ThemeExtension](implement-theme.md) | Adds a theme to the picker in Settings → View |
 | [ViewExtension](editor-integration.md#commands) | Registers commands with stable IDs and handlers |
 | [McpToolExtension](editor-integration.md#mcp-tools) | Adds tools to the live MCP endpoint |
 | [ElementSourceHandlerExtension](editor-integration.md#element-sources) | Creates timeline elements from custom source kinds |

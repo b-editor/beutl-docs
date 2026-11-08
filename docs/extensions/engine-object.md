@@ -138,6 +138,39 @@ The property menu's **Separate components** gives a vector, color, or similar pr
 
 Timeline and keyframe times use `MediaTime`, not `TimeSpan`. Create frame times with `MediaTime.FromFrames(frame, rationalRate)` and convert to a display duration with `ToTimeSpan()`. `MediaTime.ToString()` displays a flick count.
 
+### One row for two or three properties {/* #combined-editor */}
+
+`[CombinedEditor(nameof(Second))]` on the first of two animatable `float` or `int` properties shows both in one vector editor row of the property panel, one layer of the inline view and one row of the graph editor. `[CombinedEditor(nameof(Second), nameof(Third))]` joins three `float` properties the same way. Each property still keeps its own value, range, keyframes and expression, in the model and in the file. `Name` and `ResourceType` name the row as they do in `[Display]`; without them, the row takes the first property's name.
+
+```cs
+using System.ComponentModel.DataAnnotations;
+using Beutl;
+using Beutl.Engine;
+
+namespace MyExtension;
+
+public sealed partial class MyPanel : EngineObject
+{
+    public MyPanel()
+    {
+        ScanProperties<MyPanel>();
+    }
+
+    [Display(Name = "Width")]
+    [Range(0, float.MaxValue)]
+    [CombinedEditor(nameof(Height), Name = "Size")]
+    public IExpressionProperty<float> Width { get; } = Property.CreateAnimatable<float>(100);
+
+    [Display(Name = "Height")]
+    [Range(0, float.MaxValue)]
+    public IExpressionProperty<float> Height { get; } = Property.CreateAnimatable<float>(100);
+}
+```
+
+The row edits two properties as a `Size` when the first one's name ends with `Width`, and as a `Point` otherwise (`PixelSize` and `PixelPoint` for `int`); three make a `Vector3`. The properties must be declared on the same `EngineObject` with `Property.CreateAnimatable`, and the names must match; otherwise each keeps its own row. In a node, each property keeps its own row and port.
+
+The row splits into a row per property while their keyframe times, easings or clocks differ, or while they do not share one expression, and joins again once they match. **Separate components** in its menu splits it by hand; for a joined row that changes only the view, which the panel saves with its view state. A joined row takes one expression that returns the whole value, such as `new Size(Sin(Time) * 100, 100)`; `Size` and `Point` gained `double, double` constructors for expressions like this one. Each property saves it as a `ComponentExpression<TValue, TComponent>` (namespace `Beutl.Engine.Expressions`), which evaluates the shared expression, takes the property's component and keeps the property's keyframes below it. Code that reads one property's `Expression` can meet it; `IComponentExpression` gives its `Source`, `Component` and `ComponentIndex`. Because older versions drop this new type of expression, preview.11 raised the [file format floor](version-mapping.md).
+
 ## The auto-generated `Resource` class
 
 For every concrete `partial class : EngineObject`, the source generator emits a nested `Resource` class. The rendering pipeline treats it as a snapshot of the object at a point in time, so the animation, expression, and composition systems can sample values without touching the instance the user is editing.
@@ -257,3 +290,4 @@ public sealed class MyExtension : Extension
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
+- [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)

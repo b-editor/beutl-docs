@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.10 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.10 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。名前空間が同じでも、アセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.11 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.11 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -43,7 +43,7 @@ public sealed class SeekCommands : ViewExtension
 }
 ```
 
-別の拡張機能の定義を実行するときは、`CanRun(context, execution)` を確認してから `RunAsync(context, execution)` を呼びます。シーンエディタの再生コマンドの ID は `editor.playPause` です。[再生との連携](pitfalls.md#the-playhead-during-playback)を参照してください。
+別の拡張機能の定義を実行するときは、`CanRun(context, execution)` を確認してから `RunAsync(context, execution)` を呼びます。シーンエディタの再生と一時停止を切り替えるコマンドの ID は `editor.playPause` です。再生を開始するには、代わりに `IPreviewPlayer.Play()` を呼んでください。[再生との連携](pitfalls.md#the-playhead-during-playback)を参照してください。
 
 ## プロパティエディタ {/* #property-editors */}
 
@@ -189,6 +189,33 @@ public static class ElementRequests
 }
 ```
 
+組み込みのファイルとエンジンオブジェクトのハンドラーは `Length` を必要とします。動画と音声のファイルは、代わりにそのメディアの長さになります。preview.11 以降、トランスフォームのグループが `Drawable` の作成した空のグループのままの新しい描画オブジェクトは、ユーザーが追加する描画オブジェクトと同じく `TranslateTransform`、`RotationTransform`、`ScaleTransform` を持った状態で始まり、`Position` はその `TranslateTransform` に入ります。独自のトランスフォームを設定した描画オブジェクトはそれを保ち、`Position` は `TranslateTransform` を追加します。既存の要素にオブジェクトを追加する `IElementObjectService.Add` と `InsertAt` も、空のグループを同じように埋めます。これらで追加する描画オブジェクトに、独自に `TranslateTransform` を追加しないでください。
+
+preview.11 以降は、2 つのフラグで、要求をバッチ内のほかの要求に対して配置できます。`FollowsPrevious` を指定した要求は、同じ `Layer` にある直前の要求が終わる位置から始まります。この位置は、直前の要求のソースを開くまで決まりません。レイヤーの最初の要求は `Start` から始まります。`StacksAboveScene` を指定した要求は、バッチ内でこの指定を持つ最初の要求が追加される時点で、シーンにあるものより上に置かれ、`Layer` はそこから数えます。ロックされたレイヤーは数えないため、ロックによって拒否される要求はありません。
+
+```csharp
+using Beutl;
+using Beutl.Editor.Services;
+using Beutl.Extensibility;
+
+public static class SequenceRequests
+{
+    // Places the files one after another on layer 0.
+    public static ValueTask<ElementAddResult> AddInSequenceAsync(
+        IElementAdder adder, IReadOnlyList<string> files, CancellationToken cancellationToken)
+        => adder.AddAsync(
+            [.. files.Select(file => new ElementDescription(
+                Start: MediaTime.Zero,
+                Length: MediaTime.FromSeconds(5),
+                Layer: 0,
+                Source: new ElementSource.File(file))
+            {
+                FollowsPrevious = true
+            })],
+            cancellationToken);
+}
+```
+
 独自のソースを追加するには、`ElementSource` を継承する record を作り、エクスポートした `ElementSourceHandlerExtension` から `ElementSourceHandlerRegistration` を返します。各 `IElementSourceHandler` は対象の型と完全に一致する `SourceType` を宣言し、次の 2 段階を実装します。
 
 1. `PreflightAsync` は要求を検証し、`ElementSourcePreflightResult.Ready(preflight, targetLayers)` または `Rejected(failure)` を返します。対象レイヤーは最低 1 つ予約してください。返した `IElementSourcePreflight` はホストが所有し、バッチ完了後に非同期で破棄します。
@@ -218,7 +245,8 @@ public static class ElementRequests
 - [`McpToolResult.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/McpToolResult.cs)
 - [`ElementDescription.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementDescription.cs)
 - [`ElementSourceHandlerExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementSourceHandlerExtension.cs)
-- [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs)
+- [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
+- [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)

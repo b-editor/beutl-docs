@@ -9,6 +9,7 @@ This table lists the versions of Beutl along with their corresponding dependenci
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.11 | 10.0 | 12.1.5                                             | 8.x    |
 | 2.0.0-preview.10 | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.9  | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.8  | 10.0 | 12.1.3                                             | 8.0    |
@@ -36,9 +37,9 @@ This table lists the versions of Beutl along with their corresponding dependenci
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 and preview.10 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
+preview.9 to preview.11 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
 
-`FileFormat.Floor`, the oldest version that can read what Beutl writes, is `2.0.0-preview.10` in preview.10. A project saved by preview.10 does not open in preview.9 or earlier.
+`FileFormat.Floor`, the oldest version that can read what Beutl writes, is `2.0.0-preview.11` in preview.11. A project saved by preview.11 does not open in preview.10 or earlier. The floor went up because one expression can now drive the properties that share a row, and an older version would drop that new type of expression when it saves.
 
 ## Source
 

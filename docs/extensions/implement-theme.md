@@ -3,12 +3,12 @@ title: Implementing a Theme
 description: Ship a custom theme from an extension with ThemeExtension.
 ---
 
-A `ThemeExtension` adds a theme to the picker in **Settings → Display → Theme**. The extension describes the theme with a `ThemeDescriptor`, and Beutl applies it by switching the app to the descriptor's base variant and merging the descriptor's resource dictionary on top.
+A `ThemeExtension` adds a theme to the picker in **Settings → View → Theme**. The extension describes the theme with a `ThemeDescriptor`, and Beutl applies it by switching the app to the descriptor's base variant and merging the descriptor's resource dictionary on top.
 
 Beutl's own default dark theme is written this way, so an extension theme is not a second-class citizen: it can replace every brush the built-in themes define.
 
 :::info
-`ThemeExtension` was added in Beutl 2.0.0-preview.7. The examples in this guide target `Beutl.Extensibility.Sdk` version `2.0.0-preview.10` — see [Creating a C# Project for Extensions](create-csproj.md).
+`ThemeExtension` was added in Beutl 2.0.0-preview.7. The examples in this guide target `Beutl.Extensibility.Sdk` version `2.0.0-preview.11` — see [Creating a C# Project for Extensions](create-csproj.md).
 :::
 
 ## 1. The minimal theme extension
