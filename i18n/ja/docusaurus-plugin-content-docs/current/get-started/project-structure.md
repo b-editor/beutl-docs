@@ -17,7 +17,11 @@ MyProject/
 
 ## `MyProject.bep`
 
-プロジェクトに含まれるシーンと、フレームレートやサンプルレート、[スピーカー配置](./multichannel-audio.md)などの共通設定を記録します。プロジェクトに[カラーパレット](../reference/tool-tabs/element-property.md#色の選択とパレット)があれば、それも保存します。
+プロジェクトに含まれるシーンと、フレームレートやサンプルレート、[スピーカー配置](./multichannel-audio.md)などの共通設定を記録します。
+
+## `MyProject.palettes.json` {/* #palettes-file */}
+
+**このプロジェクトに保存** を選んだ[カラーパレット](../reference/tool-tabs/element-property.md#色の選択とパレット)を記録します。プロジェクトファイルには描画結果に関わる内容だけを保存するので、パレットはプロジェクトファイルの隣にあるこのファイルに分けています。最初のパレットを保存したときに作られ、最後のパレットを削除すると消えます。
 
 ## `MyProject.scene`
 
@@ -63,6 +67,6 @@ preview.9 ではタイムラインとメディアの時刻を整数の flick 数
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
-- [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
+- [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
 - [`StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)

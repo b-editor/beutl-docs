@@ -115,7 +115,7 @@ Click a color to pick it. Colors equal to the current one are ringed, a tooltip 
 - Right-click a color of a palette for **Rename**, **Replace with the current color**, **Move to** another palette, and **Delete**.
 - Right-click a recent or default color for **Add to palette** (or **Add to a new palette**). A recent color also offers **Remove from recent colors**, and the **Recent colors** menu offers **Clear recent colors**.
 
-Your palettes and the recent colors are kept in Beutl's preferences. A project's palettes are written to the project file as soon as they change, and those edits cannot be undone.
+Your palettes and the recent colors are kept in Beutl's preferences. A project's palettes are written to [a file of their own beside the project file](../../get-started/project-structure.md#palettes-file) as soon as they change, and those edits cannot be undone.
 
 From the keyboard, `Tab` stops once in each palette, at the color focused last. The arrow keys move between its colors, `Left` and `Right` in order and `Up` and `Down` a row at a time. `Enter` or `Space` picks the focused color, and the menu key opens its menu.
 

@@ -17,7 +17,11 @@ Project, scene, and element data are JSON. Media and Git metadata have their own
 
 ## `MyProject.bep`
 
-The project file records the scenes in the project and shared settings such as frame rate, sample rate, and [speaker layout](./multichannel-audio.md). It also holds the project's [color palettes](../reference/tool-tabs/element-property.md#picking-colors-and-palettes) when it has any.
+The project file records the scenes in the project and shared settings such as frame rate, sample rate, and [speaker layout](./multichannel-audio.md).
+
+## `MyProject.palettes.json` {/* #palettes-file */}
+
+The project's [color palettes](../reference/tool-tabs/element-property.md#picking-colors-and-palettes), the ones saved with **Save in this project**, are kept in this file beside the project file rather than in it, since the project file holds only what the project renders. Beutl creates the file when the first such palette is saved and removes it with the last one.
 
 ## `MyProject.scene`
 
@@ -63,6 +67,6 @@ Preview.9 stores timeline and media times as integer flick counts. Older time st
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
-- [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
+- [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
 - [`StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)
