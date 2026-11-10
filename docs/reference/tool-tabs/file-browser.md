@@ -102,7 +102,7 @@ Hovering an item shows a tooltip with media information.
 | **Delete** | Permanently deletes the item after confirmation — it does not go to the trash. Multiple selections are deleted in one go |
 | **Add to Favorites / Remove from Favorites** | The label changes depending on whether the item is already a favorite |
 
-Beutl refuses to rename, delete, or move a file the open project uses, or a folder that contains one, and shows a notification instead. This covers the scene and element files, the media and model files that clips play, and the textures and other files a model refers to. Close the file or remove it from the project first. When you delete several items at once and one of them is in use, including one that came into use while the confirmation was open, none of them is deleted.
+Beutl refuses to rename, delete, or move a file the open project uses, or a folder that contains one, and shows a notification instead. This covers the scene and element files, the media and model files that elements play, and the textures and other files a model refers to. Close the file or remove it from the project first. When you delete several items at once and one of them is in use, including one that came into use while the confirmation was open, none of them is deleted.
 
 ## Online storage
 

@@ -14,35 +14,35 @@ Library → Transition
 
 | Transition | Appearance | Additional property |
 | --- | --- | --- |
-| Cross Dissolve | Fades between the two clips while keeping opaque clips opaque. | None |
-| Fade | Fades the outgoing clip to transparent, then fades the incoming clip in. Lower layers show through at the midpoint. | None |
-| Wipe | Reveals the incoming clip behind a moving edge: a straight line, a growing box or diamond, or a sweeping clock hand. | Shape, Linear direction, Clockwise |
+| Cross Dissolve | Fades between the two elements while keeping opaque elements opaque. | None |
+| Fade | Fades the outgoing element to transparent, then fades the incoming element in. Lower layers show through at the midpoint. | None |
+| Wipe | Reveals the incoming element behind a moving edge: a straight line, a growing box or diamond, or a sweeping clock hand. | Shape, Linear direction, Clockwise |
 | Dip to Color | Fades through a chosen solid color. | Color, default black (`Colors.Black`) |
 | Dip to White | Fades through white. | None |
-| Push | Moves both clips together as the incoming clip pushes the outgoing clip out. | Direction |
-| Slide | Slides the incoming clip over the stationary outgoing clip. | Direction |
-| Cross Zoom | Zooms the outgoing clip while the incoming clip zooms to full size and the two dissolve. | Direction, Tile Mode |
-| Iris | Reveals the incoming clip through a circle growing from the frame center, or outside a circle closing toward the center. | Direction |
-| Split | Reveals the incoming clip through a band widening from the frame center. | Orientation |
-| Blinds | Reveals the incoming clip through parallel slats that widen together. | Angle, Slats |
-| Checkerboard | Reveals the incoming clip through a grid of squares, opening alternate squares first. | Columns, Rows |
-| Zoom Blur | Blends the clips through a zoom with a radial blur. | Strength, Direction, Tile Mode |
-| Whip Pan | Slides the clips across the frame with a directional blur, like a fast camera pan. | Strength, Direction |
-| Glitch | Cuts between the clips in shifted scan bands with a color split. | Strength |
-| Light Leak | Blends the clips under a warm band of light that sweeps across the frame. | Strength |
+| Push | Moves both elements together as the incoming element pushes the outgoing element out. | Direction |
+| Slide | Slides the incoming element over the stationary outgoing element. | Direction |
+| Cross Zoom | Zooms the outgoing element while the incoming element zooms to full size and the two dissolve. | Direction, Tile Mode |
+| Iris | Reveals the incoming element through a circle growing from the frame center, or outside a circle closing toward the center. | Direction |
+| Split | Reveals the incoming element through a band widening from the frame center. | Orientation |
+| Blinds | Reveals the incoming element through parallel slats that widen together. | Angle, Slats |
+| Checkerboard | Reveals the incoming element through a grid of squares, opening alternate squares first. | Columns, Rows |
+| Zoom Blur | Blends the elements through a zoom with a radial blur. | Strength, Direction, Tile Mode |
+| Whip Pan | Slides the elements across the frame with a directional blur, like a fast camera pan. | Strength, Direction |
+| Glitch | Cuts between the elements in shifted scan bands with a color split. | Strength |
+| Light Leak | Blends the elements under a warm band of light that sweeps across the frame. | Strength |
 
 ## Properties
 
 ### Duration
 
-The span contributed by this side of the boundary. At a cut between adjacent elements on the same layer, the outgoing element's exit duration lies before the cut, and the incoming element's enter duration lies after it. Both clips hold their edge frame outside their own time ranges during the transition.
+The span contributed by this side of the boundary. At a cut between adjacent elements on the same layer, the outgoing element's exit duration lies before the cut, and the incoming element's enter duration lies after it. Both elements hold their edge frame outside their own time ranges during the transition.
 
 - **Type:** `MediaTime`
 - **Default:** `00:00:00.5` (0.5 seconds)
 - **Animatable:** No
 - **Range:** `[00:00:00, 01:00:00]`
 
-When adding a transition at a shared clip boundary, the editor divides this initial duration equally between the two sides (0.25 seconds each). A lone edge uses the full 0.5 seconds. See [Transition](../../tool-tabs/transition.md).
+When adding a transition at a shared element boundary, the editor divides this initial duration equally between the two sides (0.25 seconds each). A lone edge uses the full 0.5 seconds. See [Transition](../../tool-tabs/transition.md).
 
 ### Easing
 
@@ -90,7 +90,7 @@ Available for Wipe. Sets the direction of the **Clock** shape's sweep.
 
 ### Tile Mode (TileMode)
 
-Available for Cross Zoom and Zoom Blur. Fills the frame edges that a shrinking clip leaves empty: `Pad` extends the edge, `Reflect` mirrors the frame, `Repeat` tiles it, and `Decal` leaves them transparent.
+Available for Cross Zoom and Zoom Blur. Fills the frame edges that a shrinking element leaves empty: `Pad` extends the edge, `Reflect` mirrors the frame, `Repeat` tiles it, and `Decal` leaves them transparent.
 
 - **Type:** `GradientSpreadMethod`
 - **Default:** `Decal`

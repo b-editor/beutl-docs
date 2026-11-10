@@ -1,12 +1,12 @@
 ---
 title: "Transition"
-description: "Edit transitions at clip boundaries."
+description: "Edit transitions at element boundaries."
 sidebar_position: 23
 ---
 
 # Transition
 
-Use this tab to choose the type, duration, easing, and other properties of a clip's start or end transition.
+Use this tab to choose the type, duration, easing, and other properties of an element's start or end transition.
 
 ## Tab characteristics
 
@@ -17,12 +17,12 @@ Use this tab to choose the type, duration, easing, and other properties of a cli
 
 Right-click a timeline element and choose **Transition → Start Transition** or **End Transition**. If that edge has no transition, Beutl adds a cross dissolve before opening the tab. The tab is not listed in **View → Tools**.
 
-You can also double-click an existing transition ramp on the timeline to edit it. Double-clicking a shared boundary between adjacent clips on the same layer adds a cross dissolve if none exists there.
+You can also double-click an existing transition ramp on the timeline to edit it. Double-clicking a shared boundary between adjacent elements on the same layer adds a cross dissolve if none exists there.
 
 ## Editing a transition
 
 - Use the type picker at the top to change the transition. Changing the type preserves its timing and easing.
-- Edit **Duration**, **Easing**, and the selected type's other properties below it. When adding a transition between two adjacent clips, Beutl splits its initial duration equally across the boundary; each clip's side has its own duration.
+- Edit **Duration**, **Easing**, and the selected type's other properties below it. When adding a transition between two adjacent elements, Beutl splits its initial duration equally across the boundary; each element's side has its own duration.
 - Drag the transition ramp's handle on the timeline to change that side's duration.
 - Use **Delete** beside the type picker to remove the transition from both sides of a shared boundary.
 - Use **Pin Tab** in the tab header's right-click menu to keep this edge open while editing another transition.

@@ -21,13 +21,13 @@ For objects like rectangles, the boundary lines might overlap with the drawing c
 
 ## Move the Playhead with a Click on the Timeline
 
-When on, a click on the timeline moves the playhead. When off, the playhead moves only from the ruler or by dragging its line, so an accidental click on an empty part of the timeline leaves it where it is, and a plain drag on an empty part selects clips without a modifier key. See [Timeline](../reference/tool-tabs/timeline.md#selection).
+When on, a click on the timeline moves the playhead. When off, the playhead moves only from the ruler or by dragging its line, so an accidental click on an empty part of the timeline leaves it where it is, and a plain drag on an empty part selects elements without a modifier key. See [Timeline](../reference/tool-tabs/timeline.md#selection).
 
 The default setting is __"On"__.
 
 ## Show Timeline Thumbnails by Default
 
-Shows filmstrips and waveforms on timeline clips. When off, clips show none until you turn off **Disable Thumbnails** in a clip's right-click menu, which keeps zooming a timeline full of media responsive. A clip's own choice is kept only where it differs from this setting, so the other clips follow the setting when it changes.
+Shows filmstrips and waveforms on timeline elements. When off, elements show none until you turn off **Disable Thumbnails** in an element's right-click menu, which keeps zooming a timeline full of media responsive. An element's own choice is kept only where it differs from this setting, so the other elements follow the setting when it changes.
 
 The default setting is __"On"__.
 

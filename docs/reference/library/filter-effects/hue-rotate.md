@@ -24,7 +24,7 @@ Hue rotation in degrees.
 
 ## Usage
 
-Animate `Angle` from 0° to 360° for a continuously cycling rainbow, or use small offsets to color-correct a clip.
+Animate `Angle` from 0° to 360° for a continuously cycling rainbow, or use small offsets to color-correct an element.
 
 ## Source
 

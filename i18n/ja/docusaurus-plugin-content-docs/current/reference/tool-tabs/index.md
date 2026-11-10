@@ -70,9 +70,9 @@ sidebar_position: 2
 | [ブラウザ](./web-browser.md) | Webサイトを閲覧し、プロジェクト用の素材をダウンロードする |
 | [AI](./ai-workspace.md) | 画像・動画の生成と編集、字幕生成、ジョブの管理を行う |
 | [欠損メディアを再リンク](./missing-media.md) | 移動・欠損した素材やフォントの参照先を修復する |
-| [トランジション](./transition.md) | クリップの開始・終了位置のトランジションを編集する |
+| [トランジション](./transition.md) | 要素の開始・終了位置のトランジションを編集する |
 | [スマホプレビュー](./mobile-preview.md) | スマホで映像と音声を確認し、再生を操作する |
-| [無音区間で自動分割](./silence-split.md) | 音声クリップの無音部分を検出し、分割または削除する |
+| [無音区間で自動分割](./silence-split.md) | 音声要素の無音部分を検出し、分割または削除する |
 
 このドキュメントの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` および `src/Beutl.Editor.Components/` 配下の `*TabExtension.cs` です。
 

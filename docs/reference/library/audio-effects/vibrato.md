@@ -6,7 +6,7 @@ sidebar_position: 9
 
 # Vibrato
 
-Makes the pitch of the audio signal waver by reading it through a delay that swings back and forth. The delay swings between `0` and twice `Depth`, and starts each swing at no delay, so a clip starts on time.
+Makes the pitch of the audio signal waver by reading it through a delay that swings back and forth. The delay swings between `0` and twice `Depth`, and starts each swing at no delay, so an element starts on time.
 
 ## Library location
 
@@ -34,7 +34,7 @@ How far the delay swings, in milliseconds. A larger depth makes the pitch waver 
 
 ## Notes
 
-- The delay holds the sound back by up to twice `Depth`. The effect reports that much latency, or 40 ms while `Depth` is animated, and the audio graph drains the held tail at a natural clip end.
+- The delay holds the sound back by up to twice `Depth`. The effect reports that much latency, or 40 ms while `Depth` is animated, and the audio graph drains the held tail at a natural element end.
 - The swing is worked out from the time alone, so a constant `Rate` gives the same result after a seek.
 
 ## Usage

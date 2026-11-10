@@ -103,7 +103,7 @@ Extensions can derive from `DisplacementMapTransform` and implement the nested `
 
 ## Usage
 
-Use a noise pattern, gradient, or video clip as the map. Animate the map's `Transform` for flowing distortions; toggle `ShowDisplacementMap` for debugging.
+Use a noise pattern, gradient, or video element as the map. Animate the map's `Transform` for flowing distortions; toggle `ShowDisplacementMap` for debugging.
 
 ## Source
 

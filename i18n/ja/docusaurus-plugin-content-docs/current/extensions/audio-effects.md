@@ -83,7 +83,7 @@ public sealed class PolarityNode : AudioNode
 
 入力を持たず、ステレオ以外を出力するノードは、無音の `Flush` が同じチャンネル数になるよう `RecordProcessedChannelCount` を呼んでください。
 
-`Compose` をオーバーライドする `Sound` は、コンテキストの構成で出力する必要があります。`context.CreateSourceNode(source, channelMap)` は、ソースと `Sound.Resource.GetChannelMap()` が返すマップからクリップの構成を求めます。`context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` はプロジェクトの構成に変換します。
+`Compose` をオーバーライドする `Sound` は、コンテキストの構成で出力する必要があります。`context.CreateSourceNode(source, channelMap)` は、ソースと `Sound.Resource.GetChannelMap()` が返すマップから要素の構成を求めます。`context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` はプロジェクトの構成に変換します。
 
 ## 末尾の排出
 
@@ -91,7 +91,7 @@ public sealed class PolarityNode : AudioNode
 
 `ProcessTail` は渡されたバッファの所有権を受け取ります。別のバッファを返す場合は入力を破棄してください。例外を伝播する場合も、先に入力を破棄してください。排出中は、遅延に関係するアニメーションパラメーターを終端値に保持します。
 
-クリップの自然な連続終端では、バッファに保持した処理遅延の末尾を維持できます。シーク・ループ・編集などの不連続点では、リセットにより破棄される場合があります。[リミッター](../reference/library/audio-effects/limiter.md)も参照してください。
+要素の自然な連続終端では、バッファに保持した処理遅延の末尾を維持できます。シーク・ループ・編集などの不連続点では、リセットにより破棄される場合があります。[リミッター](../reference/library/audio-effects/limiter.md)も参照してください。
 
 ## ノードの再利用と入力の変更
 

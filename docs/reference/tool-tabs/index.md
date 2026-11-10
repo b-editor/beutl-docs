@@ -70,9 +70,9 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Browser](./web-browser.md) | Browse websites and download media for the project |
 | [AI](./ai-workspace.md) | Generate and edit images and videos, create subtitles, and manage jobs |
 | [Relink missing media](./missing-media.md) | Repair references to moved or missing media and fonts |
-| [Transition](./transition.md) | Edit transitions at the start or end of a clip |
+| [Transition](./transition.md) | Edit transitions at the start or end of an element |
 | [Mobile preview](./mobile-preview.md) | Preview video and audio and control playback from your phone |
-| [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio clip, then split or remove them |
+| [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio element, then split or remove them |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).
 

@@ -71,13 +71,13 @@ You can also use `Ctrl + K` (`Cmd + K` on macOS) to split the selected element a
 
 ![Splitting Elements](_images/5.edit-element/split-element.webp)
 
-To cut an audio clip at its silent parts, choose **Auto Split by Silence** from its right-click menu. See [Auto Split by Silence](../reference/tool-tabs/silence-split.md).
+To cut an audio element at its silent parts, choose **Auto Split by Silence** from its right-click menu. See [Auto Split by Silence](../reference/tool-tabs/silence-split.md).
 
 ## Renaming Elements
 In Beutl, you can change the color and name of elements,
 both of which can be changed from the right-click menu.
 
-You can change the name with `F2` (`Enter` on macOS) or by double-clicking the element's body. Double-clicking a transition or a shared clip boundary performs a [transition operation](../reference/tool-tabs/transition.md).
+You can change the name with `F2` (`Enter` on macOS) or by double-clicking the element's body. Double-clicking a transition or a shared element boundary performs a [transition operation](../reference/tool-tabs/transition.md).
 
 ## Relinking missing media
 

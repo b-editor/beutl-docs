@@ -18,7 +18,7 @@ _This object has no properties of its own._
 
 ## Usage
 
-Useful for screen / multiply-style mattes from white-on-black artwork, or to drive an alpha track from a luminance pass. To mask a clip with another layer's luminance, use a [track matte](../../tool-tabs/timeline.md#track-mattes).
+Useful for screen / multiply-style mattes from white-on-black artwork, or to drive an alpha track from a luminance pass. To mask an element with another layer's luminance, use a [track matte](../../tool-tabs/timeline.md#track-mattes).
 
 ## Source
 
