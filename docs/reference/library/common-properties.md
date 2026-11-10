@@ -166,7 +166,7 @@ Balance between the left and right sides. `0` leaves both sides at full level, `
 
 ### Front / back (SurroundPan)
 
-In 5.1 and 7.1 projects, moves a mono or stereo element from the front speakers to the surrounds at equal power. In 7.1, `50` is the side speakers and `100` is the rear speakers.
+In 5.1 and 7.1 projects, moves a mono or stereo sound from the front speakers to the surrounds at equal power. In 7.1, `50` is the side speakers and `100` is the rear speakers.
 
 - **Type:** `float`
 - **Default:** `0`
@@ -175,7 +175,7 @@ In 5.1 and 7.1 projects, moves a mono or stereo element from the front speakers 
 
 ### Center (CenterLevel)
 
-In 5.1 and 7.1 projects, moves part of a mono or stereo element's front image into the center speaker, less as `Pan` moves off-center.
+In 5.1 and 7.1 projects, moves part of a mono or stereo sound's front image into the center speaker, less as `Pan` moves off-center.
 
 - **Type:** `float`
 - **Default:** `0`
@@ -184,7 +184,7 @@ In 5.1 and 7.1 projects, moves part of a mono or stereo element's front image in
 
 ### LFE (LfeLevel)
 
-In 5.1 and 7.1 projects, sends a 120 Hz low-pass of a mono or stereo element to the LFE channel.
+In 5.1 and 7.1 projects, sends a 120 Hz low-pass of a mono or stereo sound to the LFE channel.
 
 - **Type:** `float`
 - **Default:** `0`

@@ -6,7 +6,7 @@ sidebar_position: 17
 
 # Proxies
 
-Use this tab to **generate and manage proxy media**. Proxies are low-resolution copies of heavy video elements that make preview and scrubbing smoother. The preview can use a proxy while you edit, but **export always uses the original media**.
+Use this tab to **generate and manage proxy media**. Proxies are low-resolution copies of heavy video source files that make preview and scrubbing smoother. The preview can use a proxy while you edit, but **export always uses the original media**.
 
 ## Tab characteristics
 
@@ -19,8 +19,8 @@ Open it from the menu bar via **View → Tools → Proxies**.
 
 ## How proxies work
 
-- Proxies are generated **manually** from this tab; importing an element does not create one automatically.
-- Only **video** elements are proxied; still images and audio are skipped.
+- Proxies are generated **manually** from this tab; adding a video element does not create one automatically.
+- Only **video sources** are proxied; still images and audio are skipped.
 - A proxy is an **H.264 (libx264) `.mp4`** encoded by the FFmpeg extension. Three quality presets are available:
 
 | Preset | Scale | Long edge limit |
@@ -35,13 +35,13 @@ Open it from the menu bar via **View → Tools → Proxies**.
 ## Tab layout
 
 - **Store metrics (top)**: project / store / cap usage.
-- **Elements**: every eligible video element in the open project (all scenes), each with:
+- **Video sources**: one row per distinct video source file used in the open project (all scenes), each with:
   - a **state pill**: Ready / Generating / Stale / Failed / Missing / Partial
   - a **quality preset** dropdown (initialized from the *Default preset* setting)
   - **Generate** / **Regenerate** / **Delete** buttons and a progress bar with a cancel button while generating
 - **Toolbar**: **Generate selected** / **Generate all** / **Regenerate selected** / **Delete selected** / **Delete project proxies** / **Refresh**.
 
-**Generate all** processes only elements at or above 1920x1080 (or at least 32 MB when the resolution is unknown). For lighter elements, use the per-element **Generate** button. If nothing qualifies, a "No elements met the bulk-generation threshold" notice is shown.
+**Generate all** processes only video sources at or above 1920x1080 (or at least 32 MB when the resolution is unknown). For lighter sources, use the per-source **Generate** button. If nothing qualifies, a "No video sources met the bulk-generation threshold" notice is shown.
 
 :::warning
 The proxy store is shared machine-wide. **Delete project proxies** also removes proxy files used by other projects that reference the same source files. A confirmation dialog warns about this before deletion.

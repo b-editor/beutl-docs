@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Sound
 
-Imports an audio file (WAV / MP3 / OGG / etc.) as a sound source. The signal is decoded and resampled to the project sample rate at playback time. The element keeps the source's channels until the panner places it in the [project's speaker layout](../../../get-started/multichannel-audio.md).
+Imports an audio file (WAV / MP3 / OGG / etc.) as a sound source. The signal is decoded and resampled to the project sample rate at playback time. The sound keeps the source's channels until the panner places it in the [project's speaker layout](../../../get-started/multichannel-audio.md).
 
 ## Library location
 
@@ -24,7 +24,7 @@ The audio file to play.
 
 ### Channel assignment (ChannelMap)
 
-Which source channels this element uses: **Auto** keeps the source's own channels, and **Mono**, **Stereo**, **5.1ch**, and **7.1ch** assign a source channel, or **None**, to each element channel. See [Assign source channels](../../../get-started/multichannel-audio.md#assign-source-channels).
+Which source channels this sound uses: **Auto** keeps the source's own channels, and **Mono**, **Stereo**, **5.1ch**, and **7.1ch** assign a source channel, or **None**, to each sound channel. See [Assign source channels](../../../get-started/multichannel-audio.md#assign-source-channels).
 
 - **Type:** `AudioChannelMap`
 - **Default:** `AudioChannelMap.Auto`
