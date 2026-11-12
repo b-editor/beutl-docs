@@ -7,6 +7,7 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.12 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.11 | 10.0 | 12.1.5                                             | 8.x    |
 | 2.0.0-preview.10 | 10.0 | 12.1.4                                             | 8.x    |
 | 2.0.0-preview.9  | 10.0 | 12.1.4                                             | 8.x    |
@@ -35,9 +36,9 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 から preview.11 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
+preview.9 から preview.12 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
 
-Beutl が書き出すファイルを読める最も古いバージョンを示す `FileFormat.Floor` は、preview.11 では `2.0.0-preview.11` です。preview.11 で保存したプロジェクトは、preview.10 以前では開けません。1 行にまとめたプロパティを 1 つの式で動かせるようになり、古いバージョンはこの新しい種類の式を保存時に失うため、下限を引き上げました。
+Beutl が書き出すファイルを読める最も古いバージョンを示す `FileFormat.Floor` は、preview.12 でも `2.0.0-preview.11` のままです。preview.12 にはこれを引き上げた変更がないため、preview.12 で保存したプロジェクトは preview.11 で開けます。preview.11 と preview.12 で保存したプロジェクトは、preview.10 以前では開けません。preview.11 では、1 行にまとめたプロパティを 1 つの式で動かせるようになり、古いバージョンはこの新しい種類の式を保存時に失うため、下限を引き上げました。
 
 ## ソース
 

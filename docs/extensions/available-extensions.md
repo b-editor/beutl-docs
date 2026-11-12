@@ -22,6 +22,7 @@ In Beutl, you can extend the following functionalities:
 | [ViewExtension](editor-integration.md#commands) | Registers commands with stable IDs and handlers |
 | [McpToolExtension](editor-integration.md#mcp-tools) | Adds tools to the live MCP endpoint |
 | [ElementSourceHandlerExtension](editor-integration.md#element-sources) | Creates timeline elements from custom source kinds |
+| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | Takes over files that pages in the browser tab offer for download |
 | ProxyExtension | Registers a media proxy-generator factory |
 | TutorialExtension | Registers tutorials |
 
@@ -32,6 +33,7 @@ In Beutl, you can extend the following functionalities:
 ## Source
 
 - [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs)
 - [`ProxyExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ProxyExtension.cs)
 - [`TutorialExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/TutorialExtension.cs)
 - [`ViewExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ViewExtension.cs)

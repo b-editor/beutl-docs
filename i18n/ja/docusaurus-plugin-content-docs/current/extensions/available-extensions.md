@@ -22,6 +22,7 @@ Beutlでは以下の機能を拡張できます。
 | [ViewExtension](editor-integration.md#commands) | ID とハンドラーを持つコマンドを登録します |
 | [McpToolExtension](editor-integration.md#mcp-tools) | ライブ MCP エンドポイントにツールを追加します |
 | [ElementSourceHandlerExtension](editor-integration.md#element-sources) | 独自のソースからタイムラインの要素を作成します |
+| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | ブラウザタブのページがダウンロード用に提供するファイルを引き受けます |
 | ProxyExtension | メディアのプロキシ生成ファクトリーを登録します |
 | TutorialExtension | チュートリアルを登録します |
 
@@ -32,6 +33,7 @@ Beutlでは以下の機能を拡張できます。
 ## ソース
 
 - [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs)
 - [`ProxyExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ProxyExtension.cs)
 - [`TutorialExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/TutorialExtension.cs)
 - [`ViewExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ViewExtension.cs)

@@ -26,6 +26,12 @@ The sample rate must be positive. Latency is non-negative; `int.MaxValue` repres
 
 `context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` reads a parameter's keyframes and expression into a span. It evaluates an expression on a 10 ms grid, so a script does not run for every sample. In between, `float` values are interpolated and other types keep the previous grid value. A node that takes a static path whenever `GetKeyFrameAnimation()` returns `null` plays the stored value under an expression, so test `IExpressionProperty.HasExpression` as well.
 
+## Sample rates {/* #sample-rates */}
+
+Since preview.12, a sound whose source has a sample rate other than the project's, such as a 44.1 kHz file in a 48 kHz project, keeps the source's rate through its speed, panner, gain and effects, and Beutl converts it to the project's rate after the last effect. An effect in that chain receives buffers and `AudioProcessContext.SampleRate` at the source's rate, and Beutl asks its node for latency at that rate. Take the rate from the context or the buffer: `AudioContext.SampleRate` in `CreateNode` is always the project's. A frequency at or above half the source's rate cannot be represented; the built-in equalizer clamps its bands just under it, so a 10 kHz band on 8 kHz audio acts near 4 kHz.
+
+The **Resampling** effect (`ResamplingEffect`) converts to the project's rate where it stands, so the effects after it run at the project's rate; to run an effect at the project's rate, put Resampling before it. `SoundGroup` and `SceneSound` mix at the project's rate, and their effects run at it. A `Sound` that overrides `Compose` converts its source's rate itself with `context.CreateResampleNode(sourceSampleRate)`, and a Resampling effect in its chain passes the audio through.
+
 ## Channel layouts {/* #channel-layouts */}
 
 A project renders in the layout of `Project.ChannelLayout`: mono, stereo, 5.1 or 7.1. Each sound is processed in its own source's channels until its panner places it in the project layout, and its effects run after that panner. In a 5.1 project an effect therefore receives six channels, and that includes third-party effects. `Composer` throws `InvalidOperationException` when a sound's output has another channel count, so an effect must return the project's channel count.
@@ -109,5 +115,6 @@ Keep input-dependent state in `OnInputAdded(AudioNode, int)`, `OnInputRemoved(Au
 - [`AnimationSampler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/AnimationSampler.cs)
 - [`AudioProcessContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioProcessContext.cs)
 - [`AudioContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioContext.cs)
+- [`ResamplingEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/ResamplingEffect.cs) and [`ResampleNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/Nodes/ResampleNode.cs)
 - [`Sound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Sound.cs)
 - [`SoundGroup.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/SoundGroup.cs)

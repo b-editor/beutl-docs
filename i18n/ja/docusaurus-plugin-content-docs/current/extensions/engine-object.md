@@ -209,6 +209,8 @@ public sealed partial class MyProperties
 
 `PostReconcile` ではスナップショット値から派生データを作り、自分で所有するリソースは破棄時のフックで解放します。生成された実装は `disposing` が `true` のときに自身の子リソースを解放します。[`RectShape`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) もこのパターンを使います。[描画オブジェクトのガイド](implement-drawing-object.md) には、公開 API を使った拡張機能の完全な実装例があります。
 
+別の `EngineObject` から派生したクラスでは、生成された `Reconcile` は、そのクラスの `PreReconcile`、基底クラスの `Reconcile`（基底クラスのフックを含みます）の順に実行し、そのあとでそのクラス自身のプロパティを評価して `PostReconcile` を実行します。そのため、`AudioVisualizerDrawable.Resource` が `PostReconcile` から `ComputeSampleWindow` を呼ぶように、基底クラスのフックからオーバーライドが呼ばれると、派生クラスのプロパティは前回の値のままで、新しいリソースでは既定値です。このようなオーバーライドが読む値は `PreReconcile` で評価し、`_windowFftSize = context.Get(obj.FftSize)` のように専用のフィールドに保持してください。`_fftSize` のように、ジェネレータがプロパティのために持つフィールドには書き込まないでください。生成された `Reconcile` は、新しい値をこのフィールドと比べて、リソースが変わったかどうかを判断します。
+
 ## 編集時 vs 描画時
 
 この 2 つのレイヤーを意識してください。
@@ -286,6 +288,7 @@ public sealed class MyExtension : Extension
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
 - [`EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs) and [`ResourceClassEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Emit/ResourceClassEmitter.cs)
+- [`AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)
 - [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)

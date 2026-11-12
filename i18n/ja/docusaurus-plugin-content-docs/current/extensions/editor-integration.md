@@ -1,10 +1,10 @@
 ---
 title: エディタとの連携
-description: 公開された拡張契約を使って、コマンド、プロパティエディタ、MCP ツール、要素のソースを登録します。
+description: 公開された拡張契約を使って、コマンド、プロパティエディタ、MCP ツール、要素のソースを登録し、ブラウザのダウンロードを引き受けます。
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.11 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.11 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.12 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.12 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -223,6 +223,69 @@ public static class SequenceRequests
 
 登録の既定値は `ElementSourceHandlerRegistrationMode.Add` です。同じソース型の既存ハンドラーを意図的に置き換える場合にだけ `Replace` を使ってください。
 
+## ブラウザのダウンロード {/* #browser-downloads */}
+
+preview.12 以降、`BrowserDownloadExtension` は、[ブラウザ](../reference/tool-tabs/web-browser.md)タブのページがダウンロード用に提供するファイルを引き受け、独自の方法でエディタに追加できます。たとえば、音声合成サイトが生成した音声を、そのセリフとともに配置できます。ページがファイルを提供すると、ブラウザは各 `BrowserDownloadExtension` に順に `Claim` で問い合わせ、最初に引き受けた拡張機能が処理します。拡張機能に問い合わせるのは、保存済みのプロジェクトにある保存済みのシーンに、エディタがファイルを追加できる間だけです。それ以外のときは、通常どおり保存先を確認します。
+
+- `Claim(BrowserDownloadOffer)` は、提供されるファイルごとに UI スレッドで呼ばれます。提供の内容だけで判断してすぐに戻り、ファイルをブラウザに任せる場合は `null` を返してください。`Page` は表示中のページ、`SuggestedName` はページかサーバーが示したファイル名、`Source` はファイルのアドレスです。ページのスクリプトが生成したファイル（`IsGenerated`）には再び要求できるアドレスがないため、`Source` はそのファイルの提供元とされるサイトになります。`Claim` で例外が発生するとログに記録され、次の拡張機能に問い合わせます。
+- `BrowserDownloadClaim.PageScript` は、ファイルを提供したページでブラウザがすぐに評価する JavaScript の式です。このとき、ページにはまだファイルを生成した内容が表示されています。値が文字列であれば、`ImportAsync` はどのプラットフォームでも、その文字列をそのまま `PageData` として受け取ります。スクリプトが失敗した場合や文字列以外の値になった場合、ユーザーが確定してから 5 秒以内にページが応答しない場合は、`PageData` は `null` です。ページからの入力として扱ってください。`Description` は、ダウンロードのバーでファイル名の代わりに表示されます。
+- ダウンロードは引き続きユーザーがバーで確定するため、ページが単独で何かを追加することはできません。確定すると、ブラウザはダウンロードのオプションを表示せずにファイルをプロジェクトの `resources/downloads` フォルダーに保存し、そのフルパスを `FileName` に入れて、UI スレッドで `ImportAsync` を呼びます。エディタのサービスは `EditorContext` から取得してください。`ImportAsync` が完了するまで、パッケージは読み込まれたままです。
+- `false` を返すとファイルはブラウザに任され、画像・動画・音声のファイルは 1 つの要素としてタイムラインに追加されます。例外は、保存したファイルを追加できなかったこととしてバーに表示され、ファイルはフォルダーに残ります。ユーザーがバーでキャンセルするとトークンが取り消されます。`OperationCanceledException` はそのまま伝播させてください。バーにはキャンセルとして表示されます。
+
+```csharp
+using Beutl;
+using Beutl.Editor.Services;
+using Beutl.Extensibility;
+
+[Export]
+public sealed class SpeechDownloads : BrowserDownloadExtension
+{
+    public override BrowserDownloadClaim? Claim(BrowserDownloadOffer offer)
+    {
+        if (offer.Page.Host != "speech.example"
+            || !string.Equals(Path.GetExtension(offer.SuggestedName), ".mp3", StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return new BrowserDownloadClaim
+        {
+            // The line the page spoke, read while the page still shows it.
+            PageScript = "document.querySelector('#text')?.value ?? ''",
+            Description = "Add the speech, named after its line"
+        };
+    }
+
+    public override async ValueTask<bool> ImportAsync(
+        BrowserDownloadImportContext context, CancellationToken cancellationToken)
+    {
+        if (context.EditorContext.GetService(typeof(IElementAdder)) is not IElementAdder adder)
+            return false;
+
+        MediaTime start = context.EditorContext.GetService(typeof(IEditorClock)) is IEditorClock clock
+            ? clock.CurrentTime.Value
+            : MediaTime.Zero;
+        ElementAddResult result = await adder.AddAsync(
+            [new ElementDescription(
+                Start: start,
+                Length: MediaTime.FromSeconds(5),
+                Layer: 0,
+                Source: new ElementSource.File(context.FileName),
+                Name: context.PageData ?? "")
+            {
+                StacksAboveScene = true
+            }],
+            cancellationToken);
+        if (!result.IsSuccess)
+            throw new InvalidOperationException(result.Failure!.Message, result.Failure.Exception);
+
+        return true;
+    }
+}
+```
+
+preview.12 以降は、シーンエディタの `IEditorContext` から `IExtensionProvider` も取得できます。その `Extensions` と `GetDescriptors<T>()` は登録された拡張機能をメタデータとして列挙し、`TryAcquire` は 1 つの処理のあいだ拡張機能を確保するリースを返します。ブラウザも、各 `BrowserDownloadExtension` をこの方法で呼び出しています。処理が終わったらリースを破棄してください。
+
 ## 復旧した要素の修復 {/* #element-recovery */}
 
 独自のエディタも、通常の編集前に `Scene.IsElementLocked(element)` を確認してください。ユーザーによるロックだけでなく、復旧のために保存が保護されている要素も対象です。保護の原因となる値やオブジェクトを除去・置換する修復では、通常の公開プロパティ・キーフレーム・コレクション API で変更した後、同じシーンを監視する `HistoryManager` を渡して `ElementRecoveryService.TryCompleteRepair(element, history)`（`Beutl.Editor.Services`）を呼びます。その後、同じ履歴トランザクションを確定してください。
@@ -247,6 +310,8 @@ public static class SequenceRequests
 - [`ElementSourceHandlerExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementSourceHandlerExtension.cs)
 - [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
 - [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs) and [`browser-downloads.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/browser-downloads.md)
+- [`IExtensionProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionProvider.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)

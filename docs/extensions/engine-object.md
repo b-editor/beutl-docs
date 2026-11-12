@@ -209,6 +209,8 @@ public sealed partial class MyProperties
 
 Use `PostReconcile` to build derived data from snapshot values, and dispose resources you own in a disposal hook. The generated implementation disposes its own child resources when `disposing` is `true`. [`RectShape`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) follows this pattern; the [drawing-object guide](implement-drawing-object.md) shows a complete extension implementation using public APIs.
 
+In a class derived from another `EngineObject`, the generated `Reconcile` runs the class's `PreReconcile`, then the base class's `Reconcile` with the base's hooks, and only then evaluates the class's own properties and runs its `PostReconcile`. A base hook that calls an override, as `AudioVisualizerDrawable.Resource` calls `ComputeSampleWindow` from its `PostReconcile`, therefore sees the derived properties at their previous values, or at their defaults on a new resource. Evaluate what such an override reads in `PreReconcile` and keep it in a field of its own, such as `_windowFftSize = context.Get(obj.FftSize)`. Do not write the field the generator keeps for the property, such as `_fftSize`: the generated `Reconcile` compares the new value with it to tell whether the resource changed.
+
 ## Edit time vs. render time
 
 Keep these two layers clear in your head:
@@ -286,6 +288,7 @@ public sealed class MyExtension : Extension
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
 - [`EngineObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EngineObject.cs) and [`ResourceClassEmitter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Emit/ResourceClassEmitter.cs)
+- [`AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)
 - [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)

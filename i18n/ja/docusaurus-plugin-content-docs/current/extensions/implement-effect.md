@@ -113,7 +113,7 @@ preview.9 では、`ApplyTo` はエフェクトのクラスにあり、引数で
 
 レンダラーが実行する `CustomEffect` のコールバックから、別の `RenderNodeRenderer` は起動できません。`Open` で得たキャンバスの `DrawDrawable` や `DrawNode` を経由する場合も同じで、呼び出すと `InvalidOperationException` が発生します。描画オブジェクトを `RenderNode` に記録し、`CustomFilterEffectContext.ExecutionContext.RenderDependency(root, identity, domain)` で描画して、返された画像を描いてください。この依存描画は、リクエストの割り当て、作業密度、キャンセル、循環検出を共有します。同じ identity の画像を再利用できるのは、同じ記録済みエフェクトの中だけです。レンダラーの外で実行されるとき、`ExecutionContext` は `null` です。
 
-`ContinuationEffect(data, action)` のコールバックは、後に記録された操作を表す `FilterEffectContinuation` を受け取ります。何度でも実行でき、実行しなくても構いません。`TargetEffect(data, action)` のコールバックは `CompositionTargetAccess` を受け取ります。その `Capture()` と `Replace(image)` で、エフェクトの下にあるコンポジションターゲットを読み取り、置き換えます。これらを記録するリソースは、どの評価時刻でも、それぞれ `ControlsContinuation`、`MayAccessTarget` から `true` を返す必要があります。エンジンは記録の前にこの宣言をもとにチェーンを分割し、ターゲットへの処理を振り分けるため、宣言せずに記録すると例外が発生します。
+`ContinuationEffect(data, action)` のコールバックは、後に記録された操作を表す `FilterEffectContinuation` を受け取ります。何度でも実行でき、実行しなくても構いません。`TargetEffect(data, action)` のコールバックは `CompositionTargetAccess` を受け取ります。その `Capture()` と `Replace(image)` で、エフェクトの下にあるコンポジションターゲットを読み取り、置き換えます。preview.12 以降は、その `LocalToDevice` で、エフェクトのローカル座標を、平行移動と描画の密度を含めて、キャプチャした画像のピクセル座標に変換できます。これらを記録するリソースは、どの評価時刻でも、それぞれ `ControlsContinuation`、`MayAccessTarget` から `true` を返す必要があります。エンジンは記録の前にこの宣言をもとにチェーンを分割し、ターゲットへの処理を振り分けるため、宣言せずに記録すると例外が発生します。
 
 ### メタデータコールバックの診断
 
@@ -296,6 +296,35 @@ public sealed class MyEffectExtension : Extension
 
 複数のエフェクトをまとめたい場合は、[EngineObject リファレンス](engine-object.md#ライブラリへの登録) で説明している `RegisterGroup` ヘルパーを使うと、ライブラリ上で 1 つのカテゴリにグルーピングできます。
 
+### ライブラリのサムネイル {/* #library-thumbnails */}
+
+preview.12 以降、ライブラリタブとエフェクトのピッカーは、各エフェクトを動くサムネイルで表示します。Beutl はエフェクトを、プレビューに表示されているフレームや、エフェクトを追加しようとしているオブジェクトなど、プロジェクトの内容に適用し、内容がない場合はサンプル画像に適用します。レシピのないエフェクトは、風景のサンプルの上で既定値のまま再生されます。既定値では何も変えないエフェクトも多いため、拡張機能を読み込むときに、エフェクトごとにレシピを登録してください。
+
+```cs
+using Beutl.Editor.Services.LibraryThumbnails;
+
+namespace MyExtension;
+
+public static class MyEffectThumbnails
+{
+    // Call this from MyEffectExtension.Load().
+    public static void Register()
+        => LibraryThumbnailRecipes.Register<HighContrastBlur>(
+            LibraryThumbnailSample.Landscape,
+            (effect, context) =>
+            {
+                effect.Contrast.Value = 40;
+                context.Animate(effect.BlurSigma, p => context.Scale(16) * LibraryThumbnailContext.Wave(p));
+            });
+}
+```
+
+- サンプルは、プロジェクトに内容がない場合に、エフェクトが最もよく分かる画像です。`Landscape`、`NightLights`、`GreenScreen`、`Object`、`Text`、`Shapes` から選びます。サンプルを指定しないオーバーロードは `Landscape` を使います。
+- Beutl はサムネイルを描くたびに、エフェクトの新しいインスタンスでレシピを呼びます。そのインスタンスに表示する値を設定し、`context.Animate(property, valueAt)` で値を動かします。`valueAt` はサムネイルの再生位置を、始まりの 0 から終わりの 1 までの値で受け取り、描画スレッドで実行されます。
+- サムネイルは、再生していない間は中央のフレームを表示します。`LibraryThumbnailContext.Wave(progress)` は 0 から中央で 1 まで上がって 0 に戻るため、これで動かした値は静止時に最もはっきり表示され、つなぎ目なくループします。
+- エフェクトは、プロジェクトでの大きさのまま内容に適用されます。大きさは短辺が 1080 の画像に対する値で指定し、`context.Scale(value)` を通して `context.Size` に合わせてください。小さなオブジェクトでも、フレーム全体と同じように効果が見えます。`context.Subject` はその画像です。動く内容でしか効果が見えないエフェクトでは、レシピでこれを動かせます。
+- トランジションも同じ方法でレシピを登録できます。その場合、`context.Subject` は `null` です。拡張機能のレシピは、その拡張機能がアンロードされると削除されます。
+
 ## Beutl ソースの参考ファイル
 
 <div style={{ overflowX: 'auto' }}>
@@ -316,4 +345,5 @@ public sealed class MyEffectExtension : Extension
 - [`RenderExecutionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderExecutionContext.cs), [`CompositionTargetAccess.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/CompositionTargetAccess.cs), and [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)
 - [`ShaderGraphBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderGraphBuilder.cs) and [`ShaderPassBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderPassBuilder.cs)
 - [`ICompositionEvaluationServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/ICompositionEvaluationServices.cs) and [`AudioSpectrum.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioSpectrum.cs)
+- [`LibraryThumbnailRecipes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailRecipes.cs), [`LibraryThumbnailContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailContext.cs), and [`LibraryThumbnailSample.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailSample.cs)
 - [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md) and [`resolution-independent-rendering.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/resolution-independent-rendering.md)
