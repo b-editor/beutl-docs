@@ -45,10 +45,6 @@ description: 拡張機能の設定
 - MediaCodec
 - Vulkan
 
-:::note
-スクリーンショットにある **ForceSrgbGamma** の設定は 2.0.0-preview.10 で削除され、保存された値は無視されます。デコーダーは SDR の動画を色のタグに従って読み込みます。[更新する前に](../get-started/install.md#更新する前に)を参照してください。
-:::
-
 ### Media Foundation デコーディング
 
 ![](_images/media-foundation-decoder-settings.png)
