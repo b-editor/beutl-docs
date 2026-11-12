@@ -54,7 +54,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 The SDK takes care of:
 
-- Setting `TargetFramework` to `net10.0`, plus `ImplicitUsings` and `Nullable` to `enable`.
+- Setting `TargetFramework` to `net11.0` (`net10.0` up to preview.11), plus `ImplicitUsings` and `Nullable` to `enable`.
 - Adding `PackageReference`s to `Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, and the `Beutl.Engine.SourceGenerators` analyzer.
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
 - Turning each `BeutlHostPackageReference` into a compile-only reference at the version Beutl ships (since preview.11).
@@ -100,7 +100,7 @@ To use a library that Beutl also ships, such as FluentIcons, add a `BeutlHostPac
 3. Enter the project name and location, then click Next.
 ![Confirm Name and Location](_images/2.create-csproj/visual-studio/confirm-name-and-location.png)
 
-4. Select `.NET 10.0` as the framework. (The `Beutl.Extensibility.Sdk` will override this anyway, but pick a framework that matches the Beutl release you target so IntelliSense is correct from the start.)
+4. Select `.NET 11.0` as the framework (`.NET 10.0` for preview.11 and earlier). (The `Beutl.Extensibility.Sdk` will override this anyway, but pick a framework that matches the Beutl release you target so IntelliSense is correct from the start.)
 
 5. Click Create.
 
