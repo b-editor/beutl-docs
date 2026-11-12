@@ -31,26 +31,26 @@ Each sound has a **Panner** section below its audio effects in the [Element Prop
 | **Center** | `0` to `100` | `0` | Moves part of the front image into the center speaker, less as **Pan** moves off-center. |
 | **LFE** | `0` to `100` | `0` | Sends a 120 Hz low-pass of the sound to the LFE channel. |
 
-What the panner can do depends on the project and the clip:
+What the panner can do depends on the project and the sound. Each sound has its own panner, even when several sounds belong to one element:
 
-| Project | Clip | Available |
+| Project | Sound | Available |
 |---------|------|-----------|
 | Mono | Any | Nothing. The panner has no effect, so its controls are disabled. |
 | Stereo | Any | **Pan** |
 | 5.1 or 7.1 | One or two channels | All four properties |
-| 5.1 or 7.1 | Three or more channels, or a sound group or scene reference | **Pan** only. The clip's channels keep their own speaker positions. |
+| 5.1 or 7.1 | Three or more channels, or a sound group or scene reference | **Pan** only. The sound's channels keep their own speaker positions. |
 
 [Audio effects](../reference/library/audio-effects/index.md) run after the panner, so in a surround project they process all of the project's channels. The master output holds every sample within full scale, so a large gain or a delay fed back at 100% cannot exceed 0 dBFS.
 
 ## Assign source channels
 
-The built-in decoders read a source's own channels, and a clip keeps them until the panner places it in the project's layout. [Sound](../reference/library/sounds/sound.md) clips also have a **Channel assignment** section, which is collapsed until you expand it. It takes any channels from a source, for example stereo from channels 3 and 4 of a four-channel camera file.
+The built-in decoders read a source's own channels, and a sound keeps them until the panner places it in the project's layout. [Sound](../reference/library/sounds/sound.md) objects also have a **Channel assignment** section, which is collapsed until you expand it. It takes any channels from a source, for example stereo from channels 3 and 4 of a four-channel camera file.
 
 1. Choose a **Format**: **Auto**, **Mono**, **Stereo**, **5.1ch**, or **7.1ch**. **Auto** uses the source's own channels and is the default.
 2. Beutl fills in a default assignment for that format. Mono takes channel 1. Stereo takes channels 1 and 2, or channel 1 on both sides of a one-channel source. 5.1 and 7.1 take the channel that matches each speaker.
-3. Change a row to pick a different source channel for that clip channel, or choose **None** for silence. Source channels read like `3 (Ls)`, or as plain numbers when the source has no speaker positions. Each selection is one undo step.
+3. Change a row to pick a different source channel for that sound channel, or choose **None** for silence. Source channels read like `3 (Ls)`, or as plain numbers when the source has no speaker positions. Each selection is one undo step.
 
-A missing or unreadable source only offers **Auto**. An assignment records the layout of the source it was made for. If the file is replaced by one with different channels, the clip uses **Auto** until you assign it again, so a saved "channel 3" never reads a different channel silently.
+A missing or unreadable source only offers **Auto**. An assignment records the layout of the source it was made for. If the file is replaced by one with different channels, the sound uses **Auto** until you assign it again, so a saved "channel 3" never reads a different channel silently.
 
 ## Play it back
 

@@ -113,7 +113,7 @@ An `AppendSkiaFilter` factory must only produce its filter. It must not re-enter
 
 A `CustomEffect` callback run by the renderer cannot launch another `RenderNodeRenderer`, including through `DrawDrawable` or `DrawNode` on a canvas from `Open`; such a call throws `InvalidOperationException`. Record the drawable into a `RenderNode`, render it with `CustomFilterEffectContext.ExecutionContext.RenderDependency(root, identity, domain)`, and draw the returned image. The dependency shares the request's allocation, working density, cancellation and cycle detection. A repeated identity reuses the image only within the same recorded effect. `ExecutionContext` is `null` when the effect runs outside the renderer.
 
-`ContinuationEffect(data, action)` hands its callback a `FilterEffectContinuation` for the operations recorded after it, to run any number of times or not at all. `TargetEffect(data, action)` hands its callback a `CompositionTargetAccess`, whose `Capture()` and `Replace(image)` read and replace the composition target beneath the effect. The resource recording them must return `true` from `ControlsContinuation` or `MayAccessTarget` respectively, for every evaluation time. The engine splits chains and routes target work from these declarations before recording, so an undeclared recording throws.
+`ContinuationEffect(data, action)` hands its callback a `FilterEffectContinuation` for the operations recorded after it, to run any number of times or not at all. `TargetEffect(data, action)` hands its callback a `CompositionTargetAccess`, whose `Capture()` and `Replace(image)` read and replace the composition target beneath the effect. Since preview.12, its `LocalToDevice` maps the effect's local coordinates to pixels of the captured image, including the translation and the render density. The resource recording them must return `true` from `ControlsContinuation` or `MayAccessTarget` respectively, for every evaluation time. The engine splits chains and routes target work from these declarations before recording, so an undeclared recording throws.
 
 ### Metadata callback diagnostics
 
@@ -296,6 +296,35 @@ public sealed class MyEffectExtension : Extension
 
 If you want to bundle several effects together, use the `RegisterGroup` helper described in the [EngineObject reference](engine-object.md#registering-with-the-library) to organize them under a single library category.
 
+### Library thumbnails {/* #library-thumbnails */}
+
+Since preview.12, the library tab and the effect picker show each effect as a moving thumbnail. Beutl applies the effect to the project's content, such as the frame the preview shows or the object the effect is being added to, or to a sample picture where there is none. An effect without a recipe plays at its default values over the landscape sample, and many effects change nothing at their defaults, so register a recipe for each of your effects when the extension loads:
+
+```cs
+using Beutl.Editor.Services.LibraryThumbnails;
+
+namespace MyExtension;
+
+public static class MyEffectThumbnails
+{
+    // Call this from MyEffectExtension.Load().
+    public static void Register()
+        => LibraryThumbnailRecipes.Register<HighContrastBlur>(
+            LibraryThumbnailSample.Landscape,
+            (effect, context) =>
+            {
+                effect.Contrast.Value = 40;
+                context.Animate(effect.BlurSigma, p => context.Scale(16) * LibraryThumbnailContext.Wave(p));
+            });
+}
+```
+
+- The sample is the picture that shows the effect best where the project has no content: `Landscape`, `NightLights`, `GreenScreen`, `Object`, `Text` or `Shapes`. The overload without it uses `Landscape`.
+- Beutl calls the recipe with a new instance of the effect each time it draws the thumbnail. Set the values to show on that instance, and make a value move with `context.Animate(property, valueAt)`: `valueAt` receives how far the thumbnail has played, from 0 at its start to 1 at its end, and runs on the render thread.
+- A thumbnail shows its middle frame at rest. `LibraryThumbnailContext.Wave(progress)` rises from 0 to 1 at the middle and falls back, so a value animated with it is clearest at rest and loops without a jump.
+- The effect applies to the content at its size in the project. Give sizes for a picture 1080 units on its shorter side and pass them through `context.Scale(value)`, which fits them to `context.Size`, so a small object shows as much as a whole frame. `context.Subject` is that picture, which a recipe can move for an effect that shows only on moving content.
+- A transition registers a recipe the same way; its `context.Subject` is `null`. The recipes of an extension are removed when it unloads.
+
 ## Reference files in the Beutl source
 
 <div style={{ overflowX: 'auto' }}>
@@ -316,4 +345,5 @@ If you want to bundle several effects together, use the `RegisterGroup` helper d
 - [`RenderExecutionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderExecutionContext.cs), [`CompositionTargetAccess.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/CompositionTargetAccess.cs), and [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)
 - [`ShaderGraphBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderGraphBuilder.cs) and [`ShaderPassBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderPassBuilder.cs)
 - [`ICompositionEvaluationServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/ICompositionEvaluationServices.cs) and [`AudioSpectrum.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioSpectrum.cs)
+- [`LibraryThumbnailRecipes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailRecipes.cs), [`LibraryThumbnailContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailContext.cs), and [`LibraryThumbnailSample.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryThumbnails/LibraryThumbnailSample.cs)
 - [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md) and [`resolution-independent-rendering.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/resolution-independent-rendering.md)

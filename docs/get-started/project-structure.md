@@ -43,7 +43,7 @@ The local UI state in `.beutl` is excluded from project history. See [Version Co
 
 ## Version compatibility {/* #version-compatibility */}
 
-**Saving with 2.0.0-preview.11 raises the project file format floor to 2.0.0-preview.11. Projects saved by preview.11 do not open in preview.10 or earlier.** Back up the whole project folder before upgrading if you need to keep an older version usable.
+**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12 keeps the project file format floor at 2.0.0-preview.11, so projects it saves still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
 
 Project, scene, and element files record the minimum Beutl version needed to open them. Preview.11 raises the floor because a row that shows two or three values together, such as a Translate's X and Y, saves its expression as a new kind of expression. An older version would find no expression there and lose it the next time it saved, so it refuses such a project instead. The floor applies to every project that preview.11 saves, whether or not it uses such an expression. See [Values shown in one row](./keyframe.md#joined-rows).
 
@@ -65,7 +65,7 @@ Preview.9 stores timeline and media times as integer flick counts. Older time st
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`EditorConstants.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/EditorConstants.cs)
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)

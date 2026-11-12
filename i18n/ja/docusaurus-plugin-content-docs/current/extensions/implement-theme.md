@@ -8,7 +8,7 @@ description: ThemeExtension で拡張機能から独自のテーマを提供し�
 Beutl 自身の既定のダークテーマもこの仕組みで書かれているため、拡張機能のテーマが機能面で劣ることはありません。組み込みテーマが定義するブラシはすべて差し替えられます。
 
 :::info
-`ThemeExtension` は Beutl 2.0.0-preview.7 で追加されました。このガイドの例は `Beutl.Extensibility.Sdk` のバージョン `2.0.0-preview.11` を対象にしています。[拡張機能用のC#プロジェクトを作成](create-csproj.md) を参照してください。
+`ThemeExtension` は Beutl 2.0.0-preview.7 で追加されました。このガイドの例は `Beutl.Extensibility.Sdk` のバージョン `2.0.0-preview.12` を対象にしています。[拡張機能用のC#プロジェクトを作成](create-csproj.md) を参照してください。
 :::
 
 ## 1. 最小のテーマ拡張機能

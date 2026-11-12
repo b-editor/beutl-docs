@@ -27,7 +27,7 @@ You can also open the same animation in the Graph Editor tab from the **Open** i
 
 - **Properties tree (left)**: A hierarchy of drawables, effects, transforms, nested properties, and value channels. Select a row to change the editing target.
 - **Toolbar (below the graph)**: Value/speed graphs, snapping, transform box, automatic height, easing, keyframe velocity, and tangent linkage.
-- **Timeline scale (top center)**: The time axis ruler. Shows the playback position and the scene start/end bars.
+- **Timeline scale (top center)**: The time axis ruler. Shows the playback position and the scene start/end bars. Its times follow the [time display format](../../settings/editor.md#time-display-format).
 - **Vertical scale (center left)**: The value ruler. Lets you read values above and below the baseline (the 0 position).
 - **Graph panel (center)**: The work area where keyframes and interpolation curves are drawn on a 2D graph.
 
@@ -189,3 +189,4 @@ According to the **Settings > Editor settings > Timeline auto-scroll during play
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) (entry point for opening the tab)
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
 - [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)
+- [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)

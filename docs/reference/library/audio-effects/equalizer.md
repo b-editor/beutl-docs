@@ -71,7 +71,10 @@ Q factor (filter bandwidth; smaller = wider).
 
 - Bands left at the default `Peak` / `0 dB` (and with no animation) are skipped during processing, so a flat curve does not add per-band biquads to the signal path.
 - Switching the `Band Count` preset rebuilds the `Bands` list, so any per-band edits made before the change are discarded.
+- The bands work at the sample rate of the audio they are given. On a [Sound](../sounds/sound.md) whose file has another sample rate than the project, that is the file's rate, and a band above half of it is held just under it: a 10 kHz boost on 8 kHz audio lands near 4 kHz. Put a [Resampling](./resampling.md) effect before the equalizer to work at the project's rate.
 
 ## Source
 
 [`src/Beutl.Engine/Audio/Effects/EqualizerEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/EqualizerEffect.cs)
+
+- [`BiQuadFilter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Effects/Equalizer/BiQuadFilter.cs)

@@ -21,13 +21,23 @@ For objects like rectangles, the boundary lines might overlap with the drawing c
 
 ## Move the Playhead with a Click on the Timeline
 
-When on, a click on the timeline moves the playhead. When off, the playhead moves only from the ruler or by dragging its line, so an accidental click on an empty part of the timeline leaves it where it is, and a plain drag on an empty part selects clips without a modifier key. See [Timeline](../reference/tool-tabs/timeline.md#selection).
+When on, a click on the timeline moves the playhead. When off, the playhead moves only from the ruler or by dragging its line, so an accidental click on an empty part of the timeline leaves it where it is, and a plain drag on an empty part selects elements without a modifier key. See [Timeline](../reference/tool-tabs/timeline.md#selection).
 
 The default setting is __"On"__.
 
+## Time Display Format {/* #time-display-format */}
+
+How times are shown in the preview, the rulers of the timeline and the graph editor, and the marker lists. You can also switch it by right-clicking the time in the preview.
+
+- Time (00:00:02.50): hours, minutes, seconds, and hundredths of a second
+- Timecode (00:00:02:15) __(default value)__: hours, minutes, seconds, and frames
+- Frame number (75): the number of the frame from the start of the timeline
+
+At 29.97 and 59.94 fps, a timecode counts its frames in drop-frame and puts a semicolon before them, as in `00:01:00;02`, so it stays within two frames of the clock. Other frame rates, 23.976 fps included, count every frame. When you type a position to jump to, you can type it as it is shown; see [Playback and playhead navigation](../reference/tool-tabs/timeline.md#playback-and-playhead-navigation).
+
 ## Show Timeline Thumbnails by Default
 
-Shows filmstrips and waveforms on timeline clips. When off, clips show none until you turn off **Disable Thumbnails** in a clip's right-click menu, which keeps zooming a timeline full of media responsive. A clip's own choice is kept only where it differs from this setting, so the other clips follow the setting when it changes.
+Shows filmstrips and waveforms on timeline elements. When off, elements show none until you turn off **Disable Thumbnails** in an element's right-click menu, which keeps zooming a timeline full of media responsive. An element's own choice is kept only where it differs from this setting, so the other elements follow the setting when it changes.
 
 The default setting is __"On"__.
 
@@ -130,7 +140,7 @@ Sets the quality preset initially selected in the Proxies tool tab.
 
 ### Enable Pointer Lock
 
-Locks the cursor and hides it during drag operations in the property editor (Windows only).
+Hides the cursor while you drag a value, such as a number box or its label in the property editor or a color wheel in the [Color Grading](../reference/tool-tabs/color-grading.md) tab, and puts it back where the drag began. This works on Windows and macOS.
 
 The default setting is __"On"__.
 
@@ -195,11 +205,13 @@ The safe areas and composition guides over the preview. These are the same setti
 
 ## Source
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/EditorConfig.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)
-- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
+- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
 - [`VulkanSwapchainRenderer.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/VulkanSwapchainRenderer.cs)
 - [`WindowsDisplayLuminance.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/WindowsDisplayLuminance.cs)
 - [`HdrBitmapView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrBitmapView.cs)
 - [`HdrOverlay.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrOverlay.cs)
+- [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/TimeDisplayFormat.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
+- [`PointerLockHelper.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PointerLockHelper.cs)

@@ -74,7 +74,7 @@ Plays the target in reverse.
 
 ### Hold First Frame (HoldFirstFrame)
 
-Before the clip's start time, freezes on the first frame instead of being empty.
+Holds the target drawable's first frame when the mapped playback time falls before its time range.
 
 - **Type:** `bool`
 - **Default:** `false`
@@ -82,7 +82,7 @@ Before the clip's start time, freezes on the first frame instead of being empty.
 
 ### Hold Last Frame (HoldLastFrame)
 
-After the clip's end time, freezes on the last frame instead of being empty.
+Holds the target drawable's last frame when the mapped playback time falls after its time range.
 
 - **Type:** `bool`
 - **Default:** `false`
@@ -94,7 +94,7 @@ This object inherits from `Drawable` and exposes the [common properties](../comm
 
 ## Usage
 
-Wrap a video or animated drawable to slow it down, freeze on a poster frame, or loop a short clip across a longer span.
+Wrap a video or animated drawable to slow it down, freeze on a poster frame, or loop a short animation across a longer span.
 
 ## Source
 

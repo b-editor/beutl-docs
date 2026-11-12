@@ -159,7 +159,7 @@ public static class StereoReader
 
 A third-party decoder declares what it returns by setting `ChannelLayout` on its `AudioStreamInfo`. The default is stereo, so a decoder that keeps returning stereo needs no change. `AudioChannelLayout.FromChannelMask(channelCount, mask)` builds a layout from a WAVEFORMATEXTENSIBLE mask, `GetDefault(count)` gives Beutl's assumed speaker order for a count, and `Discrete(count)` describes channels with no known positions.
 
-## Media time and project rates
+## Media time and project rates {/* #media-time-and-project-rates */}
 
 Timeline positions and durations use `Beutl.MediaTime`, a whole number of flicks, with `705,600,000` flicks per second. Use `MediaTime.FromFrames` and a `Rational` frame rate instead of converting through floating-point seconds. `ToFrame`, `RoundToFrame`, and `ToSamples` require an explicit `MidpointRounding` policy.
 
@@ -195,6 +195,23 @@ public static class MediaTiming
 
 Use `MediaTime.FromTimeSpan` and `ToTimeSpan()` at an API or display boundary. `MediaTime.ToString()` displays the flick count, not a timecode. For audio processing ranges, use the sample-count helpers described in [Implementing Audio Effects](audio-effects.md).
 
+Since preview.12, the editor shows times in the format the user picks in **Settings → Editor → Time display format**, timecode by default. To show a time the same way, call `TimeDisplayFormatter.Format(time, frameRate, format)` with `GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value`. `Time` writes 2.5 seconds as `00:00:02.50`, and at 30 fps `Timecode` writes `00:00:02:15` and `Frames` writes `75`. At 29.97 and 59.94 fps a timecode counts in drop-frame, with a semicolon before the frames. The `GotoTimecodeParser.TryParse` overload that takes a `TimeDisplayFormat` reads such times back.
+
+```csharp
+using Beutl;
+using Beutl.Configuration;
+
+public static class EditorTimes
+{
+    // Writes a time the way the preview and the timeline show it.
+    public static string Format(Project? project, MediaTime time)
+        => TimeDisplayFormatter.Format(
+            time,
+            project.GetFrameRate(),
+            GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value);
+}
+```
+
 ## Source
 
 - [`IFrameProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IFrameProvider.cs)
@@ -210,5 +227,6 @@ Use `MediaTime.FromTimeSpan` and `ToTimeSpan()` at an API or display boundary. `
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
+- [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`Project.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Project.cs)
 - [`ProjectRateExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectRateExtensions.cs)

@@ -5,7 +5,7 @@ description: "Filter effects that post-process a drawable's rendered output. Eff
 
 # Filter Effects
 
-Filter effects that post-process a drawable's rendered output. Effects can be chained, animated, and combined with the script subgroup for custom shaders.
+Filter effects that post-process a drawable's rendered output. Effects can be chained, animated, and combined with the script subgroup for custom shaders. The **Filter Effect** tab of the [Library](../../tool-tabs/library.md#filter-effect-and-transition) shows each one as a moving thumbnail.
 
 - [**Blur**](./blur.md) — Applies a Gaussian blur to the layer.
 - [**Sharpen**](./sharpen.md) — Makes details stand out by strengthening the difference between each pixel and its surroundings.

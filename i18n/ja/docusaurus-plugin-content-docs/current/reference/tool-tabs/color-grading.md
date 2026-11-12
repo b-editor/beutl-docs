@@ -81,7 +81,7 @@ sidebar_position: 10
 
 各ホイールは、ベクトルスコープと同じ配置の円盤上のパックです。Cb 軸が右、Cr 軸が上を向いているので、パックをある色相へ動かすと、スコープの軌跡も同じ方向に動きます。
 
-- **円盤をドラッグ**: 輝度を保ったまま色の彩度成分（クロマ）を動かします。`Alt`（macOS では `Command`）を押すと 10 分の 1 の距離だけ動きます。数値フィールドのスクラブと同じく、ドラッグ中にカーソルを隠すことがあります。[エディター設定](../../settings/editor.md#プロパティエディター)の **ポインターロックを有効化** を参照してください。
+- **円盤をドラッグ**: 輝度を保ったまま色の彩度成分（クロマ）を動かします。`Alt`（macOS では `Command`）を押すと 10 分の 1 の距離だけ動きます。数値のボックスのドラッグと同じく、ドラッグが 3 ピクセル動いてからカーソルを隠すので、クリックやダブルクリックではカーソルは隠れません。[エディター設定](../../settings/editor.md#プロパティエディター)の **ポインターロックを有効化** を参照してください。
 - **円盤をダブルクリック**: 輝度を保ったままクロマを取り除きます。
 - **円盤の下のジョグをドラッグ**: R、G、B に同じ量を加え、その領域を明るく、または暗くします。
 - **数値ボックス**: R、G、B を個別に `0.01` 刻みで設定します。
@@ -126,3 +126,4 @@ sidebar_position: 10
 - [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)（ホイールの操作ロジック）
 - [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`TonalRangeSlider.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/TonalRangeSlider.cs)（スライダー）
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs)（プロパティ側の「タブで編集」ボタン）
+- [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)（ホイールのドラッグが始まるタイミング）

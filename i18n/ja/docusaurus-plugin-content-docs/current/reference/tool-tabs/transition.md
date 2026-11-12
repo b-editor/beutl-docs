@@ -1,12 +1,12 @@
 ---
 title: "トランジション"
-description: "クリップの境界のトランジションを編集します。"
+description: "要素の境界のトランジションを編集します。"
 sidebar_position: 23
 ---
 
 # トランジション
 
-クリップの開始・終了位置にあるトランジションの種類・長さ・イージングなどを編集します。
+要素の開始・終了位置にあるトランジションの種類・長さ・イージングなどを編集します。
 
 ## タブの特性
 
@@ -17,15 +17,17 @@ sidebar_position: 23
 
 タイムラインの要素を右クリックし、**トランジション → 開始のトランジション** または **終了のトランジション** を選びます。その端にトランジションがなければ、クロスディゾルブを追加してからタブを開きます。このタブは **「表示」→「ツール」** には表示されません。
 
-タイムラインに表示されたトランジションの傾斜部分をダブルクリックしても編集できます。同じレイヤーで隣接するクリップの境界をダブルクリックすると、そこにトランジションがなければクロスディゾルブを追加します。
+タイムラインに表示されたトランジションの傾斜部分をダブルクリックしても編集できます。同じレイヤーで隣接する要素の境界をダブルクリックすると、そこにトランジションがなければクロスディゾルブを追加します。
 
 ## トランジションの編集
 
 - 上部の種類を選ぶ欄でトランジションを変更します。種類を変えても、時間の設定とイージングは維持されます。
-- 下に表示される **長さ**、**イージング**、選んだ種類の固有のプロパティを編集します。隣接する 2 つのクリップ間に追加した場合、初期の長さを境界の両側に等分します。それぞれのクリップ側が長さを持ちます。
+- 下に表示される **長さ**、**イージング**、選んだ種類の固有のプロパティを編集します。隣接する 2 つの要素間に追加した場合、初期の長さを境界の両側に等分します。それぞれの要素側が長さを持ちます。
 - タイムラインの傾斜部分のハンドルをドラッグして、その側の長さを変更できます。
 - 種類を選ぶ欄の横の **削除** で、共有する境界の両側からトランジションを取り除きます。
 - タブのヘッダーを右クリックして **タブを固定** を有効にすると、別のトランジションを編集してもこの端を表示し続けます。
+
+種類を選ぶ欄では、トランジションがタイルで表示されます。各タイルの動くサムネイルは、この端をはさむ両側の要素の間でトランジションを再生します。隣に要素がない端では、その要素が現れる、または消える様子を見せます。[タイルから選ぶ](./element-property.md#picking-from-tiles)を参照してください。
 
 ## 関連ドキュメント
 
@@ -40,3 +42,4 @@ sidebar_position: 23
 - [`TransitionTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml)
 - [`ElementView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
+- [`TransitionTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)

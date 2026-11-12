@@ -27,6 +27,6 @@ sidebar_position: 4
 - 追加したい動画、音声、画像ファイルをタイムラインの追加したい位置にドラッグアンドドロップして追加します。
 - SVG ファイルは、どの大きさでもくっきり表示される画像として追加されます。
 - 複数のファイルを一度にドロップすると、ドロップ位置から順に並び、音声だけのファイルは別のレイヤーに置かれます。
-- 字幕ファイル（SRT、WebVTT、ASS/SSA）は、字幕ごとに 1 つのテキストクリップになります。[字幕ファイル](../reference/tool-tabs/timeline.md#subtitle-files)を参照してください。
+- 字幕ファイル（SRT、WebVTT、ASS/SSA）は、字幕ごとに 1 つのテキスト要素になります。[字幕ファイル](../reference/tool-tabs/timeline.md#subtitle-files)を参照してください。
 
 <video controls muted playsInline title="" src="_images/4.add-element/file-drag-and-drop.mp4" />

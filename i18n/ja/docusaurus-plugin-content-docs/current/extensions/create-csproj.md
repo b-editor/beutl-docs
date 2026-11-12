@@ -10,7 +10,7 @@ Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明�
 Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
 
 :::tip
-ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.11`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
+ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.12`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.12">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -54,7 +54,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 SDK が以下を自動で行います。
 
-- `TargetFramework` を `net10.0` に、`ImplicitUsings` と `Nullable` を `enable` に設定。
+- `TargetFramework` を `net11.0`（preview.11 までは `net10.0`）に、`ImplicitUsings` と `Nullable` を `enable` に設定。
 - `Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
 - `DebugApplication` が `true` のとき、出力先を `~/.beutl/sideloads/<AssemblyName>` にリダイレクト。
 - `BeutlHostPackageReference` を、Beutl が同梱しているバージョンのコンパイル専用の参照に変換（preview.11 以降）。
@@ -100,7 +100,7 @@ FluentIcons のように Beutl も同梱しているライブラリを使う場�
 3. プロジェクト名、場所を入力して次へをクリックします。
 ![プロジェクト名、場所を入力](_images/2.create-csproj/visual-studio/confirm-name-and-location.png)
 
-4. フレームワークは `.NET 10.0` を選択します（`Beutl.Extensibility.Sdk` 側で上書きされますが、ターゲットの Beutl リリースに合わせておくと最初から IntelliSense が正しく機能します）。
+4. フレームワークは `.NET 11.0`（preview.11 以前は `.NET 10.0`）を選択します（`Beutl.Extensibility.Sdk` 側で上書きされますが、ターゲットの Beutl リリースに合わせておくと最初から IntelliSense が正しく機能します）。
 
 5. 作成をクリックします。
 
@@ -123,7 +123,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.11">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.12">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>

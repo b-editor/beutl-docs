@@ -71,7 +71,10 @@ Q 値（フィルターのバンド幅。小さいほど広い）。
 
 - フィルタータイプが `Peak` で `0 dB`（かつアニメーションなし）のバンドは処理時にスキップされ、フラットな状態でも信号にバイクワッドフィルターが追加されないようになっています。
 - `バンド数` プリセットを切り替えると `バンド` リストが再生成されるため、それまでの個別編集は破棄されます。
+- バンドは、渡された音声のサンプルレートで処理されます。ファイルのサンプルレートがプロジェクトと異なる[サウンド](../sounds/sound.md)ではファイルのサンプルレートで処理され、その半分を超えるバンドはすぐ下の周波数に抑えられます。たとえば 8 kHz の音声で 10 kHz を持ち上げると、4 kHz 付近にかかります。プロジェクトのサンプルレートで処理するには、イコライザーの前に[リサンプリング](./resampling.md)エフェクトを置きます。
 
 ## ソース
 
 [`src/Beutl.Engine/Audio/Effects/EqualizerEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/EqualizerEffect.cs)
+
+- [`BiQuadFilter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Effects/Equalizer/BiQuadFilter.cs)

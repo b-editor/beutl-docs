@@ -26,6 +26,12 @@ sidebar_position: 5
 
 `context.AnimationSampler.SampleBuffer(property, range, sampleRate, output)` は、パラメーターのキーフレームと式を span に読み取ります。式は 10 ms 間隔で評価するので、スクリプトがサンプルごとに実行されることはありません。評価の間は、`float` の値を補間し、それ以外の型は直前の値を保ちます。`GetKeyFrameAnimation()` が `null` を返すときに静的な処理へ進むノードは、式が設定されていても保存された値を再生してしまいます。`IExpressionProperty.HasExpression` も確認してください。
 
+## サンプルレート {/* #sample-rates */}
+
+preview.12 以降、ソースのサンプルレートがプロジェクトと異なるサウンド（48 kHz のプロジェクトにある 44.1 kHz のファイルなど）は、スピード、パンナー、ゲイン、エフェクトの処理をソースのサンプルレートのまま行い、最後のエフェクトのあとでプロジェクトのサンプルレートに変換されます。この中にあるエフェクトは、バッファと `AudioProcessContext.SampleRate` をソースのサンプルレートで受け取り、ノードの遅延もそのサンプルレートで問い合わせられます。サンプルレートはコンテキストかバッファから取得してください。`CreateNode` で受け取る `AudioContext.SampleRate` は、常にプロジェクトのサンプルレートです。ソースのサンプルレートの半分以上の周波数は表現できません。組み込みのイコライザーはバンドの周波数をその直下に制限するため、8 kHz の音声では 10 kHz のバンドが 4 kHz 付近で効きます。
+
+**リサンプリング**エフェクト（`ResamplingEffect`）は、置かれた位置でプロジェクトのサンプルレートに変換するため、そのあとのエフェクトはプロジェクトのサンプルレートで処理されます。エフェクトをプロジェクトのサンプルレートで処理するには、その前にリサンプリングを置きます。`SoundGroup` と `SceneSound` はプロジェクトのサンプルレートでミックスされ、そのエフェクトもプロジェクトのサンプルレートで処理されます。`Compose` をオーバーライドする `Sound` は、`context.CreateResampleNode(sourceSampleRate)` で自らソースのサンプルレートを変換します。その中にあるリサンプリングエフェクトは、音声をそのまま通します。
+
 ## チャンネル構成 {/* #channel-layouts */}
 
 プロジェクトは `Project.ChannelLayout` の構成（モノラル、ステレオ、5.1、7.1）で描画されます。各サウンドはパンナーでプロジェクトの構成に配置されるまでソース自身のチャンネルで処理され、エフェクトはそのパンナーの後で実行されます。そのため 5.1 のプロジェクトでは、サードパーティ製のものを含めて、エフェクトは 6 チャンネルを受け取ります。サウンドの出力のチャンネル数が異なると `Composer` が `InvalidOperationException` を投げるので、エフェクトはプロジェクトのチャンネル数を返す必要があります。
@@ -83,7 +89,7 @@ public sealed class PolarityNode : AudioNode
 
 入力を持たず、ステレオ以外を出力するノードは、無音の `Flush` が同じチャンネル数になるよう `RecordProcessedChannelCount` を呼んでください。
 
-`Compose` をオーバーライドする `Sound` は、コンテキストの構成で出力する必要があります。`context.CreateSourceNode(source, channelMap)` は、ソースと `Sound.Resource.GetChannelMap()` が返すマップからクリップの構成を求めます。`context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` はプロジェクトの構成に変換します。
+`Compose` をオーバーライドする `Sound` は、コンテキストの構成で出力する必要があります。`context.CreateSourceNode(source, channelMap)` は、ソースと `Sound.Resource.GetChannelMap()` が返すマップから要素の構成を求めます。`context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` はプロジェクトの構成に変換します。
 
 ## 末尾の排出
 
@@ -91,7 +97,7 @@ public sealed class PolarityNode : AudioNode
 
 `ProcessTail` は渡されたバッファの所有権を受け取ります。別のバッファを返す場合は入力を破棄してください。例外を伝播する場合も、先に入力を破棄してください。排出中は、遅延に関係するアニメーションパラメーターを終端値に保持します。
 
-クリップの自然な連続終端では、バッファに保持した処理遅延の末尾を維持できます。シーク・ループ・編集などの不連続点では、リセットにより破棄される場合があります。[リミッター](../reference/library/audio-effects/limiter.md)も参照してください。
+要素の自然な連続終端では、バッファに保持した処理遅延の末尾を維持できます。シーク・ループ・編集などの不連続点では、リセットにより破棄される場合があります。[リミッター](../reference/library/audio-effects/limiter.md)も参照してください。
 
 ## ノードの再利用と入力の変更
 
@@ -109,5 +115,6 @@ public sealed class PolarityNode : AudioNode
 - [`AnimationSampler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/AnimationSampler.cs)
 - [`AudioProcessContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioProcessContext.cs)
 - [`AudioContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/AudioContext.cs)
+- [`ResamplingEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Effects/ResamplingEffect.cs) and [`ResampleNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Graph/Nodes/ResampleNode.cs)
 - [`Sound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/Sound.cs)
 - [`SoundGroup.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/SoundGroup.cs)

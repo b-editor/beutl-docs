@@ -54,7 +54,7 @@ Gain applied after limiting. The final peak can reach `Threshold + Makeup Gain`.
 
 - Detection is channel-linked: the loudest sample across all channels drives a single gain factor applied to every channel, so the phase relationship between channels is preserved.
 - The default `Threshold` of `-1` dB (rather than `0`) leaves headroom against the master limiter that is always applied to the mix bus, avoiding double limiting.
-- Non-zero `Lookahead` introduces a fixed delay. The audio graph reports this latency and drains the buffered tail at a natural contiguous clip end. Seeks, loops, edits, and other discontinuities can still reset and discard buffered samples. Keep the default `0` ms when sample-accurate timing and A/V sync matter.
+- Non-zero `Lookahead` introduces a fixed delay. The audio graph reports this latency and drains the buffered tail at a natural contiguous element end. Seeks, loops, edits, and other discontinuities can still reset and discard buffered samples. Keep the default `0` ms when sample-accurate timing and A/V sync matter.
 
 ## Usage
 

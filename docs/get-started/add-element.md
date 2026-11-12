@@ -27,6 +27,6 @@ In this method, an empty element is created, so you need to drag and drop the dr
 - Drag and drop the video, audio, or image file you want to add to the desired position on the timeline.
 - An SVG file is added as an image that stays sharp at any size.
 - Several files dropped together line up one after another from the drop point, and sound-only files go on a layer of their own.
-- A subtitle file (SRT, WebVTT, or ASS/SSA) becomes one text clip per cue. See [Subtitle files](../reference/tool-tabs/timeline.md#subtitle-files).
+- A subtitle file (SRT, WebVTT, or ASS/SSA) becomes one text element per cue. See [Subtitle files](../reference/tool-tabs/timeline.md#subtitle-files).
 
 <video controls muted playsInline title="" src="_images/4.add-element/file-drag-and-drop.mp4" />

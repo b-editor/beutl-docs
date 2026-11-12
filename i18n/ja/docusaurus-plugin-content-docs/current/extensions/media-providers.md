@@ -159,7 +159,7 @@ public static class StereoReader
 
 サードパーティのデコーダーは、`AudioStreamInfo` の `ChannelLayout` を設定して、返す構成を宣言します。既定はステレオなので、ステレオを返し続けるデコーダーは変更不要です。`AudioChannelLayout.FromChannelMask(channelCount, mask)` は WAVEFORMATEXTENSIBLE のマスクから構成を作り、`GetDefault(count)` はチャンネル数に対して Beutl が想定するスピーカー順を返し、`Discrete(count)` は位置が不明なチャンネルを表します。
 
-## メディア時刻とプロジェクトのレート
+## メディア時刻とプロジェクトのレート {/* #media-time-and-project-rates */}
 
 タイムラインの位置と長さには `Beutl.MediaTime` を使います。flick の整数値で時刻を表し、1 秒は `705,600,000` flick です。浮動小数点数の秒数を経由せず、`MediaTime.FromFrames` と `Rational` のフレームレートで変換してください。`ToFrame`、`RoundToFrame`、`ToSamples` には `MidpointRounding` による丸め方を明示します。
 
@@ -195,6 +195,23 @@ public static class MediaTiming
 
 他の API や表示との境界では `MediaTime.FromTimeSpan` と `ToTimeSpan()` を使用できます。`MediaTime.ToString()` はタイムコードではなく flick 数を表示します。音声処理の時間範囲には、[音声エフェクトの実装](audio-effects.md)に記載したサンプル数の変換ヘルパーを使用してください。
 
+preview.12 以降、エディタは **「設定」→「エディター」→「時刻の表示形式」** でユーザーが選んだ形式で時刻を表示します。既定はタイムコードです。同じ形式で時刻を表示するには、`GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value` を渡して `TimeDisplayFormatter.Format(time, frameRate, format)` を呼びます。2.5 秒は、`Time` では `00:00:02.50` になり、30 fps の `Timecode` では `00:00:02:15`、`Frames` では `75` になります。29.97 fps と 59.94 fps のタイムコードはドロップフレームで数え、フレームの前にセミコロンを置きます。`TimeDisplayFormat` を受け取る `GotoTimecodeParser.TryParse` のオーバーロードは、これらの時刻を読み取れます。
+
+```csharp
+using Beutl;
+using Beutl.Configuration;
+
+public static class EditorTimes
+{
+    // Writes a time the way the preview and the timeline show it.
+    public static string Format(Project? project, MediaTime time)
+        => TimeDisplayFormatter.Format(
+            time,
+            project.GetFrameRate(),
+            GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value);
+}
+```
+
 ## ソース
 
 - [`IFrameProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IFrameProvider.cs)
@@ -210,5 +227,6 @@ public static class MediaTiming
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
+- [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`Project.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Project.cs)
 - [`ProjectRateExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectRateExtensions.cs)

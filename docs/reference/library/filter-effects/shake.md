@@ -44,6 +44,8 @@ Speed at which the underlying noise evolves over time.
 
 Use for "camera shake" emphasis on impacts, explosions, or beat drops.
 
+While `StrengthX` and `StrengthY` are both `0`, the effect leaves the layer as it is. A shake animated in from `0` therefore does not soften text or edges on the frames before it begins.
+
 ## Source
 
 [`src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs)

@@ -6,7 +6,7 @@ sidebar_position: 43
 
 # Sharpen
 
-Makes details stand out by adding back the difference between a pixel's lightness and the blurred lightness around it (an unsharp mask). Only the lightness changes, so edges get no colored fringes. Transparent neighbors count for nothing, so the edge of a clip gets no halo and keeps its shape. This effect requires GPU textures and GLSL execution.
+Makes details stand out by adding back the difference between a pixel's lightness and the blurred lightness around it (an unsharp mask). Only the lightness changes, so edges get no colored fringes. Transparent neighbors count for nothing, so the edge of an element gets no halo and keeps its shape. This effect requires GPU textures and GLSL execution.
 
 ## Library location
 

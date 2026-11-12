@@ -44,6 +44,8 @@ sidebar_position: 30
 
 衝撃・爆発・ドロップに合わせた「カメラシェイク」演出に使います。
 
+`強さX` と `強さY` がどちらも `0` の間は、レイヤーをそのまま描画します。そのため、`0` から揺れ始めるアニメーションでも、揺れ始める前のフレームでテキストや縁がぼやけません。
+
 ## ソース
 
 [`src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs)

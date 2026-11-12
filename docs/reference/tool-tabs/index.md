@@ -27,6 +27,8 @@ A tab opened this way, such as the Graph Editor from **Edit animation**, goes ne
 - Hover the selected tab to show its close button. The extension icon appears to the left of the tab title.
 - Press `Ctrl + W` (`Cmd + W` on macOS) to close the focused tool tab, also in a floating window. A tab that cannot close, such as the preview, stays open.
 
+A tab dragged out of the main window floats in a window of its own. A floating window takes the editor's keyboard shortcuts, such as `Ctrl + S`, `Ctrl + Z` (`Cmd` on macOS), `Space`, and `M`. On macOS it also shows the menu bar, and its **Edit** commands act on the floating window. Dialogs opened from there, such as **Create new scene**, appear over the main window. A floating window belongs to its scene: switching to another scene hides it, and switching back shows it again where it was.
+
 ## Switching tabs with the keyboard
 
 | Action | Shortcut |
@@ -70,9 +72,9 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Browser](./web-browser.md) | Browse websites and download media for the project |
 | [AI](./ai-workspace.md) | Generate and edit images and videos, create subtitles, and manage jobs |
 | [Relink missing media](./missing-media.md) | Repair references to moved or missing media and fonts |
-| [Transition](./transition.md) | Edit transitions at the start or end of a clip |
+| [Transition](./transition.md) | Edit transitions at the start or end of an element |
 | [Mobile preview](./mobile-preview.md) | Preview video and audio and control playback from your phone |
-| [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio clip, then split or remove them |
+| [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio element, then split or remove them |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).
 
@@ -83,3 +85,4 @@ The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPr
 - [`TabSwitcherViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TabSwitcherViewModel.cs) / [`TabSwitcherView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TabSwitcherView.axaml.cs)
 - [`NewToolTabDockable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dock/NewToolTabDockable.cs)
 - [`DockStyles.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dock/DockStyles.axaml) / [`ToolTabPin.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Helpers/ToolTabPin.cs)
+- [`FloatingToolWindow.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/Dock/FloatingToolWindow.cs)

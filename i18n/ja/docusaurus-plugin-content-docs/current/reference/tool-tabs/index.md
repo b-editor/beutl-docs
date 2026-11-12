@@ -27,6 +27,8 @@ sidebar_position: 2
 - 選択中のタブにマウスを乗せると閉じるボタンが表示されます。タブ名の左には拡張機能のアイコンが表示されます。
 - `Ctrl + W`（macOS では `Cmd + W`）で、フォーカスのあるツールタブを閉じます。フローティングウィンドウ内のタブも閉じられます。プレビューのように閉じられないタブは開いたままです。
 
+メインウィンドウの外へドラッグしたタブは、独立したフローティングウィンドウになります。フローティングウィンドウでも `Ctrl + S`、`Ctrl + Z`（macOS では `Cmd`）、`Space`、`M` などエディターのショートカットが使えます。macOS ではメニューバーも表示され、その **編集** のコマンドはフローティングウィンドウに対して働きます。そこから開くダイアログ（**シーンを新規作成** など）は、メインウィンドウに表示されます。フローティングウィンドウはシーンに属し、別のシーンに切り替えると隠れ、元のシーンに戻ると同じ位置に再び表示されます。
+
 ## キーボードでタブを切り替える
 
 | 操作 | ショートカット |
@@ -70,9 +72,9 @@ sidebar_position: 2
 | [ブラウザ](./web-browser.md) | Webサイトを閲覧し、プロジェクト用の素材をダウンロードする |
 | [AI](./ai-workspace.md) | 画像・動画の生成と編集、字幕生成、ジョブの管理を行う |
 | [欠損メディアを再リンク](./missing-media.md) | 移動・欠損した素材やフォントの参照先を修復する |
-| [トランジション](./transition.md) | クリップの開始・終了位置のトランジションを編集する |
+| [トランジション](./transition.md) | 要素の開始・終了位置のトランジションを編集する |
 | [スマホプレビュー](./mobile-preview.md) | スマホで映像と音声を確認し、再生を操作する |
-| [無音区間で自動分割](./silence-split.md) | 音声クリップの無音部分を検出し、分割または削除する |
+| [無音区間で自動分割](./silence-split.md) | 音声要素の無音部分を検出し、分割または削除する |
 
 このドキュメントの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` および `src/Beutl.Editor.Components/` 配下の `*TabExtension.cs` です。
 
@@ -83,3 +85,4 @@ sidebar_position: 2
 - [`TabSwitcherViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TabSwitcherViewModel.cs) / [`TabSwitcherView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TabSwitcherView.axaml.cs)
 - [`NewToolTabDockable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dock/NewToolTabDockable.cs)
 - [`DockStyles.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dock/DockStyles.axaml) / [`ToolTabPin.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Helpers/ToolTabPin.cs)
+- [`FloatingToolWindow.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/Dock/FloatingToolWindow.cs)

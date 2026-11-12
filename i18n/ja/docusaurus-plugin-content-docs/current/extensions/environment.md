@@ -32,6 +32,10 @@ _Windowsのみ_
 
 ### インストール
 1. [このページ](https://visualstudio.microsoft.com/ja/vs/)から、__Visual Studio__ をダウンロードします。
+:::tip
+.NET 11 には Visual Studio 2026 バージョン 18.12 以降が必要です。対象とするBeutlのバージョンが使う.NETを確認してください。  
+[バージョンの対応表](version-mapping.md)
+:::
 
 2. ダウンロードしたインストーラーを開きます。
 
@@ -41,7 +45,7 @@ _Windowsのみ_
 
 4. 以下のコンポーネントを選択します。  
    (これは最小構成です。必要に応じて追加してください。)
-  - `.NET 10.0 ランタイム`
+  - `.NET 11.0 ランタイム`（preview.11 以前は `.NET 10.0 ランタイム`）
   - `.NET SDK`
   - `NuGet パッケージ マネージャー`
   - `C# および Visual Basic Roslyn コンパイラ`
