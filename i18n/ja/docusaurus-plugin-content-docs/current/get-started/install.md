@@ -8,6 +8,10 @@ sidebar_position: 1
 
 以下の手順では、インストールするBeutlのバージョンを`{version}`と表記します。
 
+## 動作環境 {/* #system-requirements */}
+
+Beutl は x64 と ARM64 のコンピューターで動作します。x64 では、プロセッサーが x86-64-v2、つまり CX16、POPCNT、SSE3、SSSE3、SSE4.1、SSE4.2 の命令に対応している必要があります。Intel と AMD がサポートを続けているプロセッサーはすべて対応しており、対応していない最後のプロセッサーは 2013 年ごろにサポートが終了しています。Beutl に含まれる .NET 11 ランタイムがこれらの命令を[必要とする](https://learn.microsoft.com/dotnet/core/compatibility/jit/11/minimum-hardware-requirements)ため、2.0.0-preview.12 以降の Beutl は、対応していない x64 プロセッサーでは起動しません。ARM64 の要件は変わっていません。
+
 ## Windowsの場合
 
 Windowsではx64とARM64の両方を利用できます。ARM64デバイスには、ファイル名に`arm64`を含むインストーラーを使用してください。
@@ -87,16 +91,16 @@ Flatpak のインストールでは、ダウンロードが終わるとすぐに
 
 ## 更新する前に
 
-**2.0.0-preview.11 で保存したプロジェクトは、preview.10 以前では開けません。** 古い Beutl に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.12 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.12 で保存したプロジェクトは preview.11 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
 
-preview.11 に更新すると、既存のプロジェクトの見た目や音が変わることがあります。
+**x64 では、preview.12 には x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
 
-- **ストロークとフラットシャドウの輪郭は、見えている縁に沿います。** 輪郭をサブピクセルの精度でなぞるようになり、以前より約 0.5 ピクセル内側になりました。約 3% 未満のアルファと 1 ピクセルより小さな島には輪郭を付けず、半径が約 2.4 ピクセルまでの丸い角は尖った角として描きます。[ストローク](../reference/library/filter-effects/stroke.md)を参照してください。
-- **無効にしたトランスフォームは何も動かしません。** 描画オブジェクトのトランスフォームに直接設定した単独のトランスフォームやグループは、オフにしても適用され続けていましたが、スイッチのとおり効かなくなりました。
-- **スピードのキーフレームがすべて 100% のサウンドは、固定の 100% と同じように再生されます。** 入力はタイムストレッチされずにそのまま通ります。
-- **プレビューのトーンマッピングはディスプレイに従います。** 以前のバージョンで保存したトーンマッピングの **なし** は新しい **自動** として読み込まれるので、HDR ディスプレイ上の HDR プレビューでは **ディスプレイに合わせる** が使われます。SDR のプレビューと書き出しは変わりません。[トーンマッピング](../settings/editor.md#トーンマッピング)を参照してください。
+preview.12 に更新すると、既存のプロジェクトの見た目や音が変わることがあります。
 
-開いているシーンを一度保存した後は、変更した要素だけを書き込むので、その間に Beutl の外で編集した要素ファイルは、Beutl でもその要素を編集しない限り上書きされなくなりました。macOS では、右クリックメニューがネイティブのメニューになりました。[ネイティブのコンテキストメニューを使用](../settings/view.md#ネイティブのコンテキストメニューを使用)を参照してください。
+- **サウンドのエフェクトはファイルのサンプルレートで処理されます。** 48 kHz のプロジェクトに置いた 44.1 kHz のファイルのように、ファイルのサンプルレートがプロジェクトと異なるサウンドでは、スピード、パン、ゲイン、音声エフェクトがファイルのサンプルレートで処理され、その後でプロジェクトのサンプルレートに変換されるようになりました。ファイルのサンプルレートの半分を超えるイコライザーのバンドはそのすぐ下に抑えられるので、8 kHz の音声で 10 kHz を持ち上げると、4 kHz 付近にかかるようになります。エフェクトをプロジェクトのサンプルレートで処理するには、チェーンの先頭に[リサンプリング](../reference/library/audio-effects/resampling.md)エフェクトを置きます。
+- **強さが 0 の振動は、レイヤーをそのまま描画します。** 以前はレイヤーを描き直していたため、揺れ始める前のすべてのフレームで、半端な位置にあるテキストがぼやけていました。[振動](../reference/library/filter-effects/shake.md)を参照してください。
+
+時刻は、100 分の 1 秒までの秒数ではなく、`00:00:02:15` のようなタイムコードで表示されるようになりました。元に戻すには、[時刻の表示形式](../settings/editor.md#time-display-format)で **時間 (00:00:02.50)** を選ぶか、プレビューの時刻を右クリックします。
 
 AIコーディングエージェントを使用している場合は、更新後に [Beutl との連携を再インストール](../advanced/ai-agents.md)してください。
 
@@ -109,8 +113,8 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`build-debian-package.yml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/.github/workflows/build-debian-package.yml)
 - [`build-flatpak-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-flatpak-package.yml)
 - [`Build.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/nukebuild/Build.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/Serialization/FileFormat.cs)
-- [`AlphaOutlineTracer.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/FilterEffects/AlphaOutlineTracer.cs)
-- [`Transform.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/Transformation/Transform.cs)
-- [`SpeedIntegrator.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/SpeedIntegrator.cs)
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Configuration/EditorConfig.cs)
+- [`global.json`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/global.json)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`Sound.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Sound.cs)
+- [`ShakeEffect.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/EditorConfig.cs)

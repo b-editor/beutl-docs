@@ -46,6 +46,20 @@ You can drag the splitters between the columns to change their widths.
 
 When **Move the playhead with a click on the timeline** is turned off in the [Editor settings](../../settings/editor.md#move-the-playhead-with-a-click-on-the-timeline), a click on the timeline leaves the playhead where it is, and a plain drag on an empty area selects elements. The playhead then moves from the ruler, or by dragging its line, where the cursor shows that it can be taken.
 
+#### Selecting several elements at once {/* #select-multiple */}
+
+The **Select Multiple** submenu, in the right-click menu of an element or of an empty area, selects elements by where they are. It measures from the point you right-clicked: its time, and the layer of the element or of the empty area.
+
+- **Select All** / **Deselect All**: the same as `Ctrl + A` / `Ctrl + Shift + A` (`Cmd` on macOS).
+- **Elements in the Same Group**: the elements grouped with the element you right-clicked, or, from an empty area, with the selected elements. It is unavailable when none of them is in a group.
+- **Elements on the Same Layer**: every element on the layer.
+- **Elements at This Position (All Layers)**: the elements on any layer that span the time.
+- **Preceding Elements** / **Following Elements**: the elements on the layer that start at or before the time, or that end after it.
+- **Preceding Elements on All Layers** / **Following Elements on All Layers**: the same on every layer.
+- **Invert Selection**: selects the elements that are not selected, and deselects the rest.
+
+Each command replaces the selection, and it includes locked elements. Commands that edit the selection then leave a locked element alone as usual.
+
 ### Keyboard shortcuts
 
 | Action | Windows / Linux | macOS |
@@ -95,7 +109,7 @@ You can also rename an element by double-clicking its body. Double-clicking a sh
 
 Press **`J`** / **`L`** to shuttle backward / forward — press again to go faster — and **`K`** to stop; add **`Shift`** for finer speed steps. Toggle looped playback with **`/`**.
 
-Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an exact position. It accepts a timecode (`hh:mm:ss.fff` or `mm:ss.fff`), an absolute frame (`#120` or `120f`), a relative offset (`+5s`, `-10f`, `+2m`), or a marker-name prefix (`@intro`).
+Press **`G`**, or click the current time on the preview, to type an exact position for the playhead (**Goto timecode**), then press `Enter`. It accepts a timecode (`hh:mm:ss:ff`, also with `;` before the frames), a time (`hh:mm:ss.fff` or `mm:ss.fff`), an absolute frame (`#120` or `120f`, or just `120` while times show as frame numbers), a relative offset (`+5s`, `-10f`, `+2m`), or a marker-name prefix (`@intro`). At 29.97 and 59.94 fps a timecode counts its frames in drop-frame. Times show in the [time display format](../../settings/editor.md#time-display-format).
 
 ### Command palette
 
@@ -107,11 +121,11 @@ Commands can ask for text or a selection inside the palette. For example, open a
 
 - Toggle **Enable element**
 - Toggle **Lock** (a locked element cannot be moved, trimmed, split, or deleted)
-- Toggle **Razor Tool**
-- Toggle **Ripple Edit**
+- **Editing Mode** submenu: the same tool modes and **Ripple Edit** as in the [empty-area menu](#right-click-menu-on-empty-area)
 - **Split** / **Split by current frame**
 - **Auto Split by Silence** (for elements with audio; opens the [Auto Split by Silence](./silence-split.md) tab)
 - **Cut** / **Copy** / **Delete**
+- **Select Multiple** submenu (see [Selecting several elements at once](#select-multiple))
 - **Track Matte** submenu (see [Track mattes](#track-mattes))
 - **Transition** submenu: **Start Transition** / **End Transition**
 - **Group selected elements** / **Ungroup selected elements**
@@ -209,6 +223,7 @@ Each layer header includes four toggle buttons:
 - **Paste** (elements, files, or images on the clipboard). When nothing can be pasted, for example onto a locked layer or before the project is saved, the timeline says why.
 - **Set start time** / **Set end time** (snap to the click position)
 - **Gaps** submenu: **Close Gap** (the gap at the click position) / **Close All Gaps** / **Go to Next Gap** / **Go to Previous Gap**
+- **Select Multiple** submenu (see [Selecting several elements at once](#select-multiple))
 - Toggle **Automatically adjusts scene duration**
 - Toggle **Snap**
 - **Settings** (open the Scene settings tab)
@@ -218,6 +233,7 @@ Each layer header includes four toggle buttons:
 ### Drag and drop
 
 - Drop an item from the Library (drawables, templates, etc.) to add an element.
+- Drop a transition from the Library onto an element to set it on the element's edge nearer the pointer.
 - Drop a file (image, including [SVG](../library/drawables/sources/image.md), video, audio, or template JSON) to add an element.
 - Drop several files to add them all in one undo step. They line up one after another from the drop point, in name order with numbers in order (`1`, `2`, `10`). Sound-only files go on a layer of their own from the same frame, so background music runs under the pictures. Files that no decoder can open are left out.
 - Drop a subtitle file (SRT, WebVTT, or ASS/SSA) to add one text element per cue at the times the file gives, on new layers above the scene. See [Subtitle files](#subtitle-files).
@@ -296,6 +312,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 ## Timeline scale (top ruler)
 
 - Click or drag on the scale to move the playhead.
+- The scale's times follow the [time display format](../../settings/editor.md#time-display-format): timecodes by default, or times or frame numbers.
 - Drag the red scene start/end bars to change the scene's start time and duration.
 - Click a marker on the upper part of the scale to edit it; drag to move it.
 - Right-click the frame-cache display along the bottom edge for **Delete All / Delete / Lock / Unlock**.
@@ -355,3 +372,6 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 - [`NativeHapticFeedback.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/Helpers/NativeHapticFeedback.cs)
 - [`FileDropLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/FileDropLayout.cs) / [`CaptionFileDrop.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/CaptionFileDrop.cs) (dropped files and subtitle files)
 - [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs) (element templates as subtitle templates)
+- [`TimelineSelectionMenu.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineSelectionMenu.cs) / [`TimelineTabViewModel.Selection.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.Selection.cs) (Select Multiple)
+- [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs) / [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) (times and the scale)
+- [`TimelineTabView.DragDrop.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.DragDrop.cs) (drag and drop)

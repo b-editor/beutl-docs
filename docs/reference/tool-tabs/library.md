@@ -21,13 +21,15 @@ Open it from the menu bar via **View → Tools → Library**.
 
 ## Layout
 
-The top of the tab shows the tab switcher and the bottom shows the contents of the selected tab. There are four tabs:
+The top of the tab shows the tab switcher and the bottom shows the contents of the selected tab. There are six tabs:
 
 | Tab | Role |
 |-----|------|
 | **Search** | Search across the entire library by keyword |
 | **Easings** | List easing functions used to interpolate animations |
 | **Library** | Browse drawables, effects, and other items in a category tree (selected by default) |
+| **Filter Effect** | Browse filter effects as tiles with moving thumbnails |
+| **Transition** | Browse transitions as tiles with moving thumbnails |
 | **Node Graph** | List nodes used in node-based rendering (hidden by default) |
 
 When the tabs do not fit on screen, you can scroll horizontally with the mouse wheel.
@@ -36,7 +38,7 @@ When the tabs do not fit on screen, you can scroll horizontally with the mouse w
 
 You can toggle the visibility of each tab from the right-click context menu on a tab, or from the **"…" button** at the right edge of the tab strip (each entry is the **Always display** toggle).
 
-- **Search / Easings / Library**: Shown by default
+- **Search / Easings / Library / Filter Effect / Transition**: Shown by default
 - **Node Graph**: Hidden by default. Show it when you want to use the node graph
 
 ## Tab contents
@@ -74,6 +76,16 @@ Representative categories:
 
 For details on each item, see the [Library reference](../library/index.md).
 
+### Filter Effect and Transition {/* #filter-effect-and-transition */}
+
+These tabs show the filter effects and the transitions as tiles, in the library's order, including those that extensions add. Each tile has a moving thumbnail and the item's name. Point at a tile to play its thumbnail and see its description.
+
+A tile drags like the same item in the **Library** tree. Drop an effect on a **Filter Effect** section in the [Element Property](./element-property.md) tab, or a transition on an element on the timeline, where it goes on the edge nearer the pointer.
+
+The thumbnails show each effect on the frame the preview shows, without selection outlines or handles. A transition takes that frame out and brings it back in. The thumbnails are drawn again once the preview shows another frame and playback has stopped for a moment. When the preview shows nothing, they use sample pictures that come with Beutl.
+
+The pickers that add an effect or change a transition can show tiles too; see [Picking from tiles](./element-property.md#picking-from-tiles).
+
 ### Node Graph
 
 A category tree of nodes available for node-based rendering. Nodes are grouped by type, and you place them by dragging onto the node graph.
@@ -95,3 +107,5 @@ A category tree of nodes available for node-based rendering. Nodes are grouped b
 - [`EasingsView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/EasingsView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/EasingsView.axaml.cs)
 - [`LibraryView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryView.axaml.cs)
 - [`NodesView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml.cs)
+- [`LibraryGalleryView.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml.cs)
+- [`LibraryGalleryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryGalleryItemViewModel.cs) / [`LibraryPreviewCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryPreviewCapture.cs) / [`LibraryThumbnailSet.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailSet.cs)

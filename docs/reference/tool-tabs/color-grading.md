@@ -81,7 +81,7 @@ Every slider has the same **⋮** menu as the Properties tab, so you can add key
 
 Each wheel is a puck on a disk laid out like the vectorscope: the Cb axis runs to the right and the Cr axis up, so moving the puck toward a hue moves the scope's trace the same way.
 
-- **Drag the disk**: Shifts the color's chroma and keeps its luma. Hold `Alt` (`Command` on macOS) to move a tenth as far. As with a scrub of a number field, the drag can hide the cursor; see **Enable pointer lock** in the [Editor settings](../../settings/editor.md#property-editor).
+- **Drag the disk**: Shifts the color's chroma and keeps its luma. Hold `Alt` (`Command` on macOS) to move a tenth as far. As with a drag of a number box, the cursor hides only once the drag has moved 3 pixels, so a click or a double click leaves it in place; see **Enable pointer lock** in the [Editor settings](../../settings/editor.md#property-editor).
 - **Double-click the disk**: Removes the chroma and keeps the luma.
 - **Drag the jog under the disk**: Adds to R, G, and B together, which brightens or darkens the region.
 - **Number boxes**: Set R, G, and B one at a time, in steps of `0.01`.
@@ -126,3 +126,4 @@ The following state is restored when the tab is reopened, even after it has been
 - [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) (wheel interaction logic)
 - [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`TonalRangeSlider.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/TonalRangeSlider.cs) (sliders)
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs) (the "Edit in tab" button on the properties side)
+- [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs) (when a drag on a wheel begins)

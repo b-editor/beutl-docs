@@ -8,6 +8,10 @@ This page covers the available ways to install Beutl.
 
 In the instructions below, `{version}` represents the version of Beutl you are installing.
 
+## System requirements {/* #system-requirements */}
+
+Beutl runs on x64 and ARM64 computers. On x64, the processor must support x86-64-v2: the CX16, POPCNT, SSE3, SSSE3, SSE4.1, and SSE4.2 instructions. Every Intel and AMD processor that its maker still supports has them; the last processors without them went out of support around 2013. The .NET 11 runtime that Beutl includes [requires them](https://learn.microsoft.com/dotnet/core/compatibility/jit/11/minimum-hardware-requirements), so from 2.0.0-preview.12 on, Beutl does not start on an x64 processor without them. The requirement for ARM64 has not changed.
+
 ## For Windows
 
 Windows supports both x64 and ARM64. For an ARM64 device, use an installer with `arm64` in its file name.
@@ -87,16 +91,16 @@ The first time a newly published version starts, a notification offers **Release
 
 ## Before updating
 
-**Projects saved by 2.0.0-preview.11 cannot be opened in preview.10 or earlier.** Keep a copy of the whole project folder before saving it in the new version if you need to return to an older Beutl. See [Project Structure](./project-structure.md#version-compatibility).
+**2.0.0-preview.12 keeps the project file format floor of preview.11.** Projects saved by preview.12 still open in preview.11, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
 
-Existing projects can look or sound different after updating to preview.11:
+**On x64, preview.12 needs a processor with x86-64-v2.** See [System requirements](#system-requirements).
 
-- **Stroke and Flat Shadow outlines sit on the visible edge.** The outline is now traced at sub-pixel precision, about half a pixel further in than before. Alpha below about 3% and islands smaller than a pixel are no longer outlined, and rounded corners with a radius up to about 2.4 px are drawn sharp. See [Stroke](../reference/library/filter-effects/stroke.md).
-- **A disabled transform moves nothing.** A single transform, or a group, set directly as a drawable's Transform kept applying while it was turned off. It now has no effect, as its switch says.
-- **A sound whose speed keyframes all stay at 100% plays as a fixed 100% speed does**, with the input passed through instead of time-stretched.
-- **The preview's tone mapping follows the display.** A tone mapping of **None** saved by an earlier version reads as the new **Auto**, so the HDR preview on an HDR display uses **Fit to display**. The SDR preview and exports are unchanged. See [Tone mapping](../settings/editor.md#tone-mapping).
+Existing projects can look or sound different after updating to preview.12:
 
-After the first save of an open scene, a save writes only the elements that changed, so an element file edited outside Beutl in the meantime is no longer overwritten unless you edited that element in Beutl too. On macOS, right-click menus are now native menus; see [Use Native Context Menus](../settings/view.md#use-native-context-menus).
+- **A sound's effects run at its file's sample rate.** When a sound's file has another sample rate than the project, such as a 44.1 kHz file in a 48 kHz project, its speed, pan, gain, and audio effects now run at the file's rate, and the conversion to the project's rate follows them. An Equalizer band above half the file's rate is held just under it, so a 10 kHz boost on 8 kHz audio now lands near 4 kHz. To run the effects at the project's rate, put a [Resampling](../reference/library/audio-effects/resampling.md) effect first in the chain.
+- **A Shake at strength 0 leaves its layer as it is.** It used to draw the layer again, which softened text at a fractional position on every frame before a shake began. See [Shake](../reference/library/filter-effects/shake.md).
+
+Times now show as timecodes, such as `00:00:02:15`, instead of seconds with hundredths. To go back, choose **Time (00:00:02.50)** in [Time Display Format](../settings/editor.md#time-display-format), or right-click the time in the preview.
 
 If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-agents.md) after updating.
 
@@ -109,8 +113,8 @@ If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-
 - [`build-debian-package.yml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/.github/workflows/build-debian-package.yml)
 - [`build-flatpak-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-flatpak-package.yml)
 - [`Build.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/nukebuild/Build.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/Serialization/FileFormat.cs)
-- [`AlphaOutlineTracer.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/FilterEffects/AlphaOutlineTracer.cs)
-- [`Transform.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/Transformation/Transform.cs)
-- [`SpeedIntegrator.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/SpeedIntegrator.cs)
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Configuration/EditorConfig.cs)
+- [`global.json`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/global.json)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`Sound.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Sound.cs)
+- [`ShakeEffect.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/EditorConfig.cs)

@@ -8,6 +8,8 @@ sidebar_position: 1
 
 音声ファイル（WAV / MP3 / OGG など）をサウンドソースとして読み込みます。信号は再生時にデコードされ、プロジェクトのサンプリングレートにリサンプルされます。サウンドはソースのチャンネルを保ち、パンナーで[プロジェクトのスピーカー配置](../../../get-started/multichannel-audio.md)に配置されます。
 
+スピード、パンナー、ゲイン、音声エフェクトはファイルのサンプルレートで処理され、その後でプロジェクトのサンプルレートに変換されます。選んだ補間方法でもっと前の段階で変換するには、[リサンプリング](../audio-effects/resampling.md)エフェクトを追加します。それより後のエフェクトはプロジェクトのサンプルレートで処理されます。
+
 ## ライブラリでの場所
 
 「ライブラリ」 → サウンド
@@ -43,3 +45,4 @@ sidebar_position: 1
 [`src/Beutl.Engine/Audio/SourceSound.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/SourceSound.cs)
 
 - [`AudioChannelMap.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Audio/AudioChannelMap.cs)
+- [`Sound.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Sound.cs)

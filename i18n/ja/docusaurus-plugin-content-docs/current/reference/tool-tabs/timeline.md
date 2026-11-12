@@ -46,6 +46,20 @@ sidebar_position: 1
 
 [エディターの設定](../../settings/editor.md#タイムラインのクリックで再生位置を移動)で **タイムラインのクリックで再生位置を移動** をオフにすると、タイムラインをクリックしても再生位置は動かず、何もない場所をそのままドラッグすると要素を範囲選択します。このとき再生位置は、目盛りの操作か、再生位置のバーのドラッグで動かします。バーの上では、掴めることがカーソルで示されます。
 
+#### 複数の要素をまとめて選択する {/* #select-multiple */}
+
+要素または何もない場所の右クリックメニューにある **まとめて選択** サブメニューでは、位置をもとに要素を選択します。基準になるのは、右クリックした位置の時刻と、その要素または何もない場所のレイヤーです。
+
+- **すべて選択** / **すべての選択を解除**: `Ctrl + A` / `Ctrl + Shift + A`（macOS では `Cmd`）と同じです。
+- **同じグループの要素**: 右クリックした要素と同じグループの要素です。何もない場所から開いたときは、選択中の要素と同じグループの要素です。どれもグループに入っていないときは選べません。
+- **同一レイヤーの要素**: そのレイヤーのすべての要素です。
+- **この位置にある要素（全レイヤー）**: すべてのレイヤーで、その時刻にかかっている要素です。
+- **先行要素** / **後続要素**: そのレイヤーで、その時刻以前に始まる要素、またはその時刻より後に終わる要素です。
+- **全レイヤーの先行要素** / **全レイヤーの後続要素**: 同じ選択をすべてのレイヤーで行います。
+- **選択を反転**: 選択されていない要素を選択し、選択中の要素の選択を解除します。
+
+どのコマンドも選択を置き換え、ロックした要素も含めます。選択を編集するコマンドは、これまでどおりロックした要素には何もしません。
+
 ### キーボードショートカット
 
 | 機能 | Windows / Linux | macOS |
@@ -95,7 +109,7 @@ sidebar_position: 1
 
 **`J`** / **`L`** で巻き戻し / 早送りのシャトル再生（押すたびに加速）、**`K`** で停止します。**`Shift`** を併用すると速度ステップが細かくなります。**`/`** でループ再生を切り替えます。
 
-**`G`** で **タイムコードへジャンプ** ダイアログを開き、再生ヘッドを正確な位置へ移動できます。タイムコード（`hh:mm:ss.fff` または `mm:ss.fff`）、絶対フレーム（`#120` や `120f`）、相対オフセット（`+5s`・`-10f`・`+2m`）、マーカー名の先頭一致（`@intro`）を入力できます。
+**`G`** を押すか、プレビューの現在時刻をクリックすると、再生ヘッドの移動先を正確に入力できます（**タイムコードへジャンプ**）。入力したら `Enter` を押します。タイムコード（`hh:mm:ss:ff`。フレームの前の区切りは `;` でも可）、時刻（`hh:mm:ss.fff` または `mm:ss.fff`）、絶対フレーム（`#120` や `120f`。時刻をフレーム番号で表示しているときは `120` だけでも可）、相対オフセット（`+5s`・`-10f`・`+2m`）、マーカー名の先頭一致（`@intro`）を入力できます。29.97 fps と 59.94 fps のタイムコードは、ドロップフレームでフレームを数えます。時刻は[時刻の表示形式](../../settings/editor.md#time-display-format)で表示されます。
 
 ### コマンドパレット
 
@@ -107,11 +121,11 @@ sidebar_position: 1
 
 - **要素を有効化** のトグル
 - **ロック** のトグル（ロックした要素は移動・トリム・分割・削除ができなくなります）
-- **レーザーモード** のトグル
-- **リップル編集** のトグル
+- **編集モード** サブメニュー: [何もない場所のメニュー](#何もない場所の右クリックメニュー)と同じツールモードと **リップル編集**
 - **分割 / 現在のフレームで分割**
 - **無音区間で自動分割**（音声を持つ要素で利用可能。[無音区間で自動分割](./silence-split.md)タブを開きます）
 - **切り取り / コピー / 削除**
+- **まとめて選択** サブメニュー（[複数の要素をまとめて選択する](#select-multiple)を参照）
 - **トラックマット** サブメニュー（[トラックマット](#トラックマット)を参照）
 - **トランジション** サブメニュー: **開始のトランジション** / **終了のトランジション**
 - **選択した要素をグループ化 / グループ化を解除**
@@ -209,6 +223,7 @@ sidebar_position: 1
 - **貼り付け**（要素・ファイル・クリップボードの画像）。ロックしたレイヤーへの貼り付けや、プロジェクトを保存する前など、貼り付けられないときはその理由が表示されます。
 - **開始時間を設定 / 終了時間を設定**（クリック位置に合わせる）
 - **隙間** サブメニュー: **隙間を詰める**（クリック位置の隙間）/ **すべての隙間を詰める** / **次の隙間へ移動** / **前の隙間へ移動**
+- **まとめて選択** サブメニュー（[複数の要素をまとめて選択する](#select-multiple)を参照）
 - **自動でシーンの長さを調整** のトグル
 - **スナップ** のトグル
 - **シーン設定**（シーン設定タブを開く）
@@ -218,6 +233,7 @@ sidebar_position: 1
 ### ドラッグ&ドロップ
 
 - ライブラリの項目（描画オブジェクト・テンプレートなど）をドロップして要素を追加
+- ライブラリのトランジションを要素にドロップして、要素のポインターに近い側の端に設定
 - ファイル（[SVG](../library/drawables/sources/image.md) を含む画像・動画・音声・テンプレート JSON）をドロップして要素を追加
 - 複数のファイルをドロップすると、1 回の取り消し単位ですべて追加します。ファイル名の順（数字は `1`、`2`、`10` の順）に、ドロップ位置から順に並べます。音声だけのファイルは同じフレームから別のレイヤーに置くので、BGM が映像の下で流れます。どのデコーダーでも開けないファイルは追加しません。
 - 字幕ファイル（SRT、WebVTT、ASS/SSA）をドロップすると、字幕ごとに 1 つのテキスト要素を、ファイルが指定する時刻でシーンの上の新しいレイヤーに追加します。[字幕ファイル](#subtitle-files)を参照してください。
@@ -296,6 +312,7 @@ sidebar_position: 1
 ## タイムラインスケール（上部目盛り）
 
 - スケールをクリックまたはドラッグで再生位置を移動
+- スケールの時刻は[時刻の表示形式](../../settings/editor.md#time-display-format)に従います（既定はタイムコード。時間やフレーム番号も選べます）
 - 赤いシーン開始/終了バーをドラッグでシーンの開始時間・尺を変更
 - スケール上端のマーカーをクリックで編集、ドラッグで移動
 - 下端のフレームキャッシュ表示を右クリックで **すべて削除 / 削除 / ロック / ロック解除**
@@ -355,3 +372,6 @@ macOS のトラックパッドでは、ドラッグが揃える対象に達す�
 - [`NativeHapticFeedback.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Controls/Helpers/NativeHapticFeedback.cs)
 - [`FileDropLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/FileDropLayout.cs) / [`CaptionFileDrop.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TimelineTab/CaptionFileDrop.cs)（ドロップしたファイルと字幕ファイル）
 - [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)（要素のテンプレートを字幕に使う処理）
+- [`TimelineSelectionMenu.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineSelectionMenu.cs) / [`TimelineTabViewModel.Selection.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.Selection.cs)（まとめて選択）
+- [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs) / [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs)（時刻とスケール）
+- [`TimelineTabView.DragDrop.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.DragDrop.cs)（ドラッグ&ドロップ）

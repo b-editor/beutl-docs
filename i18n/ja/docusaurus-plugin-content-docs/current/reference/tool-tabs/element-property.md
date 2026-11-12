@@ -74,6 +74,12 @@ sidebar_position: 4
 
 `+` ボタンとドロップは常に追加します。**トランスフォーム**、**フィルターエフェクト**、**音声エフェクト** のセクションでは、トランスフォームやエフェクトが 1 つだけのとき、それが新しいものと一緒に新しいグループへ移ります。1 回の取り消し単位で行われ、何も置き換えられません。新しいトランスフォームは、プレビューのハンドルが置くのと同じ位置に入ります。最初の移動は先頭、最初の回転はそのすぐ下、それ以外は末尾なので、追加する順番が違っても結果は同じです。式で値が決まっている間は、パネルから追加しても何も起こりません。セクションの右クリックメニューの **変更** と **なし** は、読み込めなかった値を修復するときだけ表示されます。
 
+### タイルから選ぶ {/* #picking-from-tiles */}
+
+**フィルターエフェクト** のセクションの `+` ボタンで開く選択画面では、エフェクトがタイルで表示されます。各タイルには、追加先のオブジェクトを再生位置での見た目で単独で描画し、そこにエフェクトを掛けた動くサムネイルが表示されます。タイルはポインターを乗せている間か選択している間に再生され、矢印キーでタイルごと、行ごとに移動できます。選択画面の上部にあるグリッドのボタンでタイルと一覧を切り替えられ、その選択はすべての選択画面で記憶されます。描画するものがないときは、Beutl に付属するサンプル画像を使います。
+
+[トランジション](./transition.md)タブの種類の選択画面も、設定する端の要素を使って、同じようにトランジションをタイルで表示します。トランスフォームや音声エフェクトなど、ほかの種類の項目の選択画面は一覧で表示されます。
+
 ### リスト内のトランスフォーム
 
 開いたトランスフォームは、名前の行の代わりに種類のアイコンの横に最初のプロパティを表示し、ほかのプロパティはその下に線と並べて表示します。アイコンをクリックするとトランスフォームを開閉でき、アイコンをドラッグすると並び替えられます。トランスフォームのどこを右クリックしても、コピー、貼り付け、テンプレートに加えて **表示** と **削除** を選べます。非表示にしたトランスフォームは薄く表示されます。
@@ -96,7 +102,13 @@ sidebar_position: 4
 
 ### 数値のスクラブ
 
-数値フィールドを左右にドラッグすると、値を増減できます。**`Shift`** を押しながらで粗く（10 倍）、**`Alt`** を押しながらで細かく（0.1 倍）調整できます。macOS のトラックパッドでは、ゼロとプロパティの既定値で[触覚フィードバック](./timeline.md#トラックパッドの触覚フィードバック)が返ります。
+数値のボックスかそのラベルを左右にドラッグすると、値を増減できます。**`Shift`** を押しながらで粗く（10 倍）、**`Alt`**（macOS では `Command`）を押しながらで細かく（0.1 倍）調整できます。[ポインターロックを有効化](../../settings/editor.md#ポインターロックを有効化)がオンのときは、Windows と macOS ではドラッグ中にカーソルが隠れ、ドラッグを始めた位置に戻ります。macOS のトラックパッドでは、ゼロとプロパティの既定値で[触覚フィードバック](./timeline.md#トラックパッドの触覚フィードバック)が返ります。
+
+ボックスを押してから横に 3 ピクセル動くまではドラッグにならないので、クリックすればこれまでどおりテキストを編集でき、テキストは全体が選択された状態になります。`Enter` で新しい値を確定します。ボックスに解釈できないテキストが表示されている間は、ドラッグしても値は変わらず、ボタンを離すとテキストの編集になるので、そのまま修正できます。
+
+範囲を持つ数値（不透明度など）は、ポインターを乗せている間、値が範囲のどこにあるかを示します。範囲がゼロをまたぐときはゼロから、そうでないときは最小値から値までボックスが塗られ、値の位置に細いつまみが立ちます。ポインターを乗せていないときは、ほかのボックスと同じ見た目です。
+
+点、サイズ、ベクトル、太さ、角の半径、色の成分のボックスもドラッグで変更できます。各ボックスはそれぞれの成分を動かし、すべての成分が同じ値のときに表示される 1 つのボックスはすべての成分を動かします。相対的な点と矩形は、相対値なら 1 ピクセルあたり 1%、絶対値なら 1 ピクセルあたり 1 動きます。リストの項目、ノード、設定ページの数値ボックスは、通常のテキストボックスのままです。
 
 ### 色の選択とパレット
 
@@ -149,3 +161,6 @@ sidebar_position: 4
 - [`TransformListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/Views/TransformListItemEditor.axaml) / [`ListItemRowsPanel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/Views/ListItemRowsPanel.cs)
 - [`AddToGroupHelper.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/Helpers/AddToGroupHelper.cs) / [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`ColorPaletteView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteView.cs) / [`ColorPaletteService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteService.cs) / [`DefaultColorPalette.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/DefaultColorPalette.cs)
+- [`LibraryItemPickerFlyoutPresenter.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Styling/PropertyEditors/LibraryItemPickerFlyoutPresenter.axaml) / [`SelectLibraryItemDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/SelectLibraryItemDialogViewModel.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)
+- [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`ValueSliderField.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ValueSliderField.cs) / [`NumberBoxDrag.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberBoxDrag.cs) / [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs)
+- [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)

@@ -74,6 +74,12 @@ A new object starts with **Translate**, **Rotation**, and **Scale** transforms, 
 
 The `+` button and drops always add. On a **Transform**, **Filter Effect**, or **Audio Effect** section, a single transform or effect moves into a new group together with the new one, in one undo step, so nothing is replaced. A new transform goes where the preview's handles would put it: the first Translate on top, the first Rotation right below it, and anything else at the end, so the order you add them in gives the same result. While an expression decides the value, adding from the panel does nothing. **Change** and **Null** appear in the section's right-click menu only to repair a value that could not be loaded.
 
+### Picking from tiles {/* #picking-from-tiles */}
+
+The picker that the `+` button opens on a **Filter Effect** section shows the effects as tiles. Each tile has a moving thumbnail of the effect on the object you add it to, as the object looks at the playhead, drawn on its own. A tile plays while you point at it or while it is selected, and the arrow keys move between tiles and rows. The grid button at the top of the picker switches between tiles and a list, and Beutl remembers the choice for every picker. With nothing to draw, the tiles use sample pictures that come with Beutl.
+
+The [Transition](./transition.md) tab's type picker shows its transitions the same way, on the elements at the edge it sets. Pickers for other kinds of items, such as transforms and audio effects, show a list.
+
 ### Transforms in a list
 
 An open transform shows its first property beside its type's icon, in place of a name row, and its other properties below it, beside a line. Click the icon to close or open the transform, and drag the icon to reorder it. Right-click anywhere on the transform for **Visible** and **Remove**, along with copy, paste, and templates. A hidden transform is dimmed.
@@ -96,7 +102,13 @@ File fields also accept drag-and-drop: drop a local file of a supported type ont
 
 ### Scrubbing number values
 
-Drag horizontally on a number field to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** for fine steps (0.1×). On a macOS trackpad, a scrub gives [haptic feedback](./timeline.md#trackpad-haptic-feedback) at zero and at the property's default value.
+Drag a number box, or its label, horizontally to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** (`Command` on macOS) for fine steps (0.1×). With [Enable Pointer Lock](../../settings/editor.md#enable-pointer-lock) on, the cursor hides during the drag on Windows and macOS and comes back where the drag began. On a macOS trackpad, a scrub gives [haptic feedback](./timeline.md#trackpad-haptic-feedback) at zero and at the property's default value.
+
+A press on a box becomes a drag only after it moves 3 pixels sideways, so a click still edits the text, with all of it selected; `Enter` confirms the new value. While the box shows text that does not parse, a drag does not change the value, and the release edits the text so you can correct it.
+
+A number that has a range, such as Opacity, shows where its value sits while you point at it: the box fills up to the value, from zero when the range spans zero and from the minimum otherwise, and a slim thumb marks the value. At rest it looks like any other box.
+
+The boxes of points, sizes, vectors, thicknesses, corner radii, and color components take a drag too. Each box moves its own component, and the single box of a uniform value moves them all. Relative points and rectangles move by 1% per pixel for a relative value and by 1 per pixel for an absolute one. Number boxes in list items, nodes, and settings pages stay plain text boxes.
 
 ### Picking colors and palettes
 
@@ -149,3 +161,6 @@ Unrecognized data that can be preserved is kept on save. Common properties remai
 - [`TransformListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/Views/TransformListItemEditor.axaml) / [`ListItemRowsPanel.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/Views/ListItemRowsPanel.cs)
 - [`AddToGroupHelper.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/Helpers/AddToGroupHelper.cs) / [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`ColorPaletteView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteView.cs) / [`ColorPaletteService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteService.cs) / [`DefaultColorPalette.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/DefaultColorPalette.cs)
+- [`LibraryItemPickerFlyoutPresenter.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Styling/PropertyEditors/LibraryItemPickerFlyoutPresenter.axaml) / [`SelectLibraryItemDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/SelectLibraryItemDialogViewModel.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)
+- [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`ValueSliderField.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ValueSliderField.cs) / [`NumberBoxDrag.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberBoxDrag.cs) / [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs)
+- [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
