@@ -3,7 +3,19 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.11 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.12 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.11 からの移行 {/* #migrating-from-preview-11 */}
+
+preview.11 の拡張機能を移行するときは、次の変更を確認してください。preview.12 で削除された公開 API はありません。
+
+- **ターゲットフレームワーク**: パッケージと `Beutl.Extensibility.Sdk` は `net11.0` を対象にしています。.NET 11 SDK（Visual Studio 2026 18.12 以降）でビルドしてください。フレームワークを指定していないプロジェクトには SDK が `net11.0` を設定します。`net10.0` を指定しているプロジェクトやテスト用のプロジェクトは変更してください。preview.11 向けに `net10.0` でビルドした拡張機能も、preview.12 で読み込めます。[プロジェクトの作成](create-csproj.md)を参照してください。
+- **テスト用のプロジェクト**: ファイル形式の下限は preview.11 のままなので、preview.12 で保存したプロジェクトは preview.11 でも開けます。`Avalonia.Headless` などの Avalonia のパッケージを Beutl と同じバージョンに固定しているテスト用のプロジェクトは、12.1.6 に更新してください。[バージョンの対応表](version-mapping.md)を参照してください。
+- **音声エフェクト**: ソースのサンプルレートがプロジェクトと異なる場合、エフェクトはソースのサンプルレートで処理され、プロジェクトのサンプルレートへの変換はそのあとで行われます。サンプルレートはプロジェクトからではなく、`AudioProcessContext.SampleRate` かバッファから取得してください。[サンプルレート](audio-effects.md#sample-rates)を参照してください。
+- **表示する時刻**: エディタは既定で時刻をタイムコードで表示し、ユーザーは時間やフレーム番号の表示にも切り替えられます。エディタの表示に合わせるには、ユーザーの `EditorConfig.TimeDisplayFormat` に従い、`TimeDisplayFormatter.Format` で時刻を書式化してください。[メディア時刻](media-providers.md#media-time-and-project-rates)を参照してください。
+- **ライブラリのエフェクト**: ライブラリとエフェクトのピッカーは、各エフェクトを動くサムネイルで表示します。エフェクトごとにレシピを登録してください。登録しないと、サムネイルはサンプル画像の上で既定値のまま再生されます。[ライブラリのサムネイル](implement-effect.md#library-thumbnails)を参照してください。
+- **`ColorBalancePad.DragStarted`**: 押したときではなく、押したまま 3 ピクセル動いたときに発生し、ポインターのロックもそこで始まります。クリックだけでは `DragStarted` も `DragCompleted` も発生しません。
+- **独自の `IPreviewPlayer`**: 新しい `CleanPreviewImage` は既定で `PreviewImage` を返し、`AcquireCleanPreview()` は何もしないハンドルを返します。選択範囲の枠などをフレームに重ねて描くプレーヤーでは、これらをオーバーライドしてください。ライブラリは、このフレームの上にエフェクトのサムネイルを描きます。
 
 ## preview.10 からの移行 {/* #migrating-from-preview-10 */}
 
@@ -258,6 +270,8 @@ public sealed class TapRecorder(IPreviewPlayer player)
 
 設定の色のように、オブジェクトのプロパティではない色には `Beutl.Controls.PropertyEditors.SimpleColorPickerButton` を使ってください。パレット付きの `SimpleColorPicker` を開き、ユーザーが確定すると色を適用してから `ColorConfirmed` を発生させます。`IsAlphaEnabled` を `false` にすると、色は不透明に保たれ、不透明度は表示されません。
 
+preview.12 で追加された `Beutl.Controls.AnimatedThumbnail` は、`IAnimatedThumbnailSource` を表示します。静止時は静止画を、`IsPlaying` が `true` の間は 1 枚のシートに並べたフレームをループで表示します。ソースには、画面に表示されている間だけ静止画を、再生中だけフレームを要求するため、長い一覧でも見えている分だけを読み込みます。
+
 プロパティのコントロールを調整するときは、Beutl のテーマで余白とラベルの位置を確かめてください。ヘッドレス描画はレイアウトの確認に役立ちますが、公開前には Beutl 本体でも確認してください。
 
 ### macOS のコンテキストメニュー {/* #context-menus-on-macos */}
@@ -293,6 +307,8 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`SearchablePickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerFlyout.cs)
 - [`SearchablePickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerViewModel.cs)
 - [`EmptyState.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/EmptyState.cs), [`StatusLabel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/StatusLabel.cs) and [`SimpleColorPickerButton.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SimpleColorPickerButton.cs)
+- [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
+- [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)

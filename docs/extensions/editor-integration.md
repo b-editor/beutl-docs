@@ -1,10 +1,10 @@
 ---
 title: Integrating with the Editor
-description: Register commands, property editors, MCP tools and element sources using the public extension contracts.
+description: Register commands, property editors, MCP tools and element sources, and take over browser downloads, using the public extension contracts.
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.11 exposes these contracts through `Beutl.Extensibility`. Use the [preview.11 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.12 exposes these contracts through `Beutl.Extensibility`. Use the [preview.12 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -223,6 +223,69 @@ For a new source kind, derive a record from `ElementSource` and contribute `Elem
 
 Registration defaults to `ElementSourceHandlerRegistrationMode.Add`; use `Replace` only when intentionally replacing an existing handler for that exact source type.
 
+## Browser downloads {/* #browser-downloads */}
+
+Since preview.12, a `BrowserDownloadExtension` takes over files that pages in the [Browser](../reference/tool-tabs/web-browser.md) tab offer for download, and adds them to the editor in its own way, such as speech that a text-to-speech site generated, placed with its line. When a page offers a file, the browser asks each `BrowserDownloadExtension` in turn through `Claim`, and the first claim wins. Offers reach extensions only while the editor can add files to a saved scene in a saved project; otherwise the browser asks where to save the file as usual.
+
+- `Claim(BrowserDownloadOffer)` runs on the UI thread for every offer, so decide from the offer alone and return quickly; return `null` to leave the file to the browser. `Page` is the page on display, `SuggestedName` the name the page or the server gave the file, and `Source` its address. A file that a page script generated (`IsGenerated`) has no address to request again, so its `Source` is the site credited with it. An exception from `Claim` is logged, and the next extension is asked.
+- `BrowserDownloadClaim.PageScript` is a JavaScript expression that the browser evaluates in the offering page at once, while the page still shows what produced the file. When its value is a string, `ImportAsync` receives exactly that string as `PageData` on every platform. `PageData` is `null` when the script fails or gives anything else, or when the page does not answer within five seconds of the user confirming. Treat it as input from the page. `Description` takes the place of the file name on the download bar.
+- The user still confirms the download on the bar, so a page cannot add anything on its own. The browser then saves the file to the project's `resources/downloads` folder without showing the download options, and calls `ImportAsync` on the UI thread with the file's full path as `FileName`. Resolve editor services through `EditorContext`; the package stays loaded until `ImportAsync` completes.
+- Return `false` to leave the file to the browser, which adds an image, video or audio file to the timeline as one element. An exception shows on the bar as a failure to add the saved file, which stays in the folder. The token is canceled when the user cancels on the bar; let the `OperationCanceledException` through, so the bar reports a cancellation.
+
+```csharp
+using Beutl;
+using Beutl.Editor.Services;
+using Beutl.Extensibility;
+
+[Export]
+public sealed class SpeechDownloads : BrowserDownloadExtension
+{
+    public override BrowserDownloadClaim? Claim(BrowserDownloadOffer offer)
+    {
+        if (offer.Page.Host != "speech.example"
+            || !string.Equals(Path.GetExtension(offer.SuggestedName), ".mp3", StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return new BrowserDownloadClaim
+        {
+            // The line the page spoke, read while the page still shows it.
+            PageScript = "document.querySelector('#text')?.value ?? ''",
+            Description = "Add the speech, named after its line"
+        };
+    }
+
+    public override async ValueTask<bool> ImportAsync(
+        BrowserDownloadImportContext context, CancellationToken cancellationToken)
+    {
+        if (context.EditorContext.GetService(typeof(IElementAdder)) is not IElementAdder adder)
+            return false;
+
+        MediaTime start = context.EditorContext.GetService(typeof(IEditorClock)) is IEditorClock clock
+            ? clock.CurrentTime.Value
+            : MediaTime.Zero;
+        ElementAddResult result = await adder.AddAsync(
+            [new ElementDescription(
+                Start: start,
+                Length: MediaTime.FromSeconds(5),
+                Layer: 0,
+                Source: new ElementSource.File(context.FileName),
+                Name: context.PageData ?? "")
+            {
+                StacksAboveScene = true
+            }],
+            cancellationToken);
+        if (!result.IsSuccess)
+            throw new InvalidOperationException(result.Failure!.Message, result.Failure.Exception);
+
+        return true;
+    }
+}
+```
+
+The scene editor's `IEditorContext` also provides `IExtensionProvider` since preview.12. Its `Extensions` and `GetDescriptors<T>()` list the registered extensions as metadata, and `TryAcquire` leases one for an operation, as the browser does with each `BrowserDownloadExtension`. Dispose the lease when the operation ends.
+
 ## Repairing recovered elements {/* #element-recovery */}
 
 Custom editors should check `Scene.IsElementLocked(element)` before ordinary edits. It includes recovery protection as well as user locks. When repairing by removing or replacing a blocking value or object, apply the change through the normal public property, keyframe or collection APIs, then call `ElementRecoveryService.TryCompleteRepair(element, history)` (`Beutl.Editor.Services`) with the `HistoryManager` already observing that scene. Commit that same history transaction afterward.
@@ -247,6 +310,8 @@ Unread members of saved objects are retained and written back on the next save. 
 - [`ElementSourceHandlerExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ElementSourceHandlerExtension.cs)
 - [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
 - [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs) and [`browser-downloads.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/browser-downloads.md)
+- [`IExtensionProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionProvider.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)

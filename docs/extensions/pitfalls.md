@@ -3,7 +3,19 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.11; rebuild extensions against its SDK after migrating the APIs below.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.12; rebuild extensions against its SDK after migrating the APIs below.
+
+## Migrating from preview.11 {/* #migrating-from-preview-11 */}
+
+Check these changes when you move an extension from preview.11. No public API was removed in preview.12.
+
+- **Target framework:** The packages and `Beutl.Extensibility.Sdk` target `net11.0`, so build with the .NET 11 SDK (Visual Studio 2026 18.12 or later). The SDK sets `net11.0` for a project that names no framework; change a project or a test project that names `net10.0`. An extension built for `net10.0` against preview.11 still loads in preview.12. See [project setup](create-csproj.md).
+- **Test projects:** The file format floor stays at preview.11, so a project saved by preview.12 still opens in preview.11. A test project that pins Avalonia packages, such as `Avalonia.Headless`, to Beutl's version moves to 12.1.6. See the [version table](version-mapping.md).
+- **Audio effects:** When a source's sample rate differs from the project's, its effects run at the source's rate, and Beutl converts to the project's rate after them. Take the rate from `AudioProcessContext.SampleRate` or the buffer, not from the project. See [sample rates](audio-effects.md#sample-rates).
+- **Times you show:** The editor shows times as timecodes by default, and the user can switch to time or frame numbers. To match it, write a time with `TimeDisplayFormatter.Format` in the user's `EditorConfig.TimeDisplayFormat`. See [media time](media-providers.md#media-time-and-project-rates).
+- **Effects in the library:** The library and the effect picker show each effect as a moving thumbnail. Register a recipe for each of your effects; without one, its thumbnail plays at its defaults over a sample picture. See [library thumbnails](implement-effect.md#library-thumbnails).
+- **`ColorBalancePad.DragStarted`:** Raised once a press has traveled 3 pixels instead of on the press, and the pointer lock starts then too. A click raises neither `DragStarted` nor `DragCompleted`.
+- **Custom `IPreviewPlayer`:** The new `CleanPreviewImage` returns `PreviewImage` by default, and `AcquireCleanPreview()` a handle that does nothing. Override them in a player that draws over its frames, such as a selection outline: the library draws effect thumbnails on that frame.
 
 ## Migrating from preview.10 {/* #migrating-from-preview-10 */}
 
@@ -258,6 +270,8 @@ For a searchable, pinnable list like the font and codec pickers, derive from `Se
 
 For a color that is not a property of an object, such as one of your settings, use `Beutl.Controls.PropertyEditors.SimpleColorPickerButton`. It opens `SimpleColorPicker` with the palettes, applies the color when the user confirms it, and then raises `ColorConfirmed`. Set `IsAlphaEnabled` to `false` to keep the color opaque and hide the opacity.
 
+`Beutl.Controls.AnimatedThumbnail`, new in preview.12, shows an `IAnimatedThumbnailSource`: its still at rest, and its frames, laid out in one sheet, in a loop while `IsPlaying` is `true`. It asks the source for the still only while it is on screen and for the frames only while it plays, so a long list loads only what is seen.
+
 When adjusting a property's controls, check their spacing and label alignment under Beutl's theme. Headless rendering is useful for layout checks, but also check the result in Beutl before release.
 
 ### Context menus on macOS {/* #context-menus-on-macos */}
@@ -293,6 +307,8 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 - [`SearchablePickerFlyout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerFlyout.cs)
 - [`SearchablePickerViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SearchablePickerViewModel.cs)
 - [`EmptyState.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/EmptyState.cs), [`StatusLabel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/StatusLabel.cs) and [`SimpleColorPickerButton.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/SimpleColorPickerButton.cs)
+- [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
+- [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
