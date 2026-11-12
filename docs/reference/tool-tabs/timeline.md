@@ -42,9 +42,9 @@ You can drag the splitters between the columns to change their widths.
 
 - Click an element to select it; `Ctrl` (or `Cmd` on macOS) + click to add to or remove from the selection.
 - `Ctrl` (`Cmd`) + drag on an empty area to select with a rectangular marquee.
-- `Ctrl + A` (`Cmd + A`) selects every clip, and `Ctrl + Shift + A` (`Cmd + Shift + A`) clears the selection.
+- `Ctrl + A` (`Cmd + A`) selects every element, and `Ctrl + Shift + A` (`Cmd + Shift + A`) clears the selection.
 
-When **Move the playhead with a click on the timeline** is turned off in the [Editor settings](../../settings/editor.md#move-the-playhead-with-a-click-on-the-timeline), a click on the timeline leaves the playhead where it is, and a plain drag on an empty area selects clips. The playhead then moves from the ruler, or by dragging its line, where the cursor shows that it can be taken.
+When **Move the playhead with a click on the timeline** is turned off in the [Editor settings](../../settings/editor.md#move-the-playhead-with-a-click-on-the-timeline), a click on the timeline leaves the playhead where it is, and a plain drag on an empty area selects elements. The playhead then moves from the ruler, or by dragging its line, where the cursor shows that it can be taken.
 
 ### Keyboard shortcuts
 
@@ -101,7 +101,7 @@ Press **`G`** to open the **Goto timecode** dialog and jump the playhead to an e
 
 Press **`Ctrl + Shift + P`** (`Cmd + Shift + P` on macOS) to open a searchable command palette that lists the available editor and tool-tab commands, so you can find and run an action — and see its shortcut — without hunting through the menus.
 
-Commands can ask for text or a selection inside the palette. For example, open a recent project, change the theme, or rename the selected element. Rename, split at the current frame, and save as a template can run for the selected element even when the Timeline tab is closed. With the tab closed, saving as a template takes the selection the editor keeps, with each clip's group.
+Commands can ask for text or a selection inside the palette. For example, open a recent project, change the theme, or rename the selected element. Rename, split at the current frame, and save as a template can run for the selected element even when the Timeline tab is closed. With the tab closed, saving as a template takes the selection the editor keeps, with each element's group.
 
 ### Element right-click menu
 
@@ -119,63 +119,63 @@ Commands can ask for text or a selection inside the palette. For example, open a
 - **Change to original length** (restore media elements and the like to their original duration)
 - **Change color**
 - Toggle **Disable Thumbnails**
-- **Save as Template** (see [Saving clips as a template](#saving-clips-as-a-template))
+- **Save as Template** (see [Saving elements as a template](#saving-clips-as-a-template))
 - **Animation** submenu: **Finish editing** / **Bring to the top**
 
-## Clip transitions
+## Element transitions {/* #clip-transitions */}
 
-Right-click a clip and choose **Transition → Start Transition** or **End Transition** to open the [Transition](./transition.md) tab. If that edge has no transition, this adds a cross dissolve. Double-click a shared boundary between adjacent clips on the same layer to add a cross dissolve, or double-click an existing transition ramp to edit it. Drag a ramp's handle to adjust its duration.
+Right-click an element and choose **Transition → Start Transition** or **End Transition** to open the [Transition](./transition.md) tab. If that edge has no transition, this adds a cross dissolve. Double-click a shared boundary between adjacent elements on the same layer to add a cross dissolve, or double-click an existing transition ramp to edit it. Drag a ramp's handle to adjust its duration.
 
 ## Track mattes
 
-A track matte uses another layer's alpha or luminance to decide which parts of a clip show. For example, a hidden text clip can cut lettering out of a video, and an animated source updates with each frame.
+A track matte uses another layer's alpha or luminance to decide which parts of an element show. For example, a hidden text element can cut lettering out of a video, and an animated source updates with each frame.
 
-1. Right-click the clip to mask and open **Track Matte**.
+1. Right-click the element to mask and open **Track Matte**.
 2. Choose a mode: **Alpha**, **Luma**, **Inverted Alpha**, or **Inverted Luma**. **None** (the default) turns the matte off.
 3. Under **Source layer**, choose **Layer above** (the default), **Layer below**, or a specific layer. Choosing a source while the mode is **None** switches the mode to **Alpha**. Choosing **None** as the source turns the matte off.
-4. To keep the source from drawing, right-click the source clip and turn off **Track Matte → Show in output**.
+4. To keep the source from drawing, right-click the source element and turn off **Track Matte → Show in output**.
 
 How the source is chosen:
 
-- **Layer above** and **Layer below** use the nearest layer in that direction that has a clip at the current frame. They skip empty layers, so the source changes as clips begin and end.
+- **Layer above** and **Layer below** use the nearest layer in that direction that has an element at the current frame. They skip empty layers, so the source changes as elements begin and end.
 - A specific layer stays selected when you reorder layers.
 
-When there is no source clip at a frame, **Alpha** and **Luma** show nothing and the inverted modes show the whole clip.
+When there is no source element at a frame, **Alpha** and **Luma** show nothing and the inverted modes show the whole element.
 
-A matte source ignores **Solo** and **Show in output**, but a layer with **Video** (video mute) on supplies nothing. **Show in output** affects the picture only, so a hidden clip's audio still plays. The masked clip keeps its blend mode against the layers below it.
+A matte source ignores **Solo** and **Show in output**, but a layer with **Video** (video mute) on supplies nothing. **Show in output** affects the picture only, so a hidden element's audio still plays. The masked element keeps its blend mode against the layers below it.
 
-A clip with a matte shows its source on the timeline: **↑** for the layer above, **↓** for the layer below, or an arrow and a layer number such as **↑ 3** for a specific layer. All of these settings are recorded in the undo history and are unavailable on a locked clip.
+An element with a matte shows its source on the timeline: **↑** for the layer above, **↓** for the layer below, or an arrow and a layer number such as **↑ 3** for a specific layer. All of these settings are recorded in the undo history and are unavailable on a locked element.
 
-## Saving clips as a template
+## Saving elements as a template {/* #saving-clips-as-a-template */}
 
-**Save as Template** saves the clips **Copy** would take, which are the selection plus every group it touches. A single clip saves on its own. Several clips save as one template, which the [Files](./file-browser.md) tab identifies as **Multiple Elements**.
+**Save as Template** saves the elements **Copy** would take, which are the selection plus every group it touches. A single element saves on its own. Several elements save as one template, which the [Files](./file-browser.md) tab identifies as **Multiple Elements**.
 
-Add it with **Add from Template**, from the Library, or by dropping the template file. Beutl recreates every clip with new IDs and keeps their relative start times, layers, names, lengths, and groups as one undo step. If the requested place is taken, the clips go to the nearest free place together; a locked requested layer refuses the template. Clips that overlap on one layer stay overlapped. A matte that names its source layer moves with the set, so it keeps the same source.
+Add it with **Add from Template**, from the Library, or by dropping the template file. Beutl recreates every element with new IDs and keeps their relative start times, layers, names, lengths, and groups as one undo step. If the requested place is taken, the elements go to the nearest free place together; a locked requested layer refuses the template. Elements that overlap on one layer stay overlapped. A matte that names its source layer moves with the set, so it keeps the same source.
 
 ## Editing modes
 
 Choose a tool mode from the **Editing Mode** submenu in the empty-area right-click menu, or use one of the keyboard shortcuts above. Only one tool mode can be active at a time. The timeline shows a colored border and the mode's name while it is active; press `V` or `Esc` to return to the normal selection tool.
 
 - **Razor Tool** (`C`): Click an element to split it at that position.
-- **Slip Tool** (`S`): Drag a clip to shift its source-media window (in/out points) without moving the clip on the timeline.
-- **Roll Tool** (`R`): Drag a clip edge to move the boundary with its neighbor while preserving the total length.
-- **Slide Tool** (`D`): Drag a clip to move it while the neighboring clips compensate, preserving the total length.
+- **Slip Tool** (`S`): Drag an element to shift its source-media window (in/out points) without moving the element on the timeline.
+- **Roll Tool** (`R`): Drag an element edge to move the boundary with its neighbor while preserving the total length.
+- **Slide Tool** (`D`): Drag an element to move it while the neighboring elements compensate, preserving the total length.
 
 ### Ripple Edit
 
-**Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later clips on the same layer to close (or open) the resulting space:
+**Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later elements on the same layer to close (or open) the resulting space:
 
 - **Delete** / **Cut**
 - Trimming an element's edge
 
-Locked layers stay in place. A locked clip acts as an anchor, so the ripple does not propagate past it.
+Locked layers stay in place. A locked element acts as an anchor, so the ripple does not propagate past it.
 
 ## Closing and navigating gaps
 
-Empty spaces between clips on the same layer are treated as **gaps**. Use the **Gaps** submenu in the empty-area right-click menu or the keyboard shortcuts below:
+Empty spaces between elements on the same layer are treated as **gaps**. Use the **Gaps** submenu in the empty-area right-click menu or the keyboard shortcuts below:
 
-- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element. The clips move by exactly the gap's width. If a clip would then overlap a locked clip, nothing moves and Beutl shows **There are no gaps to close**.
-- **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped. A locked clip stops the shift: nothing moves across it, the gaps after it close towards it, and a gap stays open if closing it would overlap a locked clip.
+- **Close Gap**: closes one gap. The menu command uses the gap at the right-click position; the shortcut (`;`) uses the gap after the selected element. The elements move by exactly the gap's width. If an element would then overlap a locked element, nothing moves and Beutl shows **There are no gaps to close**.
+- **Close All Gaps** (`Shift + Alt + ;`): closes every gap on every layer. Locked layers are skipped. A locked element stops the shift: nothing moves across it, the gaps after it close towards it, and a gap stays open if closing it would overlap a locked element.
 - **Go to Next Gap** (`Shift + ;`) / **Go to Previous Gap** (`Alt + ;`): moves the playback position to the next or previous gap from the current frame.
 
 ## Locking, muting, and soloing
@@ -188,7 +188,7 @@ Use **Lock** in an element's right-click menu to lock or unlock it. A locked ele
 
 Each layer header includes four toggle buttons:
 
-- **Lock**: locks every clip on the layer. Locked layers are also excluded from ripple and gap operations.
+- **Lock**: locks every element on the layer. Locked layers are also excluded from ripple and gap operations.
 - **Video** (video mute): the layer is skipped when compositing video; its audio still plays.
 - **Audio** (audio mute): the layer is skipped when compositing audio; its video is still shown.
 - **Solo**: when at least one layer is soloed, layers that are not soloed are neither shown nor heard. You can solo multiple layers at the same time.
@@ -220,13 +220,13 @@ Each layer header includes four toggle buttons:
 - Drop an item from the Library (drawables, templates, etc.) to add an element.
 - Drop a file (image, including [SVG](../library/drawables/sources/image.md), video, audio, or template JSON) to add an element.
 - Drop several files to add them all in one undo step. They line up one after another from the drop point, in name order with numbers in order (`1`, `2`, `10`). Sound-only files go on a layer of their own from the same frame, so background music runs under the pictures. Files that no decoder can open are left out.
-- Drop a subtitle file (SRT, WebVTT, or ASS/SSA) to add one text clip per cue at the times the file gives, on new layers above the scene. See [Subtitle files](#subtitle-files).
+- Drop a subtitle file (SRT, WebVTT, or ASS/SSA) to add one text element per cue at the times the file gives, on new layers above the scene. See [Subtitle files](#subtitle-files).
 
 ### Subtitle files {/* #subtitle-files */}
 
-A dropped subtitle file becomes one text clip per cue, named after the file. Cues that overlap in time go on separate layers, and locked layers are skipped. One undo removes the whole drop. Files written by Windows subtitle tools also read correctly: UTF-16 with a byte order mark, and the system's legacy code page.
+A dropped subtitle file becomes one text element per cue, named after the file. Cues that overlap in time go on separate layers, and locked layers are skipped. One undo removes the whole drop. Files written by Windows subtitle tools also read correctly: UTF-16 with a byte order mark, and the system's legacy code page.
 
-When you have saved [templates](#saving-clips-as-a-template) that hold text, a **Text template** menu opens where you dropped the file. Click **Default** or a template to add the clips; press `Esc` or click elsewhere to give up the whole drop. The template you chose last comes first, under the pointer. A template can be a saved text object, an element, or several elements:
+When you have saved [templates](#saving-clips-as-a-template) that hold text, a **Text template** menu opens where you dropped the file. Click **Default** or a template to add the elements; press `Esc` or click elsewhere to give up the whole drop. The template you chose last comes first, under the pointer. A template can be a saved text object, an element, or several elements:
 
 - Every text object in the template takes the cue's text, including those inside a drawable group.
 - A single element follows the cue's start and length and keeps its position.
@@ -311,7 +311,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 
 On a macOS trackpad, Beutl gives a haptic pulse when a drag reaches an alignment target:
 
-- **Timeline**: a clip move, an edge trim, or a roll or slide trim reaches a new snap target.
+- **Timeline**: an element move, an edge trim, or a roll or slide trim reaches a new snap target.
 - **Preview**: a `Shift` rotation with the transform handles reaches a new 15° step.
 - **Number fields**: a [scrub](./element-property.md#scrubbing-number-values) reaches or crosses zero or the property's default value, including each component of a vector.
 - **[Node Graph](./node-graph.md)**: a wire snaps to a port it can connect to.

@@ -123,7 +123,7 @@ public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 }
 ```
 
-クリップのローカル時刻 `t` で、ソースは時間軸の `OffsetPosition` に `[0, t]` の `Speed` の積分を加えた位置を再生します。この位置をもとに描画してください。`GetSourceDuration()` は時間軸の長さを返し、編集はその範囲に収まります。`HasDynamicMapping` の既定は `OffsetPosition.HasExpression` です。式が時間軸そのものを選ぶ場合は `HasDynamicTimeline` をオーバーライドしてください。`ISplittable` を直接実装するのは、このような時間軸を持たないオブジェクトだけにしてください。
+要素のローカル時刻 `t` で、ソースは時間軸の `OffsetPosition` に `[0, t]` の `Speed` の積分を加えた位置を再生します。この位置をもとに描画してください。`GetSourceDuration()` は時間軸の長さを返し、編集はその範囲に収まります。`HasDynamicMapping` の既定は `OffsetPosition.HasExpression` です。式が時間軸そのものを選ぶ場合は `HasDynamicTimeline` をオーバーライドしてください。`ISplittable` を直接実装するのは、このような時間軸を持たないオブジェクトだけにしてください。
 
 ### 保存するがパネルに出さない値
 

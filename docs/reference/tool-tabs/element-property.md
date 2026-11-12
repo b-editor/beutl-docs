@@ -100,7 +100,7 @@ Drag horizontally on a number field to scrub its value up or down. Hold **`Shift
 
 ### Picking colors and palettes
 
-A color field opens Beutl's color picker. The same picker opens for clip, layer, and marker colors, gradient stops, the preview guide color, and the accent color. Its palette tab lists, under a **New palette** button:
+A color field opens Beutl's color picker. The same picker opens for element, layer, and marker colors, gradient stops, the preview guide color, and the accent color. Its palette tab lists, under a **New palette** button:
 
 - **Recent colors**: the last 20 colors a picker applied, newest first.
 - The open project's palettes, marked **Saved in this project**.

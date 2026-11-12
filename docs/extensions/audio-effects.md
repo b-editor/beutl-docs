@@ -83,7 +83,7 @@ public sealed class PolarityNode : AudioNode
 
 A node with no inputs that emits anything other than stereo must call `RecordProcessedChannelCount`, so that its silent `Flush` keeps that count.
 
-A `Sound` that overrides `Compose` must output the context's layout. `context.CreateSourceNode(source, channelMap)` derives the clip layout from the source and the map that `Sound.Resource.GetChannelMap()` returns, and `context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` converts to the project layout.
+A `Sound` that overrides `Compose` must output the context's layout. `context.CreateSourceNode(source, channelMap)` derives the element layout from the source and the map that `Sound.Resource.GetChannelMap()` returns, and `context.CreatePannerNode(Pan, SurroundPan, CenterLevel, LfeLevel, inputLayout)` converts to the project layout.
 
 ## Draining the tail
 
@@ -91,7 +91,7 @@ A `Sound` that overrides `Compose` must output the context's layout. `context.Cr
 
 `ProcessTail` owns the buffer passed to it. If your override replaces that buffer, dispose the input. If it throws, dispose the input before propagating the exception. Hold delay-related animated parameters at their terminal values while draining.
 
-Natural contiguous clip endings can preserve buffered latency tails. Seeks, loops, edits, and other discontinuities can reset processing and discard buffered samples. See [Limiter](../reference/library/audio-effects/limiter.md).
+Natural contiguous element endings can preserve buffered latency tails. Seeks, loops, edits, and other discontinuities can reset processing and discard buffered samples. See [Limiter](../reference/library/audio-effects/limiter.md).
 
 ## Node reuse and input changes
 
