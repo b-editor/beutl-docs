@@ -59,17 +59,27 @@ internal static class Scenarios
             {
                 var view = new EditorHostFallback();
                 using var host = new CaptureHost(view, 1100, 650);
-                var create = view.FindControl<OptionsDisplayItem>("createNewButton")!;
-                create.ContextMenu!.Open(create);
+                // Since b-editor/beutl#4095 the start screen has a Create new project button instead of a card
+                // with a Project/Scene menu, so the screen is captured as it is. The crop leaves out the rail's
+                // footer, whose version is a source build's placeholder.
+                _ = view.FindControl<Button>("createNewButton")
+                    ?? throw new InvalidOperationException("The start screen has no Create new project button.");
                 Settle();
-                host.Save(output, new Rect(24, 24, 1000, 400));
-                create.ContextMenu.Close();
+                host.Save(output, new Rect(0, 0, 1100, 310));
                 break;
             }
             case "create-project-name":
             case "create-project-options":
             {
-                var model = new CreateNewProjectViewModel(new ProjectService());
+                // Built as the desktop's menu builds it, from the shell's project service and version control.
+                using var main = new MainViewModel();
+                object versionControl = DesktopInternals.Property<object>(main, "VersionControlCoordinator");
+                // Detect Git before the dialog does: the dialog's detection then finishes in its constructor
+                // instead of overwriting the sample state below whenever the probe returns.
+                await (Task)DesktopInternals.Method(versionControl.GetType(), "GetAvailabilityAsync")
+                    .Invoke(versionControl, [CancellationToken.None])!;
+                var model = DesktopInternals.Create<CreateNewProjectViewModel>(
+                    DesktopInternals.Property<ProjectService>(main, "ProjectService"), versionControl);
                 model.Name.Value = "MyProject";
                 // Display a sample path only; screenshots never create a project there.
                 model.Location.Value = "/home/user/Projects";
@@ -92,6 +102,10 @@ internal static class Scenarios
                         Settle();
                         if (dialog.FindControl<Carousel>("carousel")!.SelectedIndex != 1)
                             throw new InvalidOperationException("The project wizard did not advance.");
+                        // The taller options page can put its check box under the point that clicked Next, which
+                        // would show it hovered. Move the pointer off the dialog.
+                        host.Window.MouseMove(new Point(0, 0));
+                        Settle();
                     }
                     var background = dialog.GetVisualDescendants().OfType<Border>()
                         .Single(part => part.Name == "BackgroundElement");
@@ -107,8 +121,7 @@ internal static class Scenarios
             case "view-settings":
             case "accent-color":
             {
-                using var editor = new EditorSettingsPageViewModel();
-                using var model = new ViewSettingsPageViewModel(new Lazy<EditorSettingsPageViewModel>(() => editor));
+                using var model = new ViewSettingsPageViewModel();
                 var view = new ViewSettingsPage { DataContext = model };
                 using var host = new CaptureHost(view, 960, 760);
                 if (id == "accent-color")
