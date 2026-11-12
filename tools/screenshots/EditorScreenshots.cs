@@ -18,6 +18,7 @@ using Beutl.Editor.Components.NodeGraphTab.ViewModels;
 using Beutl.Editor.Components.NodeGraphTab.Views;
 using Beutl.Editor.Components.PreviewSettingsTab.ViewModels;
 using Beutl.Editor.Components.PreviewSettingsTab.Views;
+using Beutl.Editor.Components.PropertyEditors.Views;
 using Beutl.Editor.Components.SceneSettingsTab.ViewModels;
 using Beutl.Editor.Components.SceneSettingsTab.Views;
 using Beutl.Editor.Components.TimelineTab.ViewModels;
@@ -36,7 +37,6 @@ using Beutl.Testing.Headless;
 using Beutl.ViewModels;
 using Beutl.ViewModels.SettingsPages;
 using Beutl.Views;
-using Beutl.Views.Editors;
 using static Beutl.Docs.Screenshots.Scenarios;
 
 namespace Beutl.Docs.Screenshots;
@@ -103,6 +103,8 @@ internal static class EditorScreenshots
             case "keyframe-property":
             {
                 using var model = new ElementPropertyTabViewModel(editor);
+                // The tab shows what it is opened with; the editor opens the selected element in it.
+                model.Element.Value = fixture.RectangleElement;
                 using var host = new CaptureHost(new ElementPropertyTabView { DataContext = model }, 520, 850);
                 // These editors use ExpandTransitionHelper's own CrossFade, including on initial
                 // attachment. Let it finish while the headless dispatcher runs before capturing.
@@ -125,7 +127,7 @@ internal static class EditorScreenshots
             case "preview-settings-tab":
             {
                 using var model = new PreviewSettingsTabViewModel(editor);
-                using var host = new CaptureHost(new PreviewSettingsTabView { DataContext = model }, 620, 850);
+                using var host = new CaptureHost(new PreviewSettingsTabView { DataContext = model }, 620, 1000);
                 host.Save(output);
                 break;
             }
@@ -143,12 +145,12 @@ internal static class EditorScreenshots
             }
             case "node-graph-tab":
             {
-                var rectangle = new RectGeometryNode { Position = (28, 70) };
-                rectangle.Object.Width.CurrentValue = 320;
-                rectangle.Object.Height.CurrentValue = 180;
-                var shape = new GeometryShapeNode { Position = (340, 110) };
+                var rectangle = new RectGeometryNode { Position = { Value = (28, 70) } };
+                rectangle.Object.Value.Width.Value = 320;
+                rectangle.Object.Value.Height.Value = 180;
+                var shape = new GeometryShapeNode { Position = { Value = (340, 110) } };
                 shape.Fill.Property!.SetValue(new Beutl.Media.SolidColorBrush(0xFF2563EB));
-                var outputNode = new OutputNode { Position = (650, 150) };
+                var outputNode = new OutputNode { Position = { Value = (650, 150) } };
                 var graph = new GraphModel();
                 graph.Nodes.AddRange([rectangle, shape, outputNode]);
                 graph.Connect(shape.Geometry, rectangle.OutputPort);
@@ -196,35 +198,38 @@ internal static class EditorScreenshots
             var editors = DesktopInternals.Property<EditorService>(main, "EditorService");
             string location = Path.Combine(BeutlHomeIsolation.CurrentHome!, "samples", Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(location);
-            var project = await projects.CreateProject(1280, 720, 30, 44100, "Storyboard", location)
+            var project = await projects.CreateProject(1280, 720, new Rational(30), 44100, "Storyboard", location)
                 ?? throw new InvalidOperationException("Could not create the screenshot sample project.");
             var scene = project.Items.OfType<Scene>().Single();
-            scene.Duration = TimeSpan.FromSeconds(8);
+            scene.Duration.Value = MediaTime.FromSeconds(8);
             editors.ActivateTabItem(scene);
             Settle();
             var editor = (EditViewModel)editors.SelectedTabItem.Value!.Context.Value!;
             var animation = new KeyFrameAnimation<float>();
-            animation.KeyFrames.Add(new KeyFrame<float> { KeyTime = TimeSpan.Zero, Value = 180 });
+            animation.KeyFrames.Add(new KeyFrame<float> { KeyTime = { Value = MediaTime.Zero }, Value = { Value = 180 } });
             animation.KeyFrames.Add(new KeyFrame<float>
-                { KeyTime = TimeSpan.FromSeconds(4), Value = 420, Easing = new SplineEasing(0.25f, 0.1f, 0.75f, 0.9f) });
+            {
+                KeyTime = { Value = MediaTime.FromSeconds(4) }, Value = { Value = 420 },
+                Easing = { Value = new SplineEasing(0.25f, 0.1f, 0.75f, 0.9f) }
+            });
             var shape = new RectShape();
-            shape.Width.Animation = animation;
-            shape.Height.CurrentValue = 180;
-            shape.Fill.CurrentValue = new Beutl.Media.SolidColorBrush(0xFF2563EB);
+            shape.Width.SetKeyFrameAnimation(animation);
+            shape.Height.Value = 180;
+            shape.Fill.Value = new Beutl.Media.SolidColorBrush(0xFF2563EB);
             var text = new Beutl.Graphics.Shapes.TextBlock();
-            text.Text.CurrentValue = "Beutl";
-            text.Size.CurrentValue = 72;
-            text.FontFamily.CurrentValue = new Beutl.Media.FontFamily("Noto Sans JP");
+            text.Text.Value = "Beutl";
+            text.Size.Value = 72;
+            text.FontFamily.Value = new Beutl.Media.FontFamily("Noto Sans JP");
             var adder = (IElementAdder)editor.GetService(typeof(IElementAdder))!;
             await adder.AddAsync([
-                new ElementDescription(TimeSpan.Zero, TimeSpan.FromSeconds(6), 1, new ElementSource.EngineObject(() => shape)),
-                new ElementDescription(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), 2, new ElementSource.EngineObject(() => text))
+                new ElementDescription(MediaTime.Zero, MediaTime.FromSeconds(6), 1, new ElementSource.EngineObject(() => shape)),
+                new ElementDescription(MediaTime.FromSeconds(1), MediaTime.FromSeconds(5), 2, new ElementSource.EngineObject(() => text))
             ], CancellationToken.None);
             var element = scene.Children.Single(item => item.Objects.Contains(shape));
-            element.Name = Japanese ? "長方形" : "Rectangle";
-            scene.Children.Single(item => item.Objects.Contains(text)).Name = Japanese ? "タイトル" : "Title";
-            ((IEditorSelection)editor.GetService(typeof(IEditorSelection))!).SelectedObject.Value = element;
-            ((IEditorClock)editor.GetService(typeof(IEditorClock))!).CurrentTime.Value = TimeSpan.FromSeconds(2);
+            element.Name.Value = Japanese ? "長方形" : "Rectangle";
+            scene.Children.Single(item => item.Objects.Contains(text)).Name.Value = Japanese ? "タイトル" : "Title";
+            ((IEditorSelection)editor.GetService(typeof(IEditorSelection))!).Select(element);
+            ((IEditorClock)editor.GetService(typeof(IEditorClock))!).Seek(MediaTime.FromSeconds(2));
             editor.HistoryManager.Commit();
             Settle();
             return new EditorFixture(main, projects, editors, editor, element, animation);
@@ -241,7 +246,6 @@ internal static class EditorScreenshots
             await (Task)DesktopInternals.Method(typeof(ProjectService), "CloseProjectAsync")
                 .Invoke(_projects, [CancellationToken.None])!;
             _main.Dispose();
-            BeutlApplication.Current.Items.Clear();
             Settle();
         }
     }

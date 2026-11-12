@@ -25,12 +25,12 @@ internal static class Program
             try
             {
                 var config = GlobalConfiguration.Instance;
-                config.ViewConfig.UICulture = culture;
-                config.EditorConfig.FrameCacheMaxSize = 1024;
-                config.TelemetryConfig.Beutl_Application = false;
-                config.TelemetryConfig.Beutl_Logging = false;
-                config.TelemetryConfig.Beutl_Api_Client = false;
-                config.TelemetryConfig.Beutl_PackageManagement = false;
+                config.ViewConfig.UICulture.Value = culture;
+                config.EditorConfig.FrameCacheMaxSize.Value = 1024;
+                config.TelemetryConfig.Beutl_Application.Value = false;
+                config.TelemetryConfig.Beutl_Logging.Value = false;
+                config.TelemetryConfig.Beutl_Api_Client.Value = false;
+                config.TelemetryConfig.Beutl_PackageManagement.Value = false;
 
                 // Dispatch may complete its task inline on the UI thread. Async disposal lets that
                 // thread finish the dispatch before waiting for the session loop to stop.

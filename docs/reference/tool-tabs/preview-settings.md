@@ -17,7 +17,7 @@ A tab that gathers the **options that affect only the editor preview** — previ
 
 Open it from the menu bar via **View → Tools → Preview Settings**, or with the gear button on the preview.
 
-![Preview quality, onion skin, and cache settings](_images/preview-settings.png)
+![Preview quality, onion skin, guide, and cache settings](_images/preview-settings.png)
 
 ## Preview render quality
 

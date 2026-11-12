@@ -46,10 +46,6 @@ Set the hardware acceleration used for decoding.
 - MediaCodec
 - Vulkan
 
-:::note
-The **ForceSrgbGamma** setting in the screenshot was removed in 2.0.0-preview.10, and a saved value is ignored. The decoder now reads SDR video by its color tags. See [Before updating](../get-started/install.md#before-updating).
-:::
-
 ### Media Foundation Decoding
 
 ![](_images/media-foundation-decoder-settings.png)

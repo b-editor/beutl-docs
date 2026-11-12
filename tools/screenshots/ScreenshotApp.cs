@@ -7,16 +7,12 @@ using Avalonia.Markup.Xaml;
 using Beutl;
 using Beutl.Api.Services;
 using Beutl.Controls.Styling;
-using Beutl.Editor.Components.Helpers;
-using Beutl.Extensibility;
 using Beutl.Helpers;
-using Beutl.NodeGraph.Nodes;
 using Beutl.Services;
 using Beutl.Services.StartupTasks;
 using Beutl.Testing.Headless;
 using FluentAvalonia.Core;
 using FluentAvalonia.Styling;
-using Reactive.Bindings;
 using ReactiveUI.Avalonia.Reactive;
 
 namespace Beutl.Docs.Screenshots;
@@ -40,8 +36,6 @@ public sealed class ScreenshotApp : Application
         // Generated from the selected checkout's App.axaml; no copied style list to go stale.
         AvaloniaXamlLoader.Load(this);
         FAUISettings.SetAnimationsEnabledAtAppLevel(false);
-        Resources["PaletteColors"] = DesktopInternals.Method(DesktopInternals.Type("Beutl.AppHelpers"), "GetPaletteColors")
-            .Invoke(null, null)!;
         DesktopInternals.Method(typeof(App), "RegisterBundledEngineFonts").Invoke(null, null);
 
         var themeType = DesktopInternals.Type("Beutl.Services.ThemeService");
@@ -54,12 +48,9 @@ public sealed class ScreenshotApp : Application
     public override void RegisterServices()
     {
         base.RegisterServices();
-        ReactivePropertyScheduler.SetDefault(DesktopInternals.UiScheduler);
-        var implementation = DesktopInternals.Type("Beutl.Services.PropertyEditorService+PropertyEditorExtensionImpl");
-        typeof(PropertyEditorExtension).GetProperty("DefaultHandler", BindingFlags.Static | BindingFlags.NonPublic)!
-            .SetValue(null, Activator.CreateInstance(implementation, true));
-        LibraryRegistrar.RegisterAll();
-        NodesRegistrar.RegisterAll();
+        // The hooks the desktop and its UI tests share: property editors, the library and node registries, and
+        // the UI scheduler. No command manager here; the scenarios that show key gestures set their own.
+        DesktopInternals.Method(typeof(App), "RegisterProcessServices").Invoke(null, [null, null]);
         foreach (var extension in LoadPrimitiveExtensionTask.PrimitiveExtensions)
             extension.Load();
     }
@@ -88,4 +79,13 @@ internal static class DesktopInternals
     public static MethodInfo Method(Type type, string name) => type.GetMethod(name,
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
         ?? throw new InvalidOperationException($"Desktop initialization method changed: {type.FullName}.{name}");
+
+    public static T Create<T>(params object[] args)
+    {
+        Type[] types = [.. args.Select(arg => arg.GetType())];
+        var constructor = typeof(T).GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, types)
+            ?? throw new InvalidOperationException(
+                $"Desktop constructor changed: {typeof(T).FullName}({string.Join(", ", types.Select(type => type.Name))})");
+        return (T)constructor.Invoke(args);
+    }
 }
