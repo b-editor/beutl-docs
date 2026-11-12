@@ -36,6 +36,8 @@ Windows と macOS では、タブが保存するすべてのファイルに、�
 
 ページがスクリプトで生成したファイル（`blob:` や `data:` の URL）も同じバーに、ページが付けた名前で表示されます。バーと履歴ではファイルの提供元がそのページとして表示され、ブラウザーエンジンが作成元として別のサイトを示す場合はそのサイトとして表示されます。
 
+インストールした拡張機能が、音声合成サイトで生成した音声など、ページが渡すファイルを引き受けて独自の方法で配置することがあります。そのときバーにはファイル名の代わりに拡張機能の説明が表示され、ファイル名はツールチップに移ります。確定するまでは何も追加されません。確定すると、ファイルはダウンロード方法を選ばずにプロジェクトの `resources/downloads` に保存され、拡張機能がシーンに追加します。拡張機能がファイルを取り込まなかったときは、通常どおり 1 つの要素として追加されます。拡張機能にファイルが渡されるのは、シーンとそのプロジェクトが保存されているときだけです。ダウンロード履歴からの再試行と **ファイルをダウンロード** では、これまでどおりダウンロード方法を選びます。
+
 タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルは再試行できません。項目の削除ではダウンロード済みファイルは残ります。**ファイルをダウンロード** では、現在のページのダウンロード方法を選択できます。
 
 ## 検索・プライバシー
@@ -70,3 +72,4 @@ Windows と macOS では、タブが保存するすべてのファイルに、�
 - [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
 - [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)

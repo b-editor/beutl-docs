@@ -91,6 +91,8 @@ sidebar_position: 14
 
 ### シークバーと時刻
 
+- 現在時刻と合計時間は[時刻の表示形式](../../settings/editor.md#time-display-format)で表示されます。既定は `00:00:02:15` のようなタイムコードで、`00:00:02.50` のような時間や `75` のようなフレーム番号も選べます。時刻を右クリックすると、エディター全体の表示形式を切り替えられます。
+- 現在時刻をクリックするか `G` を押すと、移動先の位置を入力できます。[再生とプレイヘッドの移動](./timeline.md#再生とプレイヘッドの移動)を参照してください。
 - シークバーには、各マーカーがその色の印として表示されます。
 - シークバーにポインターを重ねると、ポインター位置の時刻が表示されます。印の近くでは、時刻の上にマーカー名が表示されます。
 - 印をクリックすると、再生位置がマーカーの時刻にぴったり移動します。
@@ -136,3 +138,4 @@ sidebar_position: 14
 - [`PlayerView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/PlayerView.axaml) / [`PlayerView.axaml.Viewport.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Views/PlayerView.axaml.Viewport.cs)
 - [`PlayerSeekBar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PlayerSeekBar.cs) / [`PreviewCheckerboard.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/PreviewCheckerboard.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)（プレビューのショートカット）
+- [`PlayerView.axaml.TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/PlayerView.axaml.TimeDisplayFormat.cs) / [`Player.CurrentTimeEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Player.CurrentTimeEditor.cs)（プレビューの時刻）

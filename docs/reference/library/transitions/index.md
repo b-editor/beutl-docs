@@ -6,7 +6,7 @@ description: "Built-in transitions for the beginning and end of timeline element
 
 # Transitions
 
-Transitions blend the video at the beginning or end of an element. They are set on an element's boundaries, separately from its filter effects. See [Timeline](../../tool-tabs/timeline.md) for adding and editing them.
+Transitions blend the video at the beginning or end of an element. They are set on an element's boundaries, separately from its filter effects. See [Timeline](../../tool-tabs/timeline.md) for adding and editing them. The **Transition** tab of the [Library](../../tool-tabs/library.md#filter-effect-and-transition) shows each one as a moving thumbnail.
 
 ## Library location
 

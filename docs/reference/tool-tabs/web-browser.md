@@ -36,6 +36,8 @@ On Windows and macOS, every file the tab saves is marked as downloaded from the 
 
 Files a page generates in script (`blob:` and `data:` URLs) are offered on the same bar, with the name the page gave them. The bar and the history credit the file to the page, or to another site when the browser engine names one as its creator.
 
+An installed extension can take over a file that a page offers, such as speech generated on a voice site, and place it in its own way. The bar then shows the extension's description in place of the file name, which moves to the tooltip. Nothing is added until you confirm. The file is then saved to the project's `resources/downloads` without the download options, and the extension adds it to the scene. If the extension declines the file, it is added as one element, as usual. Extensions are offered files only while the scene and its project are saved. Retrying from the download history and **Download file** keep the download options.
+
 Open **Download history** from the tab menu to open a downloaded media file or the folder of any file, import supported media, retry a download, or remove a history entry. Only media files can be opened from the history, because opening other files could run a downloaded program. A generated file cannot be retried. Removing an entry leaves the downloaded file on disk. **Download file** opens download options for the current page.
 
 ## Search and privacy
@@ -70,3 +72,4 @@ You can clear local download history and delete browser cookies. Cookie deletion
 - [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
 - [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)

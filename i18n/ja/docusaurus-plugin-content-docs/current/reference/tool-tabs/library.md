@@ -21,13 +21,15 @@ sidebar_position: 2
 
 ## 画面構成
 
-タブの上部にタブの切り替え、下部に選択中のタブの内容が表示されます。タブは次の4種類があります。
+タブの上部にタブの切り替え、下部に選択中のタブの内容が表示されます。タブは次の6種類があります。
 
 | タブ | 役割 |
 |------|------|
 | **検索** | キーワードでライブラリ全体を横断検索する |
 | **イージング** | アニメーションの補間に使うイージング関数を一覧する |
 | **ライブラリ** | 描画オブジェクト・エフェクトなどをカテゴリツリーで一覧する（既定で選択） |
+| **フィルターエフェクト** | フィルターエフェクトを動くサムネイル付きのタイルで一覧する |
+| **トランジション** | トランジションを動くサムネイル付きのタイルで一覧する |
 | **ノードグラフ** | ノードベース描画で使うノードを一覧する（既定では非表示） |
 
 タブが画面に収まらないときは、マウスホイールで横スクロールできます。
@@ -36,7 +38,7 @@ sidebar_position: 2
 
 タブを右クリックして表示されるメニュー、またはタブ右端の **「…」ボタン** から、各タブの表示/非表示を切り替えられます。
 
-- **検索 / イージング / ライブラリ**: 既定で表示
+- **検索 / イージング / ライブラリ / フィルターエフェクト / トランジション**: 既定で表示
 - **ノードグラフ**: 既定で非表示。ノードグラフを利用するときに表示に切り替えます
 
 ## タブの内容
@@ -74,6 +76,16 @@ sidebar_position: 2
 
 各項目の詳細は [ライブラリリファレンス](../library/index.md) を参照してください。
 
+### フィルターエフェクトとトランジション {/* #filter-effect-and-transition */}
+
+フィルターエフェクトとトランジションを、拡張機能が追加したものも含めてライブラリの順にタイルで表示します。各タイルには動くサムネイルと項目の名前が表示されます。タイルにポインターを乗せると、サムネイルが再生され、説明が表示されます。
+
+タイルは **ライブラリ** のツリーの同じ項目と同じようにドラッグできます。エフェクトは[要素プロパティ](./element-property.md)タブの **フィルターエフェクト** のセクションに、トランジションはタイムラインの要素にドロップします。トランジションは、要素のポインターに近い側の端に設定されます。
+
+サムネイルには、プレビューに表示されているフレームに、選択の枠やハンドルを除いた状態で各エフェクトを掛けた様子が表示されます。トランジションは、そのフレームが消えてまた現れる様子を示します。プレビューに別のフレームが表示され、再生が止まってしばらくすると、サムネイルは描き直されます。プレビューに何も表示されていないときは、Beutl に付属するサンプル画像を使います。
+
+エフェクトを追加する選択画面とトランジションを変更する選択画面でもタイルを表示できます。[タイルから選ぶ](./element-property.md#picking-from-tiles)を参照してください。
+
 ### ノードグラフ
 
 ノードベース描画で使えるノードのカテゴリツリーです。ノードの種類別にグループ化されており、ノードグラフ上にドラッグして配置します。
@@ -95,3 +107,5 @@ sidebar_position: 2
 - [`EasingsView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/EasingsView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/EasingsView.axaml.cs)
 - [`LibraryView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryView.axaml.cs)
 - [`NodesView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml.cs)
+- [`LibraryGalleryView.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml.cs)
+- [`LibraryGalleryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryGalleryItemViewModel.cs) / [`LibraryPreviewCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryPreviewCapture.cs) / [`LibraryThumbnailSet.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailSet.cs)

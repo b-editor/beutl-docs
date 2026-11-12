@@ -27,6 +27,8 @@ You can also double-click an existing transition ramp on the timeline to edit it
 - Use **Delete** beside the type picker to remove the transition from both sides of a shared boundary.
 - Use **Pin Tab** in the tab header's right-click menu to keep this edge open while editing another transition.
 
+The type picker shows the transitions as tiles. Each tile's moving thumbnail plays the transition between the elements on either side of this edge, or brings the one element in or out when the edge has no neighbor. See [Picking from tiles](./element-property.md#picking-from-tiles).
+
 ## Related documents
 
 - [Timeline](./timeline.md)
@@ -40,3 +42,4 @@ You can also double-click an existing transition ramp on the timeline to edit it
 - [`TransitionTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml)
 - [`ElementView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
+- [`TransitionTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)

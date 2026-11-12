@@ -25,6 +25,16 @@ description: エディター画面に関係する設定
 
 デフォルト値は __"オン"__ です。
 
+## 時刻の表示形式 {/* #time-display-format */}
+
+プレビュー、タイムラインとグラフエディタの目盛り、マーカーの一覧で時刻を表示する形式です。プレビューの時刻を右クリックしても切り替えられます。
+
+- 時間 (00:00:02.50): 時、分、秒と 100 分の 1 秒
+- タイムコード (00:00:02:15) __(デフォルト値)__: 時、分、秒とフレーム
+- フレーム番号 (75): タイムラインの先頭から数えたフレームの番号
+
+29.97 fps と 59.94 fps のタイムコードは、ドロップフレームでフレームを数え、フレームの前にセミコロンを置きます（`00:01:00;02` など）。これにより、実際の時間とのずれは 2 フレーム以内に収まります。23.976 fps を含むほかのフレームレートでは、すべてのフレームを数えます。移動先の時刻は、表示されている形式のまま入力できます。[再生とプレイヘッドの移動](../reference/tool-tabs/timeline.md#再生とプレイヘッドの移動)を参照してください。
+
 ## タイムラインのサムネイルを既定で表示する
 
 タイムラインのクリップにフィルムストリップと波形を表示します。オフにするとサムネイルは表示されず、クリップの右クリックメニューで **サムネイルを無効化** をオフにしたクリップにだけ表示されるので、メディアの多いタイムラインでも拡大縮小が軽くなります。クリップごとの設定はこの設定と異なる場合にだけ保存されるので、ほかのクリップは設定の変更に従います。
@@ -131,7 +141,7 @@ YUVはI420を使用します。
 
 ### ポインターロックを有効化
 
-プロパティエディターのドラッグ操作中にカーソルを非表示にして、固定します。(Windowsのみ)
+プロパティエディターの数値ボックスやそのラベル、[カラーグレーディング](../reference/tool-tabs/color-grading.md)タブのカラーホイールなどで値をドラッグしている間、カーソルを隠し、ドラッグを始めた位置に戻します。Windows と macOS で動作します。
 
 デフォルト値は __"オン"__ です。
 
@@ -196,11 +206,13 @@ Windows の HDR ディスプレイで、__ディスプレイに合わせる__ �
 
 ## ソース
 
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Configuration/EditorConfig.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/EditorConfig.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`AutoSaveService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/AutoSaveService.cs)
-- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
+- [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml)
 - [`VulkanSwapchainRenderer.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/VulkanSwapchainRenderer.cs)
 - [`WindowsDisplayLuminance.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Backend/Vulkan/WindowsDisplayLuminance.cs)
 - [`HdrBitmapView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrBitmapView.cs)
 - [`HdrOverlay.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrOverlay.cs)
+- [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/TimeDisplayFormat.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
+- [`PointerLockHelper.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PointerLockHelper.cs)

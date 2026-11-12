@@ -27,7 +27,7 @@ sidebar_position: 7
 
 - **プロパティツリー（左側）**: 描画オブジェクト・エフェクト・トランスフォームと、その下のプロパティや成分を階層表示します。項目を選ぶと編集対象を切り替えます。
 - **ツールバー（グラフ下部）**: 値グラフ／速度グラフ、スナップ、変形枠、高さの自動調整、イージング、キーフレーム速度、ハンドルの連動を設定します。
-- **タイムラインスケール（中央上部）**: 時間軸の目盛り。再生位置・シーン開始/終了バーを表示します。
+- **タイムラインスケール（中央上部）**: 時間軸の目盛り。再生位置・シーン開始/終了バーを表示します。時刻は[時刻の表示形式](../../settings/editor.md#time-display-format)に従います。
 - **垂直スケール（中央左）**: 値の目盛り。基準線（0 の位置）を起点に上下方向の値を読み取れます。
 - **グラフパネル（中央）**: キーフレームと補間カーブを 2D グラフで描画する作業領域です。
 
@@ -189,3 +189,4 @@ sidebar_position: 7
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs)（タブを開く起点）
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
 - [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)
+- [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)

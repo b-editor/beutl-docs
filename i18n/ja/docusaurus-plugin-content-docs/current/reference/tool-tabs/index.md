@@ -27,6 +27,8 @@ sidebar_position: 2
 - 選択中のタブにマウスを乗せると閉じるボタンが表示されます。タブ名の左には拡張機能のアイコンが表示されます。
 - `Ctrl + W`（macOS では `Cmd + W`）で、フォーカスのあるツールタブを閉じます。フローティングウィンドウ内のタブも閉じられます。プレビューのように閉じられないタブは開いたままです。
 
+メインウィンドウの外へドラッグしたタブは、独立したフローティングウィンドウになります。フローティングウィンドウでも `Ctrl + S`、`Ctrl + Z`（macOS では `Cmd`）、`Space`、`M` などエディターのショートカットが使えます。macOS ではメニューバーも表示され、その **編集** のコマンドはフローティングウィンドウに対して働きます。そこから開くダイアログ（**シーンを新規作成** など）は、メインウィンドウに表示されます。フローティングウィンドウはシーンに属し、別のシーンに切り替えると隠れ、元のシーンに戻ると同じ位置に再び表示されます。
+
 ## キーボードでタブを切り替える
 
 | 操作 | ショートカット |
@@ -83,3 +85,4 @@ sidebar_position: 2
 - [`TabSwitcherViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/TabSwitcherViewModel.cs) / [`TabSwitcherView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/TabSwitcherView.axaml.cs)
 - [`NewToolTabDockable.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Dock/NewToolTabDockable.cs)
 - [`DockStyles.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Views/Dock/DockStyles.axaml) / [`ToolTabPin.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/Helpers/ToolTabPin.cs)
+- [`FloatingToolWindow.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/Dock/FloatingToolWindow.cs)

@@ -27,6 +27,8 @@ sidebar_position: 23
 - 種類を選ぶ欄の横の **削除** で、共有する境界の両側からトランジションを取り除きます。
 - タブのヘッダーを右クリックして **タブを固定** を有効にすると、別のトランジションを編集してもこの端を表示し続けます。
 
+種類を選ぶ欄では、トランジションがタイルで表示されます。各タイルの動くサムネイルは、この端をはさむ両側の要素の間でトランジションを再生します。隣に要素がない端では、その要素が現れる、または消える様子を見せます。[タイルから選ぶ](./element-property.md#picking-from-tiles)を参照してください。
+
 ## 関連ドキュメント
 
 - [タイムライン](./timeline.md)
@@ -40,3 +42,4 @@ sidebar_position: 23
 - [`TransitionTabView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml)
 - [`ElementView.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.axaml.cs)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
+- [`TransitionTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TransitionTab/Views/TransitionTabView.axaml.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)
