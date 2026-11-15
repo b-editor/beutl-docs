@@ -143,6 +143,8 @@ New FFmpeg video settings and the built-in presets pair a bitrate with `crf`. H.
 
 Color settings you leave unspecified get the same tags with every encoder. SDR video is tagged BT.709 with limited range. HDR video uses BT.2020. JPEG-family codecs use sRGB code values with the BT.601 matrix at full range, and RGB output is tagged sRGB. An SDR output that cannot record tags, such as AVI, WMV, or FLV, stays untagged. Settings you choose are kept.
 
+BT.709 video is written with the curve QuickTime uses to show it, so an export plays back in QuickTime as it looks in Beutl. Beutl reads BT.709, BT.601, and BT.2020 SDR video with the same curve, so a macOS screen recording looks as the screen did.
+
 ### Media Foundation on Windows
 
 **Media Foundation Encoding** uses Windows' built-in encoders. Choose a supported destination such as MP4, WMV, AVI, WAV, MP3, or FLAC. **Auto** chooses a codec for the destination extension; HEVC requires an available Windows HEVC encoder. Audio-only destinations do not output video, and AVI uses uncompressed RGB32 video.
@@ -231,3 +233,4 @@ These are reasonable starting points. Adjust bitrate, length, and other paramete
 - [`AudioChannelsEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/OutputTab/AudioChannelsEditorViewModel.cs) / [`AudioEncoderSettings.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/Encoding/AudioEncoderSettings.cs)
 - [`CodecEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecEditorViewModel.cs) / [`CodecPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecPickerViewModel.cs)
 - [`VideoColorDefaults.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/VideoColorDefaults.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)

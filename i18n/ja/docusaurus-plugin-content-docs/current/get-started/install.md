@@ -76,14 +76,15 @@ Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロー�
 
 ## Beutl を更新する
 
-新しいバージョンがあると、Beutl は **インストール** と **リリースノート** のある通知を表示します。**インストール** を選ぶと、編集を続けている間にバックグラウンドで更新をダウンロードし、タイトルバーの[ステータス](../reference/index.md#アプリの状態)ボタンに進捗が表示されます。ステータスのポップアップから更新のダイアログを開けます。**バックグラウンドへ** でダイアログを閉じ、`Esc` で更新をキャンセルします。
+起動時に新しいバージョンが見つかると、Beutl は編集を続けている間にバックグラウンドで更新をダウンロードします。そのことを **リリースノート** のある短い通知 **アップデートをダウンロード中** で知らせ、タイトルバーの[ステータス](../reference/index.md#アプリの状態)ボタンに進捗が表示されます。先に確認したい場合は、設定の **情報** ページで **アップデートを自動でダウンロード** をオフにします。すると Beutl は **インストール** と **リリースノート** のある通知を表示し、**インストール** でダウンロードが始まります。Beutl を複数起動しているときは、確認なしでダウンロードするのはそのうち 1 つだけで、ほかは **インストール** を表示します。ステータスのポップアップから更新のダイアログを開けます。**バックグラウンドへ** でダイアログを閉じ、`Esc` で更新をキャンセルします。
 
 更新の準備ができると、バージョンを示した通知で次の操作を選べます。
 
 - Windows では **インストーラーを起動**、macOS と Linux では **再起動して更新**: Beutl が閉じて更新が始まります。macOS と Linux では、更新後に Beutl が再び起動します。
 - **終了時に更新**: 作業内容を保存してから Beutl を終了したときに更新をインストールし、Beutl は閉じたままになります。
+- **リリースノート**: リリースページを開きます。通知は表示されたままです。
 
-Flatpak のインストールでは、ダウンロードが終わるとすぐに新しいバンドルをインストールします。[Flatpak の更新](#flatpak-の更新)を参照してください。
+Flatpak のインストールでは、ダウンロードが終わるとすぐに新しいバンドルをインストールするので、確認なしにダウンロードすることはなく、設定に **アップデートを自動でダウンロード** は表示されません。[Flatpak の更新](#flatpak-の更新)を参照してください。
 
 ダウンロードや準備に失敗したときは、通知とダイアログに **再試行** が表示され、メッセージには失敗した手順が示されます。
 
@@ -91,16 +92,16 @@ Flatpak のインストールでは、ダウンロードが終わるとすぐに
 
 ## 更新する前に
 
-**2.0.0-preview.12 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.12 で保存したプロジェクトは preview.11 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.13 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.13 で保存したプロジェクトは preview.11 と preview.12 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
 
-**x64 では、preview.12 には x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
+**x64 では、preview.12 以降、x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
 
-preview.12 に更新すると、既存のプロジェクトの見た目や音が変わることがあります。
+preview.13 に更新すると、既存のプロジェクトの見た目が変わることがあります。
 
-- **サウンドのエフェクトはファイルのサンプルレートで処理されます。** 48 kHz のプロジェクトに置いた 44.1 kHz のファイルのように、ファイルのサンプルレートがプロジェクトと異なるサウンドでは、スピード、パン、ゲイン、音声エフェクトがファイルのサンプルレートで処理され、その後でプロジェクトのサンプルレートに変換されるようになりました。ファイルのサンプルレートの半分を超えるイコライザーのバンドはそのすぐ下に抑えられるので、8 kHz の音声で 10 kHz を持ち上げると、4 kHz 付近にかかるようになります。エフェクトをプロジェクトのサンプルレートで処理するには、チェーンの先頭に[リサンプリング](../reference/library/audio-effects/resampling.md)エフェクトを置きます。
-- **強さが 0 の振動は、レイヤーをそのまま描画します。** 以前はレイヤーを描き直していたため、揺れ始める前のすべてのフレームで、半端な位置にあるテキストがぼやけていました。[振動](../reference/library/filter-effects/shake.md)を参照してください。
+- **BT.709、BT.601、BT.2020 のタグが付いた SDR の動画は、暗部が暗く表示されます。** これらのタグを QuickTime と同じカーブで読み込むようになり、macOS の画面収録が画面で見たとおりに表示されます。差は黒に近いほど大きく、動画のコード値 13（255 段階中）は sRGB 28 ではなく約 10 で表示されるようになり、コード値 128 を超えると差は 1 未満です。既存のプロキシは一度破棄され、作り直されます。[色のタグ](../reference/tool-tabs/output.md#色のタグ)を参照してください。
+- **BT.709 で書き出した動画は、以前より暗部が明るくなり**、QuickTime では Beutl での見た目どおりに再生されます。
 
-時刻は、100 分の 1 秒までの秒数ではなく、`00:00:02:15` のようなタイムコードで表示されるようになりました。元に戻すには、[時刻の表示形式](../settings/editor.md#time-display-format)で **時間 (00:00:02.50)** を選ぶか、プレビューの時刻を右クリックします。
+起動時に見つかった更新は、確認なしにダウンロードされるようになりました。[Beutl を更新する](#beutl-を更新する)を参照してください。
 
 AIコーディングエージェントを使用している場合は、更新後に [Beutl との連携を再インストール](../advanced/ai-agents.md)してください。
 
@@ -114,7 +115,6 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`build-flatpak-package.yml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/.github/workflows/build-flatpak-package.yml)
 - [`Build.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/nukebuild/Build.cs)
 - [`global.json`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/global.json)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
-- [`Sound.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Audio/Sound.cs)
-- [`ShakeEffect.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Engine/Graphics/FilterEffects/ShakeEffect.cs)
-- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/EditorConfig.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Services/AppUpdateController.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Configuration/UpdateConfig.cs) / [`InformationPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Pages/SettingsPages/InformationPage.axaml)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)

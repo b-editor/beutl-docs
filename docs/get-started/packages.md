@@ -25,7 +25,7 @@ Drag supported media or object templates to the timeline. Object templates can s
 
 ## Scheduled changes
 
-Some install, update, or uninstall actions are scheduled for application exit. When Beutl asks you to exit to apply package changes, save your work and exit the app. Pending changes are stored and restored across sessions. To withdraw a scheduled action, open the package details and choose **Cancel** before exiting.
+Some install, update, or uninstall actions cannot finish while Beutl runs and are scheduled for application exit. While a change is scheduled, the package's row in **Library** offers **Restart**, and the package details show **Restart** above **Cancel**. **Restart** quits Beutl as **Exit** does, after your work is saved. The package tools then apply every scheduled change, and remove the packages those changes leave unneeded, without waiting for you, unless a package asks you to accept its license. Their last page offers **Start Beutl** next to **Close**. When you exit Beutl instead, the package tools open and wait for you to press **Start**. Pending changes are stored and restored across sessions. To withdraw a scheduled action, choose **Cancel** in the row's **…** menu or in the package details.
 
 ## Extension compatibility
 
@@ -49,5 +49,7 @@ When such packages have a newer release, Beutl shows one short warning instead o
 - [`PackageChangesQueue.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Api/Services/PackageChangesQueue.cs)
 - [`MainViewModel.Shutdown.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/MainViewModel.Shutdown.cs)
 - [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs)
+- [`PackageOperationHandler.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/ViewModels/ExtensionsPages/PackageOperationHandler.cs) / [`LibraryPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Pages/ExtensionsPages/LibraryPage.axaml) / [`PackageDetailsPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Pages/ExtensionsPages/DiscoverPages/PackageDetailsPage.axaml)
+- [`ResultPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.PackageTools.UI/Views/ResultPage.axaml)
 - [`AfterLoadingExtensionsTask.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/StartupTasks/AfterLoadingExtensionsTask.cs)
 - [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs)

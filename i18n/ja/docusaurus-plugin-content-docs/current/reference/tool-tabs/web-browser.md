@@ -32,6 +32,8 @@ Web ページを表示しているときは、タブのメニューの **ブッ�
 
 保存先としてプロジェクト内の `resources/downloads` または共有の **素材** フォルダーを選択できます。効果音やフォント、LUT をまとめた ZIP など、どのファイルも保存できます。例外は、サインインページなどファイルの代わりに返された Web ページだけです。対応する画像・動画・音声ファイルはタイムラインにも追加できます。
 
+ダウンロードリンクのクリックなど、ページが要求したダウンロードでは、すぐにダウンロード方法の選択が開きます。ブックマークの編集など別のブラウザーのパネルを開いているときと、拡張機能がファイルを引き受けるとき（後述）は、代わりにバーの通知で待ちます。ダウンロード方法の選択を開いている間にページが送ったファイルは、選択をキャンセルするか閉じた後、通知で待ちます。ファイルのダウンロード中や、通知でファイルが待っている間は、別のダウンロードリンクをクリックしても無視されることがあります。ページが開いたダウンロード方法の選択を 2 回続けてキャンセルすると、ページを再読み込みするまで、そのページのダウンロード要求と、それまでに待っていたファイルを無視します。通知の **ページを再読み込みするまでダウンロード要求を無視** でも同じようになります。ただし、ほかにもファイルが待っているときは、次のファイルに進みます。ページを再読み込みするか通知を閉じるまで、通知に **このページを再読み込みするまでダウンロード要求を無視しています** と表示されます。
+
 Windows と macOS では、タブが保存するすべてのファイルに、表示される前にインターネットからダウンロードした印を付けます。Windows では取得元のアドレスを含む `Zone.Identifier` ストリーム、macOS では `com.apple.quarantine` 属性です。これにより SmartScreen、保護ビュー、Gatekeeper が、Web ブラウザーでダウンロードしたファイルと同じように確認します。FAT など印を保持できないボリュームではファイルに印が付かず、Linux にはこの印がありません。
 
 ページがスクリプトで生成したファイル（`blob:` や `data:` の URL）も同じバーに、ページが付けた名前で表示されます。バーと履歴ではファイルの提供元がそのページとして表示され、ブラウザーエンジンが作成元として別のサイトを示す場合はそのサイトとして表示されます。
@@ -72,4 +74,4 @@ Windows と macOS では、タブが保存するすべてのファイルに、�
 - [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
 - [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)
-- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
+- [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
