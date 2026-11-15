@@ -98,7 +98,7 @@ The first time a newly published version starts, a notification offers **Release
 
 Existing projects can look different after updating to preview.13:
 
-- **SDR video tagged BT.709, BT.601, or BT.2020 shows darker shadows.** Beutl now reads these tags with the curve QuickTime uses, so a macOS screen recording looks as the screen did. The difference is largest near black, about 17 levels darker at sRGB level 13, and less than 1 level above level 128. Existing proxies are discarded and made again once. See [Color tags](../reference/tool-tabs/output.md#color-tags).
+- **SDR video tagged BT.709, BT.601, or BT.2020 shows darker shadows.** Beutl now reads these tags with the curve QuickTime uses, so a macOS screen recording looks as the screen did. The difference is largest near black, where video code 13 (of 255) now shows as about sRGB 10 instead of 28, and is less than 1 level above code 128. Existing proxies are discarded and made again once. See [Color tags](../reference/tool-tabs/output.md#color-tags).
 - **BT.709 exports have brighter shadows** than before, and play back in QuickTime as they look in Beutl.
 
 Updates found at startup now download without asking. See [Updating Beutl](#updating-beutl).

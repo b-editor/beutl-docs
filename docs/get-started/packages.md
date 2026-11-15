@@ -25,7 +25,7 @@ Drag supported media or object templates to the timeline. Object templates can s
 
 ## Scheduled changes
 
-Some install, update, or uninstall actions cannot finish while Beutl runs and are scheduled for application exit. While a change is scheduled, the package's row in **Library** offers **Restart**, and the package details show **Restart** above **Cancel**. **Restart** quits Beutl as **Exit** does, after your work is saved. The package tools then apply every scheduled change, and remove the packages those changes leave unneeded, without waiting for you, and their last page offers **Start Beutl** next to **Close**. Pending changes are stored and restored across sessions, and are also applied when you exit Beutl. To withdraw a scheduled action, choose **Cancel** in the row's **…** menu or in the package details.
+Some install, update, or uninstall actions cannot finish while Beutl runs and are scheduled for application exit. While a change is scheduled, the package's row in **Library** offers **Restart**, and the package details show **Restart** above **Cancel**. **Restart** quits Beutl as **Exit** does, after your work is saved. The package tools then apply every scheduled change, and remove the packages those changes leave unneeded, without waiting for you, unless a package asks you to accept its license. Their last page offers **Start Beutl** next to **Close**. When you exit Beutl instead, the package tools open and wait for you to press **Start**. Pending changes are stored and restored across sessions. To withdraw a scheduled action, choose **Cancel** in the row's **…** menu or in the package details.
 
 ## Extension compatibility
 
