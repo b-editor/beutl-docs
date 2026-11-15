@@ -35,6 +35,8 @@ Each element file stores its timeline position, duration, layer, name, and setti
 
 Beutl stores local UI state here, including the dock arrangement and editor view state, and the thumbnail the start screen shows for the project, in `.beutl/thumbnails`.
 
+When a project closes, Beutl records the scene that was selected in `.beutl/view-state/<project file name>.config`, and the project opens on that scene the next time. Without a record, or when the project no longer holds that scene, the project opens on its last scene. The record is written only when the project closes, so after a crash the project opens on the scene of its last clean close.
+
 ## Git files
 
 When [version control](../reference/tool-tabs/version-control.md) is enabled, the project uses a standard Git repository. A repository created for the project has a `.git` directory; a project inside an existing repository can use that enclosing repository.
@@ -43,7 +45,7 @@ The local UI state in `.beutl` is excluded from project history. See [Version Co
 
 ## Version compatibility {/* #version-compatibility */}
 
-**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12 keeps the project file format floor at 2.0.0-preview.11, so projects it saves still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
+**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12 and preview.13 keep the project file format floor at 2.0.0-preview.11, so projects they save still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
 
 Project, scene, and element files record the minimum Beutl version needed to open them. Preview.11 raises the floor because a row that shows two or three values together, such as a Translate's X and Y, saves its expression as a new kind of expression. An older version would find no expression there and lose it the next time it saved, so it refuses such a project instead. The floor applies to every project that preview.11 saves, whether or not it uses such an expression. See [Values shown in one row](./keyframe.md#joined-rows).
 
@@ -65,7 +67,8 @@ Preview.9 stores timeline and media times as integer flick counts. Older time st
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`EditorConstants.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/EditorConstants.cs)
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`ProjectViewState.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Services/ProjectViewState.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)

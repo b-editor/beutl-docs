@@ -35,6 +35,8 @@ MyProject/
 
 ドックの配置やエディターの表示状態など、ローカルのUI状態を保存します。スタート画面に表示するプロジェクトのサムネイルも `.beutl/thumbnails` に保存します。
 
+プロジェクトを閉じると、そのとき選択していたシーンを `.beutl/view-state/<プロジェクトファイル名>.config` に記録し、次に開いたときはそのシーンを表示します。記録がないときや、そのシーンがプロジェクトにもうないときは、最後のシーンを表示します。記録はプロジェクトを閉じたときにだけ書き込まれるので、クラッシュした後は、最後に正常に閉じたときのシーンで開きます。
+
 ## Gitの管理ファイル
 
 [バージョン管理](../reference/tool-tabs/version-control.md)を有効にすると、通常のGitリポジトリを使用します。プロジェクト用に作成されたリポジトリには `.git` ディレクトリがあり、既存のリポジトリ内にあるプロジェクトは親リポジトリを使用できます。
@@ -43,7 +45,7 @@ MyProject/
 
 ## バージョン間の互換性 {/* #version-compatibility */}
 
-**2.0.0-preview.11 以降で保存したプロジェクトは、preview.10 以前では開けません。** preview.12 はプロジェクト形式の最低対応バージョンを 2.0.0-preview.11 のまま変えないので、preview.12 で保存したプロジェクトも preview.11 で開けます。古いバージョンでも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
+**2.0.0-preview.11 以降で保存したプロジェクトは、preview.10 以前では開けません。** preview.12 と preview.13 はプロジェクト形式の最低対応バージョンを 2.0.0-preview.11 のまま変えないので、これらで保存したプロジェクトも preview.11 で開けます。古いバージョンでも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
 
 プロジェクト・シーン・要素のファイルには、開くために必要な最低バージョンが記録されます。preview.11 で最低対応バージョンが上がるのは、移動の X と Y のように 2 つや 3 つの値をまとめて表示する行が、式を新しい種類の式として保存するためです。古いバージョンはそこに式を見つけられず、次に保存するときに失ってしまうため、そのようなプロジェクトを開かないようにしています。この最低対応バージョンは、そうした式を使っているかどうかにかかわらず、preview.11 で保存したすべてのプロジェクトに適用されます。[1 行にまとめて表示される値](./keyframe.md#joined-rows)を参照してください。
 
@@ -65,7 +67,8 @@ preview.9 ではタイムラインとメディアの時刻を整数の flick 数
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`EditorConstants.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/EditorConstants.cs)
 - [`GitCliVersionControlService.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Editor/VersionControl/GitCliVersionControlService.cs)
-- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/Serialization/FileFormat.cs)
+- [`ProjectViewState.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Services/ProjectViewState.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)

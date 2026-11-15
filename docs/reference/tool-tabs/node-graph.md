@@ -135,7 +135,7 @@ Video-generation and editing nodes output a `VideoSource`. Connect it to a video
 
 1. Add **Fullscreen pass (GLSL)** from **Shaders**.
 2. Connect **Effect input** to the pass's `source` sampler, and the pass's `color` output to **Graph output**.
-3. Edit the pass's **Code**. The starting code passes its input through:
+3. Edit the pass's **Code**, where `Tab` types a tab. The starting code passes its input through:
 
 ```glsl
 #version 450

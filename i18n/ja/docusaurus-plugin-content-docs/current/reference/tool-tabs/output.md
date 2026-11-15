@@ -143,6 +143,8 @@ FFmpeg の新しい動画設定と組み込みプリセットでは、ビット�
 
 指定しなかった色の設定には、どのエンコーダーでも同じタグが付きます。SDR の動画は BT.709 のリミテッドレンジ、HDR の動画は BT.2020 です。JPEG 系のコーデックは sRGB のコード値と BT.601 のマトリクスをフルレンジで使い、RGB の出力には sRGB のタグが付きます。AVI、WMV、FLV などタグを記録できない SDR の出力はタグなしのままです。指定した設定はそのまま保持されます。
 
+BT.709 の動画は、QuickTime が表示に使うカーブで書き出すので、QuickTime では Beutl での見た目どおりに再生されます。BT.709、BT.601、BT.2020 の SDR の動画も同じカーブで読み込むので、macOS の画面収録は画面で見たとおりに表示されます。
+
 ### Windows の Media Foundation
 
 **Media Foundation エンコーディング** は Windows のエンコーダーを使用します。MP4・WMV・AVI・WAV・MP3・FLAC など、対応する保存先を選びます。**自動** は保存先の拡張子に合うコーデックを選びます。HEVC には対応する Windows エンコーダーが必要です。音声専用の保存先では映像を出力せず、AVI は非圧縮 RGB32 の映像を使用します。
@@ -231,3 +233,4 @@ FFmpeg でも、`.wav` や `.mp3` のような音声専用の保存先ではフ�
 - [`AudioChannelsEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/OutputTab/AudioChannelsEditorViewModel.cs) / [`AudioEncoderSettings.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/Encoding/AudioEncoderSettings.cs)
 - [`CodecEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecEditorViewModel.cs) / [`CodecPickerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.FFmpeg/PropertyEditors/CodecPickerViewModel.cs)
 - [`VideoColorDefaults.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/VideoColorDefaults.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)

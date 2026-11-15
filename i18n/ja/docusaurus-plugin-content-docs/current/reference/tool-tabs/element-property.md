@@ -96,6 +96,8 @@ sidebar_position: 4
 
 ファイルの入力欄には、対応する種類のローカルファイルをドラッグ&ドロップして指定することもできます。イージングのプロパティには種類の選択とカーブのプレビューがあり、スプラインイージングではカーブの制御点をドラッグして直接調整できます。カーブはキーボードでも操作できます。`Tab` で 2 つの制御点の間を移動してから次の項目へ進み、矢印キーで選択中の制御点を `0.01` ずつ、`Shift` を押しながらで `0.1` ずつ動かします。キーを 1 回押すごとに 1 回の取り消し単位になります。値の列が狭いときは、カーブが行の幅いっぱいに表示されます。
 
+[テキスト](../library/drawables/shapes/text.md)の **テキスト** のように複数行を入力する欄では、長い行が欄の幅で折り返されます。コードの欄は折り返さず、書いたとおりの行を保ち、横にスクロールします。対象は [GLSLスクリプト](../library/filter-effects/script/glsl-script.md)、[SKSLスクリプト](../library/filter-effects/script/sksl-script.md)、[C#スクリプト](../library/filter-effects/script/csharp-script.md) エフェクトのスクリプト、シェーダーのパスノードの **コード**、**C# 式** ノードのスクリプトです。コードの欄は等幅フォントで表示され、このタブでもノード上でも、`Tab` で次の欄へ移る代わりにタブ文字を入力します。`Shift + Tab` では、これまでどおり前の欄へ戻ります。**C# 式** ノードのスクリプトは複数行になり、`Enter` で改行します。
+
 複数の値を持つプロパティ（点や色など）では、同じメニューの **成分を分離** で値ごとに別々にアニメーションできます。[成分ごとにアニメーションする](../../get-started/keyframe.md#separate-components)を参照してください。移動の X と Y のように別々のプロパティとして保存されている値は、1 つの行にまとめて表示されます。[1 行にまとめて表示される値](../../get-started/keyframe.md#joined-rows)を参照してください。
 
 サウンドには折りたたみ可能な **パンナー** と **チャンネルの割り当て** のセクションもあります。[マルチチャンネル音声](../../get-started/multichannel-audio.md)を参照してください。
@@ -131,6 +133,16 @@ sidebar_position: 4
 
 キーボードでは、`Tab` は各パレットで 1 回だけ、最後にフォーカスした色で止まります。矢印キーで色の間を移動し、`Left` と `Right` は順番に、`Up` と `Down` は 1 行ずつ移動します。`Enter` または `Space` でフォーカスのある色を選び、メニューキーでその色のメニューを開きます。
 
+## 複数の要素をまとめて編集する {/* #editing-several-elements */}
+
+タイムラインで複数の要素を選択すると、固定していないタブはそれらをまとめて編集します。1 つの要素のときと同じパネルとエディターで要素の 1 つを表示し、各編集は選択中のすべての要素に 1 回の取り消し単位で反映されます。固定したタブは、固定した要素を表示し続けます。
+
+- **すべての要素が持つものだけが表示されます。** プロパティは名前と型で対応付けられます。エフェクトやトランスフォームなどのリストの項目は、各要素での並び順に型で対応付けられるので、ある要素の最初のぼかしは別の要素の最初のぼかしに対応します。テキストと矩形を選択すると、両者に共通する描画オブジェクトのプロパティが **テキスト / 矩形** のような見出しの下に表示されます。
+- **各要素は、その要素のエディターで編集したときと同じように変更を受け取ります。** 値は、その要素の再生ヘッド位置のキーフレームに入ります。式で値が決まっている要素は、その値を保ちます。キーフレームの追加や式の設定は、各要素の値に対して行われます。
+- **値の違いには印が付きます。** 要素ごとに値が異なると、その行の ︙ ボタンに点が表示されます。ツールチップに各要素の値が表示され、メニューに **すべての要素をこの値にする** が表示されます。ブラシ、ペン、テクスチャーの行では、代わりに切り替え先の種類が表示されます。
+- **ロックされている要素は変更されません。** プロパティの上の注意書きに、変更されない要素の数、または選択中の要素に共通するプロパティがないことが表示されます。
+- **表示中の要素だけに反映される編集もあります。** ︙ メニューにはインラインのアニメーション表示がありません。ノードグラフの中の編集は、表示中の要素だけに反映されます。
+
 ## 不明な型のオブジェクト
 
 拡張機能の未インストールなどでオブジェクトの型を解決できないときは、フォールバック表示に切り替わります。元の型名と、JSON を直接編集して保存するためのコマンドバーが表示されるため、最低限の確認や修正をその場で行えます。
@@ -163,4 +175,6 @@ sidebar_position: 4
 - [`ColorPaletteView.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteView.cs) / [`ColorPaletteService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/ColorPaletteService.cs) / [`DefaultColorPalette.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/DefaultColorPalette.cs)
 - [`LibraryItemPickerFlyoutPresenter.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Styling/PropertyEditors/LibraryItemPickerFlyoutPresenter.axaml) / [`SelectLibraryItemDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/SelectLibraryItemDialogViewModel.cs) / [`LibraryThumbnailCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailCapture.cs)
 - [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`ValueSliderField.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ValueSliderField.cs) / [`NumberBoxDrag.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/NumberBoxDrag.cs) / [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs)
+- [`MultiElementEditSession.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/MultiElementEditSession.cs) / [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
+- [`StringEditor.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Controls/Styling/PropertyEditors/StringEditor.axaml) / [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/CustomDataTypes.cs)
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)

@@ -322,7 +322,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 - Drag the handle at the left edge up or down to change the layer's height.
 - Toggle **Lock** / **Video** (video mute) / **Audio** (audio mute) / **Solo** with the four buttons (see [Locking, muting, and soloing](#locking-muting-and-soloing)).
 - Change the layer color with the color picker.
-- Change the layer name in the text box.
+- Type a layer name in the text box, then press `Enter` or move the focus away. The name moves with its layer when you drag the header to another row, is saved with the scene, and can be undone (**Rename Layer**). Clear the box, or type the row's own number, to remove the name.
 
 ## Trackpad haptic feedback
 
