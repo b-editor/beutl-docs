@@ -159,6 +159,8 @@ public static class StereoReader
 
 A third-party decoder declares what it returns by setting `ChannelLayout` on its `AudioStreamInfo`. The default is stereo, so a decoder that keeps returning stereo needs no change. `AudioChannelLayout.FromChannelMask(channelCount, mask)` builds a layout from a WAVEFORMATEXTENSIBLE mask, `GetDefault(count)` gives Beutl's assumed speaker order for a count, and `Discrete(count)` describes channels with no known positions.
 
+For video, build the color space of a decoded frame from the source's tags with `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)`, or `BuildHdrColorSpace` when `IsHdrTransfer(transfer)` is `true`, as the built-in decoders and encoders do. Since preview.13, `GetTransferFunction` maps `BitmapColorTransfer.Bt709` and `Rec2020`, the tags of BT.709, BT.601 and BT.2020 SDR video, to the new `BitmapColorSpaceTransferFn.CoreMedia709`: gamma 1.9609375 with a slope of 1/16 near black, the curve QuickTime and AVFoundation use. Such video decodes with darker shadows than before, and an export writes brighter shadow codes, so it plays back in QuickTime as it was rendered. A decoder or encoder that goes through the mapping follows the built-in ones without change. `BitmapColorSpaceTransferFn.Bt709` and `Rec2020` keep their values, the exact inverse of the camera curve, for code that wants it; a decoder that uses them directly shows the shadows of such video lighter than Beutl's own decoders.
+
 ## Media time and project rates {/* #media-time-and-project-rates */}
 
 Timeline positions and durations use `Beutl.MediaTime`, a whole number of flicks, with `705,600,000` flicks per second. Use `MediaTime.FromFrames` and a `Rational` frame rate instead of converting through floating-point seconds. `ToFrame`, `RoundToFrame`, and `ToSamples` require an explicit `MidpointRounding` policy.
@@ -230,3 +232,4 @@ public static class EditorTimes
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`Project.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Project.cs)
 - [`ProjectRateExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectRateExtensions.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs) and [`BitmapColorSpaceTransferFn.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceTransferFn.cs)

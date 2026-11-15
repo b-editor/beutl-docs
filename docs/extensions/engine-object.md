@@ -34,7 +34,7 @@ The `partial` modifier lets the source generator add the `Resource` class and th
 
 In real extensions you usually inherit from a subclass of `EngineObject` (such as `Drawable`, `Shape`, or `FilterEffect`) rather than `EngineObject` directly. See [Common derived classes](#common-derived-classes) for the typical entry points.
 
-## Declaring properties
+## Declaring properties {/* #declaring-properties */}
 
 `Property`, `IProperty<T>`, `IExpressionProperty<T>`, and `IListProperty<T>` belong to the `Beutl` namespace in **Beutl.Core**. Import `Beutl.Engine` as well to use the `Property.CreateAnimatable` extension member.
 
@@ -82,6 +82,14 @@ public sealed partial class MyProperties : EngineObject
 Validation attributes from `System.ComponentModel.DataAnnotations` (e.g. `[Range]`) are applied automatically. `[Display(Name = ..., ResourceType = ...)]` controls the label shown in the property panel and supports localization through resource types.
 
 Use `[Unit(PropertyUnit.Percent)]`, `[Unit(PropertyUnit.Degrees)]`, or `[Unit(PropertyUnit.Ratio)]` for unit metadata. These types are in `Beutl`; the property editor displays the unit and the Agent Toolkit includes it in schemas.
+
+A `string` property is edited on one line by default. `[DataType(DataType.MultilineText)]` gives it a multi-line field for prose, which wraps long lines since preview.13. For source code, such as a shader or a script, use `[DataType(CustomDataTypes.Code)]`, new in preview.13: the field is multi-line too, but set in a monospace face, keeps its lines unwrapped and scrolls sideways, and Tab indents instead of moving the focus, while Shift+Tab still moves back to the previous field. `CustomDataTypes` is in `Beutl` (Beutl.Core), and `IsCode()` tells whether a `DataTypeAttribute` marks code. In a node, the protected `UseCodeEditor(NodeMember<string>)` and `UseMultilineEditor(InputPort<string>)` of `GraphNode` do the same for a member.
+
+```cs
+[Display(Name = "Script")]
+[DataType(CustomDataTypes.Code)]
+public IExpressionProperty<string> Script { get; } = Property.CreateExpression("");
+```
 
 ### Reading and changing values
 
@@ -294,3 +302,4 @@ public sealed class MyExtension : Extension
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
+- [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CustomDataTypes.cs) and [`GraphNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/GraphNode.cs)

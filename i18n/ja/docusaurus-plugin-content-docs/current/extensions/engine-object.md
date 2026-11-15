@@ -34,7 +34,7 @@ public sealed partial class MySampleObject : EngineObject
 
 実際の拡張機能では `EngineObject` を直接継承するよりも、`Drawable` / `Shape` / `FilterEffect` などのサブクラスを継承するのが普通です。代表的な継承先は[共通の派生クラス](#共通の派生クラス)を参照してください。
 
-## プロパティの宣言
+## プロパティの宣言 {/* #declaring-properties */}
 
 `Property`、`IProperty<T>`、`IExpressionProperty<T>`、`IListProperty<T>` は **Beutl.Core** の `Beutl` 名前空間にあります。`Property.CreateAnimatable` 拡張メンバを使うには `Beutl.Engine` もインポートします。
 
@@ -82,6 +82,14 @@ public sealed partial class MyProperties : EngineObject
 `System.ComponentModel.DataAnnotations` の検証属性（例: `[Range]`）は自動で適用されます。`[Display(Name = ..., ResourceType = ...)]` はプロパティパネルに表示されるラベルを制御し、リソース型を介したローカライズにも対応します。
 
 単位のメタデータには `[Unit(PropertyUnit.Percent)]`、`[Unit(PropertyUnit.Degrees)]`、`[Unit(PropertyUnit.Ratio)]` を使います。これらは `Beutl` 名前空間にあり、エディターの単位表示と Agent Toolkit のスキーマに使われます。
+
+`string` のプロパティは、既定では 1 行で編集します。`[DataType(DataType.MultilineText)]` を付けると文章向けの複数行の欄になり、preview.13 以降は長い行を折り返します。シェーダーやスクリプトなどのソースコードには、preview.13 で追加された `[DataType(CustomDataTypes.Code)]` を使います。この欄も複数行ですが、等幅フォントで表示され、行を折り返さずに横にスクロールし、Tab キーはフォーカスを移動せずにインデントを入力します。Shift+Tab キーでは、これまでどおり前の欄に移動します。`CustomDataTypes` は `Beutl` 名前空間（Beutl.Core）にあり、`IsCode()` で `DataTypeAttribute` がコードを表すかどうかを判定できます。ノードでは、`GraphNode` の protected メソッド `UseCodeEditor(NodeMember<string>)` と `UseMultilineEditor(InputPort<string>)` がメンバーに対して同じことをします。
+
+```cs
+[Display(Name = "Script")]
+[DataType(CustomDataTypes.Code)]
+public IExpressionProperty<string> Script { get; } = Property.CreateExpression("");
+```
 
 ### 値の読み書き
 
@@ -294,3 +302,4 @@ public sealed class MyExtension : Extension
 - [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
+- [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CustomDataTypes.cs) and [`GraphNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/GraphNode.cs)

@@ -159,6 +159,8 @@ public static class StereoReader
 
 サードパーティのデコーダーは、`AudioStreamInfo` の `ChannelLayout` を設定して、返す構成を宣言します。既定はステレオなので、ステレオを返し続けるデコーダーは変更不要です。`AudioChannelLayout.FromChannelMask(channelCount, mask)` は WAVEFORMATEXTENSIBLE のマスクから構成を作り、`GetDefault(count)` はチャンネル数に対して Beutl が想定するスピーカー順を返し、`Discrete(count)` は位置が不明なチャンネルを表します。
 
+動画では、デコードしたフレームの色空間を、ソースのタグから `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)` で作ってください。`IsHdrTransfer(transfer)` が `true` のときは `BuildHdrColorSpace` を使います。組み込みのデコーダーとエンコーダーも同じ方法を使っています。preview.13 以降、`GetTransferFunction` は、BT.709、BT.601、BT.2020 SDR の動画のタグである `BitmapColorTransfer.Bt709` と `Rec2020` を、新しい `BitmapColorSpaceTransferFn.CoreMedia709` に対応させます。これは QuickTime と AVFoundation が使う、ガンマ 1.9609375 で黒付近の傾きが 1/16 のカーブです。このような動画は以前よりシャドウが暗くデコードされ、書き出しではシャドウのコード値が明るくなるため、QuickTime でレンダリングしたとおりに再生されます。この対応を通すデコーダーやエンコーダーは、変更しなくても組み込みのものと同じ結果になります。`BitmapColorSpaceTransferFn.Bt709` と `Rec2020` は、カメラのカーブの正確な逆関数という値のまま残っています。これらを直接使うデコーダーでは、このような動画のシャドウが Beutl のデコーダーより明るく表示されます。
+
 ## メディア時刻とプロジェクトのレート {/* #media-time-and-project-rates */}
 
 タイムラインの位置と長さには `Beutl.MediaTime` を使います。flick の整数値で時刻を表し、1 秒は `705,600,000` flick です。浮動小数点数の秒数を経由せず、`MediaTime.FromFrames` と `Rational` のフレームレートで変換してください。`ToFrame`、`RoundToFrame`、`ToSamples` には `MidpointRounding` による丸め方を明示します。
@@ -230,3 +232,4 @@ public static class EditorTimes
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`Project.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Project.cs)
 - [`ProjectRateExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectRateExtensions.cs)
+- [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs) and [`BitmapColorSpaceTransferFn.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceTransferFn.cs)
