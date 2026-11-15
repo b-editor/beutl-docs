@@ -1,7 +1,7 @@
 {
   "desktop": {
     "repository": "https://github.com/b-editor/beutl",
-    "commit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+    "commit": "9953a97c9925706428da0095756c4736f216cd76",
     "dirty": false
   },
   "profile": {
@@ -20,7 +20,7 @@
       "sha256": "9e7d9702fa140311e4422bf0d87995c6beae3ecda816252cc3a144e28819a440",
       "width": 700,
       "height": 360,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -31,7 +31,7 @@
       "sha256": "47c333a83f075751a8a4ed4a6c7fe081f5eb4c349f19266385ee9216c2cf70a9",
       "width": 1100,
       "height": 310,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -42,7 +42,7 @@
       "sha256": "362d86a93dd0e2836f48d76fda936697122207f8bff3f14b125ef0de14b3e90c",
       "width": 345,
       "height": 333,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -53,7 +53,7 @@
       "sha256": "ffac98fefe4fd352ac939ecd12f35cdbfddc7054efaba7f2e999aadeca1f21b4",
       "width": 344,
       "height": 532,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -64,7 +64,7 @@
       "sha256": "2a95552f9b8b7c498978051fba8cbe6f1ecdba388a0413874fb0db812722f6e5",
       "width": 960,
       "height": 295,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -75,7 +75,7 @@
       "sha256": "fdb933e9bcf685ddde92546894b283f308d0604fe6da176d52c602d24befcfef",
       "width": 902,
       "height": 522,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -86,7 +86,7 @@
       "sha256": "45c92076b6d2e33254a271b79a0e918c7f45991eafbff4227c041d37b1f9fd98",
       "width": 904,
       "height": 584,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -97,7 +97,7 @@
       "sha256": "3448cf7438377f4088033c0658e1f69c2426f88ec17c5ecb7e9ec18a2a5fca92",
       "width": 904,
       "height": 285,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -108,7 +108,7 @@
       "sha256": "2da86707610e1688ee46378dffdcb3b920930586c7bab7ff6d17be2178c221fa",
       "width": 904,
       "height": 221,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -116,10 +116,10 @@
       "locale": "en",
       "culture": "en-US",
       "path": "docs/settings/_images/property-editor.png",
-      "sha256": "4c2b403f211fa1f3558a70d5cf4e7bb201a5ab05d7580187f5219fad78133508",
+      "sha256": "00a7179a70b6d5537bf2825b51830562256c55429336f652f012d51595b98993",
       "width": 904,
       "height": 90,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -130,7 +130,7 @@
       "sha256": "315b202b503b516884fdb23d4c8440016c00d9f00625d9f824dd0c8b99bae93b",
       "width": 960,
       "height": 220,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -141,7 +141,7 @@
       "sha256": "79c266e8bf885086ce00f4ef75f9ff2ad357276056bc58ea4ac61ccce09c419d",
       "width": 960,
       "height": 220,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -152,7 +152,7 @@
       "sha256": "9c8a3c648e82ddedd89364c36f0e1421d5103aaeb3db72597dc8e4a9647dd937",
       "width": 960,
       "height": 331,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -163,7 +163,7 @@
       "sha256": "4ee30df3c6f8b1ad9e84cdeeaf599b929496b3dd91b62c34dd23f775245585b6",
       "width": 960,
       "height": 433,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -174,7 +174,7 @@
       "sha256": "d9177495c4254143bb5e603b6ae52909cad8dcdd2c51783ab7e8f7e15a70c076",
       "width": 960,
       "height": 219,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -182,10 +182,10 @@
       "locale": "en",
       "culture": "en-US",
       "path": "docs/get-started/_images/editor-overview.png",
-      "sha256": "f4cad02d17b75400c06f9fe6f9ba63ae832b762c3b0c10374be0113f7e563e72",
+      "sha256": "0b3135485233fd04dff240d011cd7b4f1509a70f2e03a582836c616166efde68",
       "width": 1500,
       "height": 900,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -196,7 +196,7 @@
       "sha256": "8f5722e22c4cad9191215f9ba17c43add5c615dc60bbaf090d6c413962ee83d9",
       "width": 620,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -207,7 +207,7 @@
       "sha256": "909cb27e02398498303a909ff1ef923df3272ceb79d423ac42535c918a75517f",
       "width": 620,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -218,7 +218,7 @@
       "sha256": "2c117e77e41ba3e59bfdae7d8a3fd39c2c91bd53bb92b0c337b20489c66741de",
       "width": 1200,
       "height": 430,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -229,7 +229,7 @@
       "sha256": "5f153c3e4969d3bd341560516bef104f8243f05005687d6d6e460df5473c33e8",
       "width": 520,
       "height": 850,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -240,7 +240,7 @@
       "sha256": "8c1c71c3d4d18b4e5b6a69d95957f7d2fecf9c643c7f18be11fce56d9022dd99",
       "width": 520,
       "height": 460,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -248,10 +248,10 @@
       "locale": "en",
       "culture": "en-US",
       "path": "docs/reference/tool-tabs/_images/preview-settings.png",
-      "sha256": "dc72a64521a54443acfb9ab029730ffa9467d820884698a7c3477286cc1e2367",
+      "sha256": "b0f9061e7ab49822913572ca911761c9f20a0eb4b7401afb2bfce400d55e3325",
       "width": 620,
       "height": 1000,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -262,7 +262,7 @@
       "sha256": "24736396fa317de7b2b44b02a2b3b42cb7ead327eb16f4396104c6ad4185fa57",
       "width": 1120,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -273,7 +273,7 @@
       "sha256": "c0ef0b5f24f082886e8909b8715f413e98b7722e6800fb7ba5b08ee6c5359883",
       "width": 940,
       "height": 600,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -284,7 +284,7 @@
       "sha256": "803b85bb2ed3c1ee48c4539091341c7f70b881c0af4c13e08faaf17ea3ebd154",
       "width": 960,
       "height": 453,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -295,7 +295,7 @@
       "sha256": "fc744d0126ddb026c6770cadd3a293d2d6c36ed9400791e26e0dde9bd33d9b17",
       "width": 520,
       "height": 88,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -306,7 +306,7 @@
       "sha256": "2898ab44d7a4f4d7e17d539f86fcde06a79cfeee90e765ad745a3f46089bb252",
       "width": 757,
       "height": 360,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -317,7 +317,7 @@
       "sha256": "d73c7ef502341b76ff76689f8ee040f8b404b7f1dfa17974ef9f182832b17ef2",
       "width": 1100,
       "height": 310,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -339,7 +339,7 @@
       "sha256": "e4a238707ae94ce0de03cc99aa498f7f16e5154aaabb6b7b846a1dbfe1a57c30",
       "width": 344,
       "height": 540,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -350,7 +350,7 @@
       "sha256": "ec2c8e653bb369f7543f7d0578b627b89457e521dd585f433cd72f3abe80aa75",
       "width": 960,
       "height": 297,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -361,7 +361,7 @@
       "sha256": "3c189f097713dfbd54f5e5394500ea1dd37d8da1fbecb9ccc47b7a465bc56e70",
       "width": 902,
       "height": 523,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -372,7 +372,7 @@
       "sha256": "f4fe48eb3c3108166dfea1ad470e160160746d36f73cad7140917d33dcabe64b",
       "width": 904,
       "height": 594,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -383,7 +383,7 @@
       "sha256": "c2d4702d3f9241b8b7e75b91d53da14a1d74a91550ba75f47d2f45d67ff7f5b1",
       "width": 904,
       "height": 287,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -394,7 +394,7 @@
       "sha256": "f290326cad280b640d1967a596bbbfcbe20983d281529a3e1faaa454af855a5e",
       "width": 904,
       "height": 224,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -402,10 +402,10 @@
       "locale": "ja",
       "culture": "ja-JP",
       "path": "i18n/ja/docusaurus-plugin-content-docs/current/settings/_images/property-editor.png",
-      "sha256": "37e60f48f0a6a58dc17950afedb663fe53301c809b0d7d0da8df82036bd5c4b3",
+      "sha256": "1a96d3fb52a9ce127d1c76e203d4dca2960e6bbe8cbefb86ec899a843523e2f7",
       "width": 904,
       "height": 91,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -416,7 +416,7 @@
       "sha256": "430acb65dfeb95547df3c76ac12d17344f949c07962cf8760f7860b8e812f1d9",
       "width": 960,
       "height": 220,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -427,7 +427,7 @@
       "sha256": "4458738b604aa60d9231ac95900b398c133df31f49ef0fb4ff17b16153cd860b",
       "width": 960,
       "height": 220,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -438,7 +438,7 @@
       "sha256": "16e47a93efb36866c3e5f863c2a2fd6b9119cffd6868be8d720345e7b85b0b80",
       "width": 960,
       "height": 334,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -449,7 +449,7 @@
       "sha256": "070a1dee2b5d2de9ebff5895d6ab275a4bea9ceb23283698eb0c203279d3be9a",
       "width": 960,
       "height": 448,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -460,7 +460,7 @@
       "sha256": "fdfdb125895a3b1a7a48b4fafde6f2d71db3b2e7255b0bdc9ccb0ad14f69d9d1",
       "width": 960,
       "height": 223,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -468,10 +468,10 @@
       "locale": "ja",
       "culture": "ja-JP",
       "path": "i18n/ja/docusaurus-plugin-content-docs/current/get-started/_images/editor-overview.png",
-      "sha256": "da71bef11c132da0aaeae30f1f45eeae7cd3ef82b323d1f7ba280c420c2f38fc",
+      "sha256": "743e8288c4c99ad10e073b45b768ae1a27221131d4d57e750dab06d1d90aa0ea",
       "width": 1500,
       "height": 900,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -482,7 +482,7 @@
       "sha256": "c56386b6f584b1b8eab7f055e15b1b24763d2d100dd49e6d77980fb09db147b5",
       "width": 620,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -493,7 +493,7 @@
       "sha256": "ea21717030a083c1a286ae6d4d1196d895c6f899cee57a82f834cc0f66eae020",
       "width": 620,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -504,7 +504,7 @@
       "sha256": "ee96aa17d25ac03e31a7622a1d7fbfb3c249d579a01a228486946e13fde93176",
       "width": 1200,
       "height": 430,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -515,7 +515,7 @@
       "sha256": "1f3a5a65bca4a4841a94593b61612e2895334d4dce020efd3c44b1bc2b9bb852",
       "width": 520,
       "height": 850,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -526,7 +526,7 @@
       "sha256": "e3ef4dee45daeebf55ec55167646e84991a478691b7fb7301c7b5e00f0036d4c",
       "width": 520,
       "height": 460,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -534,10 +534,10 @@
       "locale": "ja",
       "culture": "ja-JP",
       "path": "i18n/ja/docusaurus-plugin-content-docs/current/reference/tool-tabs/_images/preview-settings.png",
-      "sha256": "b81762bcd4c1a9d9e73c5a136727f4e4e757cff3527c713fc50e837111a204a6",
+      "sha256": "a03a06ba7afa42c9a8e8dcd290e682b3f7b12da788cc2fb1c0d455ff9e492b44",
       "width": 620,
       "height": 1000,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -548,7 +548,7 @@
       "sha256": "c6f21ab98ab5bff2726c8e9e1010b0dcd06c6de4d385d04d2abde78f45ff915a",
       "width": 1120,
       "height": 650,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -559,7 +559,7 @@
       "sha256": "9e2b2ab26f2c0a019c7f9e887b48d5bd81457472ae3878b8cafef550780da9fb",
       "width": 940,
       "height": 600,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -570,7 +570,7 @@
       "sha256": "30fabedaeb3ea0b80e208d844419380b2fd4a6911df279c2a1e95d9a887bb5f6",
       "width": 960,
       "height": 461,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     },
     {
@@ -581,7 +581,7 @@
       "sha256": "2264c9030e81fa71430c3cc418792fb646de77135520e8642ae136eac427caa1",
       "width": 520,
       "height": 88,
-      "desktopCommit": "70d09a97d4491bf6616e248fec809faa58e47db7",
+      "desktopCommit": "9953a97c9925706428da0095756c4736f216cd76",
       "desktopDirty": false
     }
   ]
