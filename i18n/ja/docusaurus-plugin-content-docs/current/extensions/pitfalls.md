@@ -3,7 +3,17 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.12 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.13 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.12 からの移行 {/* #migrating-from-preview-12 */}
+
+preview.12 の拡張機能を移行するときは、次の変更を確認してください。preview.13 で削除された公開 API はありません。
+
+- **テスト用のプロジェクト**: ターゲットフレームワークは `net11.0`、Avalonia は 12.1.6、ファイル形式の下限は preview.11 のままです。preview.13 で保存したプロジェクトは preview.11 でも開けます。[バージョンの対応表](version-mapping.md)を参照してください。
+- **独自の `ILayerAttributeService`**: 新しい `SetName(Scene scene, int zIndex, string name)` には既定の実装がないため、このインターフェースを実装するクラスには追加が必要です。このメソッドは `zIndex` のレイヤーに名前を付け、`TimelineLayer` がなければ作るので、名前はレイヤーと一緒に移動します。空の名前を渡すと名前を消し、既定値だけが残った `TimelineLayer` を削除します。名前が変わったときは `true` を返し、履歴に 1 つの項目をコミットします。サービスを呼び出すだけのコードは変更不要です。
+- **BT.709 の動画**: `BitmapColorSpaceMapping.GetTransferFunction` は、BT.709 と BT.2020 SDR のタグを新しい `BitmapColorSpaceTransferFn.CoreMedia709` に対応させます。このような動画は、シャドウが暗くデコードされ、書き出しではシャドウのコード値が明るくなります。[デコーダー](media-providers.md#decoders)を参照してください。
+- **プロパティエディタ**: 複数の要素を選ぶと、プロパティパネルは要素の 1 つのコピーを通してまとめて編集し、コピーへの変更をすべての要素で繰り返します。[複数の要素を選んだとき](editor-integration.md#several-selected-elements)を参照してください。
+- **文字列プロパティのコード**: シェーダーやスクリプトを保持するプロパティに `[DataType(CustomDataTypes.Code)]` を付けると、行を折り返さず Tab キーを受け付ける等幅の欄になります。`DataType.MultilineText` の欄は長い行を折り返すようになりました。[プロパティの宣言](engine-object.md#declaring-properties)を参照してください。
 
 ## preview.11 からの移行 {/* #migrating-from-preview-11 */}
 
@@ -312,3 +322,4 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
+- [`ILayerAttributeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ILayerAttributeService.cs)

@@ -3,7 +3,17 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.12; rebuild extensions against its SDK after migrating the APIs below.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.13; rebuild extensions against its SDK after migrating the APIs below.
+
+## Migrating from preview.12 {/* #migrating-from-preview-12 */}
+
+Check these changes when you move an extension from preview.12. No public API was removed in preview.13.
+
+- **Test projects:** The target framework stays `net11.0`, Avalonia stays at 12.1.6, and the file format floor stays at preview.11, so a project saved by preview.13 still opens in preview.11. See the [version table](version-mapping.md).
+- **Custom `ILayerAttributeService`:** The new `SetName(Scene scene, int zIndex, string name)` has no default implementation, so a class that implements the interface must add it. It names the layer at `zIndex`, creating its `TimelineLayer` when there is none, so that the name moves with the layer. An empty name clears the name and removes a `TimelineLayer` left with only default values. It returns `true` and commits one history entry when the name changed. Code that only calls the service needs no change.
+- **BT.709 video:** `BitmapColorSpaceMapping.GetTransferFunction` maps the BT.709 and BT.2020 SDR tags to the new `BitmapColorSpaceTransferFn.CoreMedia709`, so such video decodes with darker shadows and exports with brighter shadow codes. See [decoders](media-providers.md#decoders).
+- **Property editors:** With several elements selected, the property panel edits them together through a copy of one of them, and repeats each change to the copy on every element. See [several selected elements](editor-integration.md#several-selected-elements).
+- **Code in string properties:** Mark a property that holds a shader or a script with `[DataType(CustomDataTypes.Code)]` for a monospace field that keeps its lines and takes Tab. `DataType.MultilineText` fields now wrap long lines. See [declaring properties](engine-object.md#declaring-properties).
 
 ## Migrating from preview.11 {/* #migrating-from-preview-11 */}
 
@@ -312,3 +322,4 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
+- [`ILayerAttributeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ILayerAttributeService.cs)

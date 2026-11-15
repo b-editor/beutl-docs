@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources,
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.12 exposes these contracts through `Beutl.Extensibility`. Use the [preview.12 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.13 exposes these contracts through `Beutl.Extensibility`. Use the [preview.13 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -120,6 +120,12 @@ public sealed class WrappedTextContext(
 ```
 
 For an editor that writes several properties, use a [history edit session](pitfalls.md#one-undo-step-for-several-changes). Do not share an Avalonia control instance between editor surfaces.
+
+### Several selected elements {/* #several-selected-elements */}
+
+Since preview.13, when several elements are selected on the timeline, the property panel edits them together. It shows a copy of one of them, with only the properties that every selected element has, and creates your context for the copy's property as it would for one element. Each change written to the copy is repeated on the matching property of every selected element, in one undo step. Write through the property adapter you were given; a change made to another object, such as one you look up in the project, is not repeated.
+
+A context that derives from `PropertyEditorViewModel` can tell when it stands for several elements. `EditsSeveralElements` is `true` then, and `ValueDifference.Value` describes how the other elements' values differ from the one shown, or `null` when they do not. While it differs, the editor menu offers **Set All Elements to This Value**, which calls `MatchOtherElements()` when `CanMatchOtherElements` is `true`. `PropertyEditorViewModel<TValue>` implements both by writing the value shown to every element; override them in an editor whose value has to be matched another way.
 
 ## MCP tools {/* #mcp-tools */}
 
@@ -315,3 +321,4 @@ Unread members of saved objects are retained and written back on the next save. 
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)
+- [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) and [`PropertyEditorViewModel{TValue}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue%7D.cs)

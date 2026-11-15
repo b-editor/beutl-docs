@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.12 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.12 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.13 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.13 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -120,6 +120,12 @@ public sealed class WrappedTextContext(
 ```
 
 複数のプロパティを書き換えるエディタでは、[履歴の編集セッション](pitfalls.md#one-undo-step-for-several-changes)を使ってください。複数の表示場所で同じ Avalonia コントロールを共有しないでください。
+
+### 複数の要素を選んだとき {/* #several-selected-elements */}
+
+preview.13 以降、タイムラインで複数の要素を選ぶと、プロパティパネルはそれらをまとめて編集します。パネルは要素の 1 つのコピーを、選んだすべての要素が持つプロパティだけに絞って表示し、要素が 1 つのときと同じように、コピーのプロパティに対してコンテキストを作ります。コピーに書き込んだ変更は、選んだ各要素の対応するプロパティにも繰り返され、1 回の元に戻す操作にまとまります。渡されたプロパティアダプターを通して書き込んでください。プロジェクトから探した別のオブジェクトなどに加えた変更は、繰り返されません。
+
+`PropertyEditorViewModel` から派生したコンテキストは、複数の要素を表しているかどうかを知ることができます。そのとき `EditsSeveralElements` は `true` になり、`ValueDifference.Value` には、ほかの要素の値が表示中の値とどう違うかの説明が入ります。違いがなければ `null` です。値が違う間、エディタのメニューには **「すべての要素をこの値にする」** が表示され、`CanMatchOtherElements` が `true` なら `MatchOtherElements()` を呼びます。`PropertyEditorViewModel<TValue>` は、表示中の値をすべての要素に書き込むようにこの 2 つを実装しています。別の方法で値をそろえる必要があるエディタではオーバーライドしてください。
 
 ## MCP ツール {/* #mcp-tools */}
 
@@ -315,3 +321,4 @@ preview.12 以降は、シーンエディタの `IEditorContext` から `IExtens
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)
+- [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) and [`PropertyEditorViewModel{TValue}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue%7D.cs)
