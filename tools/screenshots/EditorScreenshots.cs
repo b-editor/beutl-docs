@@ -49,7 +49,7 @@ internal static class EditorScreenshots
     {
         if (id == "telemetry-settings")
         {
-            using var model = new TelemetrySettingsPageViewModel();
+            using var model = new TelemetrySettingsPageViewModel(ScreenshotApp.Instance.Configuration.TelemetryConfig);
             var view = new TelemetrySettingsPage { DataContext = model };
             using var host = new CaptureHost(view, 960, 650);
             host.SaveContent(output, view);
@@ -188,7 +188,7 @@ internal static class EditorScreenshots
 
         public static async Task<EditorFixture> Create()
         {
-            var main = new MainViewModel();
+            var main = ScreenshotApp.Instance.CreateMainViewModel();
             var provider = DesktopInternals.Property<ExtensionProvider>(main, "ExtensionProvider");
             DesktopInternals.Method(typeof(ExtensionProvider), "AddExtensions")
                 .Invoke(provider, [0, LoadPrimitiveExtensionTask.PrimitiveExtensions]);
