@@ -5,7 +5,6 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Beutl.Api.Services;
-using Beutl.Configuration;
 using Beutl.Controls;
 using Beutl.Editor.Components.Helpers;
 using Beutl.Extensibility;
@@ -33,7 +32,7 @@ internal static class Scenarios
         switch (id)
         {
             case "create-project-menu":
-                using (var model = new MainViewModel())
+                using (var model = ScreenshotApp.Instance.CreateMainViewModel())
                 {
                     foreach (var extension in LoadPrimitiveExtensionTask.PrimitiveExtensions.OfType<ViewExtension>())
                         model.ContextCommandManager!.Register(extension);
@@ -72,14 +71,15 @@ internal static class Scenarios
             case "create-project-options":
             {
                 // Built as the desktop's menu builds it, from the shell's project service and version control.
-                using var main = new MainViewModel();
+                using var main = ScreenshotApp.Instance.CreateMainViewModel();
                 object versionControl = DesktopInternals.Property<object>(main, "VersionControlCoordinator");
                 // Detect Git before the dialog does: the dialog's detection then finishes in its constructor
                 // instead of overwriting the sample state below whenever the probe returns.
                 await (Task)DesktopInternals.Method(versionControl.GetType(), "GetAvailabilityAsync")
                     .Invoke(versionControl, [CancellationToken.None])!;
                 var model = DesktopInternals.Create<CreateNewProjectViewModel>(
-                    DesktopInternals.Property<ProjectService>(main, "ProjectService"), versionControl);
+                    DesktopInternals.Property<ProjectService>(main, "ProjectService"), versionControl,
+                    ScreenshotApp.Instance.Configuration);
                 model.Name.Value = "MyProject";
                 // Display a sample path only; screenshots never create a project there.
                 model.Location.Value = "/home/user/Projects";
@@ -121,7 +121,7 @@ internal static class Scenarios
             case "view-settings":
             case "accent-color":
             {
-                using var model = new ViewSettingsPageViewModel();
+                using var model = new ViewSettingsPageViewModel(ScreenshotApp.Instance.Configuration.ViewConfig);
                 var view = new ViewSettingsPage { DataContext = model };
                 using var host = new CaptureHost(view, 960, 760);
                 if (id == "accent-color")
@@ -154,7 +154,7 @@ internal static class Scenarios
             case "node-cache":
             case "property-editor":
             {
-                using var model = new EditorSettingsPageViewModel();
+                using var model = new EditorSettingsPageViewModel(ScreenshotApp.Instance.Configuration);
                 var view = new EditorSettingsPage { DataContext = model };
                 using var host = new CaptureHost(view, 960, 720);
                 string header = id switch
@@ -178,13 +178,13 @@ internal static class Scenarios
             case "font-settings-linux":
             case "font-settings-windows":
             {
-                var fonts = GlobalConfiguration.Instance.FontConfig.FontDirectories;
-                fonts.Clear();
+                var config = ScreenshotApp.Instance.Configuration.FontConfig;
+                config.FontDirectories.Clear();
                 foreach (string path in id == "font-settings-linux"
                     ? new[] { "/usr/share/fonts", "/home/user/.local/share/fonts" }
                     : new[] { @"C:\Windows\Fonts", @"C:\Users\User\AppData\Local\Microsoft\Windows\Fonts" })
-                    fonts.Add(path);
-                using var model = new FontSettingsPageViewModel();
+                    config.FontDirectories.Add(path);
+                using var model = new FontSettingsPageViewModel(config);
                 using var host = new CaptureHost(new FontSettingsPage { DataContext = model }, 960, 220);
                 host.Save(output);
                 break;
@@ -193,7 +193,8 @@ internal static class Scenarios
             case "decoder-priority":
             case "ffmpeg-decoder":
             {
-                var provider = new ExtensionProvider();
+                var app = ScreenshotApp.Instance;
+                var provider = new ExtensionProvider(app.Configuration.ExtensionConfig, app.Notifications);
                 var ffmpeg = new FFmpegDecodingExtension();
                 Extension[] extensions = [.. LoadPrimitiveExtensionTask.PrimitiveExtensions, ffmpeg];
                 DesktopInternals.Method(typeof(ExtensionProvider), "AddExtensions").Invoke(provider, [0, extensions]);
@@ -204,13 +205,13 @@ internal static class Scenarios
                 Control view;
                 if (id == "decoder-priority")
                 {
-                    var context = new DecoderPriorityPageViewModel();
+                    var context = new DecoderPriorityPageViewModel(app.Configuration.ExtensionConfig);
                     cleanup = context.Dispose;
                     view = new DecoderPriorityPage { DataContext = context };
                 }
                 else if (id == "ffmpeg-decoder")
                 {
-                    var context = new AnExtensionSettingsPageViewModel(ffmpeg, provider);
+                    var context = new AnExtensionSettingsPageViewModel(ffmpeg, provider, app.Services);
                     cleanup = () =>
                     {
                         context.NavigateParent.Dispose();
@@ -221,7 +222,7 @@ internal static class Scenarios
                 }
                 else
                 {
-                    var context = new ExtensionsSettingsPageViewModel(provider);
+                    var context = new ExtensionsSettingsPageViewModel(provider, app.Services);
                     cleanup = context.Dispose;
                     view = new ExtensionsSettingsPage { DataContext = context };
                 }
@@ -268,6 +269,7 @@ internal static class Scenarios
                 WindowDecorations = WindowDecorations.None,
                 Content = content
             };
+            ScreenshotApp.Instance.SetHostServices(Window);
             Window.SetRenderScaling(1);
             Window.Show();
             Settle();

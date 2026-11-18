@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
 using Avalonia.Headless;
-using Beutl.Configuration;
 using Beutl.Testing.Headless;
 
 namespace Beutl.Docs.Screenshots;
@@ -24,14 +23,6 @@ internal static class Program
             BeutlHomeIsolation.Begin("beutl-docs-screenshots");
             try
             {
-                var config = GlobalConfiguration.Instance;
-                config.ViewConfig.UICulture.Value = culture;
-                config.EditorConfig.FrameCacheMaxSize.Value = 1024;
-                config.TelemetryConfig.Beutl_Application.Value = false;
-                config.TelemetryConfig.Beutl_Logging.Value = false;
-                config.TelemetryConfig.Beutl_Api_Client.Value = false;
-                config.TelemetryConfig.Beutl_PackageManagement.Value = false;
-
                 // Dispatch may complete its task inline on the UI thread. Async disposal lets that
                 // thread finish the dispatch before waiting for the session loop to stop.
                 await using var session = HeadlessUnitTestSession.StartNew(typeof(ScreenshotApp),
