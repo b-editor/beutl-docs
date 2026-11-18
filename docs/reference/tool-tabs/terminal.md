@@ -19,7 +19,7 @@ Open it from the menu bar via **View → Tools → Terminal**.
 
 ## Shell and working directory
 
-Beutl selects the shell automatically from the environment; there is no setting for it.
+Unless you choose a shell in [Settings → Terminal](#settings), Beutl selects it from the environment.
 
 | OS | Shell | Arguments |
 |----|-------|-----------|
@@ -37,12 +37,30 @@ On macOS and Linux, apps launched from the GUI often have no locale in their env
 
 ## Copying and pasting
 
-Press `Ctrl + Shift + C` to copy the selected text and `Ctrl + Shift + V` to paste. On macOS, `Cmd + C` and `Cmd + V` do the same, and `Ctrl` keys go to the shell.
+Select text by dragging over it. While text is selected, `Ctrl + C` or `Ctrl + Shift + C` copies it (`Cmd + C` on macOS); with nothing selected, `Ctrl + C` goes to the shell as usual. `Ctrl + Shift + V` or `Shift + Insert` pastes (`Cmd + V` on macOS), and `Ctrl + V` alone goes to the shell.
+
+A right-click copies the selected text, or pastes when nothing is selected. While a program in the terminal takes mouse input, hold `Shift` when you right-click.
+
+## Settings {/* #settings */}
+
+Open **Settings → Terminal** to change how terminals look and which shell they start. Changes under **View** apply to open terminals right away.
+
+| Setting | Default |
+|---------|---------|
+| **Theme** | **Use Beutl theme** (**Dark** and **Light** are also available) |
+| **Font** | **Default**: Consolas on Windows, Menlo on macOS, and DejaVu Sans Mono on Linux |
+| **Font size (DIP)** | 14 (8 to 72) |
+| **Scrollback lines** | 5,000 (0 to 1,000,000) |
+
+**Use Beutl theme** takes the text and background colors from Beutl's theme, so the terminal matches the panels around it. **Font** lists the fonts installed on the computer.
+
+Under **Shell**, **Executable** and **Arguments** choose what the terminal starts. Leave both empty to use the shell and arguments in the table above; the empty **Executable** box shows the default shell. Enter one argument per line, and spaces within a line are kept. Arguments you enter replace the default `-l`, and a shell you enter in **Executable** gets only the arguments you enter. These changes apply when a terminal opens or restarts.
 
 ## Session lifecycle
 
-- When the shell process exits, a banner saying **"The terminal session has ended."** and a **Restart** button appear at the top of the tab. Click the button to start a new session with the same shell and working directory.
-- The scrollback buffer holds up to 5,000 lines.
+- When the shell process exits, a banner saying **"The terminal session has ended."** and a **Restart** button appear at the top of the tab. Click the button to start a new session in the same working directory, with the shell the settings now choose. The earlier output stays in the scrollback.
+- If the shell cannot start, for example because **Executable** names a program that does not exist, the tab shows the error with the same banner and **Restart** button.
+- The scrollback keeps as many lines as **Scrollback lines** allows.
 - Switching to another tab in the same dock and back leaves the shell process and the scrollback intact.
 - The session is not persisted. Closing the tab or the editor ends the shell process.
 
@@ -55,5 +73,6 @@ Press `Ctrl + Shift + C` to copy the selected text and `Ctrl + Shift + V` to pas
 
 - [`TerminalTabExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/TerminalTabExtension.cs)
 - [`TerminalTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/TerminalTab/ViewModels/TerminalTabViewModel.cs)
-- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs)
-- The terminal control itself is provided by the external [`Iciclecreek.Avalonia.Terminal`](https://github.com/b-editor/beutl/tree/main/external) submodule.
+- [`TerminalTabView.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/TerminalTab/Views/TerminalTabView.axaml.cs) / [`ShellTerminalControl.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/TerminalTab/Views/ShellTerminalControl.cs)
+- [`TerminalConfig.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Configuration/TerminalConfig.cs) / [`TerminalSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Pages/SettingsPages/TerminalSettingsPage.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Pages/SettingsPages/TerminalSettingsPage.axaml.cs)
+- The terminal control itself is provided by [RoyalTerminal](https://github.com/royalapplications/RoyalTerminal) (`RoyalApps.RoyalTerminal.Avalonia`).

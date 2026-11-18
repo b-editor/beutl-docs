@@ -72,7 +72,7 @@ Some encoders and destinations limit the channel count:
 | Encoder | Limit |
 |---------|-------|
 | FFmpeg | 7.1 AAC cannot be written to `.aac` (ADTS) or MPEG-TS. Use MP4, MOV, or MKV, or another codec such as PCM. |
-| AVFoundation | AAC accepts 1, 2, or 6 channels. Use Linear PCM or the FFmpeg encoder for other counts. |
+| AVFoundation | AAC accepts 1, 2, or 6 channels. Apple Lossless does not take 4 or 8 channels (7.1), because it places those speakers differently from Beutl. For counts these formats do not take, use Linear PCM or the FFmpeg encoder. |
 | Media Foundation | AAC accepts 1, 2, or 6 channels (6 on Windows 10 and later). PCM and float accept any count. |
 
 An export that exceeds a limit stops with an error message instead of writing a file with misplaced channels.
@@ -95,6 +95,6 @@ An export that exceeds a limit stops with an error message instead of writing a 
 - [`SoundPannerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/SoundPannerProperties/ViewModels/SoundPannerViewModel.cs)
 - [`ChannelMapEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/ChannelMapProperties/ViewModels/ChannelMapEditorViewModel.cs)
 - [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SceneSettingsService.cs)
-- [`AVFEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.AVFoundation/Encoding/AVFEncodingController.cs)
+- [`AVFEncodingController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensions.AVFoundation/Encoding/AVFEncodingController.cs)
 - [`MFEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingController.cs)
 - [`FFmpegEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.FFmpegWorker/Encoding/FFmpegEncodingController.cs)

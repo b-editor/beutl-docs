@@ -49,6 +49,8 @@ Type a keyword into the input box to search across the items in every tab. Resul
 
 When the input box is empty, all registered items are listed in a flat view.
 
+Press **`Ctrl + F`** (**`Cmd + F`** on macOS) anywhere in the Library tab to switch to **Search** and select the text in its input box.
+
 ### Easings
 
 ![Easing library with spline and preset curve previews](_images/easings.png)

@@ -58,6 +58,12 @@ sidebar_position: 8
 - 複数のノードを選択していれば、選択中のすべてのノードが一緒に動きます。
 - ドラッグ中のノードは前面に持ち上がり、リリース後に元の重なり順に戻ります。
 
+### サイズの変更
+
+- ノードの右端をドラッグすると、幅を変えられます。
+- パスの **コード** のようにコードの入力欄を持つノードは、高さも変えられます。下端をドラッグするか、右下の角をドラッグして幅と高さを一緒に変えます。ノード内のコードの入力欄は、すべて同じ高さになります。
+- ドラッグ中は接続線がポートに追従し、1 回のドラッグが 1 つの取り消し単位になります。サイズはノードと一緒に保存されます。
+
 ### 選択
 
 - ヘッダーをクリックするとそのノードが単一選択になります。
@@ -68,6 +74,7 @@ sidebar_position: 8
 
 - **削除** (`Delete`): ノードと、そのノードに繋がる接続をすべて削除します。
 - **リネーム**: ノード名を編集するフライアウトを開きます。
+- **ノードのサイズを元に戻す**: サイズを変えたノードを、その種類の幅に戻し、コードの入力欄の高さを内容に合わせ直します。
 
 ## ポートと接続の操作
 
@@ -230,3 +237,4 @@ void main() {
 - [`ConnectionLine.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ConnectionLine.cs) / [`NodePortPoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodePortPoint.cs)
 - [`ListPortDragBehavior.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ListPortDragBehavior.cs)
 - [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml.cs)（プロパティ側からタブを開く起点）
+- [`GraphNodeView.Resize.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/NodeGraphTab/Views/GraphNodeView.Resize.cs) / [`NodeEditorSize.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.NodeGraph/NodeEditorSize.cs)（ノードのサイズ変更）

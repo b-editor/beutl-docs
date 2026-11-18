@@ -42,6 +42,8 @@ Beutl の更新後に連携を再インストールしてください。従来�
 
 プロジェクト、入力メディア、出力先など、ツールに渡すファイルパスは**絶対パス**にしてください。従来の `BEUTL_WORKSPACE` 設定は使用されず、相対パスの基準となるワークスペースルートはありません。
 
+選択したフォントにない文字は、アプリと同じように Beutl に同梱のフォールバックフォントとカラー絵文字で描画されるので、`render_still` と `export_video` でもエディターと同じように表示されます。サーバーはフォールバックフォントの順序をシステムの言語に合わせます。アプリは自身の言語設定に合わせます。
+
 手動登録する場合の一般的な JSON 設定例です。
 
 ```json
@@ -68,6 +70,7 @@ Beutl の更新後に連携を再インストールしてください。従来�
 | セッション | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status` |
 | クエリ / スキーマ | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_fonts`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds` |
 | 編集 | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
+| ノードグラフ | `get_node_graph_guide`, `list_node_types`, `read_node_graph`, `edit_node_graph` |
 | 履歴 | `undo`, `redo`, `read_history` |
 | レンダー / 確認 | `render_still`, `render_storyboard`, `measure_frame_differences`, `analyze_audio_rhythm`, `export_video`, `read_render_job`, `cancel_render_job` |
 | AI生成（起動中のエディター） | `list_ai_models`, `generate_image`, `edit_image`, `generate_video`, `edit_video`, `transcribe_audio`, `list_ai_jobs`, `read_ai_job`, `cancel_ai_job` |
@@ -75,6 +78,8 @@ Beutl の更新後に連携を再インストールしてください。従来�
 AI生成は、起動中の Beutl にサインインしたアカウントとその AI クレジットを使用します。生成の呼び出しごとに課金対象のリクエストが発生します。生成メディアは対象シーンの隣に保存され、`apply_edit` で配置できます。タイムアウト後は生成を繰り返さず、`read_ai_job` で既存ジョブを確認するか、`list_ai_jobs` で探してください。読み込んだ拡張機能がツールを追加することもあります。
 
 `apply_edit` は完全な望ましい状態の `desired` または部分変更の `patch` の、いずれか一方を受け取ります。部分編集にはJSON Merge Patchの `patch` を使用し、`get_schema` で確認した `schemaVersion` も指定してください。完全な `desired` は状態全体を指定するため、省略した子要素の配列が削除されることがあります。
+
+ノードグラフのツールを使うと、C# を書かずに[ノードグラフ](../reference/tool-tabs/node-graph.md)を作成・編集できます。複数のパス、入力、中間画像を使う GLSL の GPU パスも作れます。こうして作ったグラフは、通常のノードグラフのエフェクトや描画オブジェクトです。`get_node_graph_guide` は規則と例を返し、`list_node_types` はノードの種類とそのメンバーを一覧します。`read_node_graph` は、グラフのノード、値、キーフレーム、接続を、シェーダーのコンパイラーのメッセージなどの診断とともに読み取り、グラフを指定しないときはシーンのグラフを一覧します。`edit_node_graph` は `add`、`update`、`remove`、`connect`、`disconnect` の操作を順に、1 つの取り消し単位として適用し、`validateOnly` では適用せずに検査します。適用できない操作や、コンパイルできない GLSL など新しいエラーを生む編集は適用されず、シーンと履歴はそのまま残ります。`render_still` は、フレームの描画中に失敗したノードを警告に含めます。
 
 ## 編集と確認
 
@@ -95,3 +100,5 @@ AI生成は、起動中の Beutl にサインインしたアカウントとそ�
 - [`ToolPaths.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Common/ToolPaths.cs)
 - [`AgentHostAiTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostAiTools.cs)
 - [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)
+- [`NodeGraphTools.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Tools/NodeGraphTools.cs) / [`StillRenderer.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/StillRenderer.cs)
+- [`BundledFontRegistration.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/BundledFontRegistration.cs)

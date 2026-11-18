@@ -19,11 +19,11 @@ sidebar_position: 20
 
 ## ナビゲーションとページ操作
 
-アドレスバーにHTTP/HTTPSのURLまたは検索語を入力します。戻る・進む・再読み込みを利用できます。新しいタブの空白ページで **ブックマークを追加** を押すと、URLと名前を登録できます。タブのメニューには新しいタブ、**ページ内検索**、ズーム、既定のブラウザーで開く、印刷があります。
+アドレスバーにHTTP/HTTPSのURLまたは検索語を入力します。戻る・進む・再読み込みを利用できます。ページの読み込みに 200 ミリ秒より長くかかると、読み込みが終わるか、停止するか、失敗するまで、タブのヘッダーの地球のアイコンが回転するリングに変わります。背景にあるタブでも同じです。新しいタブの空白ページで **ブックマークを追加** を押すと、URLと名前を登録できます。タブのメニューには新しいタブ、**ページ内検索**、ズーム、既定のブラウザーで開く、印刷があります。
 
 Web ページを表示しているときは、タブのメニューの **ブックマークを追加** で現在の URL とページタイトルをそのまま登録できます。
 
-ページの `window.open()` と、新しいウィンドウで開くリンクは新しいタブで開きます。このタブは開いたページのオリジンをリファラーとして送るので、直リンクを拒否する素材サイトでも要求が受け付けられます。表示していないタブはページを保持するので、切り替えて戻っても再読み込みされません（Linux の WPE WebKit を除く）。Linux では Cookie が再起動後も保持されます。
+ページの `window.open()` と、新しいウィンドウで開くリンクは新しいタブで開きます。このタブは開いたページのオリジンをリファラーとして送るので、直リンクを拒否する素材サイトでも要求が受け付けられます。ページやリンクがリファラーを送らないよう求めているときと、HTTPS のページが HTTP のページを開くときは、リファラーを送りません。表示していないタブはページを保持するので、切り替えて戻っても再読み込みされません（Linux の WPE WebKit を除く）。Linux では Cookie が再起動後も保持されます。
 
 - **`Ctrl + F`**（macOSでは **`Cmd + F`**）: ページ内検索。`Enter`で次の一致、`Shift + Enter`で前の一致に移動し、`Esc`で検索を閉じます。
 - **`Ctrl + +` / `Ctrl + -`**（macOSでは **`Cmd`**）: ズーム。**`Ctrl + 0`**（macOSでは **`Cmd + 0`**）で100%に戻します。範囲は50%〜200%です。
@@ -38,9 +38,13 @@ Windows と macOS では、タブが保存するすべてのファイルに、�
 
 ページがスクリプトで生成したファイル（`blob:` や `data:` の URL）も同じバーに、ページが付けた名前で表示されます。バーと履歴ではファイルの提供元がそのページとして表示され、ブラウザーエンジンが作成元として別のサイトを示す場合はそのサイトとして表示されます。
 
-インストールした拡張機能が、音声合成サイトで生成した音声など、ページが渡すファイルを引き受けて独自の方法で配置することがあります。そのときバーにはファイル名の代わりに拡張機能の説明が表示され、ファイル名はツールチップに移ります。確定するまでは何も追加されません。確定すると、ファイルはダウンロード方法を選ばずにプロジェクトの `resources/downloads` に保存され、拡張機能がシーンに追加します。拡張機能がファイルを取り込まなかったときは、通常どおり 1 つの要素として追加されます。拡張機能にファイルが渡されるのは、シーンとそのプロジェクトが保存されているときだけです。ダウンロード履歴からの再試行と **ファイルをダウンロード** では、これまでどおりダウンロード方法を選びます。
+macOS では、送信したフォームの応答がファイルだったとき、タブはすでに受け取った応答を保存するので、フォームが再び送信されることはありません。
 
-タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルは再試行できません。項目の削除ではダウンロード済みファイルは残ります。**ファイルをダウンロード** では、現在のページのダウンロード方法を選択できます。
+インストールした拡張機能が、音声合成サイトで生成した音声など、ページが渡すファイルを引き受けて独自の方法で配置することがあります。そのときバーにはファイル名の代わりに拡張機能の説明が表示され、ファイル名はツールチップに移ります。確定するまでは何も追加されません。確定すると、ファイルはダウンロード方法を選ばずにプロジェクトの `resources/downloads` に保存され、拡張機能がシーンに追加します。拡張機能がファイルを取り込まなかったときは、通常どおり 1 つの要素として追加されます。拡張機能にファイルが渡されるのは、シーンとそのプロジェクトが保存されているときだけです。ダウンロード履歴からの再試行では、これまでどおりダウンロード方法を選びます。
+
+タブのメニューの **ファイルをダウンロード** は、現在のページをダウンロードします。Web ページでは、動画のダウンローダーなど、メディアをダウンロードする拡張機能がインストールされていれば、そのときページが示しているアドレスで、先に拡張機能がページを受け取ります。拡張機能がダウンロードしている間はバーに表示され、そこからキャンセルできます。ページを受け取る拡張機能がないときは、通常どおりダウンロード方法の選択が開きます。
+
+タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルと、macOS でフォームの応答から保存したファイルは再試行できません。項目の削除ではダウンロード済みファイルは残ります。
 
 ## 検索・プライバシー
 
@@ -75,3 +79,6 @@ Windows と macOS では、タブが保存するすべてのファイルに、�
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
 - [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
+- [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs) / [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensibility/BrowserDownloadExtension.cs)（**ファイルをダウンロード** と拡張機能）
+- [`BrowserDownloadNavigation.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadNavigation.cs) / [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)（macOS でのフォームの応答）
+- [`BeutlToolDockable.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dock/BeutlToolDockable.cs)（読み込み中の表示） / [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)（リファラーポリシー）

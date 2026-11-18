@@ -64,9 +64,9 @@ After installation, Beutl also appears in your desktop environment's application
 
 ### Updating a Flatpak installation
 
-Beutl's built-in updater can download and install the new Flatpak bundle into the same user or system installation for the running architecture. When the update finishes, close and reopen Beutl to use the new version.
+Beutl's built-in updater downloads the new Flatpak bundle and installs it into the same user or system installation for the running architecture. The bundle downloads in the background like any other update (see [Updating Beutl](#updating-beutl)), and installing it waits for you: choose **Install** in the ready notification or in the update dialog. **Later** in the dialog keeps the downloaded bundle until you quit Beutl, so you can install it from the update dialog, which the [Status](../reference/index.md#application-status) popup opens. When the update finishes, close and reopen Beutl to use the new version.
 
-An installation for all users, which `flatpak install` and GNOME Software make by default, needs an administrator: your desktop asks for the password once. If you cancel the prompt or authentication fails, choose **Retry** to try again, or download the update from **Release notes** and install it yourself.
+An installation for all users, which `flatpak install` and GNOME Software make by default, needs an administrator: once you choose **Install**, your desktop asks for the password once. If you cancel the prompt or authentication fails, choose **Retry** to try again, or download the update from **Release notes** and install it yourself.
 
 ## For macOS
 
@@ -76,7 +76,7 @@ An installation for all users, which `flatpak install` and GNOME Software make b
 
 ## Updating Beutl
 
-When Beutl finds a new version at startup, it downloads the update in the background while you keep editing. A short **Downloading the update** notification with **Release notes** says so, and the [Status](../reference/index.md#application-status) button in the title bar shows the progress. To be asked first, turn off **Download updates automatically** on the **Info** page of the settings. Beutl then shows a notification with **Install** and **Release notes**, and **Install** starts the download. If more than one Beutl is running, only one of them downloads without asking, and the others offer **Install**. Open the status popup to see the update dialog; **Run in background** hides it again, and `Esc` cancels the update.
+When Beutl finds a new version at startup, it downloads the update in the background while you keep editing. A short **Downloading the update** notification with **Release notes** says so, and the [Status](../reference/index.md#application-status) button in the title bar shows the progress. A required update, which you must install to keep using Beutl, downloads the same way, and its notifications add **Must upgrade for continued use**. To be asked first, turn off **Download updates automatically** on the **Info** page of the settings. Beutl then shows a notification with **Download** and **Release notes**, and **Download** starts the download. If more than one Beutl is running, only one of them downloads without asking, and the others offer **Download**. Open the status popup to see the update dialog; **Run in background** hides it again, and `Esc` cancels the update.
 
 When the update is ready, a notification shows the version and offers:
 
@@ -84,7 +84,11 @@ When the update is ready, a notification shows the version and offers:
 - **Update on quit**: The update installs when you quit Beutl, after your work is saved, and Beutl stays closed.
 - **Release notes**: Opens the release page and keeps the notification on screen.
 
-A Flatpak installation installs the new bundle as soon as it is downloaded, so it never downloads without asking, and the settings do not show **Download updates automatically**; see [Updating a Flatpak installation](#updating-a-flatpak-installation).
+A Flatpak installation offers **Install** and **Release notes** instead; see [Updating a Flatpak installation](#updating-a-flatpak-installation).
+
+When installed extensions update together with Beutl, the notification also says how many, as in **Extension updates included (2)**. See [Update timing](../settings/extension.md#update-timing).
+
+An update that you leave uninstalled is not downloaded again: when Beutl prepares the same update after a restart, it checks the file it saved and uses it. A Flatpak bundle is downloaded again.
 
 If the download or the preparation fails, the notification and the dialog offer **Retry**, and the message names the step that failed.
 
@@ -92,16 +96,19 @@ The first time a newly published version starts, a notification offers **Release
 
 ## Before updating
 
-**2.0.0-preview.13 keeps the project file format floor of preview.11.** Projects saved by preview.13 still open in preview.11 and preview.12, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
+**2.0.0-preview.14 keeps the project file format floor of preview.11.** Projects saved by preview.14 still open in preview.11, preview.12, and preview.13, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
 
 **On x64, Beutl needs a processor with x86-64-v2 since preview.12.** See [System requirements](#system-requirements).
 
-Existing projects can look different after updating to preview.13:
+Existing projects can look different after updating to preview.14:
 
-- **SDR video tagged BT.709, BT.601, or BT.2020 shows darker shadows.** Beutl now reads these tags with the curve QuickTime uses, so a macOS screen recording looks as the screen did. The difference is largest near black, where video code 13 (of 255) now shows as about sRGB 10 instead of 28, and is less than 1 level above code 128. Existing proxies are discarded and made again once. See [Color tags](../reference/tool-tabs/output.md#color-tags).
-- **BT.709 exports have brighter shadows** than before, and play back in QuickTime as they look in Beutl.
+- **Content under the Layer, Clipping, Blend, Inner Shadow, Flat Shadow, and Stroke effects keeps its sub-pixel position.** It used to sit up to half a pixel off and lose its partly covered right column and bottom row, so text under these effects can shift slightly, and it now moves smoothly in slow motion. A Clipping with **Automatic Centering** turned on works as before.
 
-Updates found at startup now download without asking. See [Updating Beutl](#updating-beutl).
+Existing proxies are discarded and made again once. Media Foundation used to read video with non-square pixels, such as PAL, at its display size, which could leave distorted rows in proxies.
+
+Extensions installed from the store now update automatically: Beutl downloads their updates in the background and applies them the next time it starts, before a project opens. To be notified instead, choose **Notify only** in [Update timing](../settings/extension.md#update-timing).
+
+Required updates and Flatpak bundles now download in the background too. See [Updating Beutl](#updating-beutl).
 
 If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-agents.md) after updating.
 
@@ -118,3 +125,6 @@ If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Services/AppUpdateController.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Configuration/UpdateConfig.cs) / [`InformationPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Pages/SettingsPages/InformationPage.axaml)
 - [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)
+- [`CheckForUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/StartupTasks/CheckForUpdatesTask.cs) / [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/AppUpdateController.cs) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`UpdateDownloadCache.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/UpdateDownloadCache.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Core/Serialization/FileFormat.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Configuration/UpdateConfig.cs)
+- [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)

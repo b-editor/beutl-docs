@@ -29,7 +29,7 @@ When the associated color curves effect is removed, this tab closes automaticall
 
 The tab is divided into two main areas.
 
-- **Header (top)**: The tab title and dropdowns for switching the curve type and channel.
+- **Header (top)**: The tab title and dropdowns for switching the curve type and channel. On the hue curves, it also has an eyedropper button, and a row under it shows the picked color and its range; see [Picking a color for the hue curves](#picking-a-color).
 - **Edit area (bottom)**: A curve editor for editing control points. The background renders a histogram or gradient overlay.
 
 ## Header dropdowns
@@ -92,6 +92,25 @@ When a new control point is added, its handles are configured automatically base
 
 The curve updates in real time while you drag, and the change is recorded to the undo/redo history when you release the mouse.
 
+## Picking a color for the hue curves {/* #picking-a-color */}
+
+On **Hue vs Hue**, **Hue vs Saturation**, and **Hue vs Luminance**, the header has an eyedropper button, **Pick a color from the preview, as it looks before this effect**. With it, you find where a color sits on the curve and change the hues around it without placing points one by one.
+
+1. Click the eyedropper. The row under the header says **Click a color in the preview. Esc cancels.**
+2. Point at the preview. A dashed line on the curve shows where the color under the pointer sits.
+3. Click the color. A right-click or `Esc` cancels instead, and so does starting playback. A click on a transparent spot waits for another click.
+
+The color is read from the frame as this Curves effect receives it. Other layers still count, but neither this effect nor a color effect after it, such as a Hue Rotate, changes the color, so picking the same spot again after an edit gives the same color. On **Hue vs Saturation** and **Hue vs Luminance**, the color sits where **Hue vs Hue** has turned its hue, since the effect reads it that way.
+
+The curve then marks the color with a line and the range around it with a band, and the row under the header shows:
+
+- The color's swatch and its position on the curve in degrees. Point at the swatch to see the color's hue, saturation, and value.
+- **Range**: How wide a range of hues around the color the change reaches, from 1° to 300°. It starts at 60°.
+- **Hue**, **Saturation**, or **Luminance**, depending on the curve shown: The change at the picked color. **Hue** goes from -180° to 180°. **Saturation** and **Luminance** go from 0% to 200%, where 100% leaves the color as it is.
+- **Clear the picked color** (the × button).
+
+Setting the change rebuilds the curve inside the range as a smooth bump, from the curve's own value at each edge to the value you set at the color. Colors outside the range keep their values. Control points inside the range give way to the bump, and **Undo** brings them back. A range that crosses red continues at the other end of the curve. Narrowing the range gives back what a wider one covered, and each change of the value is one undo step. Where an edge of the range would fall inside a segment whose handles bend it back on itself, the curve stays as it is, and the boxes go back to what the curve has.
+
 ## Persisted tab state
 
 Even after closing the tab, the following are restored the next time it is opened.
@@ -119,3 +138,5 @@ To edit an animation's **time curve**, use the [Graph Editor](./graph-editor.md)
 - [`CurveVisualizationRenderer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Curves/CurveVisualizationRenderer.cs) (background histogram/gradient rendering)
 - [`Curves.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/Curves.cs) (the filter effect itself)
 - [`CurveMapEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/CurveMapEditor.axaml.cs) (the "Curves" button on the property side)
+- [`CurvesTabViewModel.ColorRange.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/ViewModels/CurvesTabViewModel.ColorRange.cs) / [`HueRangeCurve.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/Services/HueRangeCurve.cs) / [`CurvesTabView.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/Views/CurvesTabView.axaml) (the eyedropper and the color range)
+- [`PlayerView.axaml.Eyedropper.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/PlayerView.axaml.Eyedropper.cs) / [`PlayerViewModel.Eyedropper.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/PlayerViewModel.Eyedropper.cs) (picking in the preview)

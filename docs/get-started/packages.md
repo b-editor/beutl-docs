@@ -17,6 +17,8 @@ The details page is a single column: the header with the install, update, and un
 
 **Library** lists your packages in the same kind of tabs: **Packages** and **Local Packages**. **Check update** is on the tab row.
 
+To find a package by name, use the search box at the top right of the window. **`Ctrl + F`** (**`Cmd + F`** on macOS) moves to it and selects its text, and the page you are on stays open until you search.
+
 ## Use the installed files
 
 Open the [Files](../reference/tool-tabs/file-browser.md) tab and choose the pinned **Materials** or **Templates** folder. Installed materials and object templates are grouped by package name.
@@ -26,6 +28,12 @@ Drag supported media or object templates to the timeline. Object templates can s
 ## Scheduled changes
 
 Some install, update, or uninstall actions cannot finish while Beutl runs and are scheduled for application exit. While a change is scheduled, the package's row in **Library** offers **Restart**, and the package details show **Restart** above **Cancel**. **Restart** quits Beutl as **Exit** does, after your work is saved. The package tools then apply every scheduled change, and remove the packages those changes leave unneeded, without waiting for you, unless a package asks you to accept its license. Their last page offers **Start Beutl** next to **Close**. When you exit Beutl instead, the package tools open and wait for you to press **Start**. Pending changes are stored and restored across sessions. To withdraw a scheduled action, choose **Cancel** in the row's **…** menu or in the package details.
+
+## Updating extensions {/* #updating-extensions */}
+
+Extensions installed from the store update automatically by default: Beutl downloads their updates in the background and applies them the next time it starts, before a project opens. To be notified instead, or to update them only together with Beutl, change [Update timing](../settings/extension.md#update-timing) in **Settings → Extensions**.
+
+Update buttons and update notifications offer the newest release that supports your Beutl version, and the package details select that release at first. A package whose newer releases are all for other Beutl versions offers no update.
 
 ## Extension compatibility
 
@@ -53,3 +61,5 @@ When such packages have a newer release, Beutl shows one short warning instead o
 - [`ResultPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.PackageTools.UI/Views/ResultPage.axaml)
 - [`AfterLoadingExtensionsTask.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/Services/StartupTasks/AfterLoadingExtensionsTask.cs)
 - [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs)
+- [`ExtensionsPage.axaml.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Pages/ExtensionsPage.axaml.cs) / [`Release.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Api/Objects/Release.cs) / [`PackageDetailsPageViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/ExtensionsPages/DiscoverPages/PackageDetailsPageViewModel.cs)
+- [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs) / [`PackageManager.ExtensionUpdates.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Api/Services/PackageManager.ExtensionUpdates.cs)

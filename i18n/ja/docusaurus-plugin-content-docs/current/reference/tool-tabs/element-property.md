@@ -86,6 +86,10 @@ sidebar_position: 4
 
 閉じたトランスフォーム、グループ、型を読み込めなかったトランスフォームは、名前、目のアイコン、ゴミ箱のボタンがある行を残します。ノード内のトランスフォームもこの行を残します。
 
+### エフェクトのハンドルをプレビューで編集する {/* #effect-handles */}
+
+拡張機能のエフェクトには、プレビューに独自のハンドルを持つものがあります。そうしたエフェクトには、一覧の中でも、セクションの唯一のエフェクトとしても、目のアイコンの左に十字のボタン **フレームで編集** が表示されます。クリックするとエフェクトが選択されます。プレビューにはエフェクトのハンドルが表示され、オブジェクトのトランスフォームハンドルと基準点は隠れるので、ドラッグではエフェクトだけを編集できます。プレビューでオブジェクトをクリックすると、その要素が選択し直され、トランスフォームハンドルが戻ります。複数の要素をまとめて編集している間は、このボタンは表示されません。このようなハンドルを持つ組み込みのエフェクトはまだありません。
+
 ## プロパティの編集
 
 各オブジェクトを展開すると、プロパティごとのエディタが表示されます。
@@ -178,3 +182,4 @@ sidebar_position: 4
 - [`MultiElementEditSession.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/MultiElementEditSession.cs) / [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
 - [`StringEditor.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Controls/Styling/PropertyEditors/StringEditor.axaml) / [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/CustomDataTypes.cs)
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
+- [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs) / [`FilterEffectListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/Views/FilterEffectListItemEditor.axaml) / [`TransformHandlesOverlay.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/TransformHandlesOverlay.cs)
