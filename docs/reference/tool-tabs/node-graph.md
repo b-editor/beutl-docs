@@ -58,6 +58,12 @@ Each node has a colored header at the top, with ports, property editors, and mon
 - If multiple nodes are selected, all selected nodes move together.
 - The node being dragged is brought to the front and returns to its original z-order after release.
 
+### Resizing
+
+- Drag a node's right edge to change its width.
+- A node with code fields, such as a shader pass with its **Code**, can also be made taller: drag its bottom edge, or drag its bottom-right corner to change both. All the code fields of a node share one height.
+- Connection lines follow the ports while you drag, and each drag is one undo step. The size is saved with the node.
+
 ### Selecting
 
 - Click a header to select that node alone.
@@ -68,6 +74,7 @@ Each node has a colored header at the top, with ports, property editors, and mon
 
 - **Delete** (`Delete`): Deletes the node together with all of its connections.
 - **Rename**: Opens a flyout for editing the node name.
+- **Reset Node Size**: Returns a resized node to its type's width and fits its code fields to their text again.
 
 ## Working with ports and connections
 
@@ -230,3 +237,4 @@ Node positions, expansion states, and the graph's pan/zoom position are kept eve
 - [`ConnectionLine.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ConnectionLine.cs) / [`NodePortPoint.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/NodePortPoint.cs)
 - [`ListPortDragBehavior.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/NodeGraphTab/Views/ListPortDragBehavior.cs)
 - [`GraphModelEditor.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/GraphModelEditor.axaml.cs) (entry point for opening the tab from the property side)
+- [`GraphNodeView.Resize.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/NodeGraphTab/Views/GraphNodeView.Resize.cs) / [`NodeEditorSize.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.NodeGraph/NodeEditorSize.cs) (resizing nodes)

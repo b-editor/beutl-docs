@@ -19,11 +19,11 @@ Open **View → Tools → Browser**. Each instance can show a different page. If
 
 ## Navigation and page tools
 
-Enter an HTTP/HTTPS URL or search terms in the address bar. Use back, forward, and reload. On a new tab’s blank page, choose **Add bookmark** to register a URL and name. The tab menu includes **New Tab**, **Find in page**, zoom, **Open in Default Browser**, and **Print**.
+Enter an HTTP/HTTPS URL or search terms in the address bar. Use back, forward, and reload. When a page takes longer than 200 ms to load, the tab's header shows a spinning ring in place of its globe icon until the load finishes, stops, or fails, also while the tab is in the background. On a new tab’s blank page, choose **Add bookmark** to register a URL and name. The tab menu includes **New Tab**, **Find in page**, zoom, **Open in Default Browser**, and **Print**.
 
 While viewing a web page, the tab menu's **Add bookmark** saves its current URL and page title directly to your bookmarks.
 
-A page's `window.open()` and links that open a new window open in a new tab. That tab sends the opening page's origin as its referrer, so material sites that refuse hotlinks accept the request. Tabs that are not shown keep their pages, so switching back does not reload them (except with WPE WebKit on Linux). On Linux, cookies are kept across restarts.
+A page's `window.open()` and links that open a new window open in a new tab. That tab sends the opening page's origin as its referrer, so material sites that refuse hotlinks accept the request. It sends none when the page or the link asks for no referrer, or when an HTTPS page opens an HTTP one. Tabs that are not shown keep their pages, so switching back does not reload them (except with WPE WebKit on Linux). On Linux, cookies are kept across restarts.
 
 - **`Ctrl + F`** (**`Cmd + F`** on macOS): Find in page. `Enter` moves to the next match, `Shift + Enter` to the previous match, and `Esc` closes the search.
 - **`Ctrl + +` / `Ctrl + -`** (**`Cmd`** on macOS): Zoom. **`Ctrl + 0`** (**`Cmd + 0`** on macOS) resets to 100%. Zoom ranges from 50% to 200%.
@@ -38,9 +38,13 @@ On Windows and macOS, every file the tab saves is marked as downloaded from the 
 
 Files a page generates in script (`blob:` and `data:` URLs) are offered on the same bar, with the name the page gave them. The bar and the history credit the file to the page, or to another site when the browser engine names one as its creator.
 
-An installed extension can take over a file that a page offers, such as speech generated on a voice site, and place it in its own way. The bar then shows the extension's description in place of the file name, which moves to the tooltip. Nothing is added until you confirm. The file is then saved to the project's `resources/downloads` without the download options, and the extension adds it to the scene. If the extension declines the file, it is added as one element, as usual. Extensions are offered files only while the scene and its project are saved. Retrying from the download history and **Download file** keep the download options.
+On macOS, when a form you submit answers with a file, the tab saves the response it has already received, so the form is not sent again.
 
-Open **Download history** from the tab menu to open a downloaded media file or the folder of any file, import supported media, retry a download, or remove a history entry. Only media files can be opened from the history, because opening other files could run a downloaded program. A generated file cannot be retried. Removing an entry leaves the downloaded file on disk. **Download file** opens download options for the current page.
+An installed extension can take over a file that a page offers, such as speech generated on a voice site, and place it in its own way. The bar then shows the extension's description in place of the file name, which moves to the tooltip. Nothing is added until you confirm. The file is then saved to the project's `resources/downloads` without the download options, and the extension adds it to the scene. If the extension declines the file, it is added as one element, as usual. Extensions are offered files only while the scene and its project are saved. Retrying from the download history keeps the download options.
+
+**Download file** in the tab menu downloads the current page. On a web page, an installed extension that downloads media, such as a video downloader, gets the page first, at the address the page shows at that moment. While the extension downloads, the bar shows it, and you can cancel it there. When no extension takes the page, the download options open for it as usual.
+
+Open **Download history** from the tab menu to open a downloaded media file or the folder of any file, import supported media, retry a download, or remove a history entry. Only media files can be opened from the history, because opening other files could run a downloaded program. A generated file, or a file saved from a form's response on macOS, cannot be retried. Removing an entry leaves the downloaded file on disk.
 
 ## Search and privacy
 
@@ -75,3 +79,6 @@ You can clear local download history and delete browser cookies. Cookie deletion
 - [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)
 - [`BrowserDownloadProvenance.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadProvenance.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Extensibility/BrowserDownloadExtension.cs) / [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
+- [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs) / [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensibility/BrowserDownloadExtension.cs) (**Download file** and extensions)
+- [`BrowserDownloadNavigation.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadNavigation.cs) / [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs) (form responses on macOS)
+- [`BeutlToolDockable.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dock/BeutlToolDockable.cs) (the loading indicator) / [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs) (referrer policies)

@@ -45,7 +45,7 @@ The local UI state in `.beutl` is excluded from project history. See [Version Co
 
 ## Version compatibility {/* #version-compatibility */}
 
-**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12 and preview.13 keep the project file format floor at 2.0.0-preview.11, so projects they save still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
+**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12, preview.13, and preview.14 keep the project file format floor at 2.0.0-preview.11, so projects they save still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
 
 Project, scene, and element files record the minimum Beutl version needed to open them. Preview.11 raises the floor because a row that shows two or three values together, such as a Translate's X and Y, saves its expression as a new kind of expression. An older version would find no expression there and lose it the next time it saved, so it refuses such a project instead. The floor applies to every project that preview.11 saves, whether or not it uses such an expression. See [Values shown in one row](./keyframe.md#joined-rows).
 

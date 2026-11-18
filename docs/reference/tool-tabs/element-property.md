@@ -86,6 +86,10 @@ An open transform shows its first property beside its type's icon, in place of a
 
 A closed transform, a group, and a transform whose type could not be loaded keep the row with the name, the eye, and the trash button. In a node, a transform also keeps that row.
 
+### Editing an effect's handles in the preview {/* #effect-handles */}
+
+An effect from an extension can have handles of its own in the preview. Such an effect shows a crosshair button, **Edit in frame**, left of its eye, both in a list and as the only effect of a section. Click it to select the effect. The preview then shows the effect's handles and hides the object's transform handles and pivot, so a drag edits only the effect. Click the object in the preview to select its element again and bring the transform handles back. The button is hidden while the tab edits several elements. No built-in effect has such handles yet.
+
 ## Editing properties
 
 Expanding an object reveals a per-property editor.
@@ -178,3 +182,4 @@ Unrecognized data that can be preserved is kept on save. Common properties remai
 - [`MultiElementEditSession.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/ElementPropertyTab/ViewModels/MultiElementEditSession.cs) / [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
 - [`StringEditor.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Controls/Styling/PropertyEditors/StringEditor.axaml) / [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/CustomDataTypes.cs)
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
+- [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs) / [`FilterEffectListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/Views/FilterEffectListItemEditor.axaml) / [`TransformHandlesOverlay.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/TransformHandlesOverlay.cs)

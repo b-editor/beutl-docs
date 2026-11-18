@@ -72,7 +72,7 @@ sidebar_position: 11
 | エンコーダー | 制限 |
 |--------------|------|
 | FFmpeg | 7.1ch の AAC は `.aac`（ADTS）や MPEG-TS に書き込めません。MP4、MOV、MKV を使うか、PCM などの別のコーデックを使ってください。 |
-| AVFoundation | AAC は 1、2、6 チャンネルに対応します。それ以外のチャンネル数には Linear PCM または FFmpeg エンコーダーを使ってください。 |
+| AVFoundation | AAC は 1、2、6 チャンネルに対応します。Apple Lossless は、スピーカーの配置が Beutl と異なるため、4 チャンネルと 8 チャンネル（7.1）には対応しません。これらの形式が対応しないチャンネル数には、Linear PCM または FFmpeg エンコーダーを使ってください。 |
 | Media Foundation | AAC は 1、2、6 チャンネルに対応します（6 チャンネルは Windows 10 以降）。PCM と float はチャンネル数を問いません。 |
 
 制限を超える書き出しは、チャンネルの配置が崩れたファイルを作る代わりに、エラーメッセージを表示して停止します。
@@ -95,6 +95,6 @@ sidebar_position: 11
 - [`SoundPannerViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/SoundPannerProperties/ViewModels/SoundPannerViewModel.cs)
 - [`ChannelMapEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/ChannelMapProperties/ViewModels/ChannelMapEditorViewModel.cs)
 - [`SceneSettingsService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SceneSettingsService.cs)
-- [`AVFEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.AVFoundation/Encoding/AVFEncodingController.cs)
+- [`AVFEncodingController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensions.AVFoundation/Encoding/AVFEncodingController.cs)
 - [`MFEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Extensions.MediaFoundation/Encoding/MFEncodingController.cs)
 - [`FFmpegEncodingController.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.FFmpegWorker/Encoding/FFmpegEncodingController.cs)

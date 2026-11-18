@@ -64,9 +64,9 @@ flatpak run net.beditor.Beutl
 
 ### Flatpak の更新
 
-Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロードし、実行中のアーキテクチャと同じユーザーまたはシステムのインストール先に適用できます。更新完了後、Beutlを閉じて開き直すと、新しいバージョンが使われます。
+Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロードし、実行中のアーキテクチャと同じユーザーまたはシステムのインストール先にインストールします。バンドルはほかの更新と同じようにバックグラウンドでダウンロードされ（[Beutl を更新する](#beutl-を更新する)を参照）、インストールは操作を待ちます。準備完了の通知か更新のダイアログで **インストール** を選んでください。ダイアログで **後で** を選ぶと、ダウンロードしたバンドルは Beutl を終了するまで保持されるので、[ステータス](../reference/index.md#アプリの状態)のポップアップから開ける更新のダイアログでインストールできます。更新完了後、Beutlを閉じて開き直すと、新しいバージョンが使われます。
 
-`flatpak install` や GNOME Software が既定で行う、すべてのユーザー向けのインストールを更新するには管理者の認証が必要で、デスクトップがパスワードを一度だけ尋ねます。認証をキャンセルしたか失敗した場合は、**再試行** でもう一度試すか、**リリースノート** から更新をダウンロードして手動でインストールしてください。
+`flatpak install` や GNOME Software が既定で行う、すべてのユーザー向けのインストールを更新するには管理者の認証が必要で、**インストール** を選ぶとデスクトップがパスワードを一度だけ尋ねます。認証をキャンセルしたか失敗した場合は、**再試行** でもう一度試すか、**リリースノート** から更新をダウンロードして手動でインストールしてください。
 
 ## macOSの場合
 
@@ -76,7 +76,7 @@ Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロー�
 
 ## Beutl を更新する
 
-起動時に新しいバージョンが見つかると、Beutl は編集を続けている間にバックグラウンドで更新をダウンロードします。そのことを **リリースノート** のある短い通知 **アップデートをダウンロード中** で知らせ、タイトルバーの[ステータス](../reference/index.md#アプリの状態)ボタンに進捗が表示されます。先に確認したい場合は、設定の **情報** ページで **アップデートを自動でダウンロード** をオフにします。すると Beutl は **インストール** と **リリースノート** のある通知を表示し、**インストール** でダウンロードが始まります。Beutl を複数起動しているときは、確認なしでダウンロードするのはそのうち 1 つだけで、ほかは **インストール** を表示します。ステータスのポップアップから更新のダイアログを開けます。**バックグラウンドへ** でダイアログを閉じ、`Esc` で更新をキャンセルします。
+起動時に新しいバージョンが見つかると、Beutl は編集を続けている間にバックグラウンドで更新をダウンロードします。そのことを **リリースノート** のある短い通知 **アップデートをダウンロード中** で知らせ、タイトルバーの[ステータス](../reference/index.md#アプリの状態)ボタンに進捗が表示されます。使い続けるためにインストールが必要な更新も同じようにダウンロードされ、その通知には **引き続き使用するにはアップグレードする必要があります** と表示されます。先に確認したい場合は、設定の **情報** ページで **アップデートを自動でダウンロード** をオフにします。すると Beutl は **ダウンロード** と **リリースノート** のある通知を表示し、**ダウンロード** でダウンロードが始まります。Beutl を複数起動しているときは、確認なしでダウンロードするのはそのうち 1 つだけで、ほかは **ダウンロード** を表示します。ステータスのポップアップから更新のダイアログを開けます。**バックグラウンドへ** でダイアログを閉じ、`Esc` で更新をキャンセルします。
 
 更新の準備ができると、バージョンを示した通知で次の操作を選べます。
 
@@ -84,7 +84,11 @@ Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロー�
 - **終了時に更新**: 作業内容を保存してから Beutl を終了したときに更新をインストールし、Beutl は閉じたままになります。
 - **リリースノート**: リリースページを開きます。通知は表示されたままです。
 
-Flatpak のインストールでは、ダウンロードが終わるとすぐに新しいバンドルをインストールするので、確認なしにダウンロードすることはなく、設定に **アップデートを自動でダウンロード** は表示されません。[Flatpak の更新](#flatpak-の更新)を参照してください。
+Flatpak のインストールでは、代わりに **インストール** と **リリースノート** が表示されます。[Flatpak の更新](#flatpak-の更新)を参照してください。
+
+拡張機能も Beutl と一緒に更新するときは、**拡張機能2件も一緒に更新します。** のように、通知にその件数も表示されます。[更新のタイミング](../settings/extension.md#update-timing)を参照してください。
+
+インストールせずに残した更新は、もう一度ダウンロードされません。再起動後に同じ更新を準備するとき、Beutl は保存したファイルを確認してから使います。Flatpak のバンドルは改めてダウンロードされます。
 
 ダウンロードや準備に失敗したときは、通知とダイアログに **再試行** が表示され、メッセージには失敗した手順が示されます。
 
@@ -92,16 +96,19 @@ Flatpak のインストールでは、ダウンロードが終わるとすぐに
 
 ## 更新する前に
 
-**2.0.0-preview.13 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.13 で保存したプロジェクトは preview.11 と preview.12 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.14 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.14 で保存したプロジェクトは preview.11、preview.12、preview.13 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
 
 **x64 では、preview.12 以降、x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
 
-preview.13 に更新すると、既存のプロジェクトの見た目が変わることがあります。
+preview.14 に更新すると、既存のプロジェクトの見た目が変わることがあります。
 
-- **BT.709、BT.601、BT.2020 のタグが付いた SDR の動画は、暗部が暗く表示されます。** これらのタグを QuickTime と同じカーブで読み込むようになり、macOS の画面収録が画面で見たとおりに表示されます。差は黒に近いほど大きく、動画のコード値 13（255 段階中）は sRGB 28 ではなく約 10 で表示されるようになり、コード値 128 を超えると差は 1 未満です。既存のプロキシは一度破棄され、作り直されます。[色のタグ](../reference/tool-tabs/output.md#色のタグ)を参照してください。
-- **BT.709 で書き出した動画は、以前より暗部が明るくなり**、QuickTime では Beutl での見た目どおりに再生されます。
+- **レイヤー、クリッピング、ブレンド、内側シャドウ、フラットシャドウ、ストロークの各エフェクトを掛けた内容が、ピクセル未満の位置を保つようになりました。** 以前は最大で半ピクセルずれ、一部だけ覆われた右端の列と下端の行が欠けていたため、これらのエフェクトを掛けたテキストがわずかに動くことがあり、ゆっくり動かしたときも滑らかに動くようになります。**自動センタリング** をオンにしたクリッピングはこれまでどおりです。
 
-起動時に見つかった更新は、確認なしにダウンロードされるようになりました。[Beutl を更新する](#beutl-を更新する)を参照してください。
+既存のプロキシは一度破棄され、作り直されます。Media Foundation が PAL など正方形でないピクセルの動画を表示サイズで読み込んでいたため、プロキシに歪んだ行が含まれていることがあるためです。
+
+ストアからインストールした拡張機能は、自動で更新されるようになりました。Beutl は更新をバックグラウンドでダウンロードし、次回の起動時にプロジェクトを開く前に適用します。通知だけにしたい場合は、[更新のタイミング](../settings/extension.md#update-timing)で **通知のみ** を選びます。
+
+使い続けるために必要な更新と Flatpak のバンドルも、バックグラウンドでダウンロードされるようになりました。[Beutl を更新する](#beutl-を更新する)を参照してください。
 
 AIコーディングエージェントを使用している場合は、更新後に [Beutl との連携を再インストール](../advanced/ai-agents.md)してください。
 
@@ -118,3 +125,6 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/Serialization/FileFormat.cs)
 - [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Services/AppUpdateController.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Configuration/UpdateConfig.cs) / [`InformationPage.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl/Pages/SettingsPages/InformationPage.axaml)
 - [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs)
+- [`CheckForUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/StartupTasks/CheckForUpdatesTask.cs) / [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/AppUpdateController.cs) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`UpdateDownloadCache.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/UpdateDownloadCache.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Core/Serialization/FileFormat.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Configuration/UpdateConfig.cs)
+- [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)

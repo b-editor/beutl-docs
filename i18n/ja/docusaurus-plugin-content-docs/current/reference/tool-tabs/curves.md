@@ -29,7 +29,7 @@ RGB 各チャンネルのカーブ編集に加えて、特定の色相だけ色�
 
 タブは大きく 2 つのエリアに分かれています。
 
-- **ヘッダー（上部）**: タブ名と、カーブ種類・チャンネルを切り替えるドロップダウン
+- **ヘッダー（上部）**: タブ名と、カーブ種類・チャンネルを切り替えるドロップダウン。色相のカーブではスポイトのボタンもあり、その下の行に選んだ色と範囲が表示されます（[色相のカーブで色を選ぶ](#picking-a-color)を参照）。
 - **編集領域（下部）**: 制御点を編集するカーブエディタ。背景にはヒストグラムやグラデーションが重ねて描画されます。
 
 ## ヘッダーのドロップダウン
@@ -92,6 +92,25 @@ RGB 各チャンネルのカーブ編集に加えて、特定の色相だけ色�
 
 ドラッグ中はリアルタイムでカーブが反映され、マウスを離したタイミングで履歴（Undo / Redo）に記録されます。
 
+## 色相のカーブで色を選ぶ {/* #picking-a-color */}
+
+**色相 vs 色相**、**色相 vs 彩度**、**色相 vs 輝度** では、ヘッダーにスポイトのボタン **プレビューから色を選ぶ（このエフェクトをかける前の色）** があります。これを使うと、ある色がカーブのどこにあるかを見つけ、制御点を 1 つずつ置かなくても、その周りの色相を変えられます。
+
+1. スポイトをクリックします。ヘッダーの下の行に **プレビューで色をクリックしてください。Escで取り消します。** と表示されます。
+2. プレビューにポインターを乗せます。ポインターの下の色がカーブのどこにあるかが、カーブ上の破線で示されます。
+3. 色をクリックします。右クリックか `Esc` で取り消せます。再生を始めたときも取り消されます。透明な場所をクリックしたときは、次のクリックを待ちます。
+
+色は、このカーブエフェクトが受け取るフレームから読み取ります。ほかのレイヤーは含まれますが、このエフェクトも、その後に掛かる色相調整などの色のエフェクトも色を変えないので、編集後に同じ場所を選び直しても同じ色になります。**色相 vs 彩度** と **色相 vs 輝度** では、エフェクトの読み取り方に合わせて、**色相 vs 色相** で色相を回した後の位置に色が示されます。
+
+続いてカーブには、色の位置に線が、その周りの範囲に帯が表示され、ヘッダーの下の行には次の項目が並びます。
+
+- 色の見本と、カーブ上の位置（度）。見本にポインターを乗せると、色の色相・彩度・明度が表示されます。
+- **範囲**: 選んだ色を中心に、変化が及ぶ色相の幅です。1° から 300° までで、最初は 60° です。
+- 表示中のカーブに応じた **色相**、**彩度**、**輝度**: 選んだ色での変化量です。**色相** は -180° から 180°、**彩度** と **輝度** は 0% から 200% までで、100% では色は変わりません。
+- **選んだ色を解除**（× のボタン）。
+
+変化量を設定すると、範囲の中のカーブが、両端でのカーブ自身の値から選んだ色での設定値へとなめらかにふくらむ形に作り直されます。範囲の外の色は値が変わりません。範囲の中にあった制御点はこの形に置き換わり、**元に戻す** で戻せます。赤をまたぐ範囲は、カーブの反対側の端に続きます。範囲を狭めると、広い範囲で変えていた部分は元に戻ります。変化量の変更は 1 回ごとに 1 つの取り消し単位です。範囲の端が、ハンドルで折り返すように曲がった区間の中に来るときは、カーブはそのまま変わらず、入力欄はカーブの値に戻ります。
+
 ## タブの状態保存
 
 タブを閉じても、次回開いたときに以下の状態は復元されます。
@@ -119,3 +138,5 @@ RGB 各チャンネルのカーブ編集に加えて、特定の色相だけ色�
 - [`CurveVisualizationRenderer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Curves/CurveVisualizationRenderer.cs)（背景のヒストグラム/グラデーション描画）
 - [`Curves.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/Curves.cs)（フィルターエフェクト本体）
 - [`CurveMapEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/Views/CurveMapEditor.axaml.cs)（プロパティ側の「カーブ」ボタン）
+- [`CurvesTabViewModel.ColorRange.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/ViewModels/CurvesTabViewModel.ColorRange.cs) / [`HueRangeCurve.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/Services/HueRangeCurve.cs) / [`CurvesTabView.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/CurvesTab/Views/CurvesTabView.axaml)（スポイトと色の範囲）
+- [`PlayerView.axaml.Eyedropper.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/PlayerView.axaml.Eyedropper.cs) / [`PlayerViewModel.Eyedropper.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/PlayerViewModel.Eyedropper.cs)（プレビューでの色の選択）

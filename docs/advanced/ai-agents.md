@@ -42,6 +42,8 @@ Without `instanceId`, the same server uses a file-backed session. Start with `op
 
 File paths passed to tools must be **absolute**, including project, input media, and output paths. The old `BEUTL_WORKSPACE` setting is no longer used; there is no workspace root that supplies a base for relative paths.
 
+Characters that the selected font lacks render with Beutl's bundled fallback fonts and color emoji, as in the app, so `render_still` and `export_video` show them as the editor does. The server orders the fallback fonts by the system's language, where the app follows its own language setting.
+
 For manual registration, a typical JSON entry is:
 
 ```json
@@ -68,6 +70,7 @@ Call `get_started` first. The tool returns a compact usage guide.
 | Session | `open_project`, `create_project`, `add_scene`, `save_project`, `read_operation_status` |
 | Query / schema | `get_started`, `get_schema`, `read_document_summary`, `read_document`, `list_examples`, `get_examples`, `list_fonts`, `list_effects`, `list_effect_recipes`, `get_effect_recipe`, `list_compositions`, `get_composition`, `render_composition_patch`, `validate_shader`, `measure_object_bounds` |
 | Edit | `apply_edit`, `duplicate_object`, `plan_composition`, `apply_composition` |
+| Node graphs | `get_node_graph_guide`, `list_node_types`, `read_node_graph`, `edit_node_graph` |
 | History | `undo`, `redo`, `read_history` |
 | Render / inspection | `render_still`, `render_storyboard`, `measure_frame_differences`, `analyze_audio_rhythm`, `export_video`, `read_render_job`, `cancel_render_job` |
 | AI generation (running editor) | `list_ai_models`, `generate_image`, `edit_image`, `generate_video`, `edit_video`, `transcribe_audio`, `list_ai_jobs`, `read_ai_job`, `cancel_ai_job` |
@@ -75,6 +78,8 @@ Call `get_started` first. The tool returns a compact usage guide.
 AI generation uses the account signed in to the running Beutl app and its AI credits. Each generation call is a paid request. Generated media is saved next to the target scene; use `apply_edit` to place it. Poll an existing job with `read_ai_job`, or find it with `list_ai_jobs`, instead of repeating a generation request after a timeout. Loaded extensions can also contribute tools.
 
 `apply_edit` accepts exactly one of a complete `desired` document or a partial `patch`. For targeted edits, use a JSON Merge Patch in `patch` and provide the `schemaVersion` returned by `get_schema`. A full `desired` document is authoritative: omitted child arrays can delete existing content.
+
+The node graph tools build and edit [node graphs](../reference/tool-tabs/node-graph.md) without C#, including GPU passes in GLSL with several passes, inputs, and intermediate images. A graph made this way is an ordinary Node Graph effect or drawable. `get_node_graph_guide` returns the rules with examples, and `list_node_types` lists the node types and their members. `read_node_graph` reads a graph's nodes, values, keyframes, and connections, with diagnostics such as shader compiler messages, and lists the scene's graphs when no graph is named. `edit_node_graph` applies `add`, `update`, `remove`, `connect`, and `disconnect` operations in order as one undo step, and `validateOnly` checks them without applying them. An edit that cannot apply, or that brings a new error such as GLSL that does not compile, is not applied, and the scene and its history stay as they were. `render_still` lists in its warnings each node that failed while the frame drew.
 
 ## Edit and inspect
 
@@ -95,3 +100,5 @@ AI generation uses the account signed in to the running Beutl app and its AI cre
 - [`ToolPaths.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.AgentToolkit/Common/ToolPaths.cs)
 - [`AgentHostAiTools.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentHostAiTools.cs)
 - [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)
+- [`NodeGraphTools.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Tools/NodeGraphTools.cs) / [`StillRenderer.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/StillRenderer.cs)
+- [`BundledFontRegistration.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/BundledFontRegistration.cs)
