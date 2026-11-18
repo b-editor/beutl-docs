@@ -113,6 +113,8 @@ An `AppendSkiaFilter` factory must only produce its filter. It must not re-enter
 
 A `CustomEffect` callback run by the renderer cannot launch another `RenderNodeRenderer`, including through `DrawDrawable` or `DrawNode` on a canvas from `Open`; such a call throws `InvalidOperationException`. Record the drawable into a `RenderNode`, render it with `CustomFilterEffectContext.ExecutionContext.RenderDependency(root, identity, domain)`, and draw the returned image. The dependency shares the request's allocation, working density, cancellation and cycle detection. A repeated identity reuses the image only within the same recorded effect. `ExecutionContext` is `null` when the effect runs outside the renderer.
 
+Since preview.14, each raster that a callback reads describes where it lies with a `RenderPlacement`: `Placement` on an `EffectTarget`, a `RenderExecutionInput`, a `MaterializedInputDescription`, an `OpaqueRenderOutput` and a `RenderCallbackCanvas`, and `OutputPlacement` on a `GeometrySession`, an `OpaqueRenderSession` and a `ShaderExecutionContext`. Its `LogicalBounds`, `Scale`, `DeviceBounds`, `DeviceGridOffset`, `LogicalOrigin` and `RasterBounds`, with `ToLogical` and `ToDevice`, relate local coordinates to pixels the same way everywhere, and `Scale.Value` is the working density. Move content with `EffectTarget.Bounds`: the raster moves with it on the same allocation.
+
 `ContinuationEffect(data, action)` hands its callback a `FilterEffectContinuation` for the operations recorded after it, to run any number of times or not at all. `TargetEffect(data, action)` hands its callback a `CompositionTargetAccess`, whose `Capture()` and `Replace(image)` read and replace the composition target beneath the effect. Since preview.12, its `LocalToDevice` maps the effect's local coordinates to pixels of the captured image, including the translation and the render density. The resource recording them must return `true` from `ControlsContinuation` or `MayAccessTarget` respectively, for every evaluation time. The engine splits chains and routes target work from these declarations before recording, so an undeclared recording throws.
 
 ### Metadata callback diagnostics
@@ -276,6 +278,7 @@ public sealed partial class EchoEffect : FilterEffect
 ```cs
 using Beutl.Extensibility;
 using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyExtension;
 
@@ -285,9 +288,9 @@ public sealed class MyEffectExtension : Extension
     public override string Name => "My Effects";
     public override string DisplayName => "My Effects";
 
-    public override void Load()
+    public override void Load(IExtensionContext context)
     {
-        LibraryService.Current.Register<HighContrastBlur>(
+        context.Services.GetRequiredService<LibraryService>().Register<HighContrastBlur>(
             KnownLibraryItemFormats.FilterEffect,
             "High-Contrast Blur");
     }
@@ -307,7 +310,7 @@ namespace MyExtension;
 
 public static class MyEffectThumbnails
 {
-    // Call this from MyEffectExtension.Load().
+    // Call this from MyEffectExtension.Load(context).
     public static void Register()
         => LibraryThumbnailRecipes.Register<HighContrastBlur>(
             LibraryThumbnailSample.Landscape,
@@ -342,6 +345,7 @@ public static class MyEffectThumbnails
 - [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
 - [`FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs), [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs), and [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs)
 - [`FilterEffectInputContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectInputContext.cs) and [`FilterEffectContinuation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContinuation.cs)
+- [`EffectTarget.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/EffectTarget.cs) and [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
 - [`RenderExecutionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderExecutionContext.cs), [`CompositionTargetAccess.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/CompositionTargetAccess.cs), and [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)
 - [`ShaderGraphBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderGraphBuilder.cs) and [`ShaderPassBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderPassBuilder.cs)
 - [`ICompositionEvaluationServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/ICompositionEvaluationServices.cs) and [`AudioSpectrum.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioSpectrum.cs)

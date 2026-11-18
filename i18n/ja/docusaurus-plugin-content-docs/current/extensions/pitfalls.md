@@ -3,7 +3,27 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.13 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.14 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.13 からの移行 {/* #migrating-from-preview-13 */}
+
+preview.13 の拡張機能を移行するときは、次の変更を確認してください。拡張機能が使っていたグローバルなシングルトンの多くは削除され、拡張機能は `Load` が受け取るコンテキストからホストのサービスを取得します。すべての拡張機能が `Load` をオーバーライドしているため、すべての拡張機能で変更と再ビルドが必要です。削除した API に互換用の API はありません。
+
+- **テスト用のプロジェクト**: ターゲットフレームワークは `net11.0`、Avalonia は 12.1.6、ファイル形式の下限は preview.11 のままです。preview.14 で保存したプロジェクトは preview.11 でも開けます。[バージョンの対応表](version-mapping.md)を参照してください。
+- **`Extension.Load()` と `Unload()`**: `Load(IExtensionContext context)` と `Unload(IExtensionContext context)` に変わり、`context.Services` からホストのサービスを取得できます。`ThemeExtension`、`DecodingExtension`、`ProxyExtension`、`TutorialExtension` の派生クラスでこれらをオーバーライドする場合は、基底クラスのメソッドにコンテキストを渡してください。preview.13 向けにビルドしたパッケージが `Load()` や `Unload()` をオーバーライドしていると、preview.14 では読み込まれません。[ホストのサービス](#services-from-the-host)を参照してください。
+- **`LibraryService.Current`、`ObjectTemplateService.Instance`**: 削除されました。`LibraryService` や `ObjectTemplateService` は、`context.Services` か、エディタの `IEditorContext` から取得してください。[ライブラリへの登録](engine-object.md#registering-with-the-library)を参照してください。
+- **`TutorialService`**: `Current` とともに削除されました。`TutorialExtension` は、コンテキストの `ITutorialService` にチュートリアルを登録します。テストなどで `Load` を直接呼ぶコードは、`ITutorialService` を提供するコンテキストを渡してください。
+- **`GlobalConfiguration.Instance`**: 削除されました。`GlobalConfiguration` を取得し、`EditorConfig` など必要なセクションを読んでください。コンストラクターが public になったため、テストでは独自のインスタンスを作れます。`RenderCacheOptions.CreateFromGlobalConfiguration()` は `CreateFromConfiguration(EditorConfig)` になりました。
+- **`NotificationService`**: static ではなくなり、`NotificationService.Handler` は削除されました。`INotificationService` を取得して、`Show`、`ShowInformation`、`ShowSuccess`、`ShowWarning`、`ShowError` を呼んでください。これらは `Beutl.Services` の拡張メソッドで、引数は以前と同じです。
+- **`FontManager.Instance`**: `FontManager.Initialize`、`FontFamily.Typefaces` とともに削除されました。`FormattedText`、`TextElements`、`TextElementsBuilder` は、使う `FontManager` を受け取ります。ファミリーの書体は `fonts.GetTypefaces(family)` で取得します。[テキストと画素の描画](#drawing-text-and-pixels)を参照してください。
+- **独自の `IGenerativeRunHost`**: 新しい `Fonts` プロパティには既定の実装がないため、このインターフェースを実装するクラスには追加が必要です。`GenerativeGraphRunner` は、ノードの入力を取得するとき、この `FontManager` でグラフを評価します。
+- **拡張機能が開くウィンドウ**: `Beutl.Controls` のコントロールは、Beutl がウィンドウに設定する添付プロパティから、ユーザーの設定とホストのフォントを取得します。[拡張機能が開くウィンドウ](#windows-that-your-extension-opens)を参照してください。
+- **レンダリングのコールバック**: コールバックが読むラスターは、それぞれの範囲を 1 つの `RenderPlacement` で表すようになりました。削除された `Bounds`、`EffectiveScale`、`Scale`、`Density`、`WorkingScale`、`DeviceBounds`、`DeviceSize`、`DeviceGridOffset`、`LogicalOrigin`、`LogicalBounds`、`RasterBounds`、`RequiredRegion` の代わりに、`EffectTarget`、`RenderExecutionInput`、`MaterializedInputDescription`、`OpaqueRenderOutput`、`RenderCallbackCanvas` では `Placement` を、`GeometrySession`、`OpaqueRenderSession`、`ShaderExecutionContext` では `OutputPlacement` を読んでください。`EffectTarget.Bounds` は残っており、引き続き内容を移動します。`MaterializedInputDescription.FromRenderTarget` は `RenderPlacement` を受け取ります。[レンダーターゲットを直接処理する](implement-effect.md#processing-the-render-target)を参照してください。
+- **`GradingColorPicker`**: `IsDragging` と `StopDrag()` は削除されました。編集は `ColorChanged` と `ColorConfirmed` で追ってください。
+- **Beutl の UI フォント**: `Beutl.Controls` に埋め込まれなくなったため、`avares://Beutl.Controls/Assets/Fonts/...` のリソースはなくなりました。`Beutl.Controls.Styling` の `UiFonts.DefaultFontFamily` か `UiFonts.GetFontFamily(culture)` を使ってください。
+- **非同期メソッド**: SDK は、`Task` か `ValueTask` を返す `async` メソッドを .NET 11 のランタイム非同期でコンパイルします。このようなメソッドには `AsyncStateMachineAttribute` が付かなくなります。また、`TaskCreationOptions.RunContinuationsAsynchronously` で作ったタスクの継続はスレッドプールを経由して UI スレッドに届くため、タスクの完了直後に UI スレッドへ投稿した処理より後に実行されることがあります。[ランタイム非同期](create-csproj.md#runtime-async)を参照してください。
+- **ブラウザのダウンロード**: `BrowserDownloadExtension` の `Claim` と `ImportAsync` に既定の実装ができ、新しい `TryDownloadPageAsync` でブラウザの **「ファイルをダウンロード」** を処理できます。[ブラウザのダウンロード](editor-integration.md#downloading-the-pages-media)を参照してください。
+- **拡張機能の更新**: Beutl は既定で、ストアの拡張機能の新しいリリースを自動でインストールするようになりました。[ターゲットバージョンと自動更新](publish.md#target-version-and-automatic-updates)を参照してください。
 
 ## preview.12 からの移行 {/* #migrating-from-preview-12 */}
 
@@ -96,11 +116,51 @@ SDK はこれを、Beutl が同梱しているバージョンの `PackageReferen
 
 preview.11 以降は、ライブラリが `AssemblyLoadContext.Default` に要求したアセンブリが拡張機能のパッケージにしかない場合、Beutl はそれを拡張機能のパッケージから見つけます。既定のコンテキストは独自のコピーを読み込み、そのコピーは Beutl の終了まで読み込まれたままになります。拡張機能のコンテキストは、そのコピーが十分に新しければそれを使うため、型が 2 種類になることはありません。ただし、拡張機能のコンテキストに読み込まれたライブラリが、自身を参照するアセンブリを既定のコンテキストを通して読み込むことは、まだできません（[#3921](https://github.com/b-editor/beutl/issues/3921)）。
 
+### ホストのサービス {/* #services-from-the-host */}
+
+preview.14 以降、Beutl は `Load` と `Unload` に `IExtensionContext` を渡します。その `Services` はホストの `IServiceProvider` で、`LibraryService`、`ObjectTemplateService`、`GlobalConfiguration`、`FontManager`、`INotificationService`、`ITutorialService` を提供します。サービスは型が完全に一致するものだけが見つかるため、`GlobalConfiguration` を取得してから、`EditorConfig` などのセクションを読んでください。`GetRequiredService<T>()` は `Microsoft.Extensions.DependencyInjection` にあり、SDK の参照に含まれています。
+
+```csharp
+using Beutl.Extensibility;
+using Beutl.Graphics.Shapes;
+using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyExtension;
+
+[Export]
+public sealed class ShapesExtension : Extension
+{
+    private INotificationService? _notifications;
+
+    public override void Load(IExtensionContext context)
+    {
+        context.Services.GetRequiredService<LibraryService>()
+            .RegisterGroup("My Shapes", group => group
+                .AddDrawable<RectShape>("My Rectangle"));
+
+        // Keep what later code needs, and let it go in Unload.
+        _notifications = context.Services.GetRequiredService<INotificationService>();
+    }
+
+    public override void Unload(IExtensionContext context)
+    {
+        _notifications = null;
+    }
+
+    public void ReportFailure(Exception exception)
+        => _notifications?.ShowError("My Shapes", exception.Message);
+}
+```
+
+- Beutl は拡張機能を 1 つずつ読み込みます。組み込みの拡張機能が最初で、次にインストールされたパッケージを名前順に、最後にサイドロードされた拡張機能を読み込みます。`Load` が失敗したときにも `Unload` を呼ぶため、`Unload` は `Load` で完了した処理だけを元に戻し、何度呼ばれても問題がないように書いてください。
+- コマンド、ツールタブ、そのほかのファクトリでは、`execution.EditorContext` やツールタブの作成時に渡される `IEditorContext` など、対象のエディタからサービスを取得してください。シーンエディタは、上記のサービスと独自のサービスを `GetService` で提供します。1 つの拡張機能のインスタンスが複数のホストに使われることがあるため、`Load` で保持したサービスよりも、こちらを優先してください。
+
 ### 読み込みは全部成功するか、全部取り消されるか
 
 - Beutl は、アセンブリの public な型から拡張機能を探します。拡張機能のクラスは `public` で、`Extension` を継承し、`[Export]` 属性と引数なしのコンストラクターを持つ必要があります。
 - Beutl は public な型を厳密に読み込みます。そのうち 1 つでも読み込めないアセンブリを参照していると（除外したのに Beutl が同梱していないライブラリなど）、パッケージ全体の読み込みに失敗します。
-- ある拡張機能の `Load()` が例外を投げると、同じパッケージの拡張機能はすべて取り消されます。
+- ある拡張機能の `Load` が例外を投げると、同じパッケージの拡張機能はすべて取り消されます。
 
 ### サイドロード
 
@@ -195,13 +255,14 @@ using Beutl.Services;
 
 public static class ShapeLibrary
 {
-    public static void Register()
-        => LibraryService.Current.RegisterGroup("My Extension", group => group
+    // Call this from Load with the LibraryService of the context.
+    public static void Register(LibraryService library)
+        => library.RegisterGroup("My Extension", group => group
             .AddDrawable<RectShape>("My Rectangle"));
 }
 ```
 
-テストでは、`LibraryService.Current.GetTypesFromFormat(KnownLibraryItemFormats.EngineObject)` に自分の型が含まれることを確認できます。
+テストでは、`new LibraryService()` に登録し、その `GetTypesFromFormat(KnownLibraryItemFormats.EngineObject)` に自分の型が含まれることを確認できます。
 
 ### 再生中の再生位置 {/* #the-playhead-during-playback */}
 
@@ -284,12 +345,34 @@ preview.12 で追加された `Beutl.Controls.AnimatedThumbnail` は、`IAnimate
 
 プロパティのコントロールを調整するときは、Beutl のテーマで余白とラベルの位置を確かめてください。ヘッドレス描画はレイアウトの確認に役立ちますが、公開前には Beutl 本体でも確認してください。
 
+### 拡張機能が開くウィンドウ {/* #windows-that-your-extension-opens */}
+
+preview.14 以降、`Beutl.Controls` のコントロールは、継承される添付プロパティ `ControlConfiguration.Configuration` と `ControlFonts.Fonts` から、ユーザーの設定とホストのフォントを取得します。同じように、`ControlNotifications.Notifications` はホストの `INotificationService` をビューに伝えます。Beutl は自分のウィンドウ（フローティングにしたツールタブや `ToolWindowExtension` のウィンドウを含みます）にこれらを設定し、ツールタブ、フライアウト、ポップアップの中のコントロールはそれを継承します。拡張機能が自分で作って表示するウィンドウには設定されません。そのため、macOS のネイティブのコンテキストメニューとプロパティのドラッグ中のポインターのロックはユーザーの設定ではなく既定値に従い、フォントのピッカーはプロジェクトのフォントを含まない独自のフォントマネージャーを作り、`ControlNotifications.GetNotifications` は `null` を返します。ウィンドウを開くコントロールから、これらをコピーしてください。
+
+```csharp
+using Avalonia.Controls;
+using Beutl.Controls;
+
+public static class ExtensionWindows
+{
+    public static void CopyHostServices(Window window, Control opener)
+    {
+        ControlConfiguration.SetConfiguration(window, ControlConfiguration.GetConfiguration(opener));
+        ControlFonts.SetFonts(window, ControlFonts.GetFonts(opener));
+        ControlNotifications.SetNotifications(window, ControlNotifications.GetNotifications(opener));
+    }
+}
+```
+
+このようなウィンドウのカラーピッカーは、コピーしたあとも既定のパレットだけを表示し、最近使った色を記録しません。
+
 ### macOS のコンテキストメニュー {/* #context-menus-on-macos */}
 
 preview.11 以降の macOS では、**「設定」→「表示」→「ネイティブのコンテキストメニューを使用」** がオンの間（既定ではオンです）、`ContextMenu` と、`MenuFlyout`、`FAMenuFlyout`、`FACommandBarFlyout` を使った `ContextFlyout` が、ネイティブのメニューとして開きます。Avalonia のメニューも見えない状態で開くため、バインディング、`Opening` のハンドラー、`IsOpen` はそのまま機能します。`MenuItem` はテキスト、チェックマーク、入力ジェスチャーを表示しますが、`Icon` は表示しません。FluentAvalonia の項目は `IconSource` も表示します。それ以外のもの（ヘッダーがテキストでない `MenuItem` など）を含むメニューは Avalonia のメニューのまま開き、`Button.Flyout` や `ShowAt` で開いたフライアウトも同様です。macOS では、設定のオンとオフの両方でメニューを確認してください。
 
-## テキストと画素の描画
+## テキストと画素の描画 {/* #drawing-text-and-pixels */}
 
+- preview.14 以降、`FormattedText`、`TextElements`、`TextElementsBuilder` は、フォントを解決する `FontManager` を受け取ります。リソースでは、[`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) と同じように、`Reconcile` のときに `CompositionContext.Fonts` から取得します。Beutl がシーンを描画している間、これはホストのフォントマネージャーです。描画の外では、ホストのサービスから `FontManager` を取得してください。
 - `context.DrawText(text, fill, pen)` が縁取りを描くのは、`FormattedText.Pen` が設定されているときだけです。引数の pen だけでは縁取りは描かれません。
 - `FormattedText.Bounds` は文字の送り幅と文字間隔を含み、`ActualBounds` は縁取りを含むインクの範囲、`RasterBounds` はラスタライズされるグリフのマスクの範囲です。いずれも行の高さではありません。行の高さは負の値の `Metrics.Ascent` と `Metrics.Descent` から求め、ベースラインを `top - Ascent` に置いてください。
 - OS ごとの既定フォントを決め打ちせず、文字を表示できる登録済みのフォントを選んでください。フォントマネージャーにはフォールバックの仕組みがあります。描画に使う実際の書体で測定してください。
@@ -302,6 +385,8 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
 - [`Sdk.targets`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.targets) and [`host-libraries.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/host-libraries.md)
 - [`PluginLoadContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Api/Services/PluginLoadContext.cs)
+- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs) and [`IExtensionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionContext.cs)
+- [`INotificationService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/INotificationService.cs) and [`GlobalConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/GlobalConfiguration.cs)
 - [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
 - [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
 - [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
@@ -320,6 +405,9 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
+- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Font/FontManager.cs) and [`CompositionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/CompositionContext.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
 - [`ILayerAttributeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ILayerAttributeService.cs)

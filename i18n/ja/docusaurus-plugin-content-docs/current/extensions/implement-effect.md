@@ -113,6 +113,8 @@ preview.9 では、`ApplyTo` はエフェクトのクラスにあり、引数で
 
 レンダラーが実行する `CustomEffect` のコールバックから、別の `RenderNodeRenderer` は起動できません。`Open` で得たキャンバスの `DrawDrawable` や `DrawNode` を経由する場合も同じで、呼び出すと `InvalidOperationException` が発生します。描画オブジェクトを `RenderNode` に記録し、`CustomFilterEffectContext.ExecutionContext.RenderDependency(root, identity, domain)` で描画して、返された画像を描いてください。この依存描画は、リクエストの割り当て、作業密度、キャンセル、循環検出を共有します。同じ identity の画像を再利用できるのは、同じ記録済みエフェクトの中だけです。レンダラーの外で実行されるとき、`ExecutionContext` は `null` です。
 
+preview.14 以降、コールバックが読む各ラスターは、自身の位置を `RenderPlacement` で表します。`EffectTarget`、`RenderExecutionInput`、`MaterializedInputDescription`、`OpaqueRenderOutput`、`RenderCallbackCanvas` では `Placement`、`GeometrySession`、`OpaqueRenderSession`、`ShaderExecutionContext` では `OutputPlacement` です。その `LogicalBounds`、`Scale`、`DeviceBounds`、`DeviceGridOffset`、`LogicalOrigin`、`RasterBounds` と、`ToLogical`、`ToDevice` は、どこでも同じ方法でローカル座標とピクセルを対応させます。`Scale.Value` が作業密度です。内容の移動には `EffectTarget.Bounds` を使ってください。ラスターも同じ割り当てのまま一緒に移動します。
+
 `ContinuationEffect(data, action)` のコールバックは、後に記録された操作を表す `FilterEffectContinuation` を受け取ります。何度でも実行でき、実行しなくても構いません。`TargetEffect(data, action)` のコールバックは `CompositionTargetAccess` を受け取ります。その `Capture()` と `Replace(image)` で、エフェクトの下にあるコンポジションターゲットを読み取り、置き換えます。preview.12 以降は、その `LocalToDevice` で、エフェクトのローカル座標を、平行移動と描画の密度を含めて、キャプチャした画像のピクセル座標に変換できます。これらを記録するリソースは、どの評価時刻でも、それぞれ `ControlsContinuation`、`MayAccessTarget` から `true` を返す必要があります。エンジンは記録の前にこの宣言をもとにチェーンを分割し、ターゲットへの処理を振り分けるため、宣言せずに記録すると例外が発生します。
 
 ### メタデータコールバックの診断
@@ -276,6 +278,7 @@ public sealed partial class EchoEffect : FilterEffect
 ```cs
 using Beutl.Extensibility;
 using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyExtension;
 
@@ -285,16 +288,16 @@ public sealed class MyEffectExtension : Extension
     public override string Name => "My Effects";
     public override string DisplayName => "My Effects";
 
-    public override void Load()
+    public override void Load(IExtensionContext context)
     {
-        LibraryService.Current.Register<HighContrastBlur>(
+        context.Services.GetRequiredService<LibraryService>().Register<HighContrastBlur>(
             KnownLibraryItemFormats.FilterEffect,
             "High-Contrast Blur");
     }
 }
 ```
 
-複数のエフェクトをまとめたい場合は、[EngineObject リファレンス](engine-object.md#ライブラリへの登録) で説明している `RegisterGroup` ヘルパーを使うと、ライブラリ上で 1 つのカテゴリにグルーピングできます。
+複数のエフェクトをまとめたい場合は、[EngineObject リファレンス](engine-object.md#registering-with-the-library) で説明している `RegisterGroup` ヘルパーを使うと、ライブラリ上で 1 つのカテゴリにグルーピングできます。
 
 ### ライブラリのサムネイル {/* #library-thumbnails */}
 
@@ -307,7 +310,7 @@ namespace MyExtension;
 
 public static class MyEffectThumbnails
 {
-    // Call this from MyEffectExtension.Load().
+    // Call this from MyEffectExtension.Load(context).
     public static void Register()
         => LibraryThumbnailRecipes.Register<HighContrastBlur>(
             LibraryThumbnailSample.Landscape,
@@ -342,6 +345,7 @@ public static class MyEffectThumbnails
 - [`DiagnosticDescriptors.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine.SourceGenerators/Diagnostics/DiagnosticDescriptors.cs)
 - [`FilterEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffect.cs), [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs), and [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs)
 - [`FilterEffectInputContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectInputContext.cs) and [`FilterEffectContinuation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContinuation.cs)
+- [`EffectTarget.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/EffectTarget.cs) and [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
 - [`RenderExecutionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderExecutionContext.cs), [`CompositionTargetAccess.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/CompositionTargetAccess.cs), and [`RenderHitTestContract.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/Operations/RenderHitTestContract.cs)
 - [`ShaderGraphBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderGraphBuilder.cs) and [`ShaderPassBuilder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shaders/Graph/ShaderPassBuilder.cs)
 - [`ICompositionEvaluationServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/ICompositionEvaluationServices.cs) and [`AudioSpectrum.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioSpectrum.cs)

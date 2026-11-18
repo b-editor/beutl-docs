@@ -8,7 +8,7 @@ A `ThemeExtension` adds a theme to the picker in **Settings → View → Theme**
 Beutl's own default dark theme is written this way, so an extension theme is not a second-class citizen: it can replace every brush the built-in themes define.
 
 :::info
-`ThemeExtension` was added in Beutl 2.0.0-preview.7. The examples in this guide target `Beutl.Extensibility.Sdk` version `2.0.0-preview.13` — see [Creating a C# Project for Extensions](create-csproj.md).
+`ThemeExtension` was added in Beutl 2.0.0-preview.7. The examples in this guide target `Beutl.Extensibility.Sdk` version `2.0.0-preview.14` — see [Creating a C# Project for Extensions](create-csproj.md).
 :::
 
 ## 1. The minimal theme extension
@@ -37,7 +37,7 @@ public sealed class MyThemeExtension : ThemeExtension
 }
 ```
 
-`ThemeExtension.Load` registers the descriptor and `Unload` removes it — you do not override either. The picker updates live, so a theme installed at runtime appears without a restart.
+`ThemeExtension.Load` registers the descriptor and `Unload` removes it — you do not override either. If you do, pass the context on to `base.Load(context)` and `base.Unload(context)`. The picker updates live, so a theme installed at runtime appears without a restart.
 
 ## 2. The descriptor
 

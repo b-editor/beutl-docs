@@ -10,7 +10,7 @@ This guide introduces the methods using __Visual Studio Code__ or __Visual Studi
 Beutl 2.0 ships an MSBuild SDK called `Beutl.Extensibility.Sdk` that wires up the target framework, language defaults, the standard package references (`Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, `Beutl.Engine.SourceGenerators`), and the sideload output path. Using it keeps the csproj small.
 
 :::tip
-Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.13`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
+Pick the SDK version that matches the Beutl release you target. The SDK and the Beutl runtime packages are versioned together (for example, `2.0.0-preview.14`). You can override the resolved package versions with the `BeutlPackagesVersion` property if you need a different combination.
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.13">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.14">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>
@@ -58,6 +58,7 @@ The SDK takes care of:
 - Adding `PackageReference`s to `Beutl.Api`, `Beutl.Extensibility`, `Beutl.ProjectSystem`, `Beutl.NodeGraph`, `Beutl.Editor`, `Beutl.Controls`, and the `Beutl.Engine.SourceGenerators` analyzer.
 - Redirecting the output path to `~/.beutl/sideloads/<AssemblyName>` when `DebugApplication` is `true`.
 - Turning each `BeutlHostPackageReference` into a compile-only reference at the version Beutl ships (since preview.11).
+- Compiling `async` methods with .NET 11 [runtime async](#runtime-async), as Beutl does (since preview.14).
 
 :::info
 Since preview.9, the SDK references `Beutl.Engine.SourceGenerators` as a build-only analyzer with `PrivateAssets="all"`. The manual workaround needed by preview.8 and earlier to keep the generator out of package dependencies is no longer necessary.
@@ -88,6 +89,16 @@ To use a library that Beutl also ships, such as FluentIcons, add a `BeutlHostPac
 <ItemGroup>
   <BeutlHostPackageReference Include="FluentIcons.Avalonia.Fluent" />
 </ItemGroup>
+```
+
+### Runtime async {/* #runtime-async */}
+
+Since preview.14, the SDK adds `runtime-async=on` to `Features`. An `async` method that returns `Task` or `ValueTask` then has no compiler-generated state machine: the .NET 11 runtime suspends and resumes it, and stack traces show the method itself instead of `MoveNext`. `async void` methods and async iterators keep their state machines. To keep them for every method, append `runtime-async=off`, since the last value wins:
+
+```xml
+<PropertyGroup>
+  <Features>$(Features);runtime-async=off</Features>
+</PropertyGroup>
 ```
 
 ## Visual Studio
@@ -123,7 +134,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. Edit the generated `MyBeutlExtension.csproj` as follows:
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.13">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.14">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>Sample Extension</Title>

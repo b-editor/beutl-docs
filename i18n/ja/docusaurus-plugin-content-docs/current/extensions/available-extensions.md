@@ -14,7 +14,7 @@ Beutlでは以下の機能を拡張できます。
 | [ControllableEncodingExtension](media-providers.md) | 動画、音声の対応、出力ファイルを追加します |
 | EditorExtension | ファイルの編集UIを追加します |
 | OutputExtension | 出力UIを追加します。 |
-| [Extension](sample-extensions.md#sugarshaker) | 拡張機能のベースクラス (Loadメソッドをoverrideして機能を登録できる) |
+| [Extension](sample-extensions.md#sugarshaker) | 拡張機能のベースクラス (`Load(IExtensionContext)` をoverrideして機能を登録できる) |
 | ToolWindowExtension | ウィンドウメニューから開けるツールウィンドウを追加します |
 | [PropertyEditorExtension](editor-integration.md#property-editors) | プロパティの特定の型の編集UIを追加します |
 | [ToolTabExtension](sample-extensions.md#tooltabextension) | シーンの編集画面にタブを追加します |
@@ -22,17 +22,17 @@ Beutlでは以下の機能を拡張できます。
 | [ViewExtension](editor-integration.md#commands) | ID とハンドラーを持つコマンドを登録します |
 | [McpToolExtension](editor-integration.md#mcp-tools) | ライブ MCP エンドポイントにツールを追加します |
 | [ElementSourceHandlerExtension](editor-integration.md#element-sources) | 独自のソースからタイムラインの要素を作成します |
-| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | ブラウザタブのページがダウンロード用に提供するファイルを引き受けます |
+| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | ブラウザタブのページがダウンロード用に提供するファイルと、タブの **「ファイルをダウンロード」** を引き受けます |
 | ProxyExtension | メディアのプロキシ生成ファクトリーを登録します |
 | TutorialExtension | チュートリアルを登録します |
 
 </div>
 
-`ProjectItemExtension` は削除されています。拡張機能のクラスには `[Export]` を付け、public かつ引数なしで構築できるようにしてください。`Extension.Unload()` は、途中で失敗した `Load()` の取り消しでも呼ばれるため、繰り返し呼ばれても安全に後始末できる実装にします。
+`ProjectItemExtension` は削除されています。拡張機能のクラスには `[Export]` を付け、public かつ引数なしで構築できるようにしてください。`Extension.Unload(IExtensionContext)` は、途中で失敗した `Load` の取り消しでも呼ばれるため、繰り返し呼ばれても安全に後始末できる実装にします。preview.14 以降、どちらもホストのサービスを `Services` で提供する `IExtensionContext` を受け取ります。[ホストのサービス](pitfalls.md#services-from-the-host)を参照してください。
 
 ## ソース
 
-- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs)
+- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs) and [`IExtensionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionContext.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs)
 - [`ProxyExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ProxyExtension.cs)
 - [`TutorialExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/TutorialExtension.cs)

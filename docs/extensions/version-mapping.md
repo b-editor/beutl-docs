@@ -9,6 +9,7 @@ This table lists the versions of Beutl along with their corresponding dependenci
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.14 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.13 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.12 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.11 | 10.0 | 12.1.5                                             | 8.x    |
@@ -39,9 +40,9 @@ This table lists the versions of Beutl along with their corresponding dependenci
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 to preview.13 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
+preview.9 to preview.14 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
 
-`FileFormat.Floor`, the oldest version that can read what Beutl writes, is still `2.0.0-preview.11` in preview.13. No change in preview.12 or preview.13 raised it, so a project saved by preview.13 opens in preview.11. A project saved by preview.11 or later does not open in preview.10 or earlier: preview.11 raised the floor because one expression can now drive the properties that share a row, and an older version would drop that new type of expression when it saves.
+`FileFormat.Floor`, the oldest version that can read what Beutl writes, is still `2.0.0-preview.11` in preview.14. No change in preview.12, preview.13 or preview.14 raised it, so a project saved by preview.14 opens in preview.11. A project saved by preview.11 or later does not open in preview.10 or earlier: preview.11 raised the floor because one expression can now drive the properties that share a row, and an older version would drop that new type of expression when it saves.
 
 ## Source
 
