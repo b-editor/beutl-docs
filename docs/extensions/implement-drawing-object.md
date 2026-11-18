@@ -144,6 +144,7 @@ Key points:
 ```cs
 using Beutl.Extensibility;
 using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyExtension;
 
@@ -153,15 +154,15 @@ public sealed class StarShapeExtension : Extension
     public override string Name => "Star Shape";
     public override string DisplayName => "Star Shape";
 
-    public override void Load()
+    public override void Load(IExtensionContext context)
     {
-        LibraryService.Current.AddMultiple("Star Shape", item => item
+        context.Services.GetRequiredService<LibraryService>().AddMultiple("Star Shape", item => item
             .BindDrawable<StarShape>());
     }
 }
 ```
 
-The `[Export]` attribute lets Beutl's loader discover the extension. `AddMultiple` plus `BindDrawable<T>()` is enough to expose `StarShape` in the library. See the [EngineObject reference](engine-object.md#registering-with-the-library) for the full set of registration helpers.
+The `[Export]` attribute lets Beutl's loader discover the extension. `AddMultiple` plus `BindDrawable<T>()` is enough to expose `StarShape` in the library. `context.Services` is the host's service provider, which preview.14 passes to `Load`. See the [EngineObject reference](engine-object.md#registering-with-the-library) for the full set of registration helpers.
 
 Since preview.11, when the user adds `StarShape` from the library, the timeline or the preview, Beutl gives its empty transform group a `TranslateTransform`, a `RotationTransform` and a `ScaleTransform`, so the property panel offers position, rotation and scale from the start. Set `Transform` in the constructor only when the shape needs another transform; Beutl then keeps it.
 
@@ -261,9 +262,12 @@ public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
 
 With `Property` set, the host writes that property and the keyframes surrounding the current time. Without it, the host calls `MoveEditingHandle(id, position, time)` instead. `Color` replaces the host's default handle color.
 
+Since preview.14, the property panel shows an **Edit in frame** button, a crosshair, beside the eye of an effect that implements `IEditingHandleProvider`, both in a list of effects and in the header of a single effect. It selects the effect through `IEditorSelection.Select`, so the preview shows the effect's handles. Meanwhile the preview neither draws nor hit-tests the drawable's transform box, scale handles and pivot, so a drag edits only the effect, until a click on the drawable's body selects its element again. The button does not show while several elements are selected.
+
 ## Source
 
 - [`RectShape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) and [`Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)
 - [`ResourceReconciler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ResourceReconciler.cs) and [`PathFigure.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Geometry/PathFigure.cs)
 - [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
+- [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs)
 - [`Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs), [`GraphicsContext2D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/GraphicsContext2D.cs), and [`RenderNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderNode.cs)

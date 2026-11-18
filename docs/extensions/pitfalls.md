@@ -3,7 +3,27 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.13; rebuild extensions against its SDK after migrating the APIs below.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.14; rebuild extensions against its SDK after migrating the APIs below.
+
+## Migrating from preview.13 {/* #migrating-from-preview-13 */}
+
+Check these changes when you move an extension from preview.13. Most of the global singletons that extensions used are gone: an extension takes the host's services from the context that `Load` receives. Every extension overrides `Load`, so every extension has to change and be rebuilt. Removed APIs have no compatibility shims.
+
+- **Test projects:** The target framework stays `net11.0`, Avalonia stays at 12.1.6, and the file format floor stays at preview.11, so a project saved by preview.14 still opens in preview.11. See the [version table](version-mapping.md).
+- **`Extension.Load()` and `Unload()`:** They are now `Load(IExtensionContext context)` and `Unload(IExtensionContext context)`, and `context.Services` gives the host's services. A subclass of `ThemeExtension`, `DecodingExtension`, `ProxyExtension` or `TutorialExtension` that overrides them passes the context on to the base method. A package built for preview.13 that overrides `Load()` or `Unload()` does not load in preview.14. See [services from the host](#services-from-the-host).
+- **`LibraryService.Current`, `ObjectTemplateService.Instance`:** Removed. Resolve `LibraryService` or `ObjectTemplateService` from `context.Services`, or from the editor's `IEditorContext`. See [registering with the library](engine-object.md#registering-with-the-library).
+- **`TutorialService`:** Removed with its `Current`. `TutorialExtension` registers its tutorials with the `ITutorialService` of the context, so code that calls its `Load` itself, such as a test, passes a context that provides one.
+- **`GlobalConfiguration.Instance`:** Removed. Resolve `GlobalConfiguration` and read the section you need from it, such as `EditorConfig`. Its constructor is now public, so a test can make its own. `RenderCacheOptions.CreateFromGlobalConfiguration()` is now `CreateFromConfiguration(EditorConfig)`.
+- **`NotificationService`:** No longer static, and `NotificationService.Handler` is removed. Resolve `INotificationService` and call `Show`, `ShowInformation`, `ShowSuccess`, `ShowWarning` or `ShowError`, extension methods in `Beutl.Services` that take the same parameters as before.
+- **`FontManager.Instance`:** Removed with `FontManager.Initialize` and `FontFamily.Typefaces`. `FormattedText`, `TextElements` and `TextElementsBuilder` take the `FontManager` to use, and `fonts.GetTypefaces(family)` lists the typefaces of a family. See [drawing text and pixels](#drawing-text-and-pixels).
+- **Custom `IGenerativeRunHost`:** The new `Fonts` property has no default implementation, so a class that implements the interface must add it. `GenerativeGraphRunner` evaluates the graph with that `FontManager` when it captures a node's inputs.
+- **Windows that your extension opens:** The controls of `Beutl.Controls` take the user's settings and the host's fonts from attached properties that Beutl sets on its windows. See [windows that your extension opens](#windows-that-your-extension-opens).
+- **Render callbacks:** Each raster that a callback reads describes its footprint with one `RenderPlacement`. Read `Placement` on `EffectTarget`, `RenderExecutionInput`, `MaterializedInputDescription`, `OpaqueRenderOutput` and `RenderCallbackCanvas`, and `OutputPlacement` on `GeometrySession`, `OpaqueRenderSession` and `ShaderExecutionContext`, in place of their removed `Bounds`, `EffectiveScale`, `Scale`, `Density`, `WorkingScale`, `DeviceBounds`, `DeviceSize`, `DeviceGridOffset`, `LogicalOrigin`, `LogicalBounds`, `RasterBounds` and `RequiredRegion` members. `EffectTarget.Bounds` stays, and still moves the content. `MaterializedInputDescription.FromRenderTarget` takes a `RenderPlacement`. See [processing the render target](implement-effect.md#processing-the-render-target).
+- **`GradingColorPicker`:** `IsDragging` and `StopDrag()` are removed. Follow the edits through `ColorChanged` and `ColorConfirmed`.
+- **Beutl's UI fonts:** `Beutl.Controls` no longer embeds them, so the `avares://Beutl.Controls/Assets/Fonts/...` resources are gone. Use `UiFonts.DefaultFontFamily` or `UiFonts.GetFontFamily(culture)` in `Beutl.Controls.Styling`.
+- **Async methods:** The SDK compiles `async` methods that return `Task` or `ValueTask` with .NET 11 runtime async. Such a method no longer carries `AsyncStateMachineAttribute`, and the continuation of a task created with `TaskCreationOptions.RunContinuationsAsynchronously` reaches the UI thread through the thread pool, so it can run after work posted to the UI thread right after the task completed. See [runtime async](create-csproj.md#runtime-async).
+- **Browser downloads:** `Claim` and `ImportAsync` of `BrowserDownloadExtension` have default implementations, and the new `TryDownloadPageAsync` handles the browser's **Download file** command. See [browser downloads](editor-integration.md#downloading-the-pages-media).
+- **Updates of your extension:** Beutl now installs new releases of store extensions automatically by default. See [target version and automatic updates](publish.md#target-version-and-automatic-updates).
 
 ## Migrating from preview.12 {/* #migrating-from-preview-12 */}
 
@@ -96,11 +116,51 @@ After a build, `<AssemblyName>.deps.json` in the output should list your own ass
 
 Since preview.11, when a library asks `AssemblyLoadContext.Default` for an assembly that only your package holds, Beutl finds it in your package. The default context loads a copy of its own, which stays loaded until Beutl exits, and your extension's context uses that copy when it is new enough, so its types keep one identity. A library already loaded in your extension's context still cannot load, through the default context, an assembly that refers back to it ([#3921](https://github.com/b-editor/beutl/issues/3921)).
 
+### Services from the host {/* #services-from-the-host */}
+
+Since preview.14, Beutl passes an `IExtensionContext` to `Load` and `Unload`. Its `Services` is the host's `IServiceProvider`, which provides `LibraryService`, `ObjectTemplateService`, `GlobalConfiguration`, `FontManager`, `INotificationService` and `ITutorialService`. It finds a service by its exact type, so ask for `GlobalConfiguration` and read a section such as `EditorConfig` from it. `GetRequiredService<T>()` is in `Microsoft.Extensions.DependencyInjection`, which the SDK's references bring.
+
+```csharp
+using Beutl.Extensibility;
+using Beutl.Graphics.Shapes;
+using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyExtension;
+
+[Export]
+public sealed class ShapesExtension : Extension
+{
+    private INotificationService? _notifications;
+
+    public override void Load(IExtensionContext context)
+    {
+        context.Services.GetRequiredService<LibraryService>()
+            .RegisterGroup("My Shapes", group => group
+                .AddDrawable<RectShape>("My Rectangle"));
+
+        // Keep what later code needs, and let it go in Unload.
+        _notifications = context.Services.GetRequiredService<INotificationService>();
+    }
+
+    public override void Unload(IExtensionContext context)
+    {
+        _notifications = null;
+    }
+
+    public void ReportFailure(Exception exception)
+        => _notifications?.ShowError("My Shapes", exception.Message);
+}
+```
+
+- Beutl loads extensions one at a time: the built-in ones first, then installed packages by name, then side-loaded ones. It calls `Unload` after a failed `Load` as well, so write `Unload` to undo only what `Load` finished, and to run more than once.
+- In a command, a tool tab or another factory, take services from the editor it serves, such as `execution.EditorContext` or the `IEditorContext` that a tool tab is created for: the scene editor provides the services above, and its own, through `GetService`. One instance of an extension can serve more than one host, so prefer these over the services kept from `Load`.
+
 ### Loading is all or nothing
 
 - Beutl looks for extensions among the public types of your assembly. An extension class must be `public`, derive from `Extension`, have the `[Export]` attribute and a parameterless constructor.
 - Beutl reads the public types strictly. If one of them refers to an assembly that cannot be loaded, such as a library you excluded that Beutl does not ship, the whole package fails to load.
-- If `Load()` of one extension throws, every extension in the same package is rolled back.
+- If `Load` of one extension throws, every extension in the same package is rolled back.
 
 ### Sideloads
 
@@ -195,13 +255,14 @@ using Beutl.Services;
 
 public static class ShapeLibrary
 {
-    public static void Register()
-        => LibraryService.Current.RegisterGroup("My Extension", group => group
+    // Call this from Load with the LibraryService of the context.
+    public static void Register(LibraryService library)
+        => library.RegisterGroup("My Extension", group => group
             .AddDrawable<RectShape>("My Rectangle"));
 }
 ```
 
-A test can check that `LibraryService.Current.GetTypesFromFormat(KnownLibraryItemFormats.EngineObject)` contains your type.
+A test can register into a `new LibraryService()` and check that its `GetTypesFromFormat(KnownLibraryItemFormats.EngineObject)` contains your type.
 
 ### The playhead during playback {/* #the-playhead-during-playback */}
 
@@ -284,12 +345,34 @@ For a color that is not a property of an object, such as one of your settings, u
 
 When adjusting a property's controls, check their spacing and label alignment under Beutl's theme. Headless rendering is useful for layout checks, but also check the result in Beutl before release.
 
+### Windows that your extension opens {/* #windows-that-your-extension-opens */}
+
+Since preview.14, the controls of `Beutl.Controls` take the user's settings and the host's fonts from inherited attached properties, `ControlConfiguration.Configuration` and `ControlFonts.Fonts`, and `ControlNotifications.Notifications` carries the host's `INotificationService` to views the same way. Beutl sets them on its windows, including floating tool tabs and the windows of a `ToolWindowExtension`, and a control in a tool tab, a flyout or a popup inherits them. A window that your extension creates and shows itself has none: native context menus on macOS and the pointer lock of property drags follow their defaults instead of the user's settings, a font picker makes a font manager of its own without the project's fonts, and `ControlNotifications.GetNotifications` returns `null`. Copy them from the control that opens the window:
+
+```csharp
+using Avalonia.Controls;
+using Beutl.Controls;
+
+public static class ExtensionWindows
+{
+    public static void CopyHostServices(Window window, Control opener)
+    {
+        ControlConfiguration.SetConfiguration(window, ControlConfiguration.GetConfiguration(opener));
+        ControlFonts.SetFonts(window, ControlFonts.GetFonts(opener));
+        ControlNotifications.SetNotifications(window, ControlNotifications.GetNotifications(opener));
+    }
+}
+```
+
+The color pickers in such a window still show only the default palette and record no recent colors.
+
 ### Context menus on macOS {/* #context-menus-on-macos */}
 
 Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `MenuFlyout`, `FAMenuFlyout` or `FACommandBarFlyout`, opens as a native menu while **Settings → View → Use native context menus** is on, as it is by default. The Avalonia menu still opens, unseen, so its bindings, its `Opening` handlers and `IsOpen` keep working. A `MenuItem` shows its text, check mark and input gesture, but not its `Icon`; a FluentAvalonia item also shows its `IconSource`. A menu that holds anything else, such as a `MenuItem` whose header is not text, stays an Avalonia menu, and so does a flyout opened through `Button.Flyout` or `ShowAt`. Check your menus on macOS with the setting on and off.
 
-## Drawing text and pixels
+## Drawing text and pixels {/* #drawing-text-and-pixels */}
 
+- Since preview.14, `FormattedText`, `TextElements` and `TextElementsBuilder` take the `FontManager` that resolves their fonts. A resource takes it from `CompositionContext.Fonts` when it reconciles, as [`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) does: while Beutl renders a scene, it is the host's font manager. Outside rendering, resolve `FontManager` from the host's services.
 - `context.DrawText(text, fill, pen)` draws an outline only when `FormattedText.Pen` is set. The pen argument alone draws no outline.
 - `FormattedText.Bounds` includes text advance and spacing; `ActualBounds` includes stroke ink and `RasterBounds` covers rasterized glyph masks. None is a line height. Size lines with `Metrics.Ascent`, which is negative, and `Metrics.Descent`, and put the baseline at `top - Ascent`.
 - Choose a registered font that covers your text instead of assuming a platform-specific default. The font manager provides fallback families; measure with the actual typeface used for rendering.
@@ -302,6 +385,8 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 - [`Beutl.Extensibility.Sdk.csproj`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Beutl.Extensibility.Sdk.csproj)
 - [`Sdk.targets`](https://github.com/b-editor/beutl/blob/main/sdk/Beutl.Extensibility.Sdk/Sdk/Sdk.targets) and [`host-libraries.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/host-libraries.md)
 - [`PluginLoadContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Api/Services/PluginLoadContext.cs)
+- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs) and [`IExtensionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionContext.cs)
+- [`INotificationService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/INotificationService.cs) and [`GlobalConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/GlobalConfiguration.cs)
 - [`JsonSerializationContext.Serialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Serialize.cs)
 - [`JsonSerializationContext.Deserialize.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/JsonSerializationContext.Deserialize.cs)
 - [`ISplittable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ISplittable.cs)
@@ -320,6 +405,9 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 - [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
+- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
+- [`FontManager.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Font/FontManager.cs) and [`CompositionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/CompositionContext.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
 - [`ILayerAttributeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ILayerAttributeService.cs)

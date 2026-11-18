@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.13 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.13 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.14 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.14 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -292,6 +292,34 @@ public sealed class SpeechDownloads : BrowserDownloadExtension
 
 preview.12 以降は、シーンエディタの `IEditorContext` から `IExtensionProvider` も取得できます。その `Extensions` と `GetDescriptors<T>()` は登録された拡張機能をメタデータとして列挙し、`TryAcquire` は 1 つの処理のあいだ拡張機能を確保するリースを返します。ブラウザも、各 `BrowserDownloadExtension` をこの方法で呼び出しています。処理が終わったらリースを破棄してください。
 
+### ページのメディアをダウンロードする {/* #downloading-the-pages-media */}
+
+preview.14 以降、`BrowserDownloadExtension` は、ブラウザタブのメニューの **「ファイルをダウンロード」** も処理できます。視聴ページの動画を見つけるダウンローダーなどに使います。`TryDownloadPageAsync` をオーバーライドしてください。`Claim` と `ImportAsync` には、すべてのファイルをブラウザに任せる既定の実装ができたため、このコマンドだけを実装する拡張機能も作れます。
+
+- ブラウザはコマンドの実行時に、表示中のページのアドレスを読み取ります。そのため、`pushState` で動画を切り替えたプレーヤーでは、切り替え後のアドレスになります。ブラウザはそのアドレスを、ページのタイトルが分かればタイトルとともに、各 `BrowserDownloadExtension` に順に渡し、いずれかが `true` を返すまで続けます。どれも処理しなかった場合は、そのページのダウンロードのオプションを開きます。PDF などのファイルを表示しているページは、拡張機能に問い合わせずにダウンロードのオプションを開きます。
+- 呼び出しは UI スレッドで行われ、完了するまでパッケージは読み込まれたままです。処理しないページでは、すぐに `false` を返してください。処理するページでは、独自の進捗表示と保存先でメディアをダウンロードし、エディタに追加して、完了してから `true` を返します。ファイルの提供とは異なり、このコマンドはプロジェクトが保存されているかどうかにかかわらず拡張機能に届きます。
+- ユーザーがバーでダウンロードをキャンセルするか、ブラウザタブを閉じると、トークンが取り消されます。例外が発生するとコマンドは終了してバーに失敗が表示され、ほかの拡張機能には問い合わせません。
+
+```csharp
+using Beutl.Extensibility;
+
+[Export]
+public sealed class VideoPageDownloads : BrowserDownloadExtension
+{
+    public override async ValueTask<bool> TryDownloadPageAsync(
+        IEditorContext editorContext, Uri page, string? pageTitle, CancellationToken cancellationToken)
+    {
+        if (page.Host != "video.example")
+            return false;
+
+        // Your own downloader: it resolves the page's streams, saves the video
+        // and adds it to the editor, observing the token.
+        await VideoDownloader.DownloadAsync(editorContext, page, pageTitle, cancellationToken);
+        return true;
+    }
+}
+```
+
 ## 復旧した要素の修復 {/* #element-recovery */}
 
 独自のエディタも、通常の編集前に `Scene.IsElementLocked(element)` を確認してください。ユーザーによるロックだけでなく、復旧のために保存が保護されている要素も対象です。保護の原因となる値やオブジェクトを除去・置換する修復では、通常の公開プロパティ・キーフレーム・コレクション API で変更した後、同じシーンを監視する `HistoryManager` を渡して `ElementRecoveryService.TryCompleteRepair(element, history)`（`Beutl.Editor.Services`）を呼びます。その後、同じ履歴トランザクションを確定してください。
@@ -317,6 +345,7 @@ preview.12 以降は、シーンエディタの `IEditorContext` から `IExtens
 - [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
 - [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs) and [`browser-downloads.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/browser-downloads.md)
+- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs) and [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
 - [`IExtensionProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionProvider.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)

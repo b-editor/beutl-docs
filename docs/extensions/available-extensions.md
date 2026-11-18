@@ -14,7 +14,7 @@ In Beutl, you can extend the following functionalities:
 | [ControllableEncodingExtension](media-providers.md) | Adds support for video and audio encoding, and output files |
 | EditorExtension | Adds a UI for editing files |
 | OutputExtension | Adds a UI for output |
-| [Extension](sample-extensions.md#sugarshaker) | Base class for extensions (override the Load method to register functionalities) |
+| [Extension](sample-extensions.md#sugarshaker) | Base class for extensions (override `Load(IExtensionContext)` to register functionalities) |
 | ToolWindowExtension | Adds a tool window that can be opened from the Window menu |
 | [PropertyEditorExtension](editor-integration.md#property-editors) | Adds a UI for editing specific property types |
 | [ToolTabExtension](sample-extensions.md#tooltabextension) | Adds tabs to the scene editing screen |
@@ -22,17 +22,17 @@ In Beutl, you can extend the following functionalities:
 | [ViewExtension](editor-integration.md#commands) | Registers commands with stable IDs and handlers |
 | [McpToolExtension](editor-integration.md#mcp-tools) | Adds tools to the live MCP endpoint |
 | [ElementSourceHandlerExtension](editor-integration.md#element-sources) | Creates timeline elements from custom source kinds |
-| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | Takes over files that pages in the browser tab offer for download |
+| [BrowserDownloadExtension](editor-integration.md#browser-downloads) | Takes over files that pages in the browser tab offer for download, and the tab's **Download file** command |
 | ProxyExtension | Registers a media proxy-generator factory |
 | TutorialExtension | Registers tutorials |
 
 </div>
 
-`ProjectItemExtension` has been removed. Extension classes must carry `[Export]`, be public and have a parameterless constructor. Make `Extension.Unload()` idempotent and safe after partial initialization: it is also called to roll back a failed `Load()`.
+`ProjectItemExtension` has been removed. Extension classes must carry `[Export]`, be public and have a parameterless constructor. Make `Extension.Unload(IExtensionContext)` idempotent and safe after partial initialization: it is also called to roll back a failed `Load`. Since preview.14, both take an `IExtensionContext` whose `Services` gives the host's services; see [services from the host](pitfalls.md#services-from-the-host).
 
 ## Source
 
-- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs)
+- [`Extension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/Extension.cs) and [`IExtensionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionContext.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs)
 - [`ProxyExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/ProxyExtension.cs)
 - [`TutorialExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/TutorialExtension.cs)

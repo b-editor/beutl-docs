@@ -253,15 +253,16 @@ Base types such as `Drawable`, `Sound`, and `EngineObject` declare a `[FallbackT
 
 </div>
 
-## Registering with the library
+## Registering with the library {/* #registering-with-the-library */}
 
-Override `Extension.Load()` and use `LibraryService` to register your types.
+Override `Extension.Load(IExtensionContext)` and register your types with the `LibraryService` from `context.Services`. Since preview.14, there is no `LibraryService.Current`; see [services from the host](pitfalls.md#services-from-the-host).
 
 ```cs
 using Beutl.Extensibility;
 using Beutl.Graphics.Shapes;
 using Beutl.Media;
 using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyExtension;
 
@@ -271,17 +272,19 @@ public sealed class MyExtension : Extension
     public override string Name => "My Extension";
     public override string DisplayName => "My Extension";
 
-    public override void Load()
+    public override void Load(IExtensionContext context)
     {
-        LibraryService.Current.Register<MySampleObject>(
+        var library = context.Services.GetRequiredService<LibraryService>();
+
+        library.Register<MySampleObject>(
             KnownLibraryItemFormats.EngineObject,
             "My Sample Object");
 
-        LibraryService.Current.AddMultiple("My Object", item => item
+        library.AddMultiple("My Object", item => item
             .BindGeometry<RectGeometry>()
             .BindDrawable<RectShape>());
 
-        LibraryService.Current.RegisterGroup("My Extension", group => group
+        library.RegisterGroup("My Extension", group => group
             .AddEngineObject<MySampleObject>("My Sample Object")
             .AddMultiple("My Shape", item => item.BindDrawable<RectShape>()));
     }
@@ -299,7 +302,7 @@ public sealed class MyExtension : Extension
 - [`AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)
 - [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
-- [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`LibraryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/LibraryService.cs) and [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CustomDataTypes.cs) and [`GraphNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/GraphNode.cs)

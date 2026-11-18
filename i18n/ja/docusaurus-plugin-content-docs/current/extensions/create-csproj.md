@@ -10,7 +10,7 @@ Beutl拡張機能用に空のC#プロジェクトを作成する方法を説明�
 Beutl 2.0 では `Beutl.Extensibility.Sdk` という MSBuild SDK が用意されており、ターゲットフレームワーク・言語デフォルト・標準パッケージ参照（`Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls`、`Beutl.Engine.SourceGenerators`）・サイドロード時の出力先を自動で設定してくれます。これを使うと csproj を最小構成で記述できます。
 
 :::tip
-ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.13`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
+ターゲットにする Beutl のリリースに合わせて SDK のバージョンを選択してください。SDK と Beutl ランタイムパッケージは同じバージョン体系で配布されます（例: `2.0.0-preview.14`）。別の組み合わせを使いたい場合は `BeutlPackagesVersion` プロパティで参照パッケージのバージョンを上書きできます。
 :::
 
 ## Visual Studio Code
@@ -36,7 +36,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 3. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.13">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.14">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>
@@ -58,6 +58,7 @@ SDK が以下を自動で行います。
 - `Beutl.Api`、`Beutl.Extensibility`、`Beutl.ProjectSystem`、`Beutl.NodeGraph`、`Beutl.Editor`、`Beutl.Controls` への `PackageReference` と `Beutl.Engine.SourceGenerators` アナライザーを追加。
 - `DebugApplication` が `true` のとき、出力先を `~/.beutl/sideloads/<AssemblyName>` にリダイレクト。
 - `BeutlHostPackageReference` を、Beutl が同梱しているバージョンのコンパイル専用の参照に変換（preview.11 以降）。
+- Beutl と同じように、`async` メソッドを .NET 11 の[ランタイム非同期](#runtime-async)でコンパイル（preview.14 以降）。
 
 :::info
 preview.9 以降の SDK は `Beutl.Engine.SourceGenerators` を `PrivateAssets="all"` のビルド専用アナライザーとして参照します。preview.8 以前で必要だった、ジェネレーターをパッケージ依存関係から除外するための手動設定は不要です。
@@ -88,6 +89,16 @@ FluentIcons のように Beutl も同梱しているライブラリを使う場�
 <ItemGroup>
   <BeutlHostPackageReference Include="FluentIcons.Avalonia.Fluent" />
 </ItemGroup>
+```
+
+### ランタイム非同期 {/* #runtime-async */}
+
+preview.14 以降、SDK は `Features` に `runtime-async=on` を追加します。そのため、`Task` か `ValueTask` を返す `async` メソッドには、コンパイラーが生成するステートマシンがありません。.NET 11 のランタイムがメソッドを中断・再開し、スタックトレースには `MoveNext` ではなくメソッドそのものが表示されます。`async void` のメソッドと非同期イテレーターは、引き続きステートマシンを持ちます。すべてのメソッドでステートマシンを残すには、`runtime-async=off` を追加してください。最後に指定した値が使われます。
+
+```xml
+<PropertyGroup>
+  <Features>$(Features);runtime-async=off</Features>
+</PropertyGroup>
 ```
 
 ## Visual Studio
@@ -123,7 +134,7 @@ dotnet nuget add source "https://nuget.beditor.net/v3/index.json" --name nuget.b
 
 7. 生成された `MyBeutlExtension.csproj` を以下のように編集します。
 ```xml
-<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.13">
+<Project Sdk="Beutl.Extensibility.Sdk/2.0.0-preview.14">
   <PropertyGroup>
     <PackageId>MyBeutlExtension</PackageId>
     <Title>拡張機能のサンプル</Title>

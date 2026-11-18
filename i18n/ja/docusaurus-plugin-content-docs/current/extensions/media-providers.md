@@ -197,7 +197,7 @@ public static class MediaTiming
 
 他の API や表示との境界では `MediaTime.FromTimeSpan` と `ToTimeSpan()` を使用できます。`MediaTime.ToString()` はタイムコードではなく flick 数を表示します。音声処理の時間範囲には、[音声エフェクトの実装](audio-effects.md)に記載したサンプル数の変換ヘルパーを使用してください。
 
-preview.12 以降、エディタは **「設定」→「エディター」→「時刻の表示形式」** でユーザーが選んだ形式で時刻を表示します。既定はタイムコードです。同じ形式で時刻を表示するには、`GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value` を渡して `TimeDisplayFormatter.Format(time, frameRate, format)` を呼びます。2.5 秒は、`Time` では `00:00:02.50` になり、30 fps の `Timecode` では `00:00:02:15`、`Frames` では `75` になります。29.97 fps と 59.94 fps のタイムコードはドロップフレームで数え、フレームの前にセミコロンを置きます。`TimeDisplayFormat` を受け取る `GotoTimecodeParser.TryParse` のオーバーロードは、これらの時刻を読み取れます。
+preview.12 以降、エディタは **「設定」→「エディター」→「時刻の表示形式」** でユーザーが選んだ形式で時刻を表示します。既定はタイムコードです。同じ形式で時刻を表示するには、ホストの `GlobalConfiguration` の `EditorConfig.TimeDisplayFormat.Value` を渡して `TimeDisplayFormatter.Format(time, frameRate, format)` を呼びます。preview.14 以降、`GlobalConfiguration` は `Load` の `context.Services` とエディタの `GetService` から取得できます。2.5 秒は、`Time` では `00:00:02.50` になり、30 fps の `Timecode` では `00:00:02:15`、`Frames` では `75` になります。29.97 fps と 59.94 fps のタイムコードはドロップフレームで数え、フレームの前にセミコロンを置きます。`TimeDisplayFormat` を受け取る `GotoTimecodeParser.TryParse` のオーバーロードは、これらの時刻を読み取れます。
 
 ```csharp
 using Beutl;
@@ -206,11 +206,11 @@ using Beutl.Configuration;
 public static class EditorTimes
 {
     // Writes a time the way the preview and the timeline show it.
-    public static string Format(Project? project, MediaTime time)
+    public static string Format(GlobalConfiguration configuration, Project? project, MediaTime time)
         => TimeDisplayFormatter.Format(
             time,
             project.GetFrameRate(),
-            GlobalConfiguration.Instance.EditorConfig.TimeDisplayFormat.Value);
+            configuration.EditorConfig.TimeDisplayFormat.Value);
 }
 ```
 
@@ -230,6 +230,7 @@ public static class EditorTimes
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
+- [`GlobalConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/GlobalConfiguration.cs)
 - [`Project.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Project.cs)
 - [`ProjectRateExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectRateExtensions.cs)
 - [`BitmapColorSpaceMapping.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceMapping.cs) and [`BitmapColorSpaceTransferFn.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/BitmapColorSpaceTransferFn.cs)

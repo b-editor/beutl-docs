@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources,
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.13 exposes these contracts through `Beutl.Extensibility`. Use the [preview.13 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.14 exposes these contracts through `Beutl.Extensibility`. Use the [preview.14 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -292,6 +292,34 @@ public sealed class SpeechDownloads : BrowserDownloadExtension
 
 The scene editor's `IEditorContext` also provides `IExtensionProvider` since preview.12. Its `Extensions` and `GetDescriptors<T>()` list the registered extensions as metadata, and `TryAcquire` leases one for an operation, as the browser does with each `BrowserDownloadExtension`. Dispose the lease when the operation ends.
 
+### Downloading the page's media {/* #downloading-the-pages-media */}
+
+Since preview.14, a `BrowserDownloadExtension` can also handle **Download file** in the browser tab's menu, as a downloader that finds the video of a watch page does. Override `TryDownloadPageAsync`. `Claim` and `ImportAsync` now have default implementations that leave every file to the browser, so an extension can implement the command alone.
+
+- The browser reads the address of the page on display when the command runs, so a player that changed videos with `pushState` gives the new one. It passes that address, with the page title when it has one, to each `BrowserDownloadExtension` in turn until one returns `true`, and opens its download options for the page when none does. A page that shows a file, such as a PDF, goes to the download options without asking.
+- The call runs on the UI thread, and the package stays loaded until it completes. Return `false` at once for a page you do not handle. For one you do, download its media with your own progress and destination, add it to the editor, and return `true` once it is done. Unlike an offer, the command reaches extensions whether or not the project is saved.
+- The token is canceled when the user cancels the download on the bar or closes the browser tab. An exception ends the command with the failure shown on the bar, and no other extension is asked.
+
+```csharp
+using Beutl.Extensibility;
+
+[Export]
+public sealed class VideoPageDownloads : BrowserDownloadExtension
+{
+    public override async ValueTask<bool> TryDownloadPageAsync(
+        IEditorContext editorContext, Uri page, string? pageTitle, CancellationToken cancellationToken)
+    {
+        if (page.Host != "video.example")
+            return false;
+
+        // Your own downloader: it resolves the page's streams, saves the video
+        // and adds it to the editor, observing the token.
+        await VideoDownloader.DownloadAsync(editorContext, page, pageTitle, cancellationToken);
+        return true;
+    }
+}
+```
+
 ## Repairing recovered elements {/* #element-recovery */}
 
 Custom editors should check `Scene.IsElementLocked(element)` before ordinary edits. It includes recovery protection as well as user locks. When repairing by removing or replacing a blocking value or object, apply the change through the normal public property, keyframe or collection APIs, then call `ElementRecoveryService.TryCompleteRepair(element, history)` (`Beutl.Editor.Services`) with the `HistoryManager` already observing that scene. Commit that same history transaction afterward.
@@ -317,6 +345,7 @@ Unread members of saved objects are retained and written back on the next save. 
 - [`IElementAdder.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/IElementAdder.cs) and [`ElementObjectService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementObjectService.cs)
 - [`CanonicalTransformLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Transformation/CanonicalTransformLayout.cs)
 - [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/BrowserDownloadExtension.cs) and [`browser-downloads.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/browser-downloads.md)
+- [`WebBrowserTabViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/WebBrowserTab/ViewModels/WebBrowserTabViewModel.cs) and [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs)
 - [`IExtensionProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IExtensionProvider.cs)
 - [`ElementRecoveryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ElementRecoveryService.cs)
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)

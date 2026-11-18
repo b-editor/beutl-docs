@@ -55,6 +55,12 @@ YOUR_PROJECT
 ![パッケージ公開](_images/4.publish/package-publish-button.png)
 __[公開する]__ をクリックします。
 
+## ターゲットバージョンと自動更新 {/* #target-version-and-automatic-updates */}
+
+リリースには、そのリリースが動作する Beutl のバージョンを示す **「ターゲットバージョン」** もあります。`2.0.0-preview.14` のようなバージョン（そのバージョン以降を意味します）か、`[2.0.0-preview.14, 2.0.0-preview.15)` のような NuGet のバージョン範囲を指定します。Beutl は、ターゲットバージョンに含まれる Beutl のバージョンに対してだけ、リリースを提示またはインストールします。
+
+preview.14 以降、Beutl はユーザーが別の設定を選ばない限り、インストール済みのストアの拡張機能を自動で更新します。**「設定」→「拡張機能」→「更新のタイミング」** の既定値が **「常に自動更新」** だからです。この場合、Beutl は起動時と、実行中は 6 時間ごとに確認し、条件に合う最新のリリースをダウンロードして検証し、次回の起動時にプロジェクトを開く前に適用します。**「Beutl本体と一緒に更新」** では、Beutl の更新時に新しいバージョンの Beutl に合うリリースを準備し、**「通知のみ」** ではユーザーがインストールします。公開したリリースは多くのユーザーにクリックなしで届くため、ターゲットバージョンには動作を確認した Beutl のバージョンだけを含めてください。
+
 ## 素材とテンプレートのパッケージ
 
 配布する素材を `.nupkg` の最上位の `materials/` に、オブジェクトテンプレートを `templates/` に配置してください。
@@ -64,3 +70,4 @@ __[公開する]__ をクリックします。
 ## ソース
 
 - [`PackageInstaller.Data.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Api/Services/PackageInstaller.Data.cs)
+- [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/UpdateConfig.cs), [`CheckForPackageUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl/Services/StartupTasks/CheckForPackageUpdatesTask.cs) and [`PackageCompatibility.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Api/Services/PackageCompatibility.cs)

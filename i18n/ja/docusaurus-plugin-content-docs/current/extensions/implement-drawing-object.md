@@ -144,6 +144,7 @@ public sealed partial class StarShape : Shape
 ```cs
 using Beutl.Extensibility;
 using Beutl.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyExtension;
 
@@ -153,15 +154,15 @@ public sealed class StarShapeExtension : Extension
     public override string Name => "Star Shape";
     public override string DisplayName => "Star Shape";
 
-    public override void Load()
+    public override void Load(IExtensionContext context)
     {
-        LibraryService.Current.AddMultiple("Star Shape", item => item
+        context.Services.GetRequiredService<LibraryService>().AddMultiple("Star Shape", item => item
             .BindDrawable<StarShape>());
     }
 }
 ```
 
-`[Export]` 属性を付けることで Beutl のローダーから検出されます。`AddMultiple`, `BindDrawable<T>()` を使えば、`StarShape` を ライブラリへ登録できます。登録系ヘルパーの全体は [EngineObject リファレンス](engine-object.md#ライブラリへの登録) を参照してください。
+`[Export]` 属性を付けることで Beutl のローダーから検出されます。`AddMultiple`, `BindDrawable<T>()` を使えば、`StarShape` を ライブラリへ登録できます。`context.Services` は、preview.14 から `Load` に渡されるホストのサービスプロバイダーです。登録系ヘルパーの全体は [EngineObject リファレンス](engine-object.md#registering-with-the-library) を参照してください。
 
 preview.11 以降、ユーザーがライブラリ、タイムライン、プレビューから `StarShape` を追加すると、Beutl は空のトランスフォームのグループに `TranslateTransform`、`RotationTransform`、`ScaleTransform` を追加します。そのため、プロパティパネルには最初から位置、回転、スケールが表示されます。コンストラクターで `Transform` を設定するのは、別のトランスフォームが必要な場合だけにしてください。その場合、Beutl はそのトランスフォームを保ちます。
 
@@ -261,9 +262,12 @@ public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
 
 `Property` を設定すると、ホストがそのプロパティと現在時刻の前後のキーフレームを書き換えます。設定しない場合は、代わりに `MoveEditingHandle(id, position, time)` を呼びます。`Color` を設定すると、ホスト既定のハンドルの色を置き換えます。
 
+preview.14 以降、プロパティパネルは、`IEditingHandleProvider` を実装したエフェクトの目のアイコンの隣に、照準のアイコンの **「フレームで編集」** ボタンを表示します。エフェクトの一覧の項目にも、単独のエフェクトのヘッダーにも表示されます。このボタンは `IEditorSelection.Select` でエフェクトを選択するので、プレビューにはそのエフェクトのハンドルが表示されます。その間、プレビューは描画オブジェクトのトランスフォームの枠、拡大縮小のハンドル、中心点を描かず、ヒットテストもしないため、ドラッグで編集されるのはエフェクトだけです。描画オブジェクトの本体をクリックすると、その要素が再び選択されます。複数の要素を選んでいる間は、このボタンは表示されません。
+
 ## ソース
 
 - [`RectShape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) and [`Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)
 - [`ResourceReconciler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ResourceReconciler.cs) and [`PathFigure.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Geometry/PathFigure.cs)
 - [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
+- [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs)
 - [`Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs), [`GraphicsContext2D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/GraphicsContext2D.cs), and [`RenderNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderNode.cs)
