@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources,
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.14 exposes these contracts through `Beutl.Extensibility`. Use the [preview.14 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.15 exposes these contracts through `Beutl.Extensibility`. Use the [preview.15 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -127,6 +127,34 @@ Since preview.13, when several elements are selected on the timeline, the proper
 
 A context that derives from `PropertyEditorViewModel` can tell when it stands for several elements. `EditsSeveralElements` is `true` then, and `ValueDifference.Value` describes how the other elements' values differ from the one shown, or `null` when they do not. While it differs, the editor menu offers **Set All Elements to This Value**, which calls `MatchOtherElements()` when `CanMatchOtherElements` is `true`. `PropertyEditorViewModel<TValue>` implements both by writing the value shown to every element; override them in an editor whose value has to be matched another way.
 
+### Editing under an expression {/* #editing-under-an-expression */}
+
+Since preview.15, a property keeps its keyframes or its set value under an expression, which the expression can read as `Value`, and a value editor can edit that value while its field shows the expression's result. A context that derives from `PropertyEditorViewModel` opts in by returning `true` from `CanEditUnderExpression`; otherwise its `CanEdit` stays `false` while the property has an expression, as before. Opt in only for an editor that replaces the whole value. One that changes an object in place, such as a brush or a list, would edit the expression's result.
+
+Under an expression, typed input writes what `ReplaceUnderExpression(underlying, shown, input)` returns, `input` by default. An editor with a field per component can return `ComponentAnimations.ReplaceEditedComponents(underlying, shown, input)`, so that the components the user did not type in keep their own values. A drag or a wheel step moves the value under the expression by as much as the field moved, through `OffsetValue(value, from, to)`. Its default offsets each component of a type that `ComponentAnimations` can separate, such as `Point` or `Color`, and takes `to` as it is for any other type, so an editor of a number overrides it:
+
+```csharp
+using Beutl.Animation;
+using Beutl.Editor.PropertyEditors;
+using Beutl.Extensibility;
+
+// Edits a ratio from 0 to 1 as a percentage.
+public sealed class PercentEditorContext(IPropertyAdapter<float> property)
+    : PropertyEditorViewModel<float, double>(property)
+{
+    protected override bool CanEditUnderExpression => true;
+
+    // A drag moves the value under the expression by as much as the field moved.
+    protected override float OffsetValue(float value, float from, float to) => NumericOffset.Add(value, from, to);
+
+    protected override double ToEdit(float value) => value * 100.0;
+
+    protected override float FromEdit(double edit) => (float)(edit / 100.0);
+}
+```
+
+Register it with `RegisterValue<float, double>`, with a `NumberEditor<double>` from `Beutl.Controls.PropertyEditors` as its control. `IValueEditorContext<TEdit>` gains members with default implementations, which Beutl's controls call: `PreviewEdit(value, relative)` previews typed text with `relative` set to `false`, and drags and wheel steps with `true`; `GetIncrementValue(shown)` gives the value that the next step starts from; `TryGetFocusedEditValue` and `PreviewFocusedEdit` show and take the value under the expression while the field has the focus. A control of your own calls them the same way.
+
 ## MCP tools {/* #mcp-tools */}
 
 Derive from `McpToolExtension` to contribute a tool to Beutl's live MCP endpoint. `McpToolDefinition`, `McpToolCall`, `McpToolResult`, `McpToolContent`, `McpTextContent` and `McpImageContent` are all in **`Beutl.Extensibility`**; the old `Beutl.Editor.Services.Mcp` namespace is not the extension contract.
@@ -234,6 +262,7 @@ Registration defaults to `ElementSourceHandlerRegistrationMode.Add`; use `Replac
 Since preview.12, a `BrowserDownloadExtension` takes over files that pages in the [Browser](../reference/tool-tabs/web-browser.md) tab offer for download, and adds them to the editor in its own way, such as speech that a text-to-speech site generated, placed with its line. When a page offers a file, the browser asks each `BrowserDownloadExtension` in turn through `Claim`, and the first claim wins. Offers reach extensions only while the editor can add files to a saved scene in a saved project; otherwise the browser asks where to save the file as usual.
 
 - `Claim(BrowserDownloadOffer)` runs on the UI thread for every offer, so decide from the offer alone and return quickly; return `null` to leave the file to the browser. `Page` is the page on display, `SuggestedName` the name the page or the server gave the file, and `Source` its address. A file that a page script generated (`IsGenerated`) has no address to request again, so its `Source` is the site credited with it. An exception from `Claim` is logged, and the next extension is asked.
+- Since preview.15, `RequestMethod` is the method of the request that `Source` answered, such as GET or a form's POST, or `null` when the browser does not know it. `CanRequestAgain` is `true` only for a file that answered a GET; it is `false` for a generated file, for another method and for an unknown one. Requesting such an address again can fail, or repeat what the form did, so claim the offer and let the browser save the response it already received, instead of requesting `Source` yourself.
 - `BrowserDownloadClaim.PageScript` is a JavaScript expression that the browser evaluates in the offering page at once, while the page still shows what produced the file. When its value is a string, `ImportAsync` receives exactly that string as `PageData` on every platform. `PageData` is `null` when the script fails or gives anything else, or when the page does not answer within five seconds of the user confirming. Treat it as input from the page. `Description` takes the place of the file name on the download bar.
 - The user still confirms the download on the bar, so a page cannot add anything on its own. The browser then saves the file to the project's `resources/downloads` folder without showing the download options, and calls `ImportAsync` on the UI thread with the file's full path as `FileName`. Resolve editor services through `EditorContext`; the package stays loaded until `ImportAsync` completes.
 - Return `false` to leave the file to the browser, which adds an image, video or audio file to the timeline as one element. An exception shows on the bar as a failure to add the saved file, which stays in the folder. The token is canceled when the user cancels on the bar; let the `OperationCanceledException` through, so the bar reports a cancellation.
@@ -351,3 +380,5 @@ Unread members of saved objects are retained and written back on the next save. 
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)
 - [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) and [`PropertyEditorViewModel{TValue}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue%7D.cs)
+- [`PropertyEditorViewModel{TValue,TEdit}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue,TEdit%7D.cs), [`IValueEditorContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IValueEditorContext.cs) and [`NumberEditor.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/NumberEditor.cs)
+- [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs) and [`NumericOffset.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/NumericOffset.cs)

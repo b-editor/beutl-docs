@@ -3,7 +3,24 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.14 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.15 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.14 からの移行 {/* #migrating-from-preview-14 */}
+
+preview.14 の拡張機能を移行するときは、次の変更を確認してください。preview.14 でほかの多くのサービスがそうなったように、デコーダーもホストのものになりました。メディアを自分で開く拡張機能、シーンを描画する拡張機能、以下のインターフェースを実装する拡張機能は変更が必要です。メディアを開く多くのメソッドに省略可能な `DecoderRegistry? decoders` 引数が加わったため、それ以外の拡張機能も再ビルドが必要です。削除した API に互換用の API はありません。
+
+- **テスト用のプロジェクト**: ターゲットフレームワークは `net11.0`、Avalonia は 12.1.6、ファイル形式の下限は preview.11 のままです。preview.15 で保存したプロジェクトは preview.11 でも開けます。[バージョンの対応表](version-mapping.md)を参照してください。
+- **`DecoderRegistry`**: static ではなくなりました。ホストがそれぞれ 1 つ持ち、`Load` の `context.Services` とエディタの `GetService` から取得できます。`Register`、`Unregister`、`EnumerateDecoder`、`GuessDecoder`、`OpenMediaFile`、`ProxyResolver`、`DecodersChanged` はそのインスタンスのメンバーになり、`DecoderRegistry.Initialize(config)` はコンストラクター `new DecoderRegistry(config)` になりました。static だった `DecoderFileExtensions` の機能は、その `FileExtensions` にあります。`DecodingExtension` は、読み込まれたコンテキストのレジストリにデコーダーを登録します。[デコーダーのレジストリ](media-providers.md#decoder-registry)を参照してください。
+- **メディアを開く**: `MediaReader.Open` は最後の引数にレジストリを受け取ります。ファイルを持つ `VideoSource` や `SoundSource` は、`Decoders` が `null` の `CompositionContext` で `Reconcile` されると `InvalidOperationException` を投げます。`SceneRenderer`、`ExportRendererFactory.Create`、`SourceSound` と `SourceVideo` の `TryGetOriginalDuration` など、`DecoderRegistry? decoders` を受け取る API には、ホストのレジストリを渡してください。テストでは、独自のレジストリにデコーダーを登録します。
+- **独自の `IOriginalDurationProvider`、`IThumbnailsProvider`、`IProxyGeneratorFactory`**: `TryGetOriginalDuration`、`GetThumbnailStripAsync`、`GetWaveformChunksAsync` は最後の引数に `DecoderRegistry? decoders = null` を受け取り、`IProxyGeneratorFactory.Create` はソースを開くための `DecoderRegistry` を受け取ります。これらを実装するクラスには引数の追加が必要で、preview.14 向けにビルドしたパッケージがこれらのいずれかを実装していると、preview.15 では読み込まれません。`GetClipLayout` をオーバーライドする `Sound` にも、同じ最後の引数が必要です。メディアは受け取ったレジストリで開いてください。
+- **独自の `ITimeMappedSource`**: `GetSourceDuration()` は `GetSourceDuration(DecoderRegistry? decoders = null)` になりました。既定の実装があるため、引数のないメソッドを残したクラスもコンパイルできますが、Beutl はそれを呼ばなくなり、編集で `OffsetPosition` が時間軸の長さに収まらなくなります。引数を追加してください。[時間で変わる内容と分割](#time-based-content-and-splitting)を参照してください。
+- **独自の `IGenerativeRunHost`**: 新しい `Decoders` プロパティには既定の実装がないため、このインターフェースを実装するクラスには追加が必要です。`GenerativeGraphRunner` は、このレジストリでグラフを評価し、ノードのプレビューを読み込みます。
+- **拡張機能が開くウィンドウ**: ウィンドウを開くコントロールから、`ControlDecoders.Decoders` もコピーしてください。[拡張機能が開くウィンドウ](#windows-that-your-extension-opens)を参照してください。
+- **プロジェクトのフォント**: プロジェクトを開いても、同梱のフォントはホストの `FontManager` に読み込まれなくなりました。各シーンエディタは、ホストのものをフォークした独自の `FontManager` でこれらを解決します。そのため、`Load` で取得した `FontManager` で描画や測定をすると、プロジェクトのテキストは別のフォントに置き換わります。エディタのものを使ってください。[テキストと画素の描画](#drawing-text-and-pixels)を参照してください。
+- **キーフレームと式の併用**: 式がキーフレームを `Value` として読めるようになったため、エディタは、ユーザーがキーフレームを追加しても式を削除せず、式を設定してもキーフレームを削除しなくなりました。`HasExpression` が `true` の間は、`GetKeyFrameAnimation()` がキーフレームを返しても、値は式で決まります。[キーフレームと式](engine-object.md#keyframes-and-expressions)を参照してください。
+- **プロパティエディタ**: 値のエディタは、プロパティに式があっても編集できる状態のまま、式の下の値を編集できるようになりました。`IValueEditorContext<TEdit>` に追加されたメンバーには既定の実装があるため、既存のコンテキストもそのままコンパイルでき、これまでどおりに動作します。[式の下の値を編集する](editor-integration.md#editing-under-an-expression)を参照してください。
+- **ブラウザのダウンロード**: `BrowserDownloadOffer` が、`Source` が応答したリクエストのメソッドを伝えるようになりました。`Source` を自分で要求する拡張機能は、先に `CanRequestAgain` を確認してください。[ブラウザのダウンロード](editor-integration.md#browser-downloads)を参照してください。
+- **Windows での Beutl のフォルダー**: 新しいインストールは、既定で現在のユーザー向けに、管理者権限なしで `%LOCALAPPDATA%\Programs\Beutl` に入ります。更新では、置き換えるインストールのフォルダーが維持されます。`Program Files` を前提にせず、Beutl 自身のファイルは `AppContext.BaseDirectory` から探してください。
 
 ## preview.13 からの移行 {/* #migrating-from-preview-13 */}
 
@@ -14,6 +31,7 @@ preview.13 の拡張機能を移行するときは、次の変更を確認して
 - **`LibraryService.Current`、`ObjectTemplateService.Instance`**: 削除されました。`LibraryService` や `ObjectTemplateService` は、`context.Services` か、エディタの `IEditorContext` から取得してください。[ライブラリへの登録](engine-object.md#registering-with-the-library)を参照してください。
 - **`TutorialService`**: `Current` とともに削除されました。`TutorialExtension` は、コンテキストの `ITutorialService` にチュートリアルを登録します。テストなどで `Load` を直接呼ぶコードは、`ITutorialService` を提供するコンテキストを渡してください。
 - **`GlobalConfiguration.Instance`**: 削除されました。`GlobalConfiguration` を取得し、`EditorConfig` など必要なセクションを読んでください。コンストラクターが public になったため、テストでは独自のインスタンスを作れます。`RenderCacheOptions.CreateFromGlobalConfiguration()` は `CreateFromConfiguration(EditorConfig)` になりました。
+- **`Scene.AddChild`、`MoveChild`、`MoveChildren`、`CloseGapAfter`、`CloseAllGaps`**: `GlobalConfiguration.Instance` から **「設定」→「エディター」→「自動でシーンの長さを調整」** を読まなくなり、代わりに既定値が `true` の `bool autoAdjustDuration` を受け取ります。省略すると、ユーザーが設定をオフにしていても、要素が収まるようにシーンを延ばします。設定に従うには、ホストの `GlobalConfiguration` の `EditorConfig.AutoAdjustSceneDuration.Value` を渡してください。
 - **`NotificationService`**: static ではなくなり、`NotificationService.Handler` は削除されました。`INotificationService` を取得して、`Show`、`ShowInformation`、`ShowSuccess`、`ShowWarning`、`ShowError` を呼んでください。これらは `Beutl.Services` の拡張メソッドで、引数は以前と同じです。
 - **`FontManager.Instance`**: `FontManager.Initialize`、`FontFamily.Typefaces` とともに削除されました。`FormattedText`、`TextElements`、`TextElementsBuilder` は、使う `FontManager` を受け取ります。ファミリーの書体は `fonts.GetTypefaces(family)` で取得します。[テキストと画素の描画](#drawing-text-and-pixels)を参照してください。
 - **独自の `IGenerativeRunHost`**: 新しい `Fonts` プロパティには既定の実装がないため、このインターフェースを実装するクラスには追加が必要です。`GenerativeGraphRunner` は、ノードの入力を取得するとき、この `FontManager` でグラフを評価します。
@@ -118,7 +136,7 @@ preview.11 以降は、ライブラリが `AssemblyLoadContext.Default` に要�
 
 ### ホストのサービス {/* #services-from-the-host */}
 
-preview.14 以降、Beutl は `Load` と `Unload` に `IExtensionContext` を渡します。その `Services` はホストの `IServiceProvider` で、`LibraryService`、`ObjectTemplateService`、`GlobalConfiguration`、`FontManager`、`INotificationService`、`ITutorialService` を提供します。サービスは型が完全に一致するものだけが見つかるため、`GlobalConfiguration` を取得してから、`EditorConfig` などのセクションを読んでください。`GetRequiredService<T>()` は `Microsoft.Extensions.DependencyInjection` にあり、SDK の参照に含まれています。
+preview.14 以降、Beutl は `Load` と `Unload` に `IExtensionContext` を渡します。その `Services` はホストの `IServiceProvider` で、`LibraryService`、`ObjectTemplateService`、`GlobalConfiguration`、`FontManager`、`INotificationService`、`ITutorialService` と、preview.15 以降は `DecoderRegistry` を提供します。サービスは型が完全に一致するものだけが見つかるため、`GlobalConfiguration` を取得してから、`EditorConfig` などのセクションを読んでください。`GetRequiredService<T>()` は `Microsoft.Extensions.DependencyInjection` にあり、SDK の参照に含まれています。
 
 ```csharp
 using Beutl.Extensibility;
@@ -154,7 +172,7 @@ public sealed class ShapesExtension : Extension
 ```
 
 - Beutl は拡張機能を 1 つずつ読み込みます。組み込みの拡張機能が最初で、次にインストールされたパッケージを名前順に、最後にサイドロードされた拡張機能を読み込みます。`Load` が失敗したときにも `Unload` を呼ぶため、`Unload` は `Load` で完了した処理だけを元に戻し、何度呼ばれても問題がないように書いてください。
-- コマンド、ツールタブ、そのほかのファクトリでは、`execution.EditorContext` やツールタブの作成時に渡される `IEditorContext` など、対象のエディタからサービスを取得してください。シーンエディタは、上記のサービスと独自のサービスを `GetService` で提供します。1 つの拡張機能のインスタンスが複数のホストに使われることがあるため、`Load` で保持したサービスよりも、こちらを優先してください。
+- コマンド、ツールタブ、そのほかのファクトリでは、`execution.EditorContext` やツールタブの作成時に渡される `IEditorContext` など、対象のエディタからサービスを取得してください。シーンエディタは、上記のサービスと独自のサービスを `GetService` で提供します。1 つの拡張機能のインスタンスが複数のホストに使われることがあるため、`Load` で保持したサービスよりも、こちらを優先してください。preview.15 以降、エディタの `FontManager` は、シーンのプロジェクトに同梱されたフォントをホストのフォントより優先して解決するフォークです。
 
 ### 読み込みは全部成功するか、全部取り消されるか
 
@@ -179,7 +197,7 @@ preview.9 以降は、コレクション型自身の `[JsonConverter]` を保存
 
 プロパティメンバーに付けた `[JsonConverter]` は、プロパティシステムでは読み取られません。値の型に付けるか、適切な Beutl のシリアライズ契約を実装してください。メンバーの属性には依存しないでください。
 
-### 時間で変わる内容と分割
+### 時間で変わる内容と分割 {/* #time-based-content-and-splitting */}
 
 ユーザーが要素を分割すると、Beutl は要素をコピーし、前半と後半のオブジェクトの `ISplittable.NotifySplitted` を呼びます。コメントや歌詞、口パクのように、自分の時間軸で内容を再生するオブジェクトは、後半を前半の続きから再生する必要があります。そうしないと、後半が最初から再生し直されます。
 
@@ -205,7 +223,7 @@ public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 }
 ```
 
-要素のローカル時刻 `t` で、ソースは時間軸の `OffsetPosition` に `[0, t]` の `Speed` の積分を加えた位置を再生します。この位置をもとに描画してください。`GetSourceDuration()` は時間軸の長さを返し、編集はその範囲に収まります。`HasDynamicMapping` の既定は `OffsetPosition.HasExpression` です。式が時間軸そのものを選ぶ場合は `HasDynamicTimeline` をオーバーライドしてください。`ISplittable` を直接実装するのは、このような時間軸を持たないオブジェクトだけにしてください。
+要素のローカル時刻 `t` で、ソースは時間軸の `OffsetPosition` に `[0, t]` の `Speed` の積分を加えた位置を再生します。この位置をもとに描画してください。`GetSourceDuration(decoders)` は時間軸の長さを返し、編集はその範囲に収まります。メディアファイルは、受け取った `DecoderRegistry` で開いてください。`HasDynamicMapping` の既定は `OffsetPosition.HasExpression` です。式が時間軸そのものを選ぶ場合は `HasDynamicTimeline` をオーバーライドしてください。`ISplittable` を直接実装するのは、このような時間軸を持たないオブジェクトだけにしてください。
 
 ### 保存するがパネルに出さない値
 
@@ -347,7 +365,7 @@ preview.12 で追加された `Beutl.Controls.AnimatedThumbnail` は、`IAnimate
 
 ### 拡張機能が開くウィンドウ {/* #windows-that-your-extension-opens */}
 
-preview.14 以降、`Beutl.Controls` のコントロールは、継承される添付プロパティ `ControlConfiguration.Configuration` と `ControlFonts.Fonts` から、ユーザーの設定とホストのフォントを取得します。同じように、`ControlNotifications.Notifications` はホストの `INotificationService` をビューに伝えます。Beutl は自分のウィンドウ（フローティングにしたツールタブや `ToolWindowExtension` のウィンドウを含みます）にこれらを設定し、ツールタブ、フライアウト、ポップアップの中のコントロールはそれを継承します。拡張機能が自分で作って表示するウィンドウには設定されません。そのため、macOS のネイティブのコンテキストメニューとプロパティのドラッグ中のポインターのロックはユーザーの設定ではなく既定値に従い、フォントのピッカーはプロジェクトのフォントを含まない独自のフォントマネージャーを作り、`ControlNotifications.GetNotifications` は `null` を返します。ウィンドウを開くコントロールから、これらをコピーしてください。
+preview.14 以降、`Beutl.Controls` のコントロールは、継承される添付プロパティ `ControlConfiguration.Configuration` と `ControlFonts.Fonts` から、ユーザーの設定とホストのフォントを取得します。同じように、`ControlNotifications.Notifications` はホストの `INotificationService` をビューに伝えます。preview.15 以降は `ControlDecoders.Decoders` がホストの `DecoderRegistry` を伝え、動画と音声のプロパティのファイルピッカーは、これを読んで提示するファイルの種類を決めます。Beutl は自分のウィンドウ（フローティングにしたツールタブや `ToolWindowExtension` のウィンドウを含みます）にこれらを設定し、ツールタブ、フライアウト、ポップアップの中のコントロールはそれを継承します。拡張機能が自分で作って表示するウィンドウには設定されません。そのため、macOS のネイティブのコンテキストメニューとプロパティのドラッグ中のポインターのロックはユーザーの設定ではなく既定値に従い、フォントのピッカーはプロジェクトのフォントを含まない独自のフォントマネージャーを作り、`ControlNotifications.GetNotifications` と `ControlDecoders.GetDecoders` は `null` を返します。ウィンドウを開くコントロールから、これらをコピーしてください。
 
 ```csharp
 using Avalonia.Controls;
@@ -360,6 +378,7 @@ public static class ExtensionWindows
         ControlConfiguration.SetConfiguration(window, ControlConfiguration.GetConfiguration(opener));
         ControlFonts.SetFonts(window, ControlFonts.GetFonts(opener));
         ControlNotifications.SetNotifications(window, ControlNotifications.GetNotifications(opener));
+        ControlDecoders.SetDecoders(window, ControlDecoders.GetDecoders(opener));
     }
 }
 ```
@@ -372,7 +391,8 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 
 ## テキストと画素の描画 {/* #drawing-text-and-pixels */}
 
-- preview.14 以降、`FormattedText`、`TextElements`、`TextElementsBuilder` は、フォントを解決する `FontManager` を受け取ります。リソースでは、[`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) と同じように、`Reconcile` のときに `CompositionContext.Fonts` から取得します。Beutl がシーンを描画している間、これはホストのフォントマネージャーです。描画の外では、ホストのサービスから `FontManager` を取得してください。
+- preview.14 以降、`FormattedText`、`TextElements`、`TextElementsBuilder` は、フォントを解決する `FontManager` を受け取ります。リソースでは、[`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) と同じように、`Reconcile` のときに `CompositionContext.Fonts` から取得します。Beutl がシーンを描画している間、これはそのシーンのエディタのフォントマネージャーです。描画の外では、テキストが属するシーンのエディタの `FontManager` を使い、プロジェクトに属さないテキストにはホストのものを使ってください。
+- preview.15 以降、エディタのフォントマネージャーはフォークです。`FontManager.Fork()` が作るマネージャーは、`LoadProjectFonts` で読み込んだフォントを親のフォントより優先して解決し、それ以外は親に問い合わせます。これらのフォントは親には届きませんが、`AddFont` で追加したフォントは、すべてのフォークが共有するインストール済みのフォントに加わります。Beutl は、開いているプロジェクトのためにホストのフォントをフォークし、そのプロジェクトのシーンエディタごとにそれをさらにフォークします。`ControlFonts.SetFonts` でコントロールに渡したフォークは、コントロールが表示しなくなったら `ControlFonts.Release` で解放してください。
 - `context.DrawText(text, fill, pen)` が縁取りを描くのは、`FormattedText.Pen` が設定されているときだけです。引数の pen だけでは縁取りは描かれません。
 - `FormattedText.Bounds` は文字の送り幅と文字間隔を含み、`ActualBounds` は縁取りを含むインクの範囲、`RasterBounds` はラスタライズされるグリフのマスクの範囲です。いずれも行の高さではありません。行の高さは負の値の `Metrics.Ascent` と `Metrics.Descent` から求め、ベースラインを `top - Ascent` に置いてください。
 - OS ごとの既定フォントを決め打ちせず、文字を表示できる登録済みのフォントを選んでください。フォントマネージャーにはフォールバックの仕組みがあります。描画に使う実際の書体で測定してください。
@@ -405,7 +425,10 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
-- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs), [`ControlDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlDecoders.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`IOriginalLengthProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IOriginalLengthProvider.cs), [`IThumbnailsProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IThumbnailsProvider.cs) and [`ProxyGeneratorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Proxy/ProxyGeneratorRegistry.cs)
+- [`GenerativeGraphRunner.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/Generative/GenerativeGraphRunner.cs)
+- [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs) and [`Scene.Gaps.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.Gaps.cs)
 - [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Font/FontManager.cs) and [`CompositionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/CompositionContext.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)

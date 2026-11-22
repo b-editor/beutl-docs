@@ -262,6 +262,8 @@ public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
 
 With `Property` set, the host writes that property and the keyframes surrounding the current time. Without it, the host calls `MoveEditingHandle(id, position, time)` instead. `Color` replaces the host's default handle color.
 
+Since preview.15, the interface has more members, all with default implementations. `GetEditingGuides(time)` returns `EditingGuideLine`s, lines in the same coordinates that the preview draws beneath the handles, such as the grid of a warp. When a drag of a handle without `Property` starts, the host calls `BeginEditingHandleDrag(id, time)` and then the action it returns with each position, inside its edit session; the default action calls `MoveEditingHandle`, so override it to keep what the drag started from. The overloads of `GetEditingHandles`, `GetEditingGuides` and `BeginEditingHandleDrag` that take `fallbackBounds` receive the drawable's local bounds, for a provider without a size of its own, such as an effect. By default they ignore it.
+
 Since preview.14, the property panel shows an **Edit in frame** button, a crosshair, beside the eye of an effect that implements `IEditingHandleProvider`, both in a list of effects and in the header of a single effect. It selects the effect through `IEditorSelection.Select`, so the preview shows the effect's handles. Meanwhile the preview neither draws nor hit-tests the drawable's transform box, scale handles and pivot, so a drag edits only the effect, until a click on the drawable's body selects its element again. The button does not show while several elements are selected.
 
 ## Source

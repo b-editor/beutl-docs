@@ -82,6 +82,8 @@ public sealed partial class HighContrastBlur : FilterEffect
 
 `FilterEffectContext` には組み込み操作それぞれに対応するメソッドが用意されています：`Blur`、`DropShadow`、`InnerShadow`、`Erode`、`Dilate`、`ColorMatrix`、`Saturate`、`HueRotate`、`Brightness`、`HighContrast`、`Lighting`、`MatrixConvolution`、`Transform`、`BlendMode` など。完全なリストは [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) と [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs) を参照してください。
 
+preview.15 で追加された `Opacity(opacity)` は、各画素のアルファに 0 から 1 の値を掛けます。1 のときは何も記録しません。乗算済みの各チャンネルを拡大縮小するため、HDR のソースや露出の調整が残す 1 を超える色を保ちます。`ColorMatrix` では、これらの色は切り詰められます。
+
 `Crop(Rect, GradientSpreadMethod = Decal)` は `Bounds` と同じ座標系の矩形を切り出します。既定の `Decal` は範囲外を透明にして境界を縮めます。`Pad` は端の色を延長し、`Repeat` は繰り返し、`Reflect` は反転して繰り返し、元の境界を保ちます。
 
 複数入力や複数パスのGLSL処理については、[C#スクリプト](../reference/library/filter-effects/script/csharp-script.md#glslのカスタムパス)も参照してください。
