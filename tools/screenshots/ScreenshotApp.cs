@@ -7,8 +7,10 @@ using Avalonia.Markup.Xaml;
 using Beutl;
 using Beutl.Configuration;
 using Beutl.Controls.Styling;
+using Beutl.Editor.Components.FileBrowserTab.Services;
 using Beutl.Editor.Services;
 using Beutl.Extensibility;
+using Beutl.Media.Decoding;
 using Beutl.Services;
 using Beutl.Services.StartupTasks;
 using Beutl.Services.Tutorials;
@@ -23,6 +25,7 @@ namespace Beutl.Docs.Screenshots;
 public sealed class ScreenshotApp : Application
 {
     private readonly ServiceMap _services = new();
+    private readonly FileThumbnailService _thumbnails;
     private IDisposable? _themeService;
 
     public ScreenshotApp()
@@ -36,9 +39,10 @@ public sealed class ScreenshotApp : Application
         Configuration.TelemetryConfig.Beutl_Api_Client.Value = false;
         Configuration.TelemetryConfig.Beutl_PackageManagement.Value = false;
 
-        Beutl.Media.Decoding.DecoderRegistry.Initialize(Configuration.ExtensionConfig);
+        Decoders = new DecoderRegistry(Configuration.ExtensionConfig);
         Fonts = new Beutl.Media.FontManager(Configuration.FontConfig);
-        Templates = new ObjectTemplateService(Fonts, Configuration.EditorConfig, Configuration.ProxyStoreConfig);
+        Templates = new ObjectTemplateService(Fonts, Configuration.EditorConfig, Configuration.ProxyStoreConfig, Decoders);
+        _thumbnails = new FileThumbnailService(Decoders, Templates);
         object updates = DesktopInternals.Create(DesktopInternals.Type("Beutl.Services.AppUpdateController"),
             Configuration.UpdateConfig, Notifications);
         object palettes = DesktopInternals.Method(
@@ -47,10 +51,12 @@ public sealed class ScreenshotApp : Application
         _services
             .Add(Configuration)
             .Add(Fonts)
+            .Add(Decoders)
             .Add<INotificationService>(Notifications)
             .Add(updates.GetType(), updates)
             .Add(Library)
             .Add(Templates)
+            .Add(_thumbnails)
             .Add<ITutorialService>(new TutorialServiceHandler(Configuration.TutorialConfig))
             .Add(palettes.GetType(), palettes);
         ExtensionContext = new ExtensionContext(_services);
@@ -61,6 +67,8 @@ public sealed class ScreenshotApp : Application
     public GlobalConfiguration Configuration { get; } = new();
 
     public Beutl.Media.FontManager Fonts { get; }
+
+    public DecoderRegistry Decoders { get; }
 
     public INotificationService Notifications { get; } = new NotificationService();
 
@@ -116,6 +124,7 @@ public sealed class ScreenshotApp : Application
     public void Stop()
     {
         _themeService?.Dispose();
+        _thumbnails.Dispose();
         Templates.Dispose();
         Library.Dispose();
     }
