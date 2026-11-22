@@ -35,6 +35,7 @@ You can also open the same animation in the Graph Editor tab from the **Open** i
 
 - Expand a drawable to navigate effects, transforms, nested properties, and value channels.
 - Use the timer button to enable animation and the diamond button to insert or remove a keyframe at the playhead.
+- A property that has an expression shows a small fx badge on that button, and its tooltip says so. Enabling animation or adding keyframes keeps the expression. See [Keyframes and an expression together](../../get-started/keyframe.md#keyframes-and-expressions).
 - On properties with several values, the button immediately left of the timer button separates or unseparates components. See [Properties with multiple components](#properties-with-multiple-components).
 - Remove an animation from its context menu. The tab remains when animations are removed; it closes when the target element is deleted.
 
@@ -87,6 +88,7 @@ When the easing is a spline, **control points** are shown before and after each 
 - `Alt` or `Ctrl` (`Cmd`) + wheel zooms in/out along the time axis (centered on the pointer).
 - `Ctrl` + `Shift` (`Cmd` + `Shift`) + wheel zooms in/out vertically.
 - The wheel over the vertical scale also scrolls vertically; holding `Alt` or `Ctrl` (`Cmd`) zooms vertically.
+- A pinch on a trackpad, or on a precision touchpad on Windows, zooms around the pointer as `Ctrl` (`Cmd`) + wheel does: along the time axis over the graph, or vertically with `Shift`, and along a scale's own axis over the timeline scale or the vertical scale.
 
 If **Swap the scroll direction of the timeline** is enabled in the settings, the vertical and horizontal behaviors are swapped.
 
@@ -190,3 +192,4 @@ According to the **Settings > Editor settings > Timeline auto-scroll during play
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
 - [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)
 - [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
+- [`GraphEditorView.Navigation.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Navigation.cs) (wheel and pinch) / [`GraphEditorTabView.axaml`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorTabView.axaml) (the fx badge)

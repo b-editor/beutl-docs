@@ -151,6 +151,8 @@ Available for Split. **Horizontal** widens a vertical band left and right; **Ver
 
 If both sides of a cut have a transition, the incoming element's enter transition determines the appearance; the outgoing element contributes its exit duration. Without an adjacent element, the transition blends against transparency and reveals lower layers.
 
+When both elements at a cut draw a [Backdrop](../drawables/sources/backdrop.md), such as two adjustment layers, each side shows the layers beneath it as they are at its own time, and while the transition runs, only the transition draws those layers. A transition between them therefore blends from the shot beneath one side to the shot beneath the other, even when those layers cut at the same time: the next shot holds its first frame before the cut, and the previous shot its last frame after it. A Fade between two such elements passes through transparent at its midpoint, and with **Clear Buffer** off, a moving transition such as Push moves the layers beneath with each side. Two groups that take the layers beneath them through a [Portal](../portal/portal-object.md) blend the shots they take in the same way.
+
 ## Source
 
 - [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/LibraryRegistrar.cs)
@@ -158,3 +160,4 @@ If both sides of a cut have a transition, the incoming element's enter transitio
 - [`Built-in transitions`](https://github.com/b-editor/beutl/tree/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/Transitions)
 - [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.resx)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
+- [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`SceneCompositor.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/SceneCompositor.cs) (transitions between backdrops and between portal groups)

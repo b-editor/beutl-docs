@@ -21,6 +21,8 @@ Windows supports both x64 and ARM64. For an ARM64 device, use an installer with 
 2. Follow the on-screen instructions to install.
 3. Launch `Beutl.exe`.
 
+The installer first asks who to install Beutl for. **Install for me only**, the recommended choice, needs no administrator rights and installs into `%LOCALAPPDATA%\Programs\Beutl`. **Install for all users** needs an administrator and installs into `Program Files`. When Beutl is already installed, the installer keeps the choice of that installation and does not ask.
+
 The release packages include the .NET runtime. Lightweight installers and framework-dependent archives are no longer published. When updating from an older lightweight or portable Windows installation, download the standalone installer.
 
 ## For Debian and Ubuntu
@@ -80,7 +82,7 @@ When Beutl finds a new version at startup, it downloads the update in the backgr
 
 When the update is ready, a notification shows the version and offers:
 
-- **Start installer** on Windows, or **Restart and update** on macOS and Linux: Beutl closes and the update starts. On macOS and Linux, Beutl starts again afterward.
+- **Restart and update**: Beutl closes, the update installs, and Beutl starts again. On Windows, the installer runs without its wizard and shows only its progress, and any error. The Debian package offers **Start installer** instead: Beutl closes and installs the update with `apt` in a terminal, which asks for your password; start Beutl again when it finishes.
 - **Update on quit**: The update installs when you quit Beutl, after your work is saved, and Beutl stays closed.
 - **Release notes**: Opens the release page and keeps the notification on screen.
 
@@ -96,19 +98,21 @@ The first time a newly published version starts, a notification offers **Release
 
 ## Before updating
 
-**2.0.0-preview.14 keeps the project file format floor of preview.11.** Projects saved by preview.14 still open in preview.11, preview.12, and preview.13, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
+**2.0.0-preview.15 keeps the project file format floor of preview.11.** Projects saved by preview.15 still open in preview.11, preview.12, preview.13, and preview.14, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
 
 **On x64, Beutl needs a processor with x86-64-v2 since preview.12.** See [System requirements](#system-requirements).
 
-Existing projects can look different after updating to preview.14:
+Existing projects can look different after updating to preview.15:
 
-- **Content under the Layer, Clipping, Blend, Inner Shadow, Flat Shadow, and Stroke effects keeps its sub-pixel position.** It used to sit up to half a pixel off and lose its partly covered right column and bottom row, so text under these effects can shift slightly, and it now moves smoothly in slow motion. A Clipping with **Automatic Centering** turned on works as before.
+- **A transition between two elements that both draw a [Backdrop](../reference/library/drawables/sources/backdrop.md), such as two adjustment layers, blends the shots beneath them.** Each side shows the layers beneath it as they are at its own time, so the transition no longer cuts when those layers cut at the boundary. A Fade between two adjustment layers now passes through transparent at its midpoint, where the picture beneath used to show, and a moving transition such as Push moves the layers beneath with each side when **Clear Buffer** is off. See [Transitions](../reference/library/transitions/index.md#usage).
+- **A transition between two groups that take the layers beneath them through a [Portal](../reference/library/portal/portal-object.md) blends the shots they take** in the same way.
+- **An SVG in an image brush or a 3D texture is drawn at the density it is shown at**, so it can look sharper. See [SVG files](../reference/library/drawables/sources/image.md#svg-files).
 
-Existing proxies are discarded and made again once. Media Foundation used to read video with non-square pixels, such as PAL, at its display size, which could leave distorted rows in proxies.
+Keyframes and an expression now stay together: adding keyframes to a property with an expression no longer removes the expression, and setting an expression no longer removes the keyframes. See [Expressions](./keyframe.md#expressions).
 
-Extensions installed from the store now update automatically: Beutl downloads their updates in the background and applies them the next time it starts, before a project opens. To be notified instead, choose **Notify only** in [Update timing](../settings/extension.md#update-timing).
+On Windows, **Restart and update** now installs without the installer's wizard and starts Beutl again. The update to preview.15 itself still shows the wizard, because the version you update from starts the installer. New installations are for your user account by default, and an installation for all users stays one. See [For Windows](#for-windows).
 
-Required updates and Flatpak bundles now download in the background too. See [Updating Beutl](#updating-beutl).
+On Windows, a pinch on a precision touchpad now zooms the timeline, the Graph Editor, the node graph, the preview, the path editor, and the waveform of **Auto Split by Silence**, as a trackpad pinch does on a Mac. Over the rest of the window, a pinch no longer acts as `Ctrl` + wheel, which could step a focused number box or scroll a list. On Windows 10, a pinch still acts as `Ctrl` + wheel.
 
 If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-agents.md) after updating.
 
@@ -128,3 +132,5 @@ If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-
 - [`CheckForUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/StartupTasks/CheckForUpdatesTask.cs) / [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/AppUpdateController.cs) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`UpdateDownloadCache.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/UpdateDownloadCache.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Core/Serialization/FileFormat.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Configuration/UpdateConfig.cs)
 - [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)
+- [`beutl-setup.iss`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/nukebuild/beutl-setup.iss) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`DebianPackageInstaller.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Services/DebianPackageInstaller.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Core/Serialization/FileFormat.cs) / [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs)

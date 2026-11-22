@@ -27,7 +27,7 @@ Color multiplied with the source pixels.
 Color added to the source pixels after multiplication.
 
 - **Type:** `Color`
-- **Default:** `#00000000` (transparent black)
+- **Default:** `#FF000000` (black)
 - **Animatable:** Yes
 
 ## Usage

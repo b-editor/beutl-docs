@@ -44,7 +44,7 @@ macOS では、送信したフォームの応答がファイルだったとき�
 
 タブのメニューの **ファイルをダウンロード** は、現在のページをダウンロードします。Web ページでは、動画のダウンローダーなど、メディアをダウンロードする拡張機能がインストールされていれば、そのときページが示しているアドレスで、先に拡張機能がページを受け取ります。拡張機能がダウンロードしている間はバーに表示され、そこからキャンセルできます。ページを受け取る拡張機能がないときは、通常どおりダウンロード方法の選択が開きます。
 
-タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルと、macOS でフォームの応答から保存したファイルは再試行できません。項目の削除ではダウンロード済みファイルは残ります。
+タブのメニューから **ダウンロード履歴** を開くと、ダウンロードしたメディアファイルや各ファイルの保存フォルダーを開く、対応素材を取り込む、再試行する、履歴の項目を削除する操作ができます。ほかのファイルを開くとダウンロードしたプログラムが実行されるおそれがあるため、履歴から開けるのはメディアファイルだけです。生成されたファイルと、Windows と macOS でフォームの応答から保存したファイルは、再試行するとフォームの内容なしでアドレスを要求し直すことになるため、再試行できません。項目の削除ではダウンロード済みファイルは残ります。
 
 ## 検索・プライバシー
 
@@ -60,7 +60,7 @@ macOS では、送信したフォームの応答がファイルだったとき�
 
 広告ブロックにはHTTPSのフィルターURLを1行に1件入力し、**フィルターを更新** を実行します。EasyListに対応しますが、一部のルールに制限があり、更新は手動です。
 
-ローカルのダウンロード履歴やブラウザーのCookieを削除できます。Cookieの削除はWebサイトからのログアウトを伴うため確認が表示され、ブラウザーエンジンが対応している場合に利用できます。
+ローカルのダウンロード履歴やブラウザーのCookieを削除できます。Cookieの削除はWebサイトからのログアウトを伴うため確認が表示され、**ブラウザ** タブを開いている間に利用できます。Linux でも利用できます。
 
 ## 関連ドキュメント
 
@@ -82,3 +82,5 @@ macOS では、送信したフォームの応答がファイルだったとき�
 - [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs) / [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensibility/BrowserDownloadExtension.cs)（**ファイルをダウンロード** と拡張機能）
 - [`BrowserDownloadNavigation.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadNavigation.cs) / [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs)（macOS でのフォームの応答）
 - [`BeutlToolDockable.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dock/BeutlToolDockable.cs)（読み込み中の表示） / [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs)（リファラーポリシー）
+- [`WindowsBrowserDownloadHandler.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/WindowsBrowserDownloadHandler.cs) / [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs)（Windows でのフォームの応答）
+- [`BrowserWebViewRegistry.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/BrowserWebViewRegistry.cs) / [`LinuxWebKitCookies.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/LinuxWebKitCookies.cs)（Cookie の削除）

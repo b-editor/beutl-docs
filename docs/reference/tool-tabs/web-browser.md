@@ -44,7 +44,7 @@ An installed extension can take over a file that a page offers, such as speech g
 
 **Download file** in the tab menu downloads the current page. On a web page, an installed extension that downloads media, such as a video downloader, gets the page first, at the address the page shows at that moment. While the extension downloads, the bar shows it, and you can cancel it there. When no extension takes the page, the download options open for it as usual.
 
-Open **Download history** from the tab menu to open a downloaded media file or the folder of any file, import supported media, retry a download, or remove a history entry. Only media files can be opened from the history, because opening other files could run a downloaded program. A generated file, or a file saved from a form's response on macOS, cannot be retried. Removing an entry leaves the downloaded file on disk.
+Open **Download history** from the tab menu to open a downloaded media file or the folder of any file, import supported media, retry a download, or remove a history entry. Only media files can be opened from the history, because opening other files could run a downloaded program. A generated file, or a file saved from a form's response on Windows or macOS, cannot be retried, because a retry would request the address again without the form's data. Removing an entry leaves the downloaded file on disk.
 
 ## Search and privacy
 
@@ -60,7 +60,7 @@ Open **Search and privacy** from the tab menu, or open the browser settings page
 
 For ad blocking, enter HTTPS filter URLs, one per line, then use **Update filters**. EasyList is supported with some rule limitations; updates are manual.
 
-You can clear local download history and delete browser cookies. Cookie deletion asks for confirmation because it signs you out of websites, and is available only when the browser engine supports it.
+You can clear local download history and delete browser cookies. Cookie deletion asks for confirmation because it signs you out of websites, and is available while a **Browser** tab is open, on Linux as well.
 
 ## Related documents
 
@@ -82,3 +82,5 @@ You can clear local download history and delete browser cookies. Cookie deletion
 - [`WebBrowserTabView.Downloads.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/WebBrowserTabView.Downloads.cs) / [`BrowserDownloadExtension.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Extensibility/BrowserDownloadExtension.cs) (**Download file** and extensions)
 - [`BrowserDownloadNavigation.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserDownloadNavigation.cs) / [`BrowserDownloadHistoryItem.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/Views/BrowserDownloadHistoryItem.cs) (form responses on macOS)
 - [`BeutlToolDockable.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dock/BeutlToolDockable.cs) (the loading indicator) / [`BrowserMediaDownload.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/WebBrowserTab/BrowserMediaDownload.cs) (referrer policies)
+- [`WindowsBrowserDownloadHandler.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/WindowsBrowserDownloadHandler.cs) / [`BrowserProfile.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/BrowserProfile.cs) (form responses on Windows)
+- [`BrowserWebViewRegistry.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/BrowserWebViewRegistry.cs) / [`LinuxWebKitCookies.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/WebBrowserTab/LinuxWebKitCookies.cs) (cookie deletion)

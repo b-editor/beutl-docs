@@ -12,7 +12,7 @@ This guide assumes you already understand what keyframes are.
 Here's how to enable animation:
 1. Click the ︙ (vertical ellipsis) on the property you want to animate.
 
-2. Click __Edit Animation Inline__ or __Edit Animation__.
+2. Click __Edit animation in inline view__ or __Edit animation__.
 
 3. Animation is now enabled, and the ︙ (vertical ellipsis) changes to a ◇ (diamond) icon. In this state, you can right-click to open the menu.
 
@@ -40,7 +40,7 @@ Clicking the `<` or `>` buttons will move you to the previous or next keyframe.
 ![Easing presets available in the Library](../reference/tool-tabs/_images/easings.png)
 
 ![Keyframes and a spline curve in the Graph Editor](../reference/tool-tabs/_images/graph-editor.png)
-You can edit easing by opening the animation editor from the __Edit Animation__ menu.
+You can edit easing by opening the animation editor from the __Edit animation__ menu.
 
 To change the easing of an existing keyframe, drop the desired easing from the easing list onto the keyframe.
 
@@ -96,9 +96,51 @@ When the values differ in keyframe times, easings, or clock, or do not share one
 A joined expression is saved as a new kind of expression, which is why projects saved by 2.0.0-preview.11 do not open in earlier versions. See [Version compatibility](./project-structure.md#version-compatibility).
 
 ## Deleting Animation
-To delete all keyframes and disable animation, right-click the ◇ icon and click __Delete Animation__ from the menu.
+To delete all keyframes and disable animation, right-click the ◇ icon and click __Remove animation__ from the menu.
 
 In complex scenes, deleting unused animations can improve rendering speed.
+
+## Expressions {/* #expressions */}
+
+An expression computes a property's value with a line of C#, such as `Sin(Time) * 100`. To set one:
+
+1. Click the ︙ on the property. If it is animated, right-click the ◇ instead.
+2. Click __Edit expression__, type the expression, and confirm it with ✓ or `Ctrl + Enter` (`Cmd + Enter` on macOS).
+
+On a property without keyframes, the ︙ then turns into an fx icon; click it to edit the expression again. Confirming an empty expression removes it, as __Remove expression__ in the menu does.
+
+The editor's **Help** tab lists what an expression can use. Among them:
+
+| Name | Meaning |
+|------|---------|
+| `Value` | The property's value without the expression: its keyframes at the current time, or its set value when it has none |
+| `ValueAtTime(time)` | The same at another time |
+| `Time`, `Start`, `Duration` | The time from the element's start, the element's start, and its length, in seconds |
+| `Progress` | How far the current time is into the element, from `0` to `1` |
+| `GetProperty<T>(path)`, `GetProperty<T>(path, time)` | Another property's value, now or at another time. __Copy GetProperty code__ in a property's menu copies the call for it. |
+| `Wiggle(frequency, amplitude, octaves = 1, seed = null)` | A smooth random offset |
+
+Times are in seconds from the element's start, like `Time`. `Value + 10` raises an animation by 10, and `ValueAtTime(Time - 0.5)` follows the property's own animation half a second behind.
+
+`Wiggle` changes about `frequency` times per second and stays within `amplitude` either way, so `Value + Wiggle(2, 10)` shakes a value by up to 10 around its animation. More `octaves`, up to 16, add finer detail. Each property wiggles in its own way, and it wiggles the same way in the preview and in the export. To make several properties wiggle together, give them the same `seed`.
+
+In a row that joins several values, `Value` holds them together, such as a `Point` for a position, so `Value + new Point(10, 0)` moves an animated position 10 pixels to the right.
+
+### Keyframes and an expression together {/* #keyframes-and-expressions */}
+
+A property can have keyframes and an expression at once. Adding keyframes to a property with an expression keeps the expression, and the first keyframe takes the value under it, so nothing changes on screen. Setting an expression keeps the keyframes. The expression decides the value; write `Value` in it to build on the keyframes.
+
+The property's button then shows the ◇ with a small fx badge, and its tooltip says that both are set. A click on it still adds or removes the keyframe at the playhead, and a right-click opens the menu. In the [Graph Editor](../reference/tool-tabs/graph-editor.md), the properties tree marks a property that has an expression with fx too.
+
+### Editing under an expression {/* #editing-under-an-expression */}
+
+While a property has an expression, its field shows the expression's result, and you can still edit the value under it:
+
+- A value you type or pick replaces the value under the expression: the keyframe at the playhead, or between keyframes the next one, or the set value when there are no keyframes. Between keyframes, the field shows the result at the keyframe it edits.
+- Dragging a box moves the value under the expression by the amount you drag. With `Value + 50` over `100`, the field shows `150`, and dragging it to `160` makes the value `110`.
+- When you click into a box to type, it shows the value under the expression, and it shows the result again when you leave it.
+
+This works for numbers, the boxes of points, sizes, and rectangles, colors and the color wheels of the [Color Grading](../reference/tool-tabs/color-grading.md) tab, switches, choices, times, fonts, and easings. Editors that change an object, such as brushes, pens, transforms, and lists, and text fields stay disabled while an expression is set.
 
 ## Source
 
@@ -106,3 +148,6 @@ In complex scenes, deleting unused animations can improve rendering speed.
 - [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
+- [`ExpressionGlobals.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals.cs) / [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`WiggleNoise.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/WiggleNoise.cs)
+- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`ExpressionEditorFlyout.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/ExpressionEditorFlyout.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs)
+- [`Strings.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/Strings.resx)

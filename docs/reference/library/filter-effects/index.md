@@ -15,6 +15,7 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Bloom**](./bloom.md) — Adds a linear-light glow around the bright parts of the layer.
 - [**Light rays**](./light-rays.md) — Stretches the layer's highlights away from a center point.
 - [**Wave refraction**](./wave-refraction.md) — Refracts the layer through a wave field.
+- [**Polar Coordinates**](./polar-coordinates.md) — Bends the layer's horizontal bands into rings around its center, or unrolls rings into bands.
 - [**Drop Shadow**](./drop-shadow.md) — Casts a shadow behind the layer.
 - [**Inner Shadow**](./inner-shadow.md) — Adds a shadow inside the edges of the layer.
 - [**Flat Shadow**](./flat-shadow.md) — Projects a flat (long) shadow from the layer.
@@ -31,9 +32,12 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Threshold**](./threshold.md) — Converts the layer to two tones based on luminance threshold.
 - [**Edge Detection**](./edge-detection.md) — Draws lines where the layer's lightness, color, or transparency changes, for line art and masks.
 - [**Brightness**](./brightness.md) — Adjusts overall brightness.
+- [**Opacity**](./opacity.md) — Makes the layer more transparent, as a filter effect that can fade each part on its own.
 - [**Gamma**](./gamma.md) — Applies gamma correction to the layer.
 - [**Color Grading**](./color-grading.md) — Performs professional color grading with curves, lift/gamma/gain, temperature and tint.
 - [**Curves**](./curves.md) — Adjusts tone with master, RGB and HSV curves.
+- [**Film Grain**](./film-grain.md) — Adds film-like grain that shows most in the midtones.
+- [**Vignette**](./vignette.md) — Darkens or lightens the layer toward its edges.
 - [**Invert**](./invert.md) — Inverts the colors of the layer.
 - [**LUT (Cube File)**](./lut-cube-file.md) — Applies a 3D LUT loaded from a .cube file.
 - [**Blend**](./blend.md) — Composites the layer with a configurable blend mode.
@@ -49,8 +53,9 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Color Shift**](./color-shift.md) — Shifts each RGB and alpha channel independently to create a chromatic aberration look.
 - [**Shake**](./shake.md) — Applies a randomized shake / jitter to the layer.
 - [**Displacement Map**](./displacement-map.md) — Distorts the layer using another layer as a displacement map.
+- [**Mesh warp**](./mesh-warp.md) — Deforms the layer by dragging the control points of a grid in the preview.
 - [**Path Follow**](./path-follow.md) — Warps the layer so that it follows a path geometry.
 - [**Layer**](./layer.md) — Applies a chain of filter effects to a referenced layer instead of the current one.
-- [**Delay Animation**](./delay-animation.md) — Delays the application of subsequent effects.
+- [**Delay Animation**](./delay-animation.md) — Runs an effect chain on each part of the layer in turn, each part later than the one before.
 - [**Pixel Sort**](./pixel-sort.md) — Sorts pixels by brightness or hue along a specified direction.
 - [**Node Graph (Effect)**](./node-graph-effect.md) — Uses a node graph as a custom filter effect.

@@ -24,7 +24,7 @@ sidebar_position: 2
 
 ## SVG ファイル
 
-画像には、ファイルピッカーやタイムラインへのドロップで `.svg` ファイルも指定できます。SVG は図形のまま保たれ、表示される密度で描き直されるので、拡大してもくっきりしたままです。画像ブラシや 3D のテクスチャなどピクセルが必要なものには、図形をそれ自身の大きさで 64 メガピクセルまでラスタライズして渡します。それより大きな SVG はそれらには何も渡しませんが、画像としては描画されます。
+画像には、ファイルピッカーやタイムラインへのドロップで `.svg` ファイルも指定できます。SVG は図形のまま保たれ、表示される密度で描き直されるので、拡大してもくっきりしたままです。画像ブラシも SVG を表示される密度で描画し、3D のテクスチャは 3D の面の密度で、GPU が扱える最大のテクスチャと 64 メガピクセルまでの大きさにラスタライズします。どちらも拡大してもくっきりしたままで、64 メガピクセルを超える大きさを宣言した SVG でも同じです。
 
 プロジェクトとそのメディアは誰が作ったものでもありうるため、SVG はブラウザーの `<img>` と同じように開きます。
 
@@ -47,3 +47,4 @@ SVG 内のグラデーションと不透明度は Beutl のリニアな作業色
 [`src/Beutl.Engine/Graphics/SourceImage.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/SourceImage.cs)
 
 - [`LoadedImage.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/Source/LoadedImage.cs)
+- [`BrushConstructor.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/BrushConstructor.cs) / [`ImageTextureSource.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics3D/Textures/ImageTextureSource.cs)（画像ブラシと 3D テクスチャの SVG）

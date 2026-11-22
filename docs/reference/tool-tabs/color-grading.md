@@ -75,7 +75,7 @@ The drop-down at the right end of the toolbar switches the color wheels.
 
 Each slider spans its property's range, and its fill starts at the default. A press on the rail puts the value there, a press on the thumb grabs it where it is, and a drag follows the pointer, a tenth as fast with `Alt` (`Command` on macOS). A double click returns the slider to its default. You can also type a value into the box beside it.
 
-Every slider has the same **⋮** menu as the Properties tab, so you can add keyframes, edit the animation, or set an expression from here. A value driven by an expression is read-only.
+Every slider has the same **⋮** menu as the Properties tab, so you can add keyframes, edit the animation, or set an expression from here. A slider whose value an expression gives shows the expression's result, and moving it edits the value under the expression. See [Editing under an expression](../../get-started/keyframe.md#editing-under-an-expression).
 
 ## Color wheels
 
@@ -87,7 +87,7 @@ Each wheel is a puck on a disk laid out like the vectorscope: the Cb axis runs t
 - **Number boxes**: Set R, G, and B one at a time, in steps of `0.01`.
 - **Reset button**: Returns the wheel to neutral: `1` for Gamma and Gain, `0` for the others.
 
-Every wheel also has the **⋮** menu for keyframes and expressions.
+Every wheel also has the **⋮** menu for keyframes and expressions, and a wheel with an expression edits the value under it, as a slider does.
 
 ### Wheels by mode
 
@@ -127,3 +127,4 @@ The following state is restored when the tab is reopened, even after it has been
 - [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`TonalRangeSlider.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/TonalRangeSlider.cs) (sliders)
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs) (the "Edit in tab" button on the properties side)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs) (when a drag on a wheel begins)
+- [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs) / [`GradingColorEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/GradingColorEditorViewModel.cs) (editing under an expression)

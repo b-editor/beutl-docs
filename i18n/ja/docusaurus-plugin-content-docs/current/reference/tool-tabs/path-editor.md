@@ -109,6 +109,7 @@ sidebar_position: 13
 
 - **マウスホイール**: キャンバスをパン
 - **`Ctrl` + ホイール**（macOSでは **`Cmd` + ホイール**）: ポインタ位置を中心にズームイン／ズームアウト
+- トラックパッド（Windows ではプレシジョンタッチパッド）の **ピンチ**: ポインタ位置を中心にズームイン／ズームアウト。ドラッグ中のピンチは無視します。
 - **手のひら (`H`)、`Space` + ドラッグ、中ボタンドラッグ**: キャンバスをパン。`Space` を短く押した場合は、再生と一時停止を切り替えます。
 - **`+` / `-`**: 拡大／縮小。**`0`** で表示をリセット
 - **`Shift + 1`**: パス全体を表示。**`Shift + 2`**: 選択範囲を表示
@@ -140,3 +141,4 @@ sidebar_position: 13
 - [`PathEditorViewBase.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorViewBase.cs)
 - [`ControlPointVisibilityHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/ControlPointVisibilityHelper.cs)
 - [`PathFigureListItemEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PathFigureListItemEditor.axaml.cs)（パスエディタタブを開く起点）
+- [`PathEditorTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml.cs)（ピンチでのズーム）

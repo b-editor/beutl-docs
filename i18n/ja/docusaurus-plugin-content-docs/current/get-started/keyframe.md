@@ -102,9 +102,51 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 
 ## アニメーションを削除
 すべてのキーフレームを削除して、アニメーションを無効化するには、
-◇ を右クリックしてメニューの __アニメーション削除__ をクリックします。
+◇ を右クリックしてメニューの __アニメーションを削除__ をクリックします。
 
 複雑なシーンの場合、使っていないアニメーションを削除することで、より高速に描画できます。
+
+## 式 {/* #expressions */}
+
+式は、`Sin(Time) * 100` のような 1 行の C# でプロパティの値を計算します。式を設定するには、次の手順を実行します。
+
+1. プロパティの ︙ をクリックします。アニメーションしている場合は ◇ を右クリックします。
+2. __式を編集__ をクリックし、式を入力して、✓ または `Ctrl + Enter`（macOS では `Cmd + Enter`）で確定します。
+
+キーフレームのないプロパティでは、︙ が fx のアイコンに変わり、クリックすると式をもう一度編集できます。空の式で確定すると、メニューの __式を削除__ と同じく式が削除されます。
+
+式で使えるものは、エディターの **ヘルプ** タブに一覧があります。主なものは次のとおりです。
+
+| 名前 | 意味 |
+|------|------|
+| `Value` | 式を適用する前のプロパティの値。現在時刻のキーフレームの値、キーフレームがなければ設定値 |
+| `ValueAtTime(time)` | 別の時刻での同じ値 |
+| `Time`、`Start`、`Duration` | 要素の開始からの時間、要素の開始時間、要素の長さ（秒） |
+| `Progress` | 現在時刻が要素のどこにあるか（`0` から `1`） |
+| `GetProperty<T>(path)`、`GetProperty<T>(path, time)` | 別のプロパティの、現在または別の時刻での値。プロパティのメニューの __GetPropertyコードをコピー__ で、そのプロパティを読む呼び出しをコピーできます。 |
+| `Wiggle(frequency, amplitude, octaves = 1, seed = null)` | なめらかなランダムのずれ |
+
+時刻は `Time` と同じく、要素の開始からの秒数で指定します。`Value + 10` はアニメーションを 10 だけ上げ、`ValueAtTime(Time - 0.5)` はプロパティ自身のアニメーションを 0.5 秒遅れてたどります。
+
+`Wiggle` は 1 秒におよそ `frequency` 回変化し、正負とも `amplitude` の範囲に収まります。`Value + Wiggle(2, 10)` では、値がアニメーションを中心に最大 10 だけ揺れます。`octaves` を増やすと（最大 16）細かい揺れが加わります。揺れ方はプロパティごとに異なり、プレビューと書き出しで同じになります。複数のプロパティを同じように揺らすには、同じ `seed` を指定します。
+
+複数の値を 1 行にまとめた行では、`Value` もそれらをまとめた値になります。位置なら `Point` なので、`Value + new Point(10, 0)` でアニメーションする位置を 10 ピクセル右へずらせます。
+
+### キーフレームと式を併用する {/* #keyframes-and-expressions */}
+
+プロパティにはキーフレームと式を同時に設定できます。式のあるプロパティにキーフレームを追加しても式は残り、最初のキーフレームは式の下の値を取るので、画面は変わりません。式を設定してもキーフレームは残ります。値を決めるのは式です。キーフレームの動きを生かすには、式に `Value` を書きます。
+
+このときプロパティのボタンには、小さな fx のバッジが付いた ◇ が表示され、ツールチップに両方が設定されていることが示されます。クリックすると、通常どおり再生位置のキーフレームを追加または削除し、右クリックでメニューが開きます。[グラフエディタ](../reference/tool-tabs/graph-editor.md)のプロパティツリーでも、式のあるプロパティに fx の印が付きます。
+
+### 式の下の値を編集する {/* #editing-under-an-expression */}
+
+式のあるプロパティの入力欄には式の結果が表示されますが、式の下にある値は編集できます。
+
+- 入力したり選んだりした値は、式の下の値を置き換えます。対象は再生位置のキーフレーム、キーフレームの間では次のキーフレーム、キーフレームがなければ設定値です。キーフレームの間では、入力欄には編集するキーフレームの時刻での結果が表示されます。
+- ボックスをドラッグすると、式の下の値がドラッグした分だけ動きます。値 `100` に式 `Value + 50` が設定されていると入力欄には `150` と表示され、`160` までドラッグすると値は `110` になります。
+- 入力するためにボックスをクリックすると、式の下の値が表示され、ボックスを離れると再び結果が表示されます。
+
+これは、数値、点・サイズ・矩形のボックス、色と[カラーグレーディング](../reference/tool-tabs/color-grading.md)タブのカラーホイール、スイッチ、選択肢、時間、フォント、イージングで使えます。ブラシ、ペン、トランスフォーム、リストのようにオブジェクトを変えるエディターと、テキストの入力欄は、式が設定されている間は無効になります。
 
 ## ソース
 
@@ -112,3 +154,6 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 - [`PropertyEditorMenu.axaml`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
+- [`ExpressionGlobals.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals.cs) / [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`WiggleNoise.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/WiggleNoise.cs)
+- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`ExpressionEditorFlyout.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/ExpressionEditorFlyout.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs)
+- [`Strings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/Strings.ja.resx)

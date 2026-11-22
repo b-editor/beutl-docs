@@ -214,6 +214,9 @@ sidebar_position: 1
 - ホイールで時間軸方向にスクロール
 - `Ctrl` (`Cmd`) + ホイールでズームイン/アウト
 - `Shift` + ホイールで縦スクロール
+- トラックパッド（Windows ではプレシジョンタッチパッド）のピンチでも、トラックやルーラーの上でズームイン/アウト
+
+ホイールやピンチでズームすると、ポインタ位置の時刻がその場にとどまります。
 
 ### 何もない場所の右クリックメニュー
 
@@ -375,3 +378,4 @@ macOS のトラックパッドでは、ドラッグが揃える対象に達す�
 - [`TimelineSelectionMenu.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineSelectionMenu.cs) / [`TimelineTabViewModel.Selection.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.Selection.cs)（まとめて選択）
 - [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs) / [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs)（時刻とスケール）
 - [`TimelineTabView.DragDrop.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.DragDrop.cs)（ドラッグ&ドロップ）
+- [`TimelineTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs)（ピンチでのズーム）

@@ -29,7 +29,7 @@ The tab analyzes the element's composed audio, including sound group processing 
 
 The status line shows the number of intervals and their total length. Changing a setting updates the intervals right away without analyzing the audio again.
 
-To inspect the waveform, zoom around the pointer with `Ctrl` (`Cmd` on macOS) + wheel, or use the zoom buttons. Navigation only changes the view; applying always uses the plan for the whole element.
+To inspect the waveform, zoom around the pointer with `Ctrl` (`Cmd` on macOS) + wheel or a pinch on a trackpad (a precision touchpad on Windows), or use the zoom buttons. Navigation only changes the view; applying always uses the plan for the whole element.
 
 ## Applying
 
@@ -56,3 +56,4 @@ Applying pauses playback, uses frame-aligned cuts, keeps each piece's source pos
 - [`SilenceSplitViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/TimelineTab/ViewModels/SilenceSplitViewModel.cs)
 - [`SilenceDetector.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SilenceDetector.cs)
 - [`SilenceSplitService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SilenceSplitService.cs)
+- [`SilenceSplitTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/SilenceSplitTab/Views/SilenceSplitTabView.axaml.cs) (pinch zoom)
