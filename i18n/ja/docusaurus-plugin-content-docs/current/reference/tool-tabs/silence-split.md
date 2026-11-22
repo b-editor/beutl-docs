@@ -29,7 +29,7 @@ sidebar_position: 25
 
 状態行には区間の数と合計の長さが表示されます。設定を変更すると、音声を解析し直さずにすぐ区間が更新されます。
 
-波形を確認するには、`Ctrl`（macOS では `Cmd`）+ ホイールでポインターを中心にズームするか、ズームボタンを使います。操作で変わるのは表示だけで、適用するときは常に要素全体の計画を使います。
+波形を確認するには、`Ctrl`（macOS では `Cmd`）+ ホイールかトラックパッド（Windows ではプレシジョンタッチパッド）のピンチでポインターを中心にズームするか、ズームボタンを使います。操作で変わるのは表示だけで、適用するときは常に要素全体の計画を使います。
 
 ## 適用する
 
@@ -56,3 +56,4 @@ sidebar_position: 25
 - [`SilenceSplitViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/TimelineTab/ViewModels/SilenceSplitViewModel.cs)
 - [`SilenceDetector.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SilenceDetector.cs)
 - [`SilenceSplitService.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/SilenceSplitService.cs)
+- [`SilenceSplitTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/SilenceSplitTab/Views/SilenceSplitTabView.axaml.cs)（ピンチでのズーム）

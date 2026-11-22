@@ -151,6 +151,8 @@ description: "タイムラインの要素の先頭と末尾に設定する組み
 
 境界の両側にトランジションがある場合、見た目は次の要素の開始のトランジションで決まり、前の要素は終了のトランジションの長さを加えます。隣接する要素がない場合は透明な状態との間で切り替わり、下のレイヤーが見えます。
 
+2 つの調整レイヤーのように、境界の両側の要素がどちらも[バックドロップ](../drawables/sources/backdrop.md)を描画するときは、各側がその下のレイヤーを自分の時刻の状態で表示し、トランジションの間はトランジションだけがそれらのレイヤーを描画します。そのため、下のレイヤーが同じ時刻で切り替わっていても、トランジションは一方の下のショットからもう一方の下のショットへ混ぜ合わせながら移ります。次のショットは切り替わりの前では最初のフレームを、前のショットは切り替わりの後では最後のフレームを保ちます。このような要素の間のフェードは中間点で透明になり、**バッファをクリア** がオフのとき、プッシュのような動きのあるトランジションは下のレイヤーも各側と一緒に動かします。[ポータル](../portal/portal-object.md)で下のレイヤーを取り込む 2 つのグループも、取り込んだショットを同じように混ぜ合わせます。
+
 ## ソース
 
 - [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor/Services/LibraryRegistrar.cs)
@@ -159,3 +161,4 @@ description: "タイムラインの要素の先頭と末尾に設定する組み
 - [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.ja.resx)
 - [`Strings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/Strings.ja.resx)
 - [`ElementAttributeService.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor/Services/ElementAttributeService.cs)
+- [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`SceneCompositor.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/SceneCompositor.cs)（バックドロップどうし、ポータルのグループどうしのトランジション）

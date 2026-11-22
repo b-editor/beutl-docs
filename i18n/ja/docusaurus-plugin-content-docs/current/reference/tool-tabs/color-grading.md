@@ -75,7 +75,7 @@ sidebar_position: 10
 
 各スライダーはプロパティの範囲全体にわたり、塗りは既定値から始まります。レールを押すとその位置の値になり、つまみを押すとその位置のまま掴みます。ドラッグはポインターに追従し、`Alt`（macOS では `Command`）を押すと 10 分の 1 の速さになります。ダブルクリックで既定値に戻ります。横の数値ボックスに値を入力することもできます。
 
-各スライダーにはプロパティタブと同じ **⋮** メニューがあり、ここからキーフレームの追加、アニメーションの編集、式の設定ができます。式で決まる値は読み取り専用になります。
+各スライダーにはプロパティタブと同じ **⋮** メニューがあり、ここからキーフレームの追加、アニメーションの編集、式の設定ができます。式で値が決まるスライダーは式の結果を表示し、動かすと式の下の値を編集します。[式の下の値を編集する](../../get-started/keyframe.md#editing-under-an-expression)を参照してください。
 
 ## カラーホイール
 
@@ -87,7 +87,7 @@ sidebar_position: 10
 - **数値ボックス**: R、G、B を個別に `0.01` 刻みで設定します。
 - **リセットボタン**: ホイールをニュートラルに戻します。ガンマとゲインは `1`、それ以外は `0` です。
 
-各ホイールにも、キーフレームと式を扱う **⋮** メニューがあります。
+各ホイールにも、キーフレームと式を扱う **⋮** メニューがあり、式のあるホイールはスライダーと同じく式の下の値を編集します。
 
 ### モード別のホイール
 
@@ -127,3 +127,4 @@ sidebar_position: 10
 - [`NumberSliderEditor.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/NumberSliderEditor.cs) / [`TonalRangeSlider.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PropertyEditors/TonalRangeSlider.cs)（スライダー）
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs)（プロパティ側の「タブで編集」ボタン）
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)（ホイールのドラッグが始まるタイミング）
+- [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs) / [`GradingColorEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/GradingColorEditorViewModel.cs)（式の下の値の編集）

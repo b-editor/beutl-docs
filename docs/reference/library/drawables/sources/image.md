@@ -24,7 +24,7 @@ The image file to display.
 
 ## SVG files
 
-An Image also takes an `.svg` file, from the file picker or by dropping it on the timeline. The SVG stays a drawing and is drawn again at the density it is shown at, so it stays sharp when scaled up. Something that needs pixels, such as an image brush or a 3D texture, gets the drawing rasterized at its own size, up to 64 megapixels. A larger SVG gives those nothing, but still draws as an image.
+An Image also takes an `.svg` file, from the file picker or by dropping it on the timeline. The SVG stays a drawing and is drawn again at the density it is shown at, so it stays sharp when scaled up. An image brush also draws the SVG at the density it is shown at, and a 3D texture rasterizes it at the density of the 3D surface, up to the largest texture the GPU takes and 64 megapixels. Both stay sharp when scaled up, also for an SVG that declares more than 64 megapixels.
 
 A project and its media can come from anyone, so an SVG is opened the way a browser's `<img>` opens one:
 
@@ -47,3 +47,4 @@ Drop an image onto the timeline.
 [`src/Beutl.Engine/Graphics/SourceImage.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/SourceImage.cs)
 
 - [`LoadedImage.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/Source/LoadedImage.cs)
+- [`BrushConstructor.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/BrushConstructor.cs) / [`ImageTextureSource.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics3D/Textures/ImageTextureSource.cs) (SVGs in image brushes and 3D textures)

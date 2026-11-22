@@ -6,7 +6,7 @@ sidebar_position: 23
 
 # クロマキー
 
-色相範囲を抜いてグリーン / ブルーバックを除去します。HSV 空間で各ピクセルを目標色と比較し、色相幅・彩度幅・境界の柔らかさを調整できます。
+色相範囲を抜いてグリーン / ブルーバックを除去します。HSV 空間で各ピクセルを目標色と比較し、色相幅・彩度幅・境界の柔らかさを調整できます。残す部分にかぶったスクリーンの色を取り除くこともできます。
 
 ## ライブラリでの場所
 
@@ -19,7 +19,7 @@ sidebar_position: 23
 キーとなる色（例：スクリーンの緑）。
 
 - **型:** `Color`
-- **既定値:** `#00000000` (透明)
+- **既定値:** `#FF000000` (黒)
 - **アニメーション:** 可
 
 ### 色相範囲 (HueRange)
@@ -46,10 +46,21 @@ sidebar_position: 23
 - **既定値:** `2`
 - **アニメーション:** 可
 
+### スピル抑制 (SpillSuppression)
+
+髪に付く緑の縁取りのように、スクリーンが反射して残す部分にかぶったキー色を取り除く強さをパーセントで指定します。キー色で最も強いチャンネル（グリーンバックなら緑）を、ほかの 2 チャンネルの平均に向けて下げます。`100` ではその平均を超えなくなり、`50` では半分だけ近づきます。ほかのチャンネルと透明度は変わりません。黒やグレーのように色味のはっきりしないキー色では抑制されず、`0` では色をそのまま残します。
+
+- **型:** `float`
+- **既定値:** `0`
+- **アニメーション:** 可
+- **範囲:** `[0, 100]`
+
 ## 使い方
 
-スクリーンの色を取得し、影の色のばらつきまで拾うために `色相範囲` を広げ、`境界補正` でエッジを柔らかくします。
+スクリーンの色を取得し、影の色のばらつきまで拾うために `色相範囲` を広げ、`境界補正` でエッジを柔らかくします。被写体の縁にまだスクリーンの色がかぶって見えるときは、`スピル抑制` を上げます。
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs)
+
+- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)

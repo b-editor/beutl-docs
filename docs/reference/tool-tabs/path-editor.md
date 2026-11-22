@@ -109,6 +109,7 @@ Show only what you need depending on how you want to inspect the shape.
 
 - **Mouse wheel**: Pan the canvas.
 - **`Ctrl` + wheel** (**`Cmd` + wheel** on macOS): Zoom in / out around the pointer.
+- **Pinch** on a trackpad, or on a precision touchpad on Windows: Zoom in / out around the pointer. A pinch during a drag is ignored.
 - **Hand (`H`), `Space` + drag, or middle-button drag**: Pan the canvas. A tap on `Space` plays or pauses instead.
 - **`+` / `-`**: Zoom in / out. **`0`** resets the view.
 - **`Shift + 1`**: Fit the whole path. **`Shift + 2`**: Fit the selection.
@@ -139,3 +140,4 @@ The background grid spacing follows the zoom level. Zoom only affects how the ca
 - [`PathEditorViewBase.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorViewBase.cs)
 - [`ControlPointVisibilityHelper.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PathEditorTab/Views/ControlPointVisibilityHelper.cs)
 - [`PathFigureListItemEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/PropertyEditors/Views/PathFigureListItemEditor.axaml.cs) (entry point for opening the tab)
+- [`PathEditorTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PathEditorTab/Views/PathEditorTabView.axaml.cs) (pinch zoom)

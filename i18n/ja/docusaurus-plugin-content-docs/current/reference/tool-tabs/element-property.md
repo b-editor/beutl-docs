@@ -88,13 +88,15 @@ sidebar_position: 4
 
 ### エフェクトのハンドルをプレビューで編集する {/* #effect-handles */}
 
-拡張機能のエフェクトには、プレビューに独自のハンドルを持つものがあります。そうしたエフェクトには、一覧の中でも、セクションの唯一のエフェクトとしても、目のアイコンの左に十字のボタン **フレームで編集** が表示されます。クリックするとエフェクトが選択されます。プレビューにはエフェクトのハンドルが表示され、オブジェクトのトランスフォームハンドルと基準点は隠れるので、ドラッグではエフェクトだけを編集できます。プレビューでオブジェクトをクリックすると、その要素が選択し直され、トランスフォームハンドルが戻ります。複数の要素をまとめて編集している間は、このボタンは表示されません。このようなハンドルを持つ組み込みのエフェクトはまだありません。
+[メッシュワープ](../library/filter-effects/mesh-warp.md)の制御点や一部の拡張機能のエフェクトのように、プレビューに独自のハンドルを持つエフェクトがあります。そうしたエフェクトには、一覧の中でも、セクションの唯一のエフェクトとしても、目のアイコンの左に十字のボタン **フレームで編集** が表示されます。クリックするとエフェクトが選択されます。プレビューにはエフェクトのハンドルが表示され、オブジェクトのトランスフォームハンドルと基準点は隠れるので、ドラッグではエフェクトだけを編集できます。プレビューでオブジェクトをクリックすると、その要素が選択し直され、トランスフォームハンドルが戻ります。複数の要素をまとめて編集している間は、このボタンは表示されません。
 
 ## プロパティの編集
 
 各オブジェクトを展開すると、プロパティごとのエディタが表示されます。
 
 アニメーションされているプロパティは、プロパティ右側の **︙（三点リーダ縦）メニュー** から [グラフエディタ](./graph-editor.md) を開いたり、タイムライン上にインライン展開したりできます。
+
+同じメニューの **式を編集** で式を設定できます。式が設定されている間、入力欄には式の結果が表示されますが、ほとんどの種類のプロパティでは、それでも値を入力したり、ドラッグしたり、選んだりできます。その編集は式の下にある値を変え、式はその値を `Value` として読み取ります。[式](../../get-started/keyframe.md#expressions)を参照してください。
 
 参照のプロパティには既存の対象を選ぶ欄があり、単位が定義されたプロパティには `%`・`°`・`×` がラベルに表示されます。詳しくは [参照先を選ぶ](../../get-started/edit-element.md#reference-targets) と、その次の節を参照してください。
 
@@ -142,7 +144,7 @@ sidebar_position: 4
 タイムラインで複数の要素を選択すると、固定していないタブはそれらをまとめて編集します。1 つの要素のときと同じパネルとエディターで要素の 1 つを表示し、各編集は選択中のすべての要素に 1 回の取り消し単位で反映されます。固定したタブは、固定した要素を表示し続けます。
 
 - **すべての要素が持つものだけが表示されます。** プロパティは名前と型で対応付けられます。エフェクトやトランスフォームなどのリストの項目は、各要素での並び順に型で対応付けられるので、ある要素の最初のぼかしは別の要素の最初のぼかしに対応します。テキストと矩形を選択すると、両者に共通する描画オブジェクトのプロパティが **テキスト / 矩形** のような見出しの下に表示されます。
-- **各要素は、その要素のエディターで編集したときと同じように変更を受け取ります。** 時刻は要素とともに移ります。値は、再生ヘッドが表示中の要素の先頭から進んでいるのと同じだけ各要素の先頭から進んだ位置のキーフレームに入り、**グローバル時計を使う** アニメーションでは再生ヘッドと同じ時刻のキーフレームに入ります。その時刻にキーフレームがないときは、単独の要素を編集するときと同じく、次のキーフレームに入ります。式で値が決まっている要素は、その値を保ちます。キーフレームの追加や式の設定は、各要素の値に対して行われます。
+- **各要素は、その要素のエディターで編集したときと同じように変更を受け取ります。** 時刻は要素とともに移ります。値は、再生ヘッドが表示中の要素の先頭から進んでいるのと同じだけ各要素の先頭から進んだ位置のキーフレームに入り、**グローバル時計を使う** アニメーションでは再生ヘッドと同じ時刻のキーフレームに入ります。その時刻にキーフレームがないときは、単独の要素を編集するときと同じく、次のキーフレームに入ります。式で値が決まっている要素は式を保ち、その種類のエディターが[式の下の値を編集](../../get-started/keyframe.md#editing-under-an-expression)できる場合は、変更が式の下の値に入ります。そうでない場合、その要素は値を保ちます。キーフレームの追加や式の設定は、各要素の値に対して行われます。
 - **値の違いには印が付きます。** 要素ごとに値が異なると、その行の ︙ ボタンに点が表示されます。ツールチップに各要素の値が表示され、メニューに **すべての要素をこの値にする** が表示されます。ブラシ、ペン、テクスチャーの行では、代わりに切り替え先の種類が表示されます。
 - **ロックされている要素は変更されません。** プロパティの上の注意書きに、変更されない要素の数、または選択中の要素に共通するプロパティがないことが表示されます。
 - **表示中の要素だけに反映される編集もあります。** ︙ メニューにはインラインのアニメーション表示がありません。ノードグラフの中の編集は、表示中の要素だけに反映されます。
@@ -183,3 +185,4 @@ sidebar_position: 4
 - [`StringEditor.axaml`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Controls/Styling/PropertyEditors/StringEditor.axaml) / [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/9953a97c9925706428da0095756c4736f216cd76/src/Beutl.Core/CustomDataTypes.cs)
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
 - [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs) / [`FilterEffectListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/Views/FilterEffectListItemEditor.axaml) / [`TransformHandlesOverlay.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/TransformHandlesOverlay.cs)
+- [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) / [`MeshWarp.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/MeshWarp.cs)

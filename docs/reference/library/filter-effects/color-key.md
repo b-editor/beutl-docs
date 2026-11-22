@@ -19,7 +19,7 @@ Library → Filter Effect → Color key
 Color to remove.
 
 - **Type:** `Color`
-- **Default:** `#00000000` (transparent black)
+- **Default:** `#FF000000` (black)
 - **Animatable:** Yes
 
 ### Brightness Range (Range)

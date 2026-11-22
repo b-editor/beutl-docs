@@ -21,6 +21,8 @@ Windowsではx64とARM64の両方を利用できます。ARM64デバイスには
 2. 画面に従ってインストールします。
 3. `Beutl.exe`を起動します。
 
+インストーラーは最初に、誰のためにインストールするかを尋ねます。推奨の **現在のユーザー用にインストール** は管理者権限が不要で、`%LOCALAPPDATA%\Programs\Beutl` にインストールします。**すべてのユーザー用にインストール** は管理者権限が必要で、`Program Files` にインストールします。Beutl がすでにインストールされているときは、そのインストールの選択を引き継ぎ、尋ねません。
+
 配布パッケージには .NET ランタイムが含まれています。軽量インストーラーとランタイムを含まないアーカイブの配布は終了しました。以前の軽量版や Windows のポータブル版から更新する場合は、スタンドアロンインストーラーをダウンロードしてください。
 
 ## Debian・Ubuntuの場合
@@ -80,7 +82,7 @@ Beutl内蔵の更新機能は、新しいFlatpakバンドルをダウンロー�
 
 更新の準備ができると、バージョンを示した通知で次の操作を選べます。
 
-- Windows では **インストーラーを起動**、macOS と Linux では **再起動して更新**: Beutl が閉じて更新が始まります。macOS と Linux では、更新後に Beutl が再び起動します。
+- **再起動して更新**: Beutl が閉じて更新がインストールされ、Beutl が再び起動します。Windows では、インストーラーはウィザードを表示せずに実行され、進捗とエラーだけを表示します。Debian パッケージでは代わりに **インストーラーを起動** が表示されます。Beutl が閉じ、ターミナルで `apt` が更新をインストールするので、パスワードを入力してください。完了したら Beutl を起動し直します。
 - **終了時に更新**: 作業内容を保存してから Beutl を終了したときに更新をインストールし、Beutl は閉じたままになります。
 - **リリースノート**: リリースページを開きます。通知は表示されたままです。
 
@@ -96,19 +98,21 @@ Flatpak のインストールでは、代わりに **インストール** と **
 
 ## 更新する前に
 
-**2.0.0-preview.14 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.14 で保存したプロジェクトは preview.11、preview.12、preview.13 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.15 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.15 で保存したプロジェクトは preview.11、preview.12、preview.13、preview.14 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
 
 **x64 では、preview.12 以降、x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
 
-preview.14 に更新すると、既存のプロジェクトの見た目が変わることがあります。
+preview.15 に更新すると、既存のプロジェクトの見た目が変わることがあります。
 
-- **レイヤー、クリッピング、ブレンド、内側シャドウ、フラットシャドウ、ストロークの各エフェクトを掛けた内容が、ピクセル未満の位置を保つようになりました。** 以前は最大で半ピクセルずれ、一部だけ覆われた右端の列と下端の行が欠けていたため、これらのエフェクトを掛けたテキストがわずかに動くことがあり、ゆっくり動かしたときも滑らかに動くようになります。**自動センタリング** をオンにしたクリッピングはこれまでどおりです。
+- **2 つの調整レイヤーのように、どちらも[バックドロップ](../reference/library/drawables/sources/backdrop.md)を描画する要素の間のトランジションが、その下のショットを混ぜ合わせるようになりました。** 各側がその下のレイヤーを自分の時刻の状態で表示するので、下のレイヤーが境界で切り替わっても、トランジションは途切れません。2 つの調整レイヤーの間のフェードは、中間点で下の映像が見えていたところが透明になります。また、**バッファをクリア** がオフのとき、プッシュのような動きのあるトランジションは下のレイヤーも各側と一緒に動かします。[トランジション](../reference/library/transitions/index.md#使い方)を参照してください。
+- **[ポータル](../reference/library/portal/portal-object.md)で下のレイヤーを取り込む 2 つのグループの間のトランジションも、** 同じように取り込んだショットを混ぜ合わせます。
+- **画像ブラシや 3D のテクスチャに使った SVG は、表示される密度で描画されるようになりました。** そのため、以前よりくっきり見えることがあります。[SVG ファイル](../reference/library/drawables/sources/image.md#svg-ファイル)を参照してください。
 
-既存のプロキシは一度破棄され、作り直されます。Media Foundation が PAL など正方形でないピクセルの動画を表示サイズで読み込んでいたため、プロキシに歪んだ行が含まれていることがあるためです。
+キーフレームと式を同時に設定できるようになりました。式のあるプロパティにキーフレームを追加しても式は削除されず、式を設定してもキーフレームは削除されません。[式](./keyframe.md#expressions)を参照してください。
 
-ストアからインストールした拡張機能は、自動で更新されるようになりました。Beutl は更新をバックグラウンドでダウンロードし、次回の起動時にプロジェクトを開く前に適用します。通知だけにしたい場合は、[更新のタイミング](../settings/extension.md#update-timing)で **通知のみ** を選びます。
+Windows の **再起動して更新** は、インストーラーのウィザードを表示せずにインストールし、Beutl を再び起動するようになりました。preview.15 への更新そのものは、更新元のバージョンがインストーラーを起動するため、ウィザードが表示されます。新しくインストールする場合は既定で現在のユーザー用になり、すべてのユーザー用のインストールはそのまま維持されます。[Windowsの場合](#windowsの場合)を参照してください。
 
-使い続けるために必要な更新と Flatpak のバンドルも、バックグラウンドでダウンロードされるようになりました。[Beutl を更新する](#beutl-を更新する)を参照してください。
+Windows では、プレシジョンタッチパッドのピンチで、Mac のトラックパッドと同じようにタイムライン、グラフエディタ、ノードグラフ、プレビュー、パスエディタ、**無音区間で自動分割** の波形をズームできるようになりました。それ以外の場所では、ピンチが `Ctrl` + ホイールとして扱われなくなったため、フォーカスのある数値ボックスの値が変わったり、リストがスクロールしたりすることはありません。Windows 10 では、これまでどおりピンチは `Ctrl` + ホイールとして扱われます。
 
 AIコーディングエージェントを使用している場合は、更新後に [Beutl との連携を再インストール](../advanced/ai-agents.md)してください。
 
@@ -128,3 +132,5 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`CheckForUpdatesTask.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/StartupTasks/CheckForUpdatesTask.cs) / [`AppUpdateController.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/AppUpdateController.cs) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`UpdateDownloadCache.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Services/UpdateDownloadCache.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Core/Serialization/FileFormat.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs) / [`UpdateConfig.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Configuration/UpdateConfig.cs)
 - [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)
+- [`beutl-setup.iss`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/nukebuild/beutl-setup.iss) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`DebianPackageInstaller.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Services/DebianPackageInstaller.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Core/Serialization/FileFormat.cs) / [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs)

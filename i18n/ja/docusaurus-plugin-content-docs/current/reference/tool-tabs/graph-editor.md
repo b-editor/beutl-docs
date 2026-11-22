@@ -35,6 +35,7 @@ sidebar_position: 7
 
 - 描画オブジェクトから、エフェクト・トランスフォーム・入れ子のプロパティや値の成分へ展開します。
 - タイマーのボタンでアニメーションを有効にし、ダイヤモンドのボタンで現在の再生位置にキーフレームを追加／削除します。
+- 式のあるプロパティは、そのボタンに小さな fx のバッジが付き、ツールチップにもそのことが表示されます。アニメーションを有効にしたりキーフレームを追加したりしても、式は残ります。[キーフレームと式を併用する](../../get-started/keyframe.md#keyframes-and-expressions)を参照してください。
 - 複数の値を持つプロパティでは、タイマーのボタンのすぐ左のボタンで成分の分離と解除を切り替えます。[複数の成分を持つプロパティ](#複数の成分を持つプロパティ)を参照してください。
 - 右クリックメニューからアニメーションを削除できます。アニメーションがなくなってもタブは残り、編集対象の要素を削除した場合は閉じます。
 
@@ -87,6 +88,7 @@ sidebar_position: 7
 - `Alt` または `Ctrl` (`Cmd`) + ホイールで時間軸方向にズームイン/アウト（ポインタ位置を中心に拡大）します。
 - `Ctrl` + `Shift` (`Cmd` + `Shift`) + ホイールで縦方向にズームイン/アウトします。
 - 垂直スケール上のホイールでも同様に縦スクロールでき、`Alt` または `Ctrl` (`Cmd`) を押すと縦ズームになります。
+- トラックパッド（Windows ではプレシジョンタッチパッド）でピンチすると、`Ctrl` (`Cmd`) + ホイールと同じくポインタ位置を中心にズームします。グラフ上では時間軸方向に、`Shift` を押すと縦方向にズームし、タイムラインスケールや垂直スケールの上ではそのスケールの方向にズームします。
 
 設定で **タイムラインのスクロール方向を入れ替える** が有効な場合は、縦/横の挙動が入れ替わります。
 
@@ -190,3 +192,4 @@ sidebar_position: 7
 - [`GraphEditorView.Selection.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Selection.cs)
 - [`GraphEditorTreeItemViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Editor.Components/GraphEditorTab/ViewModels/GraphEditorTreeItemViewModel.cs)
 - [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
+- [`GraphEditorView.Navigation.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorView.Navigation.cs)（ホイールとピンチ） / [`GraphEditorTabView.axaml`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/GraphEditorTab/Views/GraphEditorTabView.axaml)（fx のバッジ）

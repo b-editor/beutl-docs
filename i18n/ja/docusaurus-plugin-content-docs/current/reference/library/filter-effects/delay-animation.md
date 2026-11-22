@@ -1,13 +1,14 @@
 ---
 title: "遅延アニメーション"
-description: "後続のエフェクトの適用タイミングを遅らせます。"
+description: "エフェクトチェーンをレイヤーのパーツごとに、前のパーツより遅らせて順に適用します。"
 sidebar_position: 34
 ---
 
 # 遅延アニメーション
 
-内包するエフェクトチェーンの適用時刻を一定時間だけ遅らせます。ずらし出現や残響的アニメーションに便利です。
-複数の描画ターゲットが必要なため、テキストオブジェクトに適用する場合は `文字ごとに分割` を有効にしてください。それ以外のオブジェクトに適用する場合は `均等に分割` または `パーツごとに分割` を事前のエフェクトに追加してください。
+内包するエフェクトチェーンをレイヤーのパーツごとに適用し、各パーツの時刻を前のパーツより少しずつ遅らせます。そのため、チェーン内のアニメーションがパーツを 1 つずつ順に進んでいきます。各パーツの遅れは `ディレイ` に `順序` での順番を掛けた長さです。
+
+パーツは個別の描画ターゲットなので、レイヤーに複数のターゲットが必要です。[テキスト](../drawables/shapes/text.md)では `文字ごとに分割` をオンにし、それ以外では [均等に分割](./split-equally.md) か [パーツごとに分割](./split-by-parts.md) をこのエフェクトの前に置きます。[グループ](../containers/group.md)に適用すると、その子がそれぞれパーツになります。
 
 ## ライブラリでの場所
 
@@ -17,15 +18,39 @@ sidebar_position: 34
 
 ### ディレイ (Delay)
 
-遅延量（秒）。
+あるパーツから次のパーツまでの時間をミリ秒で指定します。
 
 - **型:** `float`
 - **既定値:** `0`
 - **アニメーション:** 可
 
+### 順序 (Order)
+
+どのパーツから動き始めるかです。
+
+- **型:** `DelayAnimationOrder`
+- **既定値:** `DelayAnimationOrder.Forward`（前から）
+- **アニメーション:** 可
+
+選べる値は次のとおりです。
+
+- `前から`: 文字の並びのような、パーツが来る順です。パーツごとに分割で分けたパーツは、見つかった順、つまり上から順に並びます。
+- `後ろから`: 最後のパーツから始めます。
+- `中央から`: その順で真ん中のパーツから始め、両側のパーツが同時に続きます。
+- `ランダム`: `乱数シード` で決まる、混ぜ合わせた順です。プレビューと書き出しで同じ順になります。
+- `左から右`、`右から左`、`上から下`、`下から上`: 各パーツの中心の位置による順です。パーツの標準的な大きさ 1 つ分を `ディレイ` 1 回分として進むので、同じ高さや同じ位置にあるパーツは同時に動き始めます。たとえば `上から下` では、テキストの 1 行全体が同時に動きます。
+
+### 乱数シード (RandomSeed)
+
+`ランダム` の順を決めます。
+
+- **型:** `int`
+- **既定値:** `0`
+- **アニメーション:** 可
+
 ### フィルタエフェクト (Effect)
 
-タイミングを遅らせるエフェクトチェーン。
+各パーツに適用するエフェクトチェーンです。そのプロパティにキーフレームでアニメーションを付けると、各パーツは前のパーツより遅れてその動きをたどります。
 
 - **型:** `FilterEffect?`
 - **既定値:** 空の `FilterEffectGroup`
@@ -33,8 +58,13 @@ sidebar_position: 34
 
 ## 使い方
 
-時間でアニメーションするエフェクトを指定すれば残響風の表現が作れます。
+テキストの文字を 1 つずつ順にフェードインさせるには、`文字ごとに分割` をオンにして遅延アニメーションを追加し、その中に `不透明度` が短い時間で `0` から `100` へ変わる[不透明度](./opacity.md)エフェクトを入れます。各文字を下から定位置へ動かす[トランスフォーム](./transform.md)を並べると、動きが加わります。`ディレイ` を `80` 程度にし、順番を変えるには別の `順序` を選びます。
+
+ペンがストロークを塗りの下に描くテキスト（**重ね順** が **塗りの背面**）は、すべてのストロークを塗りより先に描くため、パーツの数が 2 倍になり、1 つの文字のストロークと塗りが別々の時刻に動き始めます。
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/DelayAnimationEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/DelayAnimationEffect.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/DelayAnimationEffect.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/DelayAnimationEffect.cs)
+
+- [`DelayAnimationOrder.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/DelayAnimationOrder.cs)
+- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)
