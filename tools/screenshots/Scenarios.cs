@@ -10,7 +10,6 @@ using Beutl.Editor.Components.Helpers;
 using Beutl.Extensibility;
 using Beutl.Extensions.FFmpeg.Decoding;
 using Beutl.Language;
-using Beutl.Media.Decoding;
 using Beutl.Pages.SettingsPages;
 using Beutl.Services;
 using Beutl.Services.StartupTasks;
@@ -199,13 +198,13 @@ internal static class Scenarios
                 Extension[] extensions = [.. LoadPrimitiveExtensionTask.PrimitiveExtensions, ffmpeg];
                 DesktopInternals.Method(typeof(ExtensionProvider), "AddExtensions").Invoke(provider, [0, extensions]);
                 // Settings and supported extensions do not require starting an FFmpeg worker.
-                if (!DecoderRegistry.EnumerateDecoder().Any(info => info is FFmpegDecoderInfo))
-                    DecoderRegistry.Register(ffmpeg.GetDecoderInfo());
+                if (!app.Decoders.EnumerateDecoder().Any(info => info is FFmpegDecoderInfo))
+                    app.Decoders.Register(ffmpeg.GetDecoderInfo());
                 Action cleanup;
                 Control view;
                 if (id == "decoder-priority")
                 {
-                    var context = new DecoderPriorityPageViewModel(app.Configuration.ExtensionConfig);
+                    var context = new DecoderPriorityPageViewModel(app.Configuration.ExtensionConfig, app.Decoders);
                     cleanup = context.Dispose;
                     view = new DecoderPriorityPage { DataContext = context };
                 }
