@@ -113,7 +113,7 @@ obj.Size.ValueChanged += (_, change) => Console.WriteLine(change.NewValue);
 
 When migrating older code, replace `CurrentValue` with `Value`, `GetValue(context)` with `Evaluate(context)`, `ReplaceCurrentValue(value)` with `SetValueEvenIfEqual(value)`, and `HasLocalValue` with `IsValueSet`. `CoreProperty`, `ConfigureProperty`, and the `CoreObject.GetValue` / `SetValue` APIs have been removed. The same property declaration and `ScanProperties<T>()` pattern now applies to `CoreObject` subclasses outside the engine.
 
-### Keyframes and expressions
+### Keyframes and expressions {/* #keyframes-and-expressions */}
 
 Keyframes are the bottom of a property's expression chain. Use the extension methods in `Beutl.Animation` instead of the removed `IProperty.Animation` and `AnimationChanged` members:
 
@@ -139,6 +139,8 @@ KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
 ```
 
 `Expression` returns the keyframes when there is no expression above them, while `HasExpression` excludes keyframes. `IAnimation`, `IAnimation<T>`, and the non-generic `KeyFrameAnimation` have been removed; use `IKeyFrameAnimation` or `KeyFrameAnimation<T>`. `UseGlobalClock` and each keyframe's `KeyTime`, `Value`, and `Easing` are property objects too.
+
+Since preview.15, an expression can build on the keyframes below it. In a script, `Value` is the value of the property's keyframes at the current time, or its set value when it has none, and `ValueAtTime(seconds)` the same at another time, counted from the element's start like `Time`; `Value + 10` offsets the animation. The editor therefore keeps the expression when the user adds keyframes, and keeps the keyframes when the user sets an expression. Code that reads `GetKeyFrameAnimation()` should check `HasExpression` too: while it is `true`, the expression decides the value.
 
 The property menu's **Separate components** gives a vector, color, or similar property an independent track for each component. Its animation is then an `IComponentAnimation`, so `GetKeyFrameAnimation` returns `null`. Use `GetPropertyAnimation` and `SetPropertyAnimation` when code must handle both kinds: `KeyFrameAnimation<T>` and component animations both implement `IPropertyAnimation`, and `IPropertyAnimation<T>.EvaluateAt(time)` reads either. `IComponentAnimation.Components` lists the component properties. `ComponentAnimations.IsSupported(type)`, `Separate(property)`, and `Unseparate(property, time)` do what the menu does; unseparating keeps the value evaluated at `time`.
 

@@ -82,6 +82,8 @@ public sealed partial class HighContrastBlur : FilterEffect
 
 `FilterEffectContext` exposes a method for each built-in operation: `Blur`, `DropShadow`, `InnerShadow`, `Erode`, `Dilate`, `ColorMatrix`, `Saturate`, `HueRotate`, `Brightness`, `HighContrast`, `Lighting`, `MatrixConvolution`, `Transform`, `BlendMode`, and more. See [`FilterEffectContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.cs) and [`FilterEffectContext.Operations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/FilterEffectContext.Operations.cs) for the complete list.
 
+`Opacity(opacity)`, new in preview.15, multiplies the alpha of every pixel by a value from 0 to 1 and records nothing at 1. It scales each premultiplied channel, so it keeps the colors past 1 that an HDR source or an exposure leaves, which a `ColorMatrix` would clamp.
+
 `Crop(Rect, GradientSpreadMethod = Decal)` crops in the coordinates of `Bounds`. The default `Decal` makes pixels outside the rectangle transparent and shrinks the bounds. `Pad` extends edge pixels, `Repeat` tiles, and `Reflect` mirrors the crop while retaining the original bounds.
 
 For GLSL with multiple inputs or multiple passes, also see [C# Script](../reference/library/filter-effects/script/csharp-script.md#custom-glsl-passes).

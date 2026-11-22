@@ -113,7 +113,7 @@ obj.Size.ValueChanged += (_, change) => Console.WriteLine(change.NewValue);
 
 以前のコードを移行するときは、`CurrentValue` を `Value`、`GetValue(context)` を `Evaluate(context)`、`ReplaceCurrentValue(value)` を `SetValueEvenIfEqual(value)`、`HasLocalValue` を `IsValueSet` に変更します。`CoreProperty`、`ConfigureProperty`、`CoreObject.GetValue` / `SetValue` は削除されました。エンジン以外の `CoreObject` 派生クラスも、同じプロパティ宣言と `ScanProperties<T>()` のパターンを使います。
 
-### キーフレームと式
+### キーフレームと式 {/* #keyframes-and-expressions */}
 
 キーフレームは、プロパティの式の連鎖の最下層に置かれます。削除された `IProperty.Animation` と `AnimationChanged` の代わりに `Beutl.Animation` の拡張メソッドを使います。
 
@@ -139,6 +139,8 @@ KeyFrameAnimation<float>? current = obj.Size.GetKeyFrameAnimation();
 ```
 
 上位の式がない場合、`Expression` はキーフレームを返しますが、`HasExpression` はキーフレームを数えません。`IAnimation`、`IAnimation<T>`、非ジェネリックの `KeyFrameAnimation` は削除されました。`IKeyFrameAnimation` または `KeyFrameAnimation<T>` を使います。`UseGlobalClock` と、各キーフレームの `KeyTime`、`Value`、`Easing` もプロパティオブジェクトです。
+
+preview.15 以降、式はその下のキーフレームを基にできます。スクリプトでは、`Value` は現在時刻でのプロパティのキーフレームの値（キーフレームがない場合は設定値）で、`ValueAtTime(seconds)` は別の時刻での同じ値です。秒数は `Time` と同じく要素の開始から数えます。`Value + 10` はアニメーションをずらします。そのため、エディタは、ユーザーがキーフレームを追加しても式を残し、式を設定してもキーフレームを残します。`GetKeyFrameAnimation()` を読むコードは、`HasExpression` も確認してください。`true` の間は、値は式で決まります。
 
 プロパティのメニューの **成分を分離** を使うと、ベクトルや色などのプロパティは成分ごとに独立したトラックを持ちます。このときアニメーションは `IComponentAnimation` になり、`GetKeyFrameAnimation` は `null` を返します。両方の種類を扱うコードでは `GetPropertyAnimation` と `SetPropertyAnimation` を使ってください。`KeyFrameAnimation<T>` と成分のアニメーションはどちらも `IPropertyAnimation` を実装し、`IPropertyAnimation<T>.EvaluateAt(time)` でどちらの値も読み取れます。`IComponentAnimation.Components` は成分のプロパティの一覧です。`ComponentAnimations.IsSupported(type)`、`Separate(property)`、`Unseparate(property, time)` はメニューと同じ操作を行います。分離を解除すると、`time` で評価した値が保持されます。
 

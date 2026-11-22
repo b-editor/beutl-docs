@@ -161,6 +161,27 @@ A third-party decoder declares what it returns by setting `ChannelLayout` on its
 
 For video, build the color space of a decoded frame from the source's tags with `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)`, or `BuildHdrColorSpace` when `IsHdrTransfer(transfer)` is `true`, as the built-in decoders and encoders do. Since preview.13, `GetTransferFunction` maps `BitmapColorTransfer.Bt709` and `Rec2020`, the tags of BT.709, BT.601 and BT.2020 SDR video, to the new `BitmapColorSpaceTransferFn.CoreMedia709`: gamma 1.9609375 with a slope of 1/16 near black, the curve QuickTime and AVFoundation use. Such video decodes with darker shadows than before, and an export writes brighter shadow codes, so it plays back in QuickTime as it was rendered. A decoder or encoder that goes through the mapping follows the built-in ones without change. `BitmapColorSpaceTransferFn.Bt709` and `Rec2020` keep their values, the exact inverse of the camera curve, for code that wants it; a decoder that uses them directly shows the shadows of such video lighter than Beutl's own decoders.
 
+### The decoder registry {/* #decoder-registry */}
+
+Since preview.15, decoders belong to the host's `DecoderRegistry` instead of the process. `DecodingExtension.Load` registers the decoder that `GetDecoderInfo()` returns in the registry of its context, and `Unload` removes it from there. `EnumerateDecoder()` lists the registered decoders in the order of the user's decoder priority, and `GuessDecoder(file)` those whose `IsSupported(file)` is `true`. `FileExtensions.Classify(file)` tells video, audio and still-image files apart by extension, with the video and audio extensions that the registered decoders declare.
+
+To read a file yourself, pass the registry to `MediaReader.Open(file, decoders)` or `MediaReader.Open(file, options, decoders)`. It tries the decoders in that order, and throws `FileNotFoundException` for a missing file and `UnsupportedMediaException` when none of them opens it. Take the registry from `context.Services` in `Load`, from the editor's `GetService`, or from `CompositionContext.Decoders` while a resource reconciles:
+
+```csharp
+using Beutl.Extensibility;
+using Beutl.Media.Decoding;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class AudioFiles
+{
+    // Opens the audio of a file with the decoders that the editor uses.
+    public static MediaReader Open(IEditorContext editor, string file)
+        => MediaReader.Open(file, new MediaOptions(MediaMode.Audio), editor.GetRequiredService<DecoderRegistry>());
+}
+```
+
+Rendering carries the registry in `CompositionContext.Decoders`, beside `Fonts`. A `VideoSource` or `SoundSource` that has a file throws `InvalidOperationException` when it reconciles without one, so code that renders a scene or reads a source outside Beutl's own renderer passes the host's registry wherever an API takes `DecoderRegistry? decoders`, such as `SceneRenderer`, `ExportRendererFactory.Create` and `SourceSound.TryGetOriginalDuration`. A test makes a registry of its own with `new DecoderRegistry(new ExtensionConfig())` and registers its decoders in it; `BuiltInDecoders.Register(decoders)` adds the built-in WAV and animated image decoders.
+
 ## Media time and project rates {/* #media-time-and-project-rates */}
 
 Timeline positions and durations use `Beutl.MediaTime`, a whole number of flicks, with `705,600,000` flicks per second. Use `MediaTime.FromFrames` and a `Rational` frame rate instead of converting through floating-point seconds. `ToFrame`, `RoundToFrame`, and `ToSamples` require an explicit `MidpointRounding` policy.
@@ -227,6 +248,7 @@ public static class EditorTimes
 - [`AudioChannelLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelLayout.cs)
 - [`AudioChannelMatrix.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelMatrix.cs)
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
+- [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`DecoderFileExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderFileExtensions.cs), [`BuiltInDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/BuiltInDecoders.cs) and [`DecodingExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/DecodingExtension.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)

@@ -56,7 +56,7 @@ Click __[Publish]__.
 
 ## Target version and automatic updates {/* #target-version-and-automatic-updates */}
 
-A release also has a **Target version**, the Beutl versions it runs on: a version such as `2.0.0-preview.14`, which means that version and later, or a NuGet version range such as `[2.0.0-preview.14, 2.0.0-preview.15)`. Beutl offers or installs a release only for a Beutl version that its target version includes.
+A release also has a **Target version**, the Beutl versions it runs on: a version such as `2.0.0-preview.15`, which means that version and later, or a NuGet version range such as `[2.0.0-preview.15, 2.0.0-preview.16)`. Beutl offers or installs a release only for a Beutl version that its target version includes.
 
 Since preview.14, Beutl updates installed extensions from the store by itself unless the user chose otherwise: **Settings → Extensions → Update timing** is **Always update automatically** by default. Beutl then checks at startup and every six hours while it runs, downloads the newest release that fits, verifies it, and applies it before a project opens on the next launch. With **With Beutl updates**, it prepares the releases that fit a new version of Beutl when Beutl updates, and with **Notify only**, the user installs them. A release you publish therefore reaches most users without a click, so give it a target version that covers only the Beutl versions it works with.
 

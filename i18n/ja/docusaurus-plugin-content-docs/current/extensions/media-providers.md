@@ -161,6 +161,27 @@ public static class StereoReader
 
 動画では、デコードしたフレームの色空間を、ソースのタグから `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)` で作ってください。`IsHdrTransfer(transfer)` が `true` のときは `BuildHdrColorSpace` を使います。組み込みのデコーダーとエンコーダーも同じ方法を使っています。preview.13 以降、`GetTransferFunction` は、BT.709、BT.601、BT.2020 SDR の動画のタグである `BitmapColorTransfer.Bt709` と `Rec2020` を、新しい `BitmapColorSpaceTransferFn.CoreMedia709` に対応させます。これは QuickTime と AVFoundation が使う、ガンマ 1.9609375 で黒付近の傾きが 1/16 のカーブです。このような動画は以前よりシャドウが暗くデコードされ、書き出しではシャドウのコード値が明るくなるため、QuickTime でレンダリングしたとおりに再生されます。この対応を通すデコーダーやエンコーダーは、変更しなくても組み込みのものと同じ結果になります。`BitmapColorSpaceTransferFn.Bt709` と `Rec2020` は、カメラのカーブの正確な逆関数という値のまま残っています。これらを直接使うデコーダーでは、このような動画のシャドウが Beutl のデコーダーより明るく表示されます。
 
+### デコーダーのレジストリ {/* #decoder-registry */}
+
+preview.15 以降、デコーダーはプロセスではなく、ホストの `DecoderRegistry` に属します。`DecodingExtension.Load` は、`GetDecoderInfo()` が返すデコーダーをコンテキストのレジストリに登録し、`Unload` はそこから削除します。`EnumerateDecoder()` は登録されたデコーダーを、ユーザーが設定したデコーダーの優先順位の順に列挙し、`GuessDecoder(file)` はそのうち `IsSupported(file)` が `true` のものを返します。`FileExtensions.Classify(file)` は、登録されたデコーダーが宣言する動画と音声の拡張子を使って、動画・音声・静止画のファイルを拡張子で見分けます。
+
+ファイルを自分で読む場合は、`MediaReader.Open(file, decoders)` か `MediaReader.Open(file, options, decoders)` にレジストリを渡してください。デコーダーをその順に試し、ファイルがない場合は `FileNotFoundException` を、どのデコーダーも開けない場合は `UnsupportedMediaException` を投げます。レジストリは、`Load` では `context.Services` から、エディタでは `GetService` から、リソースの `Reconcile` 中は `CompositionContext.Decoders` から取得してください。
+
+```csharp
+using Beutl.Extensibility;
+using Beutl.Media.Decoding;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class AudioFiles
+{
+    // Opens the audio of a file with the decoders that the editor uses.
+    public static MediaReader Open(IEditorContext editor, string file)
+        => MediaReader.Open(file, new MediaOptions(MediaMode.Audio), editor.GetRequiredService<DecoderRegistry>());
+}
+```
+
+描画では、レジストリは `Fonts` と並んで `CompositionContext.Decoders` で渡されます。ファイルを持つ `VideoSource` や `SoundSource` は、レジストリなしで `Reconcile` されると `InvalidOperationException` を投げます。そのため、Beutl 自身のレンダラーの外でシーンを描画したりソースを読んだりするコードは、`SceneRenderer`、`ExportRendererFactory.Create`、`SourceSound.TryGetOriginalDuration` など、`DecoderRegistry? decoders` を受け取る API にホストのレジストリを渡します。テストでは、`new DecoderRegistry(new ExtensionConfig())` で独自のレジストリを作り、デコーダーを登録します。組み込みの WAV とアニメーション画像のデコーダーは、`BuiltInDecoders.Register(decoders)` で追加できます。
+
 ## メディア時刻とプロジェクトのレート {/* #media-time-and-project-rates */}
 
 タイムラインの位置と長さには `Beutl.MediaTime` を使います。flick の整数値で時刻を表し、1 秒は `705,600,000` flick です。浮動小数点数の秒数を経由せず、`MediaTime.FromFrames` と `Rational` のフレームレートで変換してください。`ToFrame`、`RoundToFrame`、`ToSamples` には `MidpointRounding` による丸め方を明示します。
@@ -227,6 +248,7 @@ public static class EditorTimes
 - [`AudioChannelLayout.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelLayout.cs)
 - [`AudioChannelMatrix.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Audio/AudioChannelMatrix.cs)
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
+- [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`DecoderFileExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderFileExtensions.cs), [`BuiltInDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/BuiltInDecoders.cs) and [`DecodingExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/DecodingExtension.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)

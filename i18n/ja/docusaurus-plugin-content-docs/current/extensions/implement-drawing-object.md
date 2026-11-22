@@ -262,6 +262,8 @@ public sealed partial class MarkerDrawable : Drawable, IEditingHandleProvider
 
 `Property` を設定すると、ホストがそのプロパティと現在時刻の前後のキーフレームを書き換えます。設定しない場合は、代わりに `MoveEditingHandle(id, position, time)` を呼びます。`Color` を設定すると、ホスト既定のハンドルの色を置き換えます。
 
+preview.15 以降、このインターフェースにはメンバーが追加されており、いずれも既定の実装があります。`GetEditingGuides(time)` が返す `EditingGuideLine` は、プレビューがハンドルの下に描く、同じ座標系の線です。ワープのグリッドなどに使います。`Property` のないハンドルのドラッグが始まると、ホストは `BeginEditingHandleDrag(id, time)` を呼び、そのドラッグの各位置で、返されたアクションを自身の編集セッションの中で呼びます。既定のアクションは `MoveEditingHandle` を呼ぶので、ドラッグの開始時の状態を保持したい場合はオーバーライドしてください。`fallbackBounds` を受け取る `GetEditingHandles`、`GetEditingGuides`、`BeginEditingHandleDrag` のオーバーロードには、エフェクトのように独自の大きさを持たないプロバイダーのために、描画オブジェクトのローカルな範囲が渡されます。既定では無視されます。
+
 preview.14 以降、プロパティパネルは、`IEditingHandleProvider` を実装したエフェクトの目のアイコンの隣に、照準のアイコンの **「フレームで編集」** ボタンを表示します。エフェクトの一覧の項目にも、単独のエフェクトのヘッダーにも表示されます。このボタンは `IEditorSelection.Select` でエフェクトを選択するので、プレビューにはそのエフェクトのハンドルが表示されます。その間、プレビューは描画オブジェクトのトランスフォームの枠、拡大縮小のハンドル、中心点を描かず、ヒットテストもしないため、ドラッグで編集されるのはエフェクトだけです。描画オブジェクトの本体をクリックすると、その要素が再び選択されます。複数の要素を選んでいる間は、このボタンは表示されません。
 
 ## ソース

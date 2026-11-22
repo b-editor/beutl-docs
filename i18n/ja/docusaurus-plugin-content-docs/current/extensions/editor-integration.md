@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.14 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.14 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.15 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.15 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -127,6 +127,34 @@ preview.13 以降、タイムラインで複数の要素を選ぶと、プロパ
 
 `PropertyEditorViewModel` から派生したコンテキストは、複数の要素を表しているかどうかを知ることができます。そのとき `EditsSeveralElements` は `true` になり、`ValueDifference.Value` には、ほかの要素の値が表示中の値とどう違うかの説明が入ります。違いがなければ `null` です。値が違う間、エディタのメニューには **「すべての要素をこの値にする」** が表示され、`CanMatchOtherElements` が `true` なら `MatchOtherElements()` を呼びます。`PropertyEditorViewModel<TValue>` は、表示中の値をすべての要素に書き込むようにこの 2 つを実装しています。別の方法で値をそろえる必要があるエディタではオーバーライドしてください。
 
+### 式の下の値を編集する {/* #editing-under-an-expression */}
+
+preview.15 以降、プロパティは式の下にキーフレームや設定値を保持し、式はそれを `Value` として読めます。値のエディタは、欄に式の結果を表示したまま、その値を編集できます。`PropertyEditorViewModel` から派生したコンテキストは、`CanEditUnderExpression` で `true` を返すと、これに対応します。返さない場合は、これまでどおり、プロパティに式がある間 `CanEdit` は `false` のままです。対応させるのは、値全体を置き換えるエディタだけにしてください。ブラシやリストのようにオブジェクトをその場で変更するエディタは、式の結果を編集してしまいます。
+
+式があるとき、入力した値は `ReplaceUnderExpression(underlying, shown, input)` の戻り値として書き込まれます。既定は `input` です。成分ごとに欄があるエディタは `ComponentAnimations.ReplaceEditedComponents(underlying, shown, input)` を返すと、ユーザーが入力しなかった成分にそれぞれの値を残せます。ドラッグやホイールの操作は、欄が動いた分だけ、`OffsetValue(value, from, to)` を通して式の下の値を動かします。既定では、`Point` や `Color` のように `ComponentAnimations` が分離できる型は成分ごとにずらし、それ以外の型では `to` をそのまま使うため、数値のエディタではオーバーライドします。
+
+```csharp
+using Beutl.Animation;
+using Beutl.Editor.PropertyEditors;
+using Beutl.Extensibility;
+
+// Edits a ratio from 0 to 1 as a percentage.
+public sealed class PercentEditorContext(IPropertyAdapter<float> property)
+    : PropertyEditorViewModel<float, double>(property)
+{
+    protected override bool CanEditUnderExpression => true;
+
+    // A drag moves the value under the expression by as much as the field moved.
+    protected override float OffsetValue(float value, float from, float to) => NumericOffset.Add(value, from, to);
+
+    protected override double ToEdit(float value) => value * 100.0;
+
+    protected override float FromEdit(double edit) => (float)(edit / 100.0);
+}
+```
+
+このコンテキストは、`Beutl.Controls.PropertyEditors` の `NumberEditor<double>` をコントロールにして、`RegisterValue<float, double>` で登録します。`IValueEditorContext<TEdit>` には既定の実装を持つメンバーが追加され、Beutl のコントロールはこれらを呼びます。`PreviewEdit(value, relative)` は、入力したテキストを `relative` が `false` で、ドラッグとホイールの操作を `true` でプレビューします。`GetIncrementValue(shown)` は次の操作の起点になる値を返し、`TryGetFocusedEditValue` と `PreviewFocusedEdit` は、欄にフォーカスがある間、式の下の値を表示し、受け取ります。独自のコントロールも同じように呼んでください。
+
 ## MCP ツール {/* #mcp-tools */}
 
 `McpToolExtension` を継承すると、Beutl のライブ MCP エンドポイントにツールを追加できます。`McpToolDefinition`、`McpToolCall`、`McpToolResult`、`McpToolContent`、`McpTextContent`、`McpImageContent` は、すべて **`Beutl.Extensibility`** にあります。以前の `Beutl.Editor.Services.Mcp` 名前空間は、拡張機能用の契約ではありません。
@@ -234,6 +262,7 @@ public static class SequenceRequests
 preview.12 以降、`BrowserDownloadExtension` は、[ブラウザ](../reference/tool-tabs/web-browser.md)タブのページがダウンロード用に提供するファイルを引き受け、独自の方法でエディタに追加できます。たとえば、音声合成サイトが生成した音声を、そのセリフとともに配置できます。ページがファイルを提供すると、ブラウザは各 `BrowserDownloadExtension` に順に `Claim` で問い合わせ、最初に引き受けた拡張機能が処理します。拡張機能に問い合わせるのは、保存済みのプロジェクトにある保存済みのシーンに、エディタがファイルを追加できる間だけです。それ以外のときは、通常どおり保存先を確認します。
 
 - `Claim(BrowserDownloadOffer)` は、提供されるファイルごとに UI スレッドで呼ばれます。提供の内容だけで判断してすぐに戻り、ファイルをブラウザに任せる場合は `null` を返してください。`Page` は表示中のページ、`SuggestedName` はページかサーバーが示したファイル名、`Source` はファイルのアドレスです。ページのスクリプトが生成したファイル（`IsGenerated`）には再び要求できるアドレスがないため、`Source` はそのファイルの提供元とされるサイトになります。`Claim` で例外が発生するとログに記録され、次の拡張機能に問い合わせます。
+- preview.15 以降、`RequestMethod` は `Source` が応答したリクエストのメソッド（GET やフォームの POST など）で、ブラウザが知らない場合は `null` です。`CanRequestAgain` は、GET に応答したファイルでだけ `true` になり、生成されたファイル、ほかのメソッド、不明なメソッドでは `false` です。このようなアドレスを再び要求すると、失敗したり、フォームの処理を繰り返したりすることがあります。`Source` を自分で要求せず、提供を引き受けて、受け取り済みのレスポンスをブラウザに保存させてください。
 - `BrowserDownloadClaim.PageScript` は、ファイルを提供したページでブラウザがすぐに評価する JavaScript の式です。このとき、ページにはまだファイルを生成した内容が表示されています。値が文字列であれば、`ImportAsync` はどのプラットフォームでも、その文字列をそのまま `PageData` として受け取ります。スクリプトが失敗した場合や文字列以外の値になった場合、ユーザーが確定してから 5 秒以内にページが応答しない場合は、`PageData` は `null` です。ページからの入力として扱ってください。`Description` は、ダウンロードのバーでファイル名の代わりに表示されます。
 - ダウンロードは引き続きユーザーがバーで確定するため、ページが単独で何かを追加することはできません。確定すると、ブラウザはダウンロードのオプションを表示せずにファイルをプロジェクトの `resources/downloads` フォルダーに保存し、そのフルパスを `FileName` に入れて、UI スレッドで `ImportAsync` を呼びます。エディタのサービスは `EditorContext` から取得してください。`ImportAsync` が完了するまで、パッケージは読み込まれたままです。
 - `false` を返すとファイルはブラウザに任され、画像・動画・音声のファイルは 1 つの要素としてタイムラインに追加されます。例外は、保存したファイルを追加できなかったこととしてバーに表示され、ファイルはフォルダーに残ります。ユーザーがバーでキャンセルするとトークンが取り消されます。`OperationCanceledException` はそのまま伝播させてください。バーにはキャンセルとして表示されます。
@@ -351,3 +380,5 @@ public sealed class VideoPageDownloads : BrowserDownloadExtension
 - [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs)
 - [`DroppedMembersAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/DroppedMembersAttribute.cs)
 - [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) and [`PropertyEditorViewModel{TValue}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue%7D.cs)
+- [`PropertyEditorViewModel{TValue,TEdit}.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel%7BTValue,TEdit%7D.cs), [`IValueEditorContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/IValueEditorContext.cs) and [`NumberEditor.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/NumberEditor.cs)
+- [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs) and [`NumericOffset.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/NumericOffset.cs)

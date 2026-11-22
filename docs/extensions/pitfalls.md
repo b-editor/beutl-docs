@@ -3,7 +3,24 @@ title: Pitfalls in Extension Development
 description: Behaviors of Beutl 2.x that are easy to miss when building, packaging and testing an extension, and how to work with them.
 ---
 
-This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.14; rebuild extensions against its SDK after migrating the APIs below.
+This page collects behaviors that the API does not make obvious and that extension authors have run into. Where Beutl itself should change, the item links to the issue that tracks it. This page targets Beutl 2.0.0-preview.15; rebuild extensions against its SDK after migrating the APIs below.
+
+## Migrating from preview.14 {/* #migrating-from-preview-14 */}
+
+Check these changes when you move an extension from preview.14. The decoders now belong to the host, as most other services did in preview.14: an extension that opens media itself, renders a scene, or implements one of the interfaces below has to change. Other extensions only need a rebuild, because many methods that open media gained an optional `DecoderRegistry? decoders` parameter. Removed APIs have no compatibility shims.
+
+- **Test projects:** The target framework stays `net11.0`, Avalonia stays at 12.1.6, and the file format floor stays at preview.11, so a project saved by preview.15 still opens in preview.11. See the [version table](version-mapping.md).
+- **`DecoderRegistry`:** No longer static. The host owns one, which `context.Services` in `Load` and the editor's `GetService` provide. `Register`, `Unregister`, `EnumerateDecoder`, `GuessDecoder`, `OpenMediaFile`, `ProxyResolver` and `DecodersChanged` are members of that instance, `DecoderRegistry.Initialize(config)` is now the constructor `new DecoderRegistry(config)`, and what the static `DecoderFileExtensions` did is now on its `FileExtensions`. `DecodingExtension` registers its decoder in the registry of the context it loads in. See [the decoder registry](media-providers.md#decoder-registry).
+- **Opening media:** `MediaReader.Open` takes the registry as its last argument. A `VideoSource` or `SoundSource` that has a file throws `InvalidOperationException` when it is reconciled with a `CompositionContext` whose `Decoders` is `null`, so pass the host's registry wherever an API takes `DecoderRegistry? decoders`, such as `SceneRenderer`, `ExportRendererFactory.Create`, and `TryGetOriginalDuration` of `SourceSound` and `SourceVideo`. A test registers its decoders in a registry of its own.
+- **Custom `IOriginalDurationProvider`, `IThumbnailsProvider` and `IProxyGeneratorFactory`:** `TryGetOriginalDuration`, `GetThumbnailStripAsync` and `GetWaveformChunksAsync` take `DecoderRegistry? decoders = null` as their last parameter, and `IProxyGeneratorFactory.Create` takes the `DecoderRegistry` to open the source with. A class that implements them must add the parameter, and a package built for preview.14 that implements one of them does not load in preview.15. A `Sound` that overrides `GetClipLayout` adds the same last parameter. Open media with the registry they receive.
+- **Custom `ITimeMappedSource`:** `GetSourceDuration()` is now `GetSourceDuration(DecoderRegistry? decoders = null)`. It has a default implementation, so a class that kept the parameterless method still compiles, but Beutl no longer calls it, and edits stop keeping `OffsetPosition` within the timeline's length. Add the parameter. See [time-based content and splitting](#time-based-content-and-splitting).
+- **Custom `IGenerativeRunHost`:** The new `Decoders` property has no default implementation, so a class that implements the interface must add it. `GenerativeGraphRunner` evaluates the graph and loads the nodes' previews with that registry.
+- **Windows that your extension opens:** Copy `ControlDecoders.Decoders` from the opener as well. See [windows that your extension opens](#windows-that-your-extension-opens).
+- **Project fonts:** Opening a project no longer loads its bundled fonts into the host's `FontManager`. Each scene editor resolves them through a `FontManager` of its own, which forks the host's, so the project's text drawn or measured with the `FontManager` from `Load` falls back to another font. Use the editor's. See [drawing text and pixels](#drawing-text-and-pixels).
+- **Keyframes and expressions together:** The editor no longer removes an expression when the user adds keyframes, nor the keyframes when the user sets an expression, because an expression can now read them as `Value`. While `HasExpression` is `true`, the expression decides the value, even when `GetKeyFrameAnimation()` returns keyframes. See [keyframes and expressions](engine-object.md#keyframes-and-expressions).
+- **Property editors:** A value editor can stay editable while its property has an expression, and then edits the value under it. `IValueEditorContext<TEdit>` has new members with default implementations, so an existing context still compiles and works as before. See [editing under an expression](editor-integration.md#editing-under-an-expression).
+- **Browser downloads:** `BrowserDownloadOffer` now tells the method of the request that `Source` answered. An extension that requests `Source` itself checks `CanRequestAgain` first. See [browser downloads](editor-integration.md#browser-downloads).
+- **Beutl's folder on Windows:** A new installation goes to `%LOCALAPPDATA%\Programs\Beutl` for the current user by default, without administrator rights, and an update keeps the folder of the installation it replaces. Find Beutl's own files from `AppContext.BaseDirectory` rather than assume `Program Files`.
 
 ## Migrating from preview.13 {/* #migrating-from-preview-13 */}
 
@@ -14,6 +31,7 @@ Check these changes when you move an extension from preview.13. Most of the glob
 - **`LibraryService.Current`, `ObjectTemplateService.Instance`:** Removed. Resolve `LibraryService` or `ObjectTemplateService` from `context.Services`, or from the editor's `IEditorContext`. See [registering with the library](engine-object.md#registering-with-the-library).
 - **`TutorialService`:** Removed with its `Current`. `TutorialExtension` registers its tutorials with the `ITutorialService` of the context, so code that calls its `Load` itself, such as a test, passes a context that provides one.
 - **`GlobalConfiguration.Instance`:** Removed. Resolve `GlobalConfiguration` and read the section you need from it, such as `EditorConfig`. Its constructor is now public, so a test can make its own. `RenderCacheOptions.CreateFromGlobalConfiguration()` is now `CreateFromConfiguration(EditorConfig)`.
+- **`Scene.AddChild`, `MoveChild`, `MoveChildren`, `CloseGapAfter` and `CloseAllGaps`:** They no longer read **Settings → Editor → Automatically adjusts scene duration** from `GlobalConfiguration.Instance`, and take `bool autoAdjustDuration` instead, `true` by default. Without the argument, they lengthen the scene to reach the elements even when the user turned the setting off. To follow the setting, pass `EditorConfig.AutoAdjustSceneDuration.Value` of the host's `GlobalConfiguration`.
 - **`NotificationService`:** No longer static, and `NotificationService.Handler` is removed. Resolve `INotificationService` and call `Show`, `ShowInformation`, `ShowSuccess`, `ShowWarning` or `ShowError`, extension methods in `Beutl.Services` that take the same parameters as before.
 - **`FontManager.Instance`:** Removed with `FontManager.Initialize` and `FontFamily.Typefaces`. `FormattedText`, `TextElements` and `TextElementsBuilder` take the `FontManager` to use, and `fonts.GetTypefaces(family)` lists the typefaces of a family. See [drawing text and pixels](#drawing-text-and-pixels).
 - **Custom `IGenerativeRunHost`:** The new `Fonts` property has no default implementation, so a class that implements the interface must add it. `GenerativeGraphRunner` evaluates the graph with that `FontManager` when it captures a node's inputs.
@@ -118,7 +136,7 @@ Since preview.11, when a library asks `AssemblyLoadContext.Default` for an assem
 
 ### Services from the host {/* #services-from-the-host */}
 
-Since preview.14, Beutl passes an `IExtensionContext` to `Load` and `Unload`. Its `Services` is the host's `IServiceProvider`, which provides `LibraryService`, `ObjectTemplateService`, `GlobalConfiguration`, `FontManager`, `INotificationService` and `ITutorialService`. It finds a service by its exact type, so ask for `GlobalConfiguration` and read a section such as `EditorConfig` from it. `GetRequiredService<T>()` is in `Microsoft.Extensions.DependencyInjection`, which the SDK's references bring.
+Since preview.14, Beutl passes an `IExtensionContext` to `Load` and `Unload`. Its `Services` is the host's `IServiceProvider`, which provides `LibraryService`, `ObjectTemplateService`, `GlobalConfiguration`, `FontManager`, `INotificationService` and `ITutorialService`, and since preview.15 `DecoderRegistry`. It finds a service by its exact type, so ask for `GlobalConfiguration` and read a section such as `EditorConfig` from it. `GetRequiredService<T>()` is in `Microsoft.Extensions.DependencyInjection`, which the SDK's references bring.
 
 ```csharp
 using Beutl.Extensibility;
@@ -154,7 +172,7 @@ public sealed class ShapesExtension : Extension
 ```
 
 - Beutl loads extensions one at a time: the built-in ones first, then installed packages by name, then side-loaded ones. It calls `Unload` after a failed `Load` as well, so write `Unload` to undo only what `Load` finished, and to run more than once.
-- In a command, a tool tab or another factory, take services from the editor it serves, such as `execution.EditorContext` or the `IEditorContext` that a tool tab is created for: the scene editor provides the services above, and its own, through `GetService`. One instance of an extension can serve more than one host, so prefer these over the services kept from `Load`.
+- In a command, a tool tab or another factory, take services from the editor it serves, such as `execution.EditorContext` or the `IEditorContext` that a tool tab is created for: the scene editor provides the services above, and its own, through `GetService`. One instance of an extension can serve more than one host, so prefer these over the services kept from `Load`. Since preview.15, the editor's `FontManager` is a fork that resolves the fonts bundled with the scene's project ahead of the host's.
 
 ### Loading is all or nothing
 
@@ -179,7 +197,7 @@ Since preview.9, a collection type's own `[JsonConverter]` is honored on both sa
 
 A `[JsonConverter]` placed on a property member is not read by the property system. Put it on the value type, or implement the appropriate Beutl serialization contract; do not rely on the member attribute.
 
-### Time-based content and splitting
+### Time-based content and splitting {/* #time-based-content-and-splitting */}
 
 When the user splits an element, Beutl copies it and calls `ISplittable.NotifySplitted` on the objects of both halves. An object that plays something on its own timeline, such as comments, lyrics or lip sync, should continue in the back half from where the front half stopped. Without that, the back half starts over from the beginning.
 
@@ -205,7 +223,7 @@ public abstract partial class TimedDrawable : Drawable, ITimeMappedSource
 }
 ```
 
-At the element's local time `t`, the source plays its timeline at `OffsetPosition` plus the integral of `Speed` over `[0, t]`, so draw from that position. `GetSourceDuration()` reports the timeline's length, which edits stay within. `HasDynamicMapping` defaults to `OffsetPosition.HasExpression`; override `HasDynamicTimeline` when an expression picks the timeline. Implement `ISplittable` directly only for an object without such a timeline.
+At the element's local time `t`, the source plays its timeline at `OffsetPosition` plus the integral of `Speed` over `[0, t]`, so draw from that position. `GetSourceDuration(decoders)` reports the timeline's length, which edits stay within; open a media file with the `DecoderRegistry` it receives. `HasDynamicMapping` defaults to `OffsetPosition.HasExpression`; override `HasDynamicTimeline` when an expression picks the timeline. Implement `ISplittable` directly only for an object without such a timeline.
 
 ### Saved but not shown
 
@@ -347,7 +365,7 @@ When adjusting a property's controls, check their spacing and label alignment un
 
 ### Windows that your extension opens {/* #windows-that-your-extension-opens */}
 
-Since preview.14, the controls of `Beutl.Controls` take the user's settings and the host's fonts from inherited attached properties, `ControlConfiguration.Configuration` and `ControlFonts.Fonts`, and `ControlNotifications.Notifications` carries the host's `INotificationService` to views the same way. Beutl sets them on its windows, including floating tool tabs and the windows of a `ToolWindowExtension`, and a control in a tool tab, a flyout or a popup inherits them. A window that your extension creates and shows itself has none: native context menus on macOS and the pointer lock of property drags follow their defaults instead of the user's settings, a font picker makes a font manager of its own without the project's fonts, and `ControlNotifications.GetNotifications` returns `null`. Copy them from the control that opens the window:
+Since preview.14, the controls of `Beutl.Controls` take the user's settings and the host's fonts from inherited attached properties, `ControlConfiguration.Configuration` and `ControlFonts.Fonts`, and `ControlNotifications.Notifications` carries the host's `INotificationService` to views the same way. Since preview.15, `ControlDecoders.Decoders` carries the host's `DecoderRegistry`, which the file pickers of video and sound properties read for the file types they offer. Beutl sets them on its windows, including floating tool tabs and the windows of a `ToolWindowExtension`, and a control in a tool tab, a flyout or a popup inherits them. A window that your extension creates and shows itself has none: native context menus on macOS and the pointer lock of property drags follow their defaults instead of the user's settings, a font picker makes a font manager of its own without the project's fonts, and `ControlNotifications.GetNotifications` and `ControlDecoders.GetDecoders` return `null`. Copy them from the control that opens the window:
 
 ```csharp
 using Avalonia.Controls;
@@ -360,6 +378,7 @@ public static class ExtensionWindows
         ControlConfiguration.SetConfiguration(window, ControlConfiguration.GetConfiguration(opener));
         ControlFonts.SetFonts(window, ControlFonts.GetFonts(opener));
         ControlNotifications.SetNotifications(window, ControlNotifications.GetNotifications(opener));
+        ControlDecoders.SetDecoders(window, ControlDecoders.GetDecoders(opener));
     }
 }
 ```
@@ -372,7 +391,8 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 
 ## Drawing text and pixels {/* #drawing-text-and-pixels */}
 
-- Since preview.14, `FormattedText`, `TextElements` and `TextElementsBuilder` take the `FontManager` that resolves their fonts. A resource takes it from `CompositionContext.Fonts` when it reconciles, as [`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) does: while Beutl renders a scene, it is the host's font manager. Outside rendering, resolve `FontManager` from the host's services.
+- Since preview.14, `FormattedText`, `TextElements` and `TextElementsBuilder` take the `FontManager` that resolves their fonts. A resource takes it from `CompositionContext.Fonts` when it reconciles, as [`TextBlock`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs) does: while Beutl renders a scene, it is the font manager of the scene's editor. Outside rendering, take the `FontManager` of the editor whose scene the text belongs to, or the host's for text outside a project.
+- Since preview.15, the editor's font manager is a fork. `FontManager.Fork()` makes a manager that resolves the fonts that `LoadProjectFonts` loads into it ahead of its parent's, and asks its parent for the rest. Those fonts never reach the parent, while `AddFont` adds to the installed fonts that every fork shares. Beutl forks the host's fonts for the open project, and that fork again for each of its scene editors. A fork that you hand to controls with `ControlFonts.SetFonts` is let go with `ControlFonts.Release` once they no longer show it.
 - `context.DrawText(text, fill, pen)` draws an outline only when `FormattedText.Pen` is set. The pen argument alone draws no outline.
 - `FormattedText.Bounds` includes text advance and spacing; `ActualBounds` includes stroke ink and `RasterBounds` covers rasterized glyph masks. None is a line height. Size lines with `Metrics.Ascent`, which is negative, and `Metrics.Descent`, and put the baseline at `top - Ascent`.
 - Choose a registered font that covers your text instead of assuming a platform-specific default. The font manager provides fallback families; measure with the actual typeface used for rendering.
@@ -405,7 +425,10 @@ Since preview.11, on macOS a `ContextMenu`, or a `ContextFlyout` that is a `Menu
 - [`AnimatedThumbnail.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/AnimatedThumbnail.cs) and [`IAnimatedThumbnailSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/IAnimatedThumbnailSource.cs)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs)
 - [`NativeContextMenus.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/NativeContextMenus.cs) and [`ContextMenuEntry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/NativeContextMenu/ContextMenuEntry.cs)
-- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`ControlConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlConfiguration.cs), [`ControlFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlFonts.cs), [`ControlNotifications.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlNotifications.cs), [`ControlDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/ControlDecoders.cs) and [`UiFonts.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Controls/Styling/UiFonts.cs)
+- [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`IOriginalLengthProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IOriginalLengthProvider.cs), [`IThumbnailsProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IThumbnailsProvider.cs) and [`ProxyGeneratorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Proxy/ProxyGeneratorRegistry.cs)
+- [`GenerativeGraphRunner.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/Generative/GenerativeGraphRunner.cs)
+- [`Scene.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.cs) and [`Scene.Gaps.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/Scene.Gaps.cs)
 - [`RenderPlacement.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderPlacement.cs)
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Font/FontManager.cs) and [`CompositionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Composition/CompositionContext.cs)
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
