@@ -73,6 +73,7 @@ The preview has its own controls for the settings you change most often.
 
 - **Zoom box** (beside the transport buttons): Shows the current zoom. Choose **Fit preview** to fit the frame to the panel, or `10%` to `800%`. At `100%`, one pixel of the frame takes one pixel of the screen.
 - **Resolution box**: The same choices as [Preview render quality](#preview-render-quality). **Fit to previewer** shows as **Auto** in the box.
+- **Move**, **Hand**, **Crop selection**, and **3D camera control** buttons (in the column left of the frame): Choose the tool for the frame. Each tooltip shows the tool's current key; see [Tool shortcuts](#preview-tool-shortcuts).
 - **Guides**, **Onion skin**, and **Checkerboard** buttons (in the column right of the frame): Toggle those overlays. The column also has **Show Preview in Another Window** and **Preview Settings**.
 
 ### Zooming and panning
@@ -81,9 +82,20 @@ The preview has its own controls for the settings you change most often.
 |--------|-----|
 | Zoom in / out | `Ctrl` + wheel (`Cmd` + wheel on macOS) with any tool, a pinch, or `Alt + =` / `Alt + -` |
 | Fit the frame to the panel | `Alt + 0`, or **Fit preview** in the zoom box |
-| Pan a zoomed frame | The wheel with the **Move** or **Crop selection** tool (`Shift` for horizontal), or a drag with the **Hand** tool |
+| Pan a zoomed frame | The wheel with the **Move** or **Crop selection** tool (`Shift` for horizontal), a drag with the **Hand** tool, or a middle-button drag (except with **3D camera control**) |
 
 Zoom ranges from 0.05× to 64× of the fitted size. With the **Move** or **Crop selection** tool, the plain wheel does nothing while the frame fits; with the **Hand** tool it zooms. With **3D camera control**, `Ctrl` + wheel (`Cmd` + wheel) zooms the preview rather than moving the camera. Zoomed in far enough that a frame pixel is two screen pixels wide or more, the preview draws the frame's pixels as sharp squares. At fit, the frame stays smooth.
+
+### Tool shortcuts {/* #preview-tool-shortcuts */}
+
+| Tool | Windows / Linux | macOS |
+|------|-----------------|-------|
+| **Move** | `V` | `V` |
+| **Hand** | `H` | `H` |
+| **Crop selection** | `Shift + C` | `Shift + C` |
+| **3D camera control** | `Shift + V` | `Shift + V` |
+
+The keys work while the preview has the focus, so click the frame first. This also holds for a preview in a floating window. With the focus elsewhere, such as on the timeline, the keys do what they do there. They are ignored while you type in a text box or drag on the frame. While you edit a path with **Edit in frame**, `V` and `H` choose the path tools instead. A middle-button drag switches to **Hand** only until you release the button. Change the keys in **Settings → Keymap**, where the commands are **Preview (Move)**, **Preview (Hand)**, **Preview (Crop selection)**, and **Preview (3D camera control)**. The command palette lists them under the same names.
 
 ### Checkerboard
 
@@ -139,3 +151,4 @@ These two sections enable and tune the editor's render caches. See [Render cache
 - [`PlayerSeekBar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PlayerSeekBar.cs) / [`PreviewCheckerboard.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/PreviewCheckerboard.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs) (preview shortcuts)
 - [`PlayerView.axaml.TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/PlayerView.axaml.TimeDisplayFormat.cs) / [`Player.CurrentTimeEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Player.CurrentTimeEditor.cs) (the time on the preview)
+- [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs) / [`PlayerViewModel.PreviewTools.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.PreviewTools.cs) / [`PlayerView.axaml.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Views/PlayerView.axaml.cs) / [`PlayerView.axaml.MouseControl.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Views/PlayerView.axaml.MouseControl.cs) (tool shortcuts)

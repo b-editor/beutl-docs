@@ -16,7 +16,9 @@ sidebar_position: 1
 
 ### 個数 (Count)
 
-ポータルの直下にある要素のうち、フローへ取り込む個数（連続する Z インデックス分）。後続のコンテナ系オブジェクトは、ここで取り込まれた要素を子要素として受け取ります。
+ポータルの直下から数えて、フローへ要素を取り込むレイヤーの数（連続する Z インデックス分）。後続のコンテナ系オブジェクトは、ここで取り込まれた要素を子要素として受け取ります。
+
+ライブラリから **グループ**、**デコレーター**、**サウンドグループ**、**3Dシーン** などのコンテナを単独で追加すると、新しい要素には **個数** が `5` のポータルが付き、コンテナは下の 5 つのレイヤーの要素を取り込みます。それ以外の方法で作られたポータル（[要素プロパティ](../../tool-tabs/element-property.md)タブで既存の要素にコンテナを追加したときなど）は `0` から始まります。
 
 - **型:** `int`
 - **既定値:** `0`
@@ -37,3 +39,5 @@ sidebar_position: 1
 ## ソース
 
 [`src/Beutl.ProjectSystem/ProjectSystem/PortalObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/PortalObject.cs)
+
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs)（ライブラリから追加したコンテナのポータル）

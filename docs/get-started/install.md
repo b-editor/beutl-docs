@@ -98,9 +98,16 @@ The first time a newly published version starts, a notification offers **Release
 
 ## Before updating
 
-**2.0.0-preview.15 keeps the project file format floor of preview.11.** Projects saved by preview.15 still open in preview.11, preview.12, preview.13, and preview.14, but not in preview.10 or earlier. Keep a copy of the whole project folder before saving it in the new version if you need to return to preview.10 or earlier. See [Project Structure](./project-structure.md#version-compatibility).
+**Projects saved by 2.0.0-preview.16 require at least 2.0.0-preview.15.** If you need to return to preview.14 or earlier, keep a copy of the whole project folder before saving in preview.16. See [Project Structure](./project-structure.md#version-compatibility).
 
 **On x64, Beutl needs a processor with x86-64-v2 since preview.12.** See [System requirements](#system-requirements).
+
+When updating to preview.16, check the parts of your project that use these features.
+
+- Videos with keyframed speed can show slightly different source frames because their speed curves are now integrated exactly. See [Video](../reference/library/drawables/sources/video.md).
+- Polar Coordinates now resizes the output by default. The wrap starts at the top and puts the source's top row on the rim. See [Polar Coordinates](../reference/library/filter-effects/polar-coordinates.md).
+- Delay Animation can change the timing of parts with `From center` and the order of parts with `Random`. See [Delay Animation](../reference/library/filter-effects/delay-animation.md).
+- Generate your proxies again after updating from preview.15. See [Proxies](../reference/tool-tabs/proxies.md).
 
 Existing projects can look different after updating to preview.15:
 
@@ -134,3 +141,4 @@ If you use an AI coding agent, [reinstall its Beutl integration](../advanced/ai-
 - [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)
 - [`beutl-setup.iss`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/nukebuild/beutl-setup.iss) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`DebianPackageInstaller.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Services/DebianPackageInstaller.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Core/Serialization/FileFormat.cs) / [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Core/Serialization/FileFormat.cs)

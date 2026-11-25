@@ -119,10 +119,14 @@ The editor's **Help** tab lists what an expression can use. Among them:
 | `Progress` | How far the current time is into the element, from `0` to `1` |
 | `GetProperty<T>(path)`, `GetProperty<T>(path, time)` | Another property's value, now or at another time. __Copy GetProperty code__ in a property's menu copies the call for it. |
 | `Wiggle(frequency, amplitude, octaves = 1, seed = null)` | A smooth random offset |
+| `WiggleValue(frequency, amplitude, octaves = 1, seed = null)` | `Value` with a smooth random offset on each of its components |
+| `LoopOut(mode = LoopMode.Cycle, keyframes = 0)`, `LoopIn(mode = LoopMode.Cycle, keyframes = 0)` | The keyframes repeated after the last one, or before the first. See [Looping keyframes](#looping-keyframes). |
 
 Times are in seconds from the element's start, like `Time`. `Value + 10` raises an animation by 10, and `ValueAtTime(Time - 0.5)` follows the property's own animation half a second behind.
 
 `Wiggle` changes about `frequency` times per second and stays within `amplitude` either way, so `Value + Wiggle(2, 10)` shakes a value by up to 10 around its animation. More `octaves`, up to 16, add finer detail. Each property wiggles in its own way, and it wiggles the same way in the preview and in the export. To make several properties wiggle together, give them the same `seed`.
+
+`Wiggle` gives a single number, and calls with the same arguments give the same one, so adding it to both X and Y moves a position only along a diagonal. `WiggleValue(frequency, amplitude, octaves = 1, seed = null)` returns `Value` with a separate offset on each of its components, so `WiggleValue(2, 40)` on a position moves X and Y independently, each by up to 40. It works on numbers and on values made of numbers, such as positions, sizes, rectangles, and colors, and stops the expression with an error on other kinds of values. A color wiggles its red, green, and blue by up to `amplitude` on their 0 to 255 scale and keeps its opacity. On a single number, `WiggleValue(2, 10)` gives the same result as `Value + Wiggle(2, 10)`.
 
 In a row that joins several values, `Value` holds them together, such as a `Point` for a position, so `Value + new Point(10, 0)` moves an animated position 10 pixels to the right.
 
@@ -132,11 +136,38 @@ A property can have keyframes and an expression at once. Adding keyframes to a p
 
 The property's button then shows the ◇ with a small fx badge, and its tooltip says that both are set. A click on it still adds or removes the keyframe at the playhead, and a right-click opens the menu. In the [Graph Editor](../reference/tool-tabs/graph-editor.md), the properties tree marks a property that has an expression with fx too.
 
+### Looping keyframes {/* #looping-keyframes */}
+
+`LoopOut` repeats a property's keyframes after the last keyframe, and `LoopIn` before the first, so a few keyframes can keep a motion going for the whole element. Set one of them as the expression of a property with keyframes:
+
+- `LoopOut(mode = LoopMode.Cycle, keyframes = 0)`
+- `LoopIn(mode = LoopMode.Cycle, keyframes = 0)`
+
+`LoopOut` returns `Value` up to the last keyframe, and `LoopIn` from the first keyframe on, so the keyframes play as they are. `mode` chooses how the animation goes on beyond them:
+
+- `LoopMode.Cycle`: plays the keyframes again and again.
+- `LoopMode.PingPong`: plays them backward and forward in turn.
+- `LoopMode.Offset`: plays them again, each time starting from where the last time ended, so the change adds up.
+- `LoopMode.Continue`: keeps moving at the speed and in the direction the animation has at the last keyframe, or at the first for `LoopIn`. If the animation eases to a stop there, the value stays put.
+
+`keyframes` limits the loop to that many keyframe times from the end for `LoopOut`, or from the start for `LoopIn`; `0` uses them all. When components are animated separately, or a row joins several values, the keyframe times of all of them count together. With fewer than two keyframe times, both functions return `Value`.
+
+For example:
+
+- `LoopOut()` repeats the whole animation until the element ends.
+- `LoopOut(LoopMode.PingPong)` swings back and forth between the first and the last keyframe.
+- `LoopOut(LoopMode.Offset)` on a rotation keyframed from `0` to `90` keeps turning 90 degrees further each time.
+- `LoopOut(LoopMode.Cycle, 2)` plays the earlier keyframes once and then repeats only the last two.
+- `LoopIn(LoopMode.Continue)` keeps a motion going before the first keyframe at its starting speed.
+
+`Offset` and `Continue` add values up, so they work on numbers and on values made of numbers, such as positions, sizes, and colors. On other kinds of values, such as switches, they stop the expression with an error, and the property shows its value without the expression. `Cycle` and `PingPong` work on every kind of value.
+
 ### Editing under an expression {/* #editing-under-an-expression */}
 
 While a property has an expression, its field shows the expression's result, and you can still edit the value under it:
 
 - A value you type or pick replaces the value under the expression: the keyframe at the playhead, or between keyframes the next one, or the set value when there are no keyframes. Between keyframes, the field shows the result at the keyframe it edits.
+- Typing into one box of a point, size, or rectangle, or into one of the R, G, and B boxes of a color wheel, changes only that component of the value under the expression. The other components keep their own values.
 - Dragging a box moves the value under the expression by the amount you drag. With `Value + 50` over `100`, the field shows `150`, and dragging it to `160` makes the value `110`.
 - When you click into a box to type, it shows the value under the expression, and it shows the result again when you leave it.
 
@@ -149,5 +180,7 @@ This works for numbers, the boxes of points, sizes, and rectangles, colors and t
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`ExpressionGlobals.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals.cs) / [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`WiggleNoise.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/WiggleNoise.cs)
+- [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`LoopMode.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/LoopMode.cs) / [`KeyFrameContinuation.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Animation/KeyFrameContinuation.cs) / [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Animation/ComponentAnimations.cs) (`LoopOut`, `LoopIn`, and `WiggleValue`)
+- [`VectorValues.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/VectorValues.cs) / [`GradingColorComponentsEditor.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/GradingColorComponentsEditor.cs) (editing one component under an expression)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`ExpressionEditorFlyout.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/ExpressionEditorFlyout.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs)
 - [`Strings.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/Strings.resx)

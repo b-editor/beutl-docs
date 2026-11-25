@@ -98,9 +98,16 @@ Flatpak のインストールでは、代わりに **インストール** と **
 
 ## 更新する前に
 
-**2.0.0-preview.15 では、プロジェクト形式の最低対応バージョンは preview.11 のままです。** preview.15 で保存したプロジェクトは preview.11、preview.12、preview.13、preview.14 では開けますが、preview.10 以前では開けません。preview.10 以前に戻す必要がある場合は、新しいバージョンで保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)も参照してください。
+**2.0.0-preview.16 で保存したプロジェクトを開くには、2.0.0-preview.15 以降が必要です。** preview.14 以前に戻す必要がある場合は、preview.16 で保存する前にプロジェクトフォルダー全体をコピーしてください。[プロジェクトの構造](./project-structure.md#version-compatibility)を参照してください。
 
 **x64 では、preview.12 以降、x86-64-v2 に対応したプロセッサーが必要です。** [動作環境](#system-requirements)を参照してください。
+
+preview.16 に更新したら、次の機能を使っている箇所を確認してください。
+
+- 速度にキーフレームを設定した動画は、速度のカーブを正確に積分するようになったため、表示されるフレームが少し変わることがあります。[動画](../reference/library/drawables/sources/video.md)を参照してください。
+- 極座標は既定で出力範囲を調整します。上から巻き始め、元の画像の上端が円の外周に来るようになりました。[極座標](../reference/library/filter-effects/polar-coordinates.md)を参照してください。
+- 遅延アニメーションの「中央から」では各部分が動き始める時刻が、「ランダム」では順番が変わることがあります。[遅延アニメーション](../reference/library/filter-effects/delay-animation.md)を参照してください。
+- preview.15 から更新したら、プロキシを作り直してください。[プロキシ](../reference/tool-tabs/proxies.md)を参照してください。
 
 preview.15 に更新すると、既存のプロジェクトの見た目が変わることがあります。
 
@@ -134,3 +141,4 @@ AIコーディングエージェントを使用している場合は、更新後
 - [`LayerEffect.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/LayerEffect.cs) / [`Clipping.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Engine/Graphics/FilterEffects/Clipping.cs)
 - [`beutl-setup.iss`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/nukebuild/beutl-setup.iss) / [`UpdateDialogViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/ViewModels/Dialogs/UpdateDialogViewModel.cs) / [`DebianPackageInstaller.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Services/DebianPackageInstaller.cs)
 - [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Core/Serialization/FileFormat.cs) / [`ElementTransitions.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.ProjectSystem/ProjectSystem/ElementTransitions.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Core/Serialization/FileFormat.cs)

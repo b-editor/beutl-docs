@@ -20,6 +20,8 @@ _This object has no properties of its own. Only the inherited common properties 
 
 Use to animate per-glyph or per-shape independently after applying a single transform that knows about each part.
 
+Put [Delay Animation](./delay-animation.md) or [Range animator](./range-animator.md) after it to animate the parts one after another or a range of them. They count each part made here on its own, even on a text, so their `Unit` has no effect on these parts.
+
 ## Source
 
 [`src/Beutl.Engine/Graphics/FilterEffects/PartsSplitEffect.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/FilterEffects/PartsSplitEffect.cs)

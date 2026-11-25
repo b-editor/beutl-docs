@@ -125,10 +125,14 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 | `Progress` | 現在時刻が要素のどこにあるか（`0` から `1`） |
 | `GetProperty<T>(path)`、`GetProperty<T>(path, time)` | 別のプロパティの、現在または別の時刻での値。プロパティのメニューの __GetPropertyコードをコピー__ で、そのプロパティを読む呼び出しをコピーできます。 |
 | `Wiggle(frequency, amplitude, octaves = 1, seed = null)` | なめらかなランダムのずれ |
+| `WiggleValue(frequency, amplitude, octaves = 1, seed = null)` | 成分ごとになめらかなランダムのずれを加えた `Value` |
+| `LoopOut(mode = LoopMode.Cycle, keyframes = 0)`、`LoopIn(mode = LoopMode.Cycle, keyframes = 0)` | 最後のキーフレームの後、または最初のキーフレームの前で繰り返すキーフレーム。[キーフレームを繰り返す](#looping-keyframes)を参照してください。 |
 
 時刻は `Time` と同じく、要素の開始からの秒数で指定します。`Value + 10` はアニメーションを 10 だけ上げ、`ValueAtTime(Time - 0.5)` はプロパティ自身のアニメーションを 0.5 秒遅れてたどります。
 
 `Wiggle` は 1 秒におよそ `frequency` 回変化し、正負とも `amplitude` の範囲に収まります。`Value + Wiggle(2, 10)` では、値がアニメーションを中心に最大 10 だけ揺れます。`octaves` を増やすと（最大 16）細かい揺れが加わります。揺れ方はプロパティごとに異なり、プレビューと書き出しで同じになります。複数のプロパティを同じように揺らすには、同じ `seed` を指定します。
+
+`Wiggle` が返すのは 1 つの数値で、同じ引数で呼ぶと同じ値になるため、X と Y の両方に足しても位置は斜めにしか動きません。`WiggleValue(frequency, amplitude, octaves = 1, seed = null)` は、`Value` の成分ごとに別々のずれを加えた値を返します。位置に `WiggleValue(2, 40)` を設定すると、X と Y がそれぞれ最大 40 ずつ別々に揺れます。数値と、位置・サイズ・矩形・色のように数値でできた値で使え、ほかの種類の値では式がエラーで止まります。色では赤・緑・青が 0〜255 の目盛りで最大 `amplitude` だけ揺れ、不透明度は変わりません。1 つの数値では、`WiggleValue(2, 10)` は `Value + Wiggle(2, 10)` と同じ結果になります。
 
 複数の値を 1 行にまとめた行では、`Value` もそれらをまとめた値になります。位置なら `Point` なので、`Value + new Point(10, 0)` でアニメーションする位置を 10 ピクセル右へずらせます。
 
@@ -138,11 +142,38 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 
 このときプロパティのボタンには、小さな fx のバッジが付いた ◇ が表示され、ツールチップに両方が設定されていることが示されます。クリックすると、通常どおり再生位置のキーフレームを追加または削除し、右クリックでメニューが開きます。[グラフエディタ](../reference/tool-tabs/graph-editor.md)のプロパティツリーでも、式のあるプロパティに fx の印が付きます。
 
+### キーフレームを繰り返す {/* #looping-keyframes */}
+
+`LoopOut` は最後のキーフレームの後で、`LoopIn` は最初のキーフレームの前で、プロパティのキーフレームを繰り返します。少ないキーフレームで、要素全体にわたって動きを続けられます。キーフレームのあるプロパティに、次のどちらかを式として設定します。
+
+- `LoopOut(mode = LoopMode.Cycle, keyframes = 0)`
+- `LoopIn(mode = LoopMode.Cycle, keyframes = 0)`
+
+`LoopOut` は最後のキーフレームまで、`LoopIn` は最初のキーフレームから先で `Value` を返すので、その間はキーフレームのとおりに再生されます。その外側での動き方は `mode` で選びます。
+
+- `LoopMode.Cycle`: キーフレームを何度も繰り返し再生します。
+- `LoopMode.PingPong`: 逆再生と再生を交互に繰り返します。
+- `LoopMode.Offset`: 毎回、前の回が終わった値から再生し直すので、変化が積み重なります。
+- `LoopMode.Continue`: 最後のキーフレーム（`LoopIn` では最初のキーフレーム）での速さと向きのまま動き続けます。そこでイージングによって止まっていれば、値はそのままです。
+
+`keyframes` を指定すると、`LoopOut` では最後から、`LoopIn` では最初から数えたその数のキーフレームの時刻だけを繰り返します。`0` ではすべてを使います。成分を個別にアニメーションしている場合や、複数の値を 1 行にまとめた行では、すべての値のキーフレームの時刻を合わせて数えます。キーフレームの時刻が 2 つ未満のときは、どちらも `Value` を返します。
+
+例:
+
+- `LoopOut()` は、アニメーション全体を要素の終わりまで繰り返します。
+- `LoopOut(LoopMode.PingPong)` は、最初と最後のキーフレームの間を往復します。
+- `0` から `90` へのキーフレームを打った回転に `LoopOut(LoopMode.Offset)` を設定すると、1 回ごとに 90 度ずつ回り続けます。
+- `LoopOut(LoopMode.Cycle, 2)` は、前のキーフレームを 1 回再生したあと、最後の 2 つだけを繰り返します。
+- `LoopIn(LoopMode.Continue)` は、最初のキーフレームより前でも、動き始めの速さのまま動きを続けます。
+
+`Offset` と `Continue` は値を足し合わせるので、数値と、位置・サイズ・色のように数値でできた値で使えます。スイッチのようなほかの種類の値では式がエラーで止まり、プロパティには式を適用する前の値が使われます。`Cycle` と `PingPong` はどの種類の値でも使えます。
+
 ### 式の下の値を編集する {/* #editing-under-an-expression */}
 
 式のあるプロパティの入力欄には式の結果が表示されますが、式の下にある値は編集できます。
 
 - 入力したり選んだりした値は、式の下の値を置き換えます。対象は再生位置のキーフレーム、キーフレームの間では次のキーフレーム、キーフレームがなければ設定値です。キーフレームの間では、入力欄には編集するキーフレームの時刻での結果が表示されます。
+- 点・サイズ・矩形のボックスの 1 つや、カラーホイールの R・G・B のボックスの 1 つに入力すると、式の下の値のうちその成分だけが変わります。ほかの成分はそれぞれの値のままです。
 - ボックスをドラッグすると、式の下の値がドラッグした分だけ動きます。値 `100` に式 `Value + 50` が設定されていると入力欄には `150` と表示され、`160` までドラッグすると値は `110` になります。
 - 入力するためにボックスをクリックすると、式の下の値が表示され、ボックスを離れると再び結果が表示されます。
 
@@ -155,5 +186,7 @@ __成分の分離を解除__ を選ぶと、現在時刻の値を保持し、成
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Core/CombinedEditorAttribute.cs) / [`PropertyPair.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/PropertyEditors/ViewModels/PropertyPair.cs)
 - [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`ExpressionGlobals.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals.cs) / [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`WiggleNoise.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Engine/Expressions/WiggleNoise.cs)
+- [`ExpressionGlobals{T}.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/Expressions/ExpressionGlobals%7BT%7D.cs) / [`LoopMode.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/LoopMode.cs) / [`KeyFrameContinuation.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Animation/KeyFrameContinuation.cs) / [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Animation/ComponentAnimations.cs)（`LoopOut`、`LoopIn`、`WiggleValue`）
+- [`VectorValues.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/VectorValues.cs) / [`GradingColorComponentsEditor.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/GradingColorComponentsEditor.cs)（式の下で 1 つの成分を編集する処理）
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`ExpressionEditorFlyout.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/ExpressionEditorFlyout.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs)
 - [`Strings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/Strings.ja.resx)

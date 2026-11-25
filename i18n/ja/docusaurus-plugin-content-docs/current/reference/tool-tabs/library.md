@@ -47,6 +47,8 @@ sidebar_position: 2
 
 入力欄にキーワードを入れると、すべてのタブの項目を横断的に検索します。検索結果には項目名・説明・種類（描画オブジェクト・エフェクトなど）が表示され、関連度順に並びます。
 
+組み込みの項目の説明には、ほかの編集ソフトでの呼び名も書かれているので、その呼び名でも検索できます。たとえば `調整レイヤー` で **バックドロップ**、`親` や `ヌル` で **グループ**、`グリーンバック` で **クロマキー**、`プリコンポ` で **シーン参照（動画）**、`ポスタリゼーション時間` で **コマ撮り風** が見つかります。呼び名は日本語と英語で書かれているので、`adjustment` や `parent` のような英語でも検索できます。
+
 入力欄が空のときは、登録されているすべての項目をフラットに一覧表示します。
 
 ライブラリタブのどこでも **`Ctrl + F`**（macOSでは **`Cmd + F`**）を押すと、**検索** に切り替わり、入力欄の文字列が選択されます。
@@ -75,6 +77,8 @@ sidebar_position: 2
 - **トランスフォーム**: 移動・スケール・回転・3D回転・歪み
 - **フィルタエフェクト**: ぼかし・モーションブラー・ブルーム・ドロップシャドウ・ストローク・色調補正・カーブ・LUT・ブレンド・モザイク・ディスプレイスメントマップ・スクリプト系（C# / SKSL / GLSL）など
 - **音声エフェクト**: ディレイ・イコライザなど
+
+**グループ**、**デコレーター**、**サウンドグループ**、**3Dシーン** などのコンテナを単独で追加すると（タイムラインやプレビューへのドロップ、または **要素を追加**）、その要素には下の 5 つのレイヤーの要素を取り込む[ポータル](../library/portal/portal-object.md)が付きます。**3Dシーン** では、すぐに何かが表示されるように、すぐ下のレイヤーに **立方体** も追加されます。[3Dシーン](../library/3d-objects/3d-scene.md#使い方)を参照してください。
 
 各項目の詳細は [ライブラリリファレンス](../library/index.md) を参照してください。
 
@@ -111,3 +115,5 @@ sidebar_position: 2
 - [`NodesView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml.cs)
 - [`LibraryGalleryView.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml.cs)
 - [`LibraryGalleryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryGalleryItemViewModel.cs) / [`LibraryPreviewCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryPreviewCapture.cs) / [`LibraryThumbnailSet.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailSet.cs)
+- [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor/Services/LibraryRegistrar.cs) / [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.ja.resx) / [`LibraryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryItemViewModel.cs)（説明と検索）
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs)（単独で追加したコンテナと3Dシーン）

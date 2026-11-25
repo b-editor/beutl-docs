@@ -77,6 +77,12 @@ sidebar_position: 1
 
 このオブジェクトは 描画オブジェクト を継承しているため、基底クラスで宣言された[共通プロパティ](../common-properties.md)も利用できます。
 
+## 使い方
+
+ライブラリから **3Dシーン** を単独で追加すると（タイムラインやプレビューへのドロップ、または **要素を追加**）、すぐに何かが表示されるように、そのすぐ下のレイヤーに **立方体** も追加されます。3Dシーンの要素は[ポータル](../portal/portal-object.md)を通して下の 5 つのレイヤーの 3D オブジェクトとライトを取り込むので、続くレイヤーにさらに追加できます。2 つの要素は 1 回の取り消し単位で、隣り合うレイヤーに追加されます。そこのレイヤーが使われているかロックされているときは、2 つ一緒に空いているレイヤーへ置かれます。それらのレイヤーにシーンと時間が重なる 3D オブジェクトがないときは、要素に[警告](../../tool-tabs/timeline.md#element-warnings)が表示されます。
+
 ## ソース
 
 [`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Scene3D.cs)
+
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs)（サンプルの立方体とポータル）

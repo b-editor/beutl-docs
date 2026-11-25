@@ -73,6 +73,7 @@ sidebar_position: 14
 
 - **拡大率ボックス**（再生ボタンの横）: 現在の拡大率を表示します。**プレビュー全体を表示** でフレームをパネルに合わせるか、`10%` 〜 `800%` を選びます。`100%` では、フレームの 1 ピクセルが画面の 1 ピクセルになります。
 - **解像度ボックス**: [プレビュー解像度](#プレビュー解像度)と同じ選択肢です。ボックスには **プレビューに合わせる** が **自動** と表示されます。
+- **移動**、**ハンド**、**範囲選択**、**3Dカメラ操作** ボタン（フレームの左の列）: フレームで使うツールを選びます。各ツールチップにはツールの現在のキーが表示されます。[ツールのショートカット](#preview-tool-shortcuts)を参照してください。
 - **ガイド**、**オニオンスキン**、**市松模様** ボタン（フレームの右の列）: それぞれの表示を切り替えます。この列には **別画面にプレビューを表示** と **プレビュー設定** もあります。
 
 ### 拡大と移動
@@ -81,9 +82,20 @@ sidebar_position: 14
 |------|------|
 | 拡大 / 縮小 | どのツールでも `Ctrl` + ホイール（macOS では `Cmd` + ホイール）、ピンチ、または `Alt + =` / `Alt + -` |
 | フレームをパネルに合わせる | `Alt + 0`、または拡大率ボックスの **プレビュー全体を表示** |
-| 拡大したフレームを移動 | **移動** または **範囲選択** ツールでホイール（`Shift` で横方向）、または **ハンド** ツールでドラッグ |
+| 拡大したフレームを移動 | **移動** または **範囲選択** ツールでホイール（`Shift` で横方向）、**ハンド** ツールでドラッグ、または中ボタンドラッグ（**3Dカメラ操作** を除く） |
 
 拡大率は、パネルに合わせたサイズの 0.05 倍から 64 倍までです。**移動** と **範囲選択** ツールでは、フレームがパネルに合っている間はホイールで何も起こりません。**ハンド** ツールではホイールで拡大・縮小します。**3Dカメラ操作** では、`Ctrl` + ホイール（`Cmd` + ホイール）はカメラを動かさずにプレビューを拡大・縮小します。フレームの 1 ピクセルが画面の 2 ピクセル以上になるまで拡大すると、フレームのピクセルをくっきりした正方形で描画します。パネルに合わせた表示では滑らかなままです。
+
+### ツールのショートカット {/* #preview-tool-shortcuts */}
+
+| ツール | Windows / Linux | macOS |
+|--------|-----------------|-------|
+| **移動** | `V` | `V` |
+| **ハンド** | `H` | `H` |
+| **範囲選択** | `Shift + C` | `Shift + C` |
+| **3Dカメラ操作** | `Shift + V` | `Shift + V` |
+
+これらのキーは、プレビューにフォーカスがあるときに使えるので、先にフレームをクリックしてください。フローティングウィンドウのプレビューでも同じです。タイムラインなど、ほかの場所にフォーカスがあるときは、その場所でのキーの動作になります。テキストボックスへの入力中やフレーム上のドラッグ中は無視されます。**フレームで編集** でパスを編集している間は、`V` と `H` でパスのツールを選びます。中ボタンドラッグでは、ボタンを離すまでの間だけ **ハンド** に切り替わります。キーは **設定 → キーマップ** で変更でき、コマンド名は **プレビュー (移動)**、**プレビュー (ハンド)**、**プレビュー (範囲選択)**、**プレビュー (3Dカメラ操作)** です。コマンドパレットにも同じ名前で表示されます。
 
 ### 市松模様
 
@@ -139,3 +151,4 @@ sidebar_position: 14
 - [`PlayerSeekBar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/PlayerSeekBar.cs) / [`PreviewCheckerboard.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Engine/Media/PreviewCheckerboard.cs)
 - [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs)（プレビューのショートカット）
 - [`PlayerView.axaml.TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl/Views/PlayerView.axaml.TimeDisplayFormat.cs) / [`Player.CurrentTimeEditor.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/Player.CurrentTimeEditor.cs)（プレビューの時刻）
+- [`SceneEditorExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Services/PrimitiveImpls/SceneEditorExtension.Commands.cs) / [`PlayerViewModel.PreviewTools.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.PreviewTools.cs) / [`PlayerView.axaml.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Views/PlayerView.axaml.cs) / [`PlayerView.axaml.MouseControl.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Views/PlayerView.axaml.MouseControl.cs)（ツールのショートカット）

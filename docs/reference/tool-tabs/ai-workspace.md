@@ -19,6 +19,8 @@ Open **View → Tools → AI**, or choose a task from the **AI** menu while a sc
 
 Sign in to your Beutl account. If your account cannot use AI, the workspace offers Pro-plan guidance. The plan button opens account management in your browser; returning to Beutl refreshes the account information.
 
+A request stays with the account that started it. If you sign out or switch to another account while it runs, Beutl stops working on it and adds none of its results. Sign back in to the account that started it to recover an unfinished request.
+
 ## Sections
 
 | Section | Purpose |
@@ -51,3 +53,4 @@ Image editing results offer **Add to scene** and **Save to file** actions. Revie
 - [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
 - [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)
 - [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)
+- [`AiAccountJobScope.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiAccountJobScope.cs) / [`AiRecoveryState.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiRecoveryState.cs) (requests and account changes)

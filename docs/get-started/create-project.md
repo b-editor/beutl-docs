@@ -27,14 +27,15 @@ When Git is available, choose **Track history with Git** to start recording vers
 
 ## The start screen and recent projects
 
-The start screen offers **Create new project**, **Open Project**, and **Tutorials**. Beside them, **Recent Projects** shows the projects you opened, the most recently opened first, as a grid of thumbnails or as a list. Switch between them with the **Grid View** and **List View** buttons; Beutl remembers the choice.
+The start screen offers **Create new project**, **Open Project**, **Clone Repository**, and **Tutorials**. Beside them, **Projects** shows the projects you opened, the most recently opened first, as a grid of thumbnails or as a list. Switch between them with the **Grid View** and **List View** buttons; Beutl remembers the choice.
 
 - A single click on a project opens it, and `Enter` opens the selected one. A right click opens only the menu.
 - A thumbnail is the frame on screen when the project was last closed, or, when nothing shows at the playhead, the frame from the middle of the scene's elements. A project that has not been closed since the update shows a placeholder. Thumbnails are kept in the project's `.beutl/thumbnails` folder.
+- While you are signed in to Beutl, the list also shows your Beutl repositories. A project whose Git remote is one of them is labeled **Local copy**. A repository that is not on this computer comes after your projects, labeled **Cloud** with the time since it was last updated. Opening it opens the **Clone Repository** dialog with that repository selected; see [Cloning a repository](../reference/tool-tabs/version-control.md#cloning-a-repository). It shows the thumbnail uploaded by its last push from Beutl, or a cloud picture when there is none.
 
 To open another kind of file or create a scene, use the **File** menu. A new scene needs an open project.
 
-Right-click a project for **Open**, **Open in Finder** (**Open in File Explorer** on Windows, **Open in File Manager** on Linux), **Remove**, and **Delete from Disk**. Choose **Delete from Disk** to permanently delete it. The confirmation dialog shows whether Beutl will delete the project's own folder and its contents, or only the project file when it is in a shared location. Close an open project before deleting it.
+Right-click a project for **Open**, **Open in Finder** (**Open in File Explorer** on Windows, **Open in File Manager** on Linux), **Remove**, and **Delete from Disk**. Choose **Delete from Disk** to permanently delete it. The confirmation dialog shows whether Beutl will delete the project's own folder and its contents, or only the project file when it is in a shared location. Close an open project before deleting it. The menu of a **Cloud** repository has only **Clone**.
 
 **Remove** only removes the entry from the recent list; it leaves the files on disk.
 
@@ -46,3 +47,4 @@ Right-click a project for **Open**, **Open in Finder** (**Open in File Explorer*
 - [`CreateNewProjectViewModel.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl/ViewModels/Dialogs/CreateNewProjectViewModel.cs)
 - [`EditViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.cs)
 - [`OutputViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/Tools/OutputViewModel.cs)
+- [`EditorHostFallback.Repositories.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Views/EditorHostFallback.Repositories.cs) / [`RecentProjectItem.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/RecentProjectItem.cs) (Beutl repositories on the start screen)

@@ -60,8 +60,8 @@ __トランスフォーム__ の `+` ボタンをクリックして、追加し�
 タイムラインでマウスのドラッグ操作をすることで、
 要素の開始時間、持続時間を編集することができます。
 
-Beutlでは編集を簡単にするため、ドラッグ操作中に他のレイヤーの要素の時間にスナップします。
-タイムラインの何もない場所を右クリックし、**スナップ** で有効・無効を切り替えられます。要素の端をリサイズするときは `Alt` を押すと一時的にスナップを無効にします。要素本体を `Alt` を押しながらドラッグすると複製します。
+Beutlでは編集を簡単にするため、ドラッグ操作中に他の要素の端・プレイヘッド・マーカー・シーンの開始と終了にスナップし、近くにそれらがないときは BPMグリッドの線にスナップします。
+スナップは、タイムラインのレイヤーヘッダーの上にある **スナップ** ボタン、またはタイムラインの何もない場所の右クリックメニューの **スナップ** で有効・無効を切り替えられます。ドラッグ中に `Alt` を押すと一時的にスナップを無効にします。要素本体を `Alt` を押しながらドラッグすると複製もします。[配置・移動・リサイズ](../reference/tool-tabs/timeline.md#配置移動リサイズ)を参照してください。
 
 <video controls muted playsInline title="" src="_images/5.edit-element/move-element.mp4" />
 
@@ -100,3 +100,4 @@ Beutlでは要素の色や名前を変えることができ、
 - [`SceneRecovery.ElementRestore.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.ElementRestore.cs)
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
+- [`SnapHelper.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/SnapHelper.cs)（スナップ先）

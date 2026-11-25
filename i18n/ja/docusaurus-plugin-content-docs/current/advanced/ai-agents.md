@@ -79,7 +79,7 @@ AI生成は、起動中の Beutl にサインインしたアカウントとそ�
 
 `apply_edit` は完全な望ましい状態の `desired` または部分変更の `patch` の、いずれか一方を受け取ります。部分編集にはJSON Merge Patchの `patch` を使用し、`get_schema` で確認した `schemaVersion` も指定してください。完全な `desired` は状態全体を指定するため、省略した子要素の配列が削除されることがあります。
 
-ノードグラフのツールを使うと、C# を書かずに[ノードグラフ](../reference/tool-tabs/node-graph.md)を作成・編集できます。複数のパス、入力、中間画像を使う GLSL の GPU パスも作れます。こうして作ったグラフは、通常のノードグラフのエフェクトや描画オブジェクトです。`get_node_graph_guide` は規則と例を返し、`list_node_types` はノードの種類とそのメンバーを一覧します。`read_node_graph` は、グラフのノード、値、キーフレーム、接続を、シェーダーのコンパイラーのメッセージなどの診断とともに読み取り、グラフを指定しないときはシーンのグラフを一覧します。`edit_node_graph` は `add`、`update`、`remove`、`connect`、`disconnect` の操作を順に、1 つの取り消し単位として適用し、`validateOnly` では適用せずに検査します。適用できない操作や、コンパイルできない GLSL など新しいエラーを生む編集は適用されず、シーンと履歴はそのまま残ります。`render_still` は、フレームの描画中に失敗したノードを警告に含めます。
+ノードグラフのツールを使うと、C# を書かずに[ノードグラフ](../reference/tool-tabs/node-graph.md)を作成・編集できます。複数のパス、入力、中間画像を使う GLSL の GPU パスも作れます。こうして作ったグラフは、通常のノードグラフのエフェクトや描画オブジェクトです。`get_node_graph_guide` は規則と例を返し、`list_node_types` はノードの種類とそのメンバーを一覧します。`read_node_graph` は、グラフのノード、値、キーフレーム、接続を、シェーダーのコンパイラーのメッセージなどの診断とともに読み取り、グラフを指定しないときはシーンのグラフを一覧します。`edit_node_graph` は `add`、`update`、`remove`、`connect`、`disconnect` の操作を順に、1 つの取り消し単位として適用し、`validateOnly` では適用せずに検査します。適用できない操作や、コンパイルできない GLSL など新しいエラーを生む編集は適用されず、シーンと履歴はそのまま残ります。`render_still`、`render_storyboard`、`export_video` は、フレームの描画中に失敗したノードを警告に含めます。ストーリーボードや書き出しでは、いくつのショットやフレームで起きても、同じ失敗は 1 回だけ含めます。
 
 ## 編集と確認
 
@@ -102,3 +102,4 @@ AI生成は、起動中の Beutl にサインインしたアカウントとそ�
 - [`AgentEditFollower.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/AgentHost/AgentEditFollower.cs)
 - [`NodeGraphTools.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Tools/NodeGraphTools.cs) / [`StillRenderer.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/StillRenderer.cs)
 - [`BundledFontRegistration.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.AgentToolkit/Rendering/BundledFontRegistration.cs)
+- [`RenderTools.Storyboard.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.AgentToolkit/Tools/RenderTools.Storyboard.cs) / [`VideoExporter.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.AgentToolkit/Rendering/VideoExporter.cs)（ストーリーボードと書き出しでのノードの失敗）

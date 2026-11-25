@@ -75,6 +75,7 @@ Pinning a tool in the empty-tab picker only adds it to that picker's favorites; 
 | [Transition](./transition.md) | Edit transitions at the start or end of an element |
 | [Mobile preview](./mobile-preview.md) | Preview video and audio and control playback from your phone |
 | [Auto Split by Silence](./silence-split.md) | Find the silent parts of an audio element, then split or remove them |
+| [Undisplayable data](./undisplayable-data.md) | Find and locate data this build cannot show, such as objects from extensions that are not installed |
 
 The source of truth for this document is `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` and the `*TabExtension.cs` files under `src/Beutl.Editor.Components/` in the [Beutl repository](https://github.com/b-editor/beutl).
 

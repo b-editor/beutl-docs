@@ -41,6 +41,14 @@ description: エディター画面に関係する設定
 
 デフォルト値は __"オン"__ です。
 
+## タイムラインのレイヤーの高さ {/* #timeline-layer-height */}
+
+タイムラインの行の高さです。[インラインアニメーション](../reference/tool-tabs/timeline.md#インラインアニメーション編集)のレイヤーも同じ高さになります。行を高くすると、フィルムストリップ、波形、インラインアニメーションのグラフが見やすくなります。
+
+- 小 __(デフォルト値)__
+- 中
+- 大
+
 ## フレームキャッシュ
 
 ![](_images/frame-cache.png)
@@ -216,3 +224,4 @@ Windows の HDR ディスプレイで、__ディスプレイに合わせる__ �
 - [`HdrOverlay.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrOverlay.cs)
 - [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/TimeDisplayFormat.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
 - [`PointerLockHelper.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PointerLockHelper.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Configuration/EditorConfig.cs) / [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml) / [`SettingsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/SettingsStrings.ja.resx)（タイムラインのレイヤーの高さ）

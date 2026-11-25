@@ -88,7 +88,9 @@ A closed transform, a group, and a transform whose type could not be loaded keep
 
 ### Editing an effect's handles in the preview {/* #effect-handles */}
 
-Some effects have handles of their own in the preview, such as the control points of [Mesh warp](../library/filter-effects/mesh-warp.md) and the handles of some extensions' effects. Such an effect shows a crosshair button, **Edit in frame**, left of its eye, both in a list and as the only effect of a section. Click it to select the effect. The preview then shows the effect's handles and hides the object's transform handles and pivot, so a drag edits only the effect. Click the object in the preview to select its element again and bring the transform handles back. The button is hidden while the tab edits several elements.
+Some effects have handles of their own in the preview, such as the control points of [Mesh warp](../library/filter-effects/mesh-warp.md), the corners of [Corner Pin](../library/filter-effects/corner-pin.md), the pins of [Puppet](../library/filter-effects/puppet.md), and the handles of some extensions' effects. Such an effect shows a crosshair button, **Edit in frame**, left of its eye, both in a list and as the only effect of a section. Click it to select the effect. The preview then shows the effect's handles and hides the object's transform handles and pivot, so a drag edits only the effect. Click the object in the preview to select its element again and bring the transform handles back. The button is hidden while the tab edits several elements.
+
+When effects come after Mesh warp, Corner Pin, or Puppet, the preview hides them while that effect is selected, the **Move** tool is active, and playback is stopped. The effect's handles then stay on the picture that the effect makes, even when a later effect would move or reshape it, and a note at the bottom of the preview says that later effects are hidden. The export always includes every effect.
 
 ## Editing properties
 
@@ -112,11 +114,21 @@ A text field of several lines, such as the **Text** of a [Text](../library/drawa
 
 Drag a number box, or its label, horizontally to scrub its value up or down. Hold **`Shift`** while scrubbing for coarse steps (10×) or **`Alt`** (`Command` on macOS) for fine steps (0.1×). With [Enable Pointer Lock](../../settings/editor.md#enable-pointer-lock) on, the cursor hides during the drag on Windows and macOS and comes back where the drag began. On a macOS trackpad, a scrub gives [haptic feedback](./timeline.md#trackpad-haptic-feedback) at zero and at the property's default value.
 
+`Esc` or Undo during a drag puts the value back where the drag began. Starting playback ends the drag and keeps the value it reached.
+
 A press on a box becomes a drag only after it moves 3 pixels sideways, so a click still edits the text, with all of it selected; `Enter` confirms the new value. While the box shows text that does not parse, a drag does not change the value, and the release edits the text so you can correct it.
 
 A number that has a range, such as Opacity, shows where its value sits while you point at it: the box fills up to the value, from zero when the range spans zero and from the minimum otherwise, and a slim thumb marks the value. At rest it looks like any other box.
 
 The boxes of points, sizes, vectors, thicknesses, corner radii, and color components take a drag too. Each box moves its own component, and the single box of a uniform value moves them all. Relative points and rectangles move by 1% per pixel for a relative value and by 1 per pixel for an absolute one. Number boxes in list items, nodes, and settings pages stay plain text boxes.
+
+### Typing calculations {/* #typing-calculations */}
+
+A number box also takes a calculation: type `1920 / 2`, and the value becomes `960`. When you press `Enter` or leave the box, it shows the result. You can use `+`, `-`, `*`, `/`, `%` for the remainder, `^` for a power, and parentheses. `*`, `/`, and `%` are worked out before `+` and `-`, and `^` before all of them. A box for whole numbers rounds the result to the nearest one, so `7 / 2` gives `4`.
+
+Calculations work in number boxes, in the boxes of points, sizes, vectors, thicknesses, corner radii, and color components, and in the opacity box of the color picker. In the boxes of relative points and rectangles, such as **Transform Origin**, a `%` right after a number marks a percentage instead and makes the whole result one, so `50% + 25%` gives `75%`.
+
+While the text cannot be calculated, as with `1 / 0`, the box is marked as invalid and the value does not change.
 
 ### Picking colors and palettes
 
@@ -186,3 +198,5 @@ Unrecognized data that can be preserved is kept on save. Common properties remai
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
 - [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs) / [`FilterEffectListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/Views/FilterEffectListItemEditor.axaml) / [`TransformHandlesOverlay.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/TransformHandlesOverlay.cs)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) / [`MeshWarp.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/MeshWarp.cs)
+- [`IEditingStageProvider.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/IEditingStageProvider.cs) / [`PlayerViewModel.EditingStage.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.EditingStage.cs)
+- [`NumberEditorHelper.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/Helpers/NumberEditorHelper.cs) / [`NumericExpressionEvaluator.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/Helpers/NumericExpressionEvaluator.cs) / [`RelativeUnitParser.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/RelativeUnitParser.cs) / [`DragSession.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/DragSession.cs)

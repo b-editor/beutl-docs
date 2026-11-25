@@ -23,6 +23,7 @@ Open it from the menu bar via **View → Tools → Timeline**.
 ## Layout
 
 - **Timeline scale (top)**: The time-axis ruler. Shows the playback position, scene start/end bars, markers, and the frame cache.
+- **Toolbar (above the layer headers)**: Buttons for the **Razor Tool**, **Slip Tool**, **Roll Tool**, and **Slide Tool** on the left, and for **Ripple Edit** and **Snap** on the right. See [Editing modes](#editing-modes).
 - **Layer headers (left)**: Toggle each layer's lock / video mute / audio mute / solo state, and change its color and name.
 - **Timeline panel (center)**: The work area where elements are laid out across time and layers.
 
@@ -34,9 +35,10 @@ You can drag the splitters between the columns to change their widths.
 
 - Drag an element's body to move it across layers or along the time axis.
 - Hover near the left or right edge of an element to resize it (drag the edge to change the start time or duration).
-- Hold **`Alt`** while dragging an element's body to drop a **duplicate** at the new position; the original stays in place. (When you drag an element's edge to resize it, holding **`Alt`** disables snapping instead.)
+- Hold **`Alt`** while dragging an element's body to drop a **duplicate** at the new position; the original stays in place.
 - If an element is so small that only the resize handles are visible, hold **`Ctrl`** while dragging to move it without resizing.
-- While dragging, the edges snap to other elements, the scene start/end, the playhead, and the timeline origin. Toggle snapping from the empty-area right-click menu (**Snap**).
+- While dragging, the edges snap to other elements, the scene start/end, the playhead, the timeline origin, and markers. When none of them is near, they snap to the lines of the **BPM Grid** that show at the current zoom. Hold **`Alt`** during a drag to ignore snapping. Toggle snapping with the **Snap** button above the layer headers or from the empty-area right-click menu (**Snap**).
+- While you drag an edge, or slip, roll, or slide an element, its filmstrip and waveform keep their scale and show the frames and sound at the new position instead of stretching.
 
 ### Selection
 
@@ -71,6 +73,7 @@ Each command replaces the selection, and it includes locked elements. Commands t
 | Select all / deselect all | `Ctrl + A` / `Ctrl + Shift + A` | `Cmd + A` / `Cmd + Shift + A` |
 | Zoom in / out around the playhead | `Ctrl + =` / `Ctrl + -` | `Cmd + =` / `Cmd + -` |
 | Reset zoom | `Ctrl + 0` | `Cmd + 0` |
+| Fit the whole scene / the selected elements to the view | `F` / `Shift + F` | `F` / `Shift + F` |
 | Delete selected elements | `Delete` or `Ctrl + Delete` | `Back` or `Cmd + Back` |
 | Split by current frame | `Ctrl + K` | `Cmd + K` |
 | Toggle group / ungroup | `Ctrl + G` | `Cmd + G` |
@@ -134,7 +137,7 @@ Commands can ask for text or a selection inside the palette. For example, open a
 - **Change color**
 - Toggle **Disable Thumbnails**
 - **Save as Template** (see [Saving elements as a template](#saving-clips-as-a-template))
-- **Animation** submenu: **Finish editing** / **Bring to the top**
+- **Animation** submenu: **Show all** and each property that has keyframes, to open or close its inline lane, then **Finish editing** / **Bring to the top** (see [Inline animation editing](#inline-animation-editing))
 
 ## Element transitions {/* #clip-transitions */}
 
@@ -168,7 +171,7 @@ Add it with **Add from Template**, from the Library, or by dropping the template
 
 ## Editing modes
 
-Choose a tool mode from the **Editing Mode** submenu in the empty-area right-click menu, or use one of the keyboard shortcuts above. Only one tool mode can be active at a time. The timeline shows a colored border and the mode's name while it is active; press `V` or `Esc` to return to the normal selection tool.
+Choose a tool mode with its button above the layer headers, from the **Editing Mode** submenu in the empty-area right-click menu, or with one of the keyboard shortcuts above. Only one tool mode can be active at a time. While a mode is active, its button is lit and the timeline shows a border in the same color; click the button again, or press `V` or `Esc`, to return to the normal selection tool. Point at a button to see its name, its current key, and what it does.
 
 - **Razor Tool** (`C`): Click an element to split it at that position.
 - **Slip Tool** (`S`): Drag an element to shift its source-media window (in/out points) without moving the element on the timeline.
@@ -177,7 +180,7 @@ Choose a tool mode from the **Editing Mode** submenu in the empty-area right-cli
 
 ### Ripple Edit
 
-**Ripple Edit** (`B`) is an on/off setting, not a tool mode. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later elements on the same layer to close (or open) the resulting space:
+**Ripple Edit** (`B`) is an on/off setting, not a tool mode. Turn it on or off with its button above the layer headers, from the **Editing Mode** submenu, or with `B`. It stays enabled until you turn it off, and Beutl remembers its state between sessions. When enabled, the following operations shift later elements on the same layer to close (or open) the resulting space:
 
 - **Delete** / **Cut**
 - Trimming an element's edge
@@ -207,6 +210,14 @@ Each layer header includes four toggle buttons:
 - **Audio** (audio mute): the layer is skipped when compositing audio; its video is still shown.
 - **Solo**: when at least one layer is soloed, layers that are not soloed are neither shown nor heard. You can solo multiple layers at the same time.
 
+## Element warnings {/* #element-warnings */}
+
+An element that needs your attention shows an icon before its name. Point at the element to read what the icon is about.
+
+- An outlined warning sign means that part of the element could not be loaded, so the element is read-only. See [Recovering damaged elements](../../get-started/edit-element.md#recovering-damaged-elements).
+- A document with an error mark means that the element holds data this build of Beutl cannot show, such as an object from an extension that is not installed, data that failed to load, or Beutl 1.x content that was not migrated. The tooltip lists each kind with how many there are. Open the [Undisplayable data](./undisplayable-data.md) tab to see each item; its **Locate** button selects the element and scrolls the timeline to it.
+- A filled warning sign means that an object which takes in elements from the layers below it, such as **Group**, **Decorator**, **Time Controller (Video)**, **2D Drawable**, **3D Scene**, or **Sound Group**, has nothing to take in. It has no children of its own, and no element of the kind it needs (visual, 3D, or audio) overlaps it in time on the layers its [portal](../library/portal/portal-object.md) covers. The tooltip says what the object needs: place such an element on a layer below so that the two overlap, and add or enable a portal before the object, with a **Count** that reaches that layer. When the timeline is zoomed out so far that the element is drawn as a narrow block, a small mark on its top edge shows this warning.
+
 ## Working in the timeline panel
 
 ### Mouse wheel
@@ -217,6 +228,10 @@ Each layer header includes four toggle buttons:
 - A pinch on a trackpad, or on a precision touchpad on Windows, zooms in and out too, over the tracks or the ruler.
 
 Zooming with the wheel or a pinch keeps the time under the pointer in place.
+
+### Fitting the view {/* #fit-the-view */}
+
+**Fit all** (`F`) zooms and scrolls so the whole scene, from its start to its end, fills the width of the timeline. **Fit selection** (`Shift + F`) does the same for the selected elements, from the first start to the last end, and also scrolls to the topmost selected layer when it is out of view; it is unavailable while nothing is selected. Both are at the top of the **Zoom** submenu in the empty-area right-click menu, and in the command palette.
 
 ### Right-click menu on empty area
 
@@ -231,7 +246,7 @@ Zooming with the wheel or a pinch keeps the time under the pointer in place.
 - Toggle **Snap**
 - **Settings** (open the Scene settings tab)
 - **BPM Grid** (configure BPM, beat, and offset)
-- **Zoom**: 20% / 50% / 70% / 100% / 120% / 150% / 170% / 200%
+- **Zoom** submenu: **Fit all** / **Fit selection** (see [Fitting the view](#fit-the-view)), then 200% / 170% / 150% / 120% / 100% / 70% / 50% / 20%
 
 ### Drag and drop
 
@@ -255,9 +270,14 @@ When you have saved [templates](#saving-clips-as-a-template) that hold text, a *
 
 This feature shows a property-specific lane directly under an element so you can edit keyframe animations on the timeline without opening the Graph Editor tab.
 
+### Keyframe marks on elements {/* #keyframe-marks */}
+
+An element marks the time of each of its keyframes with a small diamond along its bottom edge. The marks cover every animated property of the element, including those of its transforms, brushes, and effects, and they follow the keyframes as you add, move, or remove them. Keyframes that would be drawn too close together share one diamond, so a zoomed-out element stays readable. To edit the keyframes, open their lanes from the element's **Animation** submenu.
+
 ### Opening and closing
 
 - Click the **vertical three-dot menu (⋮)** to the right of a property and choose **Edit animation in inline view** to add an inline lane below that element.
+- Or right-click the element and open **Animation**. The submenu lists each property of the element that has keyframes, by its path, such as `Rectangle › Fill › Opacity`. Click a property to open its lane, or to close the lane when it is open, and click **Show all** to open a lane for every one. An element without keyframes shows **No animations**, and on a locked element the items are unavailable.
 - The same property's animation cannot be opened inline twice at once.
 - Close it with the **× button** in the inline lane's header (the property's animation itself remains).
 - The element's right-click menu → **Animation → Finish editing** closes all of that element's inlines at once.
@@ -271,15 +291,16 @@ This feature shows a property-specific lane directly under an element so you can
   - Property name text box (read-only)
 - **Timeline side**
   - A border showing the element's frame
-  - The **easing curve** between adjacent keyframes (drawn upward or downward depending on whether the next value is higher, lower, or the same)
+  - A **graph of the value** over the element, drawn between the lowest and the highest value its keyframes and easings reach. The value holds before the first keyframe and after the last. A value with several parts, such as a point, a size, a vector, or a color, draws a line for each part, colored as in the Graph Editor. A value the Graph Editor cannot plot shows the **easing curve** between adjacent keyframes instead (drawn upward or downward depending on whether the next value is higher, lower, or the same).
   - A **diamond icon** for each keyframe
 
 ### Working with keyframes
 
 - **Left-drag** to change a keyframe's time.
+  - While you drag, the keyframe snaps to the playhead, markers, the scene start/end, the timeline origin, the edges of every element, and the keyframes in the other open inline lanes. When none of them is near, it snaps to the lines of the **BPM Grid** that show at the current zoom. It does not snap to the other keyframes in its own lane. Hold **`Alt`** to drag without snapping. Snapping follows the timeline's **Snap** setting.
   - On release, the time is snapped (rounded) to the scene's frame rate.
   - The post-drop value is recorded in the undo/redo history.
-- **`Shift` + drag** moves the other keyframes in the same inline along with the dragged one (preserving their relative offsets).
+- **`Shift` + drag** moves the other keyframes in the same inline along with the dragged one (preserving their relative offsets). The dragged keyframe snaps and the others follow it; add **`Alt`** to move them without snapping.
 - Keyframe right-click menu:
   - **Copy** — copies just that keyframe to the clipboard as JSON.
   - **Paste** — pastes at that keyframe's position (if the type doesn't match, only the easing is applied).
@@ -322,7 +343,8 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 
 ## Layer headers
 
-- Drag the handle at the left edge up or down to change the layer's height.
+- Drag the handle at the left edge up or down to move the layer, with its elements, to another row. A locked layer cannot be moved.
+- The height of the layer rows, and of the inline animation lanes under them, is set with **Timeline layer height** in the [Editor settings](../../settings/editor.md#timeline-layer-height): **Small** (the default), **Medium**, or **Large**.
 - Toggle **Lock** / **Video** (video mute) / **Audio** (audio mute) / **Solo** with the four buttons (see [Locking, muting, and soloing](#locking-muting-and-soloing)).
 - Change the layer color with the color picker.
 - Type a layer name in the text box, then press `Enter` or move the focus away. The name moves with its layer when you drag the header to another row, is saved with the scene, and can be undone (**Rename Layer**). Clear the box, or type the row's own number, to remove the name.
@@ -331,7 +353,7 @@ When an animation's **Use the Global Clock** is enabled, moving the element does
 
 On a macOS trackpad, Beutl gives a haptic pulse when a drag reaches an alignment target:
 
-- **Timeline**: an element move, an edge trim, or a roll or slide trim reaches a new snap target.
+- **Timeline**: an element move, an edge trim, a slip, roll, or slide trim, or a keyframe drag in an inline lane reaches a new snap target.
 - **Preview**: a `Shift` rotation with the transform handles reaches a new 15° step.
 - **Number fields**: a [scrub](./element-property.md#scrubbing-number-values) reaches or crosses zero or the property's default value, including each component of a vector.
 - **[Node Graph](./node-graph.md)**: a wire snaps to a port it can connect to.
@@ -379,3 +401,9 @@ Depending on the **Settings > Editor > Timeline auto-scroll during playback** se
 - [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs) / [`TimelineScale.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/Views/TimelineScale.cs) (times and the scale)
 - [`TimelineTabView.DragDrop.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.DragDrop.cs) (drag and drop)
 - [`TimelineTabView.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml.cs) / [`NativeScrollInput.Windows.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/Helpers/NativeScrollInput.Windows.cs) (pinch zoom)
+- [`TimelineTabView.axaml`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/TimelineTabView.axaml) / [`TimelineTabExtension.Commands.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/TimelineTabExtension.Commands.cs) (toolbar, Zoom submenu, and fitting the view)
+- [`SnapHelper.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/SnapHelper.cs) / [`BpmGridLines.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/BpmGridLines.cs) / [`InlineKeyFrameViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/ViewModels/InlineKeyFrameViewModel.cs) / [`TimelineSnapFeedback.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/TimelineSnapFeedback.cs) (snap targets)
+- [`ElementView.Animation.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/ElementView.Animation.cs) / [`ElementAnimations.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/ViewModels/ElementAnimations.cs) / [`ElementKeyFrameMarks.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/ElementKeyFrameMarks.cs) / [`InlineEasingGraphControl.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/InlineEasingGraphControl.cs) (Animation submenu, keyframe marks, and value graphs)
+- [`ElementViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/ViewModels/ElementViewModel.cs) / [`TimelineTabViewModel.FlowInputs.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/ViewModels/TimelineTabViewModel.FlowInputs.cs) / [`FlowInputDiagnostics.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.ProjectSystem/ProjectSystem/FlowInputDiagnostics.cs) (element warnings)
+- [`ElementViewModel.Thumbnails.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/ViewModels/ElementViewModel.Thumbnails.cs) (filmstrips and waveforms while dragging)
+- [`LayerHeader.axaml.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/TimelineTab/Views/LayerHeader.axaml.cs) (moving a layer)

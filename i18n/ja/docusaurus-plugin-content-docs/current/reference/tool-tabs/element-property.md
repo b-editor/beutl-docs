@@ -88,7 +88,9 @@ sidebar_position: 4
 
 ### エフェクトのハンドルをプレビューで編集する {/* #effect-handles */}
 
-[メッシュワープ](../library/filter-effects/mesh-warp.md)の制御点や一部の拡張機能のエフェクトのように、プレビューに独自のハンドルを持つエフェクトがあります。そうしたエフェクトには、一覧の中でも、セクションの唯一のエフェクトとしても、目のアイコンの左に十字のボタン **フレームで編集** が表示されます。クリックするとエフェクトが選択されます。プレビューにはエフェクトのハンドルが表示され、オブジェクトのトランスフォームハンドルと基準点は隠れるので、ドラッグではエフェクトだけを編集できます。プレビューでオブジェクトをクリックすると、その要素が選択し直され、トランスフォームハンドルが戻ります。複数の要素をまとめて編集している間は、このボタンは表示されません。
+[メッシュワープ](../library/filter-effects/mesh-warp.md)の制御点、[コーナーピン](../library/filter-effects/corner-pin.md)の四隅、[パペット](../library/filter-effects/puppet.md)のピン、一部の拡張機能のエフェクトのハンドルのように、プレビューに独自のハンドルを持つエフェクトがあります。そうしたエフェクトには、一覧の中でも、セクションの唯一のエフェクトとしても、目のアイコンの左に十字のボタン **フレームで編集** が表示されます。クリックするとエフェクトが選択されます。プレビューにはエフェクトのハンドルが表示され、オブジェクトのトランスフォームハンドルと基準点は隠れるので、ドラッグではエフェクトだけを編集できます。プレビューでオブジェクトをクリックすると、その要素が選択し直され、トランスフォームハンドルが戻ります。複数の要素をまとめて編集している間は、このボタンは表示されません。
+
+メッシュワープ、コーナーピン、パペットの後ろにほかのエフェクトがあるときは、そのエフェクトを選択していて、**移動** ツールが有効で、再生が停止している間、プレビューは後ろのエフェクトを非表示にします。そのため、後続のエフェクトが絵を動かしたり変形したりする場合でも、エフェクトのハンドルはそのエフェクトが作る絵の上に重なります。プレビューの下部には、後続のエフェクトを非表示にしていることを示すメモが表示されます。書き出しには常にすべてのエフェクトが含まれます。
 
 ## プロパティの編集
 
@@ -112,11 +114,21 @@ sidebar_position: 4
 
 数値のボックスかそのラベルを左右にドラッグすると、値を増減できます。**`Shift`** を押しながらで粗く（10 倍）、**`Alt`**（macOS では `Command`）を押しながらで細かく（0.1 倍）調整できます。[ポインターロックを有効化](../../settings/editor.md#ポインターロックを有効化)がオンのときは、Windows と macOS ではドラッグ中にカーソルが隠れ、ドラッグを始めた位置に戻ります。macOS のトラックパッドでは、ゼロとプロパティの既定値で[触覚フィードバック](./timeline.md#トラックパッドの触覚フィードバック)が返ります。
 
+ドラッグ中に `Esc` を押すか元に戻す操作をすると、値はドラッグを始めたときの値に戻ります。再生を始めると、ドラッグはその時点の値のまま終わります。
+
 ボックスを押してから横に 3 ピクセル動くまではドラッグにならないので、クリックすればこれまでどおりテキストを編集でき、テキストは全体が選択された状態になります。`Enter` で新しい値を確定します。ボックスに解釈できないテキストが表示されている間は、ドラッグしても値は変わらず、ボタンを離すとテキストの編集になるので、そのまま修正できます。
 
 範囲を持つ数値（不透明度など）は、ポインターを乗せている間、値が範囲のどこにあるかを示します。範囲がゼロをまたぐときはゼロから、そうでないときは最小値から値までボックスが塗られ、値の位置に細いつまみが立ちます。ポインターを乗せていないときは、ほかのボックスと同じ見た目です。
 
 点、サイズ、ベクトル、太さ、角の半径、色の成分のボックスもドラッグで変更できます。各ボックスはそれぞれの成分を動かし、すべての成分が同じ値のときに表示される 1 つのボックスはすべての成分を動かします。相対的な点と矩形は、相対値なら 1 ピクセルあたり 1%、絶対値なら 1 ピクセルあたり 1 動きます。リストの項目、ノード、設定ページの数値ボックスは、通常のテキストボックスのままです。
+
+### 計算式の入力 {/* #typing-calculations */}
+
+数値のボックスには計算式も入力できます。`1920 / 2` と入力すると、値は `960` になります。`Enter` を押すかボックスを離れると、ボックスには計算結果が表示されます。使えるのは `+`、`-`、`*`、`/`、剰余を求める `%`、累乗の `^` と括弧です。`*`、`/`、`%` は `+` と `-` より先に、`^` はそれらすべてより先に計算されます。整数のボックスでは結果が最も近い整数に丸められ、`7 / 2` は `4` になります。
+
+計算式は、数値のボックス、点、サイズ、ベクトル、太さ、角の半径、色の成分のボックス、カラーピッカーの不透明度のボックスで使えます。**トランスフォームの起点** のような相対的な点と矩形のボックスでは、数値の直後の `%` は割合を表し、結果全体が割合になります。`50% + 25%` は `75%` です。
+
+`1 / 0` のように計算できないテキストの間は、ボックスが無効な入力として示され、値は変わりません。
 
 ### 色の選択とパレット
 
@@ -186,3 +198,5 @@ sidebar_position: 4
 - [`VectorEditorBase.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/VectorEditorBase.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)
 - [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs) / [`FilterEffectListItemEditor.axaml`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl.Editor.Components/PropertyEditors/Views/FilterEffectListItemEditor.axaml) / [`TransformHandlesOverlay.cs`](https://github.com/b-editor/beutl/blob/4ca0cc18507a50d94678d11a386fd477dd75125e/src/Beutl/Views/TransformHandlesOverlay.cs)
 - [`PropertyEditorMenu.axaml.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/PropertyEditorMenu.axaml.cs) / [`PropertyEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor/PropertyEditors/PropertyEditorViewModel.cs) / [`MeshWarp.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/MeshWarp.cs)
+- [`IEditingStageProvider.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Engine/IEditingStageProvider.cs) / [`PlayerViewModel.EditingStage.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.EditingStage.cs)
+- [`NumberEditorHelper.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/Helpers/NumberEditorHelper.cs) / [`NumericExpressionEvaluator.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/Helpers/NumericExpressionEvaluator.cs) / [`RelativeUnitParser.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/RelativeUnitParser.cs) / [`DragSession.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/DragSession.cs)

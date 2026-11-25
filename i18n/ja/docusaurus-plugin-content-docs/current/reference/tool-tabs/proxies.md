@@ -29,13 +29,15 @@ sidebar_position: 17
 | プロキシ 1/4 | 25% | 1280 px |
 | プロキシ 1/8 | 12.5% | 960 px |
 
-- ソースファイルの**パス・サイズ・更新日時**が、そのプロキシのキーになります。いずれかが変わるとプロキシは**期限切れ**になり、再生成するまで未生成として扱われます。同じファイルを参照する複数の要素(および複数のプロジェクト)は1つのプロキシを共有します。
+- ソースファイルの**パス・サイズ・更新日時**が、そのプロキシのキーになります。いずれかが変わるとプロキシは**期限切れ**になり、再生成するまで未生成として扱われます。同じファイルを同じインターレース解除の設定で参照する複数の要素(および複数のプロジェクト)は1つのプロキシを共有します。
+- [インターレース解除](../library/drawables/sources/video.md#deinterlacing)を使う要素には、その設定で作ったプロキシが使われるので、プロキシでもインターレース解除したフレームがプレビューに表示されます。要素のインターレース解除の設定を変えた後は、新しい設定のプロキシを生成するまで、プレビューは元のメディアを使います。
+- プロキシの形式が変わる前のバージョンのBeutlで作ったプロキシは、未生成として扱われます。もう一度生成してください。
 - プロキシは**マシン全体で共有されるストア**(既定: Beutlのホームディレクトリ内の `proxies` フォルダー)に保存されます。ストアがサイズ上限を超えると、Beutlが最も使われていないプロキシから自動的に削除します。ストアの設定は[エディタ設定](../../settings/editor.md#プロキシメディア)を参照してください。
 
 ## タブの構成
 
 - **ストアの使用状況(上部)**: プロジェクト / ストア / 上限の使用量。
-- **動画ソース**: 開いているプロジェクト内(全シーン)で使われている動画ソースファイルごとに 1 行で以下を表示します。
+- **動画ソース**: 開いているプロジェクト内(全シーン)で使われている動画ソースファイルと、要素がそのファイルに使うインターレース解除の設定の組み合わせごとに 1 行で表示します。インターレース解除を使う行では、ファイル名の下に `自動 · BWDIF 1×` のように設定が表示されます。各行には以下があります。
   - **状態ピル**: 準備完了 / 生成中 / 期限切れ / 失敗 / 未生成 / 一部生成
   - **品質プリセット**のドロップダウン(初期値は設定の「既定のプリセット」)
   - **生成** / **再生成** / **削除** ボタンと、生成中のプログレスバー+キャンセルボタン
@@ -70,3 +72,4 @@ sidebar_position: 17
 - [`FFmpegProxyGenerator.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/Proxy/FFmpegProxyGenerator.cs)
 - [`ProxyStoreConfig.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/ProxyStoreConfig.cs)
 - [`ExportSourceValidator.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/ExportSourceValidator.cs)（書き出しは常に元素材を使用）
+- [`ProxyClipViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/ProxiesTab/ViewModels/ProxyClipViewModel.cs) / [`ProxyPathUtilities.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Media/Proxy/ProxyPathUtilities.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs)（インターレース解除の設定とプロキシの形式）

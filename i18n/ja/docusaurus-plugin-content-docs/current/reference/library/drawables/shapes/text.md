@@ -77,7 +77,7 @@ sidebar_position: 5
 
 ### 文字ごとに分割 (SplitByCharacters)
 
-`true` のとき、各文字が個別のオブジェクトとして描画され、文字ごとにエフェクトを適用できます。
+`true` のとき、各文字が個別のオブジェクトとして描画され、文字ごとにエフェクトを適用できます。[遅延アニメーション](../../filter-effects/delay-animation.md)や[範囲アニメーター](../../filter-effects/range-animator.md)を使うと、文字を 1 つずつ順に動かしたり、範囲を動かしながらその中の文字だけを変化させたりできます。これらの `単位` で、単語や行を 1 つのパーツとして扱うこともできます。
 
 - **型:** `bool`
 - **既定値:** `false`
@@ -124,7 +124,7 @@ sidebar_position: 5
 グリフの塗りに使用するブラシ。
 
 - **型:** `Brush?`
-- **既定値:** なし (`null`)
+- **既定値:** `#FFFFFFFF` (白)
 - **アニメーション:** 不可
 
 ## 共通プロパティ
@@ -137,7 +137,7 @@ sidebar_position: 5
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
 
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
 - [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
@@ -146,4 +146,4 @@ sidebar_position: 5
 - [`StrokeOrder.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/StrokeOrder.cs)
 - [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
 - [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
-- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.ja.resx)
+- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.ja.resx)

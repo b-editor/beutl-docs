@@ -29,13 +29,15 @@ Open it from the menu bar via **View → Tools → Proxies**.
 | Quarter proxy (1/4) | 25% | 1280 px |
 | Eighth proxy (1/8) | 12.5% | 960 px |
 
-- The source file's **path, size, and modification time** form the key for its proxy. If any of them change, the proxy becomes **Stale** and is treated as missing until you regenerate it. Multiple elements (and multiple projects) that reference the same file share one proxy.
+- The source file's **path, size, and modification time** form the key for its proxy. If any of them change, the proxy becomes **Stale** and is treated as missing until you regenerate it. Multiple elements (and multiple projects) that reference the same file with the same deinterlacing settings share one proxy.
+- An element that uses [deinterlacing](../library/drawables/sources/video.md#deinterlacing) gets a proxy made with its deinterlacing settings, so the preview shows deinterlaced frames through the proxy as well. After you change an element's deinterlacing settings, the preview uses the original until you generate a proxy for the new settings.
+- Proxies made by an earlier version of Beutl whose proxy format has since changed are treated as missing; generate them again.
 - A **machine-wide shared store** holds the proxies (default: the `proxies` folder in Beutl's home directory). When the store exceeds its size cap, Beutl automatically removes the least-recently-used proxies. See [Editor settings](../../settings/editor.md#proxy-media) to configure the store.
 
 ## Tab layout
 
 - **Store metrics (top)**: project / store / cap usage.
-- **Video sources**: one row per distinct video source file used in the open project (all scenes), each with:
+- **Video sources**: one row per distinct video source file used in the open project (all scenes) and per set of deinterlacing settings that elements use with it. A row for deinterlaced use shows its settings under the file name, such as `Auto · BWDIF 1×`. Each row has:
   - a **state pill**: Ready / Generating / Stale / Failed / Missing / Partial
   - a **quality preset** dropdown (initialized from the *Default preset* setting)
   - **Generate** / **Regenerate** / **Delete** buttons and a progress bar with a cancel button while generating
@@ -70,3 +72,4 @@ The proxy store is shared machine-wide. **Delete project proxies** also removes 
 - [`FFmpegProxyGenerator.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensions.FFmpeg/Proxy/FFmpegProxyGenerator.cs)
 - [`ProxyStoreConfig.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/ProxyStoreConfig.cs)
 - [`ExportSourceValidator.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/ExportSourceValidator.cs) (export always uses originals)
+- [`ProxyClipViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/ProxiesTab/ViewModels/ProxyClipViewModel.cs) / [`ProxyPathUtilities.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Media/Proxy/ProxyPathUtilities.cs) / [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs) (deinterlacing settings and the proxy format)

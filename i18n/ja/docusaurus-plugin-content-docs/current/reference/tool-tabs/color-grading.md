@@ -39,6 +39,8 @@ sidebar_position: 10
 
 ホイールは使える高さの中央に配置されます。パッドが大きくなる場合は、操作部をパッドの横に移したり、列数を減らしたりします。表示される数値が配置を変えることはないので、ドラッグ中にホイールが動くことはありません。
 
+いちばん小さいホイールでもタブの高さに収まらないときは、ツールバーの下の内容全体が 1 本のスクロールバーでまとめてスクロールし、ツールバーはその位置に残ります。
+
 カラーグレーディングのエフェクトが削除された場合、このタブは自動的に閉じます。
 
 ## ツールバー
@@ -73,7 +75,9 @@ sidebar_position: 10
 
 **ピボット** はエフェクトの **コントラストのピボット** で、コントラストをかける際の基準輝度です。色温度は寒色と暖色、色かぶり補正は緑とマゼンタのバランスを調整し、バイブランスは彩度の低い色を優先的に持ち上げます。
 
-各スライダーはプロパティの範囲全体にわたり、塗りは既定値から始まります。レールを押すとその位置の値になり、つまみを押すとその位置のまま掴みます。ドラッグはポインターに追従し、`Alt`（macOS では `Command`）を押すと 10 分の 1 の速さになります。ダブルクリックで既定値に戻ります。横の数値ボックスに値を入力することもできます。
+各スライダーはプロパティの範囲全体にわたり、塗りは既定値から始まります。レールを押すとその位置の値になり、つまみを押すとその位置のまま掴みます。ドラッグはポインターに追従し、`Alt`（macOS では `Command`）を押すと 10 分の 1 の速さになります。ダブルクリックで既定値に戻ります。横の数値ボックスに値や計算式を入力することもできます。[計算式の入力](./element-property.md#typing-calculations)を参照してください。
+
+ドラッグ中に `Esc` を押すか元に戻す操作をすると、値はドラッグを始めたときの値に戻ります。再生を始めると、ドラッグはその時点の値のまま終わります。これは、スライダー、ホイールとその R、G、B のボックス、**輝度範囲** のバーのどのドラッグでも同じです。
 
 各スライダーにはプロパティタブと同じ **⋮** メニューがあり、ここからキーフレームの追加、アニメーションの編集、式の設定ができます。式で値が決まるスライダーは式の結果を表示し、動かすと式の下の値を編集します。[式の下の値を編集する](../../get-started/keyframe.md#editing-under-an-expression)を参照してください。
 
@@ -87,7 +91,7 @@ sidebar_position: 10
 - **数値ボックス**: R、G、B を個別に `0.01` 刻みで設定します。
 - **リセットボタン**: ホイールをニュートラルに戻します。ガンマとゲインは `1`、それ以外は `0` です。
 
-各ホイールにも、キーフレームと式を扱う **⋮** メニューがあり、式のあるホイールはスライダーと同じく式の下の値を編集します。
+各ホイールにも、キーフレームと式を扱う **⋮** メニューがあり、式のあるホイールはスライダーと同じく式の下の値を編集します。このとき R、G、B のボックスの 1 つに入力したりドラッグしたりすると、そのチャンネルだけが変わります。
 
 ### モード別のホイール
 
@@ -128,3 +132,4 @@ sidebar_position: 10
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs)（プロパティ側の「タブで編集」ボタン）
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs)（ホイールのドラッグが始まるタイミング）
 - [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs) / [`GradingColorEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/GradingColorEditorViewModel.cs)（式の下の値の編集）
+- [`GradingContentPanel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/ColorGradingTab/Views/GradingContentPanel.cs) / [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`DragSession.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/DragSession.cs)（低いタブのスクロール、式の下での 1 チャンネルの編集、ドラッグの終わり方）

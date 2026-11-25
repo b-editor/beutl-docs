@@ -62,6 +62,7 @@ The built-in property editors support the following value types. Object editors 
 - `Beutl.Graphics.CurveMap`
 - `Beutl.Graphics.MeshWarpGrid`
 - `Beutl.Collections.ICoreList<Beutl.Media.GradientStop>`
+- `Beutl.Collections.ICoreList<Beutl.Graphics.Effects.PuppetPin>`
 - `Beutl.Graphics.Effects.DisplacementMapTransform`
 - `System.Collections.IList`
 - `Beutl.NodeGraph.GraphModel`
@@ -99,7 +100,7 @@ The generic file-source editor constructs a new source and calls `ReadFrom(Uri)`
 
 ## Source
 
-- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
+- [`BuiltInPropertyEditors.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/PropertyEditors/Services/BuiltInPropertyEditors.cs)
 - [`PropertyEditorRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/PropertyEditorRegistry.cs)
 - [`FileFilterAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/FileFilterAttribute.cs)
 - [`FileSourceEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FileSourceEditorViewModel.cs)

@@ -41,6 +41,14 @@ Shows filmstrips and waveforms on timeline elements. When off, elements show non
 
 The default setting is __"On"__.
 
+## Timeline Layer Height {/* #timeline-layer-height */}
+
+The height of the rows on the timeline, which the [inline animation](../reference/tool-tabs/timeline.md#inline-animation-editing) lanes share. Taller rows make filmstrips, waveforms, and the inline animation graphs easier to see.
+
+- Small __(default value)__
+- Medium
+- Large
+
 ## Frame Cache
 
 ![](_images/frame-cache.png)
@@ -215,3 +223,4 @@ The safe areas and composition guides over the preview. These are the same setti
 - [`HdrOverlay.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Controls/HdrOverlay.cs)
 - [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Configuration/TimeDisplayFormat.cs) / [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs)
 - [`PointerLockHelper.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PointerLockHelper.cs)
+- [`EditorConfig.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Configuration/EditorConfig.cs) / [`EditorSettingsPage.axaml`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/Pages/SettingsPages/EditorSettingsPage.axaml) / [`SettingsStrings.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/SettingsStrings.resx) (timeline layer height)
