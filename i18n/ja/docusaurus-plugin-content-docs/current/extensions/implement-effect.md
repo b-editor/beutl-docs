@@ -117,6 +117,8 @@ preview.9 では、`ApplyTo` はエフェクトのクラスにあり、引数で
 
 preview.14 以降、コールバックが読む各ラスターは、自身の位置を `RenderPlacement` で表します。`EffectTarget`、`RenderExecutionInput`、`MaterializedInputDescription`、`OpaqueRenderOutput`、`RenderCallbackCanvas` では `Placement`、`GeometrySession`、`OpaqueRenderSession`、`ShaderExecutionContext` では `OutputPlacement` です。その `LogicalBounds`、`Scale`、`DeviceBounds`、`DeviceGridOffset`、`LogicalOrigin`、`RasterBounds` と、`ToLogical`、`ToDevice` は、どこでも同じ方法でローカル座標とピクセルを対応させます。`Scale.Value` が作業密度です。内容の移動には `EffectTarget.Bounds` を使ってください。ラスターも同じ割り当てのまま一緒に移動します。
 
+`CustomEffect` のコールバックは、デバイスのピクセル単位に置かれたターゲットで実行されるため、ピクセルの間にある内容は最大で半ピクセル動きます。preview.16 以降、内容をその場でコピー、切り抜き、拡張したり、上から描いたりするコールバックを `CustomEffectKeepingPlacement(data, action, transformBounds)` で記録すると、内容のサブピクセルの位置が保たれます。出力の境界が実行時にしか分からない場合は、`transformBounds` のないオーバーロードを使います。そのターゲットは内容が触れるデバイスのピクセルをすべて覆うため、`Bounds` は内容より広くなることがあります。ブラシのように内容に合わせて描くものには、内容自身の論理的な境界である `ContentBounds ?? Bounds` を使い、コピーや切り抜きはデバイスのピクセル単位で行ってください。`CreateTargetLike` で作った置き換えのターゲットは元のターゲットが占める範囲を保つので、その `ContentBounds` に元のものを設定すると、後のエフェクトに内容の境界が伝わります。`transformBounds` は論理的な境界を受け取り、返します。通常の `CustomEffect` も含む区間は、これまでどおりピクセル単位に置かれます。
+
 `ContinuationEffect(data, action)` のコールバックは、後に記録された操作を表す `FilterEffectContinuation` を受け取ります。何度でも実行でき、実行しなくても構いません。`TargetEffect(data, action)` のコールバックは `CompositionTargetAccess` を受け取ります。その `Capture()` と `Replace(image)` で、エフェクトの下にあるコンポジションターゲットを読み取り、置き換えます。preview.12 以降は、その `LocalToDevice` で、エフェクトのローカル座標を、平行移動と描画の密度を含めて、キャプチャした画像のピクセル座標に変換できます。これらを記録するリソースは、どの評価時刻でも、それぞれ `ControlsContinuation`、`MayAccessTarget` から `true` を返す必要があります。エンジンは記録の前にこの宣言をもとにチェーンを分割し、ターゲットへの処理を振り分けるため、宣言せずに記録すると例外が発生します。
 
 ### メタデータコールバックの診断

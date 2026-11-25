@@ -3,7 +3,7 @@ title: Sample Extensions
 description: Introduction to sample extensions
 ---
 
-When adapting external samples, compare them with the preview.15 APIs in [EngineObject](engine-object.md), [drawing objects](implement-drawing-object.md), [effects](implement-effect.md), [editor integration](editor-integration.md) and [media providers](media-providers.md). Drawing and filter overrides belong on the nested `Resource`, tool tab titles belong to `IToolContext.Header`, commands use definitions with IDs and handlers, and `Load` takes an `IExtensionContext` that gives the host's services instead of singletons such as `LibraryService.Current` and the static `DecoderRegistry`.
+When adapting external samples, compare them with the preview.16 APIs in [EngineObject](engine-object.md), [drawing objects](implement-drawing-object.md), [effects](implement-effect.md), [editor integration](editor-integration.md) and [media providers](media-providers.md). Drawing and filter overrides belong on the nested `Resource`, tool tab titles belong to `IToolContext.Header`, commands use definitions with IDs and handlers, and `Load` takes an `IExtensionContext` that gives the host's services instead of singletons such as `LibraryService.Current` and the static `DecoderRegistry`.
 
 ## [SugarShaker](https://github.com/b-editor/SugarShaker)
 A set of extensions to make Beutl easier to use.  

@@ -9,6 +9,7 @@ This table lists the versions of Beutl along with their corresponding dependenci
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.16 | 11.0 | 12.2.0                                             | 8.x    |
 | 2.0.0-preview.15 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.14 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.13 | 11.0 | 12.1.6                                             | 8.x    |
@@ -41,9 +42,9 @@ This table lists the versions of Beutl along with their corresponding dependenci
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 to preview.15 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
+preview.9 to preview.16 use FFmpeg 8.x. The `FFmpeg.AutoGen.Bindings.DynamicallyLoaded` package is `8.1.0`; the installer selects FFmpeg 8.x shared libraries.
 
-`FileFormat.Floor`, the oldest version that can read what Beutl writes, is still `2.0.0-preview.11` in preview.15. No change in preview.12 to preview.15 raised it, so a project saved by preview.15 opens in preview.11. A project saved by preview.11 or later does not open in preview.10 or earlier: preview.11 raised the floor because one expression can now drive the properties that share a row, and an older version would drop that new type of expression when it saves.
+`FileFormat.Floor`, the oldest version that can read what Beutl writes, is `2.0.0-preview.15` in preview.16, so a project saved by preview.16 opens in preview.15 and later, and preview.14 and earlier refuse it. Since preview.15, editing the expression of one property in a joined row, such as the X of a translation, can save a new type of expression, `CombinedValueExpression`, which preview.14 and earlier drop when they save, so preview.16 raised the floor. From preview.11 to preview.15 the floor was `2.0.0-preview.11`. A project saved by preview.11 or later does not open in preview.10 or earlier: preview.11 raised the floor because one expression can now drive the properties that share a row, and an older version would drop that new type of expression when it saves.
 
 ## Source
 

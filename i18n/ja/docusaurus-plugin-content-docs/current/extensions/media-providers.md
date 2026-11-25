@@ -161,6 +161,11 @@ public static class StereoReader
 
 動画では、デコードしたフレームの色空間を、ソースのタグから `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)` で作ってください。`IsHdrTransfer(transfer)` が `true` のときは `BuildHdrColorSpace` を使います。組み込みのデコーダーとエンコーダーも同じ方法を使っています。preview.13 以降、`GetTransferFunction` は、BT.709、BT.601、BT.2020 SDR の動画のタグである `BitmapColorTransfer.Bt709` と `Rec2020` を、新しい `BitmapColorSpaceTransferFn.CoreMedia709` に対応させます。これは QuickTime と AVFoundation が使う、ガンマ 1.9609375 で黒付近の傾きが 1/16 のカーブです。このような動画は以前よりシャドウが暗くデコードされ、書き出しではシャドウのコード値が明るくなるため、QuickTime でレンダリングしたとおりに再生されます。この対応を通すデコーダーやエンコーダーは、変更しなくても組み込みのものと同じ結果になります。`BitmapColorSpaceTransferFn.Bt709` と `Rec2020` は、カメラのカーブの正確な逆関数という値のまま残っています。これらを直接使うデコーダーでは、このような動画のシャドウが Beutl のデコーダーより明るく表示されます。
 
+preview.16 以降、ユーザーは、動画の要素がソースの伝達曲線をどう解釈するかと、ソースのインターレースを解除するかを、**「ソース」** プロパティのメニューの **「伝達曲線」** と **「インターレース解除」** で選べます。デコーダーは、返す `VideoStreamInfo` と受け取る `MediaOptions` を通して、これに関わります。
+
+- `ColorTags` には、ストリームのタグ、つまりフレームの色空間を作るのに使うタグを設定してください。**「伝達曲線」** が **「自動（タグに従う）」** 以外のときは、フレームのコード値を、これらのタグの色空間（タグのないストリームは sRGB）のものとして、タグの曲線の代わりに選ばれた曲線で読みます。HDR の動画は自身の曲線のままです。フレームが埋め込みの ICC プロファイルの色空間を持つ場合は、代わりに `HasIccProfile` を設定してください。Beutl はその色空間を保ったまま、曲線だけを置き換えます。
+- `MediaOptions.Deinterlace` は、要素のインターレース解除の設定を伝えます。インターレースを解除できるデコーダーは、`DeinterlaceAuto | DeinterlaceExplicit | DeinterlaceBwdif` のように、対応する内容を `IDecoderInfo.Capabilities` で宣言します。そして、設定を適用したこと（`Applied`）か、**「自動」** でフレームがプログレッシブであること（`NotNeededProgressive`）を `DeinterlaceStatus` で、見つけたフィールド順序を `DetectedFieldOrder` で報告します。要素がインターレース解除を求めると、レジストリは設定に対応するデコーダーを先に試し、リーダーがそのどちらも報告しなければ次のデコーダーに進みます。何も宣言しないデコーダーもファイルを開けますが、インターレースは解除されず、メニューはデコーダーが非対応であることをユーザーに示します。
+
 ### デコーダーのレジストリ {/* #decoder-registry */}
 
 preview.15 以降、デコーダーはプロセスではなく、ホストの `DecoderRegistry` に属します。`DecodingExtension.Load` は、`GetDecoderInfo()` が返すデコーダーをコンテキストのレジストリに登録し、`Unload` はそこから削除します。`EnumerateDecoder()` は登録されたデコーダーを、ユーザーが設定したデコーダーの優先順位の順に列挙し、`GuessDecoder(file)` はそのうち `IsSupported(file)` が `true` のものを返します。`FileExtensions.Classify(file)` は、登録されたデコーダーが宣言する動画と音声の拡張子を使って、動画・音声・静止画のファイルを拡張子で見分けます。
@@ -180,7 +185,39 @@ public static class AudioFiles
 }
 ```
 
-描画では、レジストリは `Fonts` と並んで `CompositionContext.Decoders` で渡されます。ファイルを持つ `VideoSource` や `SoundSource` は、レジストリなしで `Reconcile` されると `InvalidOperationException` を投げます。そのため、Beutl 自身のレンダラーの外でシーンを描画したりソースを読んだりするコードは、`SceneRenderer`、`ExportRendererFactory.Create`、`SourceSound.TryGetOriginalDuration` など、`DecoderRegistry? decoders` を受け取る API にホストのレジストリを渡します。テストでは、`new DecoderRegistry(new ExtensionConfig())` で独自のレジストリを作り、デコーダーを登録します。組み込みの WAV とアニメーション画像のデコーダーは、`BuiltInDecoders.Register(decoders)` で追加できます。
+描画では、レジストリは `Fonts` と並んで `CompositionContext.Decoders` で渡されます。ファイルを持つ `VideoSource` や `SoundSource` は、レジストリなしで `Reconcile` されると `InvalidOperationException` を投げます。そのため、Beutl 自身のレンダラーの外でシーンを描画したりソースを読んだりするコードは、`ExportRendererFactory.Create` や `SourceSound.TryGetOriginalDuration` など、`DecoderRegistry? decoders` を受け取る API と、[シーンのレンダラー](#rendering-a-scene)の `SceneRenderServices` に、ホストのレジストリを渡します。テストでは、`new DecoderRegistry(new ExtensionConfig())` で独自のレジストリを作り、デコーダーを登録します。組み込みの WAV とアニメーション画像のデコーダーは、`BuiltInDecoders.Register(decoders)` で追加できます。
+
+### シーンを描画する {/* #rendering-a-scene */}
+
+preview.16 以降、`SceneRenderer`、`SceneComposer`、`SceneCompositor`、`ObjectTemplateService` は、シーンの描画に使う `Fonts`、`Decoders`、`EditorConfig`、`ProxyConfig` をまとめた `SceneRenderServices`（名前空間 `Beutl`）を受け取ります。描画するシーンのエディタのサービスからこれを作ると、プレビューと同じように、プロジェクトのフォントとメディアを解決し、ユーザーのプレビューの設定に従って描画できます。
+
+```csharp
+using Beutl;
+using Beutl.Configuration;
+using Beutl.Extensibility;
+using Beutl.Graphics.Rendering;
+using Beutl.Media;
+using Beutl.Media.Decoding;
+using Beutl.ProjectSystem;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class SceneRenders
+{
+    // Renders a scene the way the editor's preview does.
+    public static SceneRenderer CreatePreviewRenderer(IEditorContext editor, Scene scene)
+    {
+        var configuration = editor.GetRequiredService<GlobalConfiguration>();
+        var services = new SceneRenderServices(
+            editor.GetRequiredService<FontManager>(),
+            editor.GetRequiredService<DecoderRegistry>(),
+            configuration.EditorConfig,
+            configuration.ProxyStoreConfig);
+        return new SceneRenderer(scene, services, RenderIntent.Preview);
+    }
+}
+```
+
+`EditorConfig` がない場合、レンダラーは既定のレンダーキャッシュを使い、`forceOriginalSource` で元のメディアを読むように指定しない限り、プロキシがあればそれを再生します。`ProxyConfig` がない場合は、既定のプリセットのプロキシを求めます。`WithoutConfiguration()` は、フォントとレジストリを残して、この 2 つの設定を外します。`SceneRenderServices.Empty` は何も持たないため、テキストの要素はテキストをレイアウトするときに、ファイルを持つ動画や音声は `Reconcile` されるときに、`InvalidOperationException` を投げます。入れ子のシーンは、それを含むシーンのサービスで描画されます。
 
 ## メディア時刻とプロジェクトのレート {/* #media-time-and-project-rates */}
 
@@ -250,6 +287,9 @@ public static class EditorTimes
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
 - [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`DecoderFileExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderFileExtensions.cs), [`BuiltInDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/BuiltInDecoders.cs) and [`DecodingExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/DecodingExtension.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
+- [`VideoStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/VideoStreamInfo.cs), [`MediaOptions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaOptions.cs), [`DecoderCapabilities.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderCapabilities.cs) and [`VideoDeinterlaceOptions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/VideoDeinterlaceOptions.cs)
+- [`VideoTransferInterpretation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/VideoTransferInterpretation.cs) and [`VideoSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Source/VideoSource.cs)
+- [`SceneRenderServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneRenderServices.cs), [`SceneRenderer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneRenderer.cs) and [`SceneCompositor.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneCompositor.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`GlobalConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/GlobalConfiguration.cs)

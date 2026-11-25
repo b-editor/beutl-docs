@@ -240,6 +240,8 @@ public sealed partial class MyProperties
 
 `Drawable`、`Sound`、`EngineObject` などの基底クラスには `[FallbackType]` が宣言されています。保存されたプロジェクトが利用できない拡張機能の型を参照している場合、対応するフォールバックがシリアライズされたデータを保持し、再保存できるようにします。フォールバックの描画オブジェクトは何も描画せず、失われた拡張機能の動作を代わりに実装するものではありません。
 
+preview.16 以降、**「表示できないデータ」** ツールタブは、各フォールバックを保存された型とともに一覧にします。型が読み込まれていなければ **「欠落した型」**、読み込みで例外が発生していれば **「読み込み失敗」** として表示し、タイムラインはフォールバックを含むクリップに印を付けます。拡張機能を入れずにプロジェクトを開いたユーザーは、そこで拡張機能が使われていた場所を見つけられます。
+
 ## 共通の派生クラス
 
 <div style={{ overflowX: 'auto' }}>
@@ -297,6 +299,8 @@ public sealed class MyExtension : Extension
 
 `AddDrawable<T>()` と `AddSound<T>()` は `EngineObject` の形式も登録するようになったため、項目をタイムラインに追加できます。1 つの項目に複数の表現をまとめる場合は、引き続き `AddMultiple` が使えます。
 
+項目に名前を付けるメソッドは、いずれも省略可能な `description` も受け取ります。ライブラリはこれを項目のツールチップと検索結果に表示し、検索では名前の次にこれを照合します。preview.16 以降、Beutl 自身の項目は、「下にあるすべてのレイヤーにエフェクトを適用します（調整レイヤー / adjustment layer）。」のように、1 文の説明のあとにほかの編集ソフトでの呼び名を添えているため、ユーザーはその呼び名でも項目を見つけられます。拡張機能の項目にも同じように説明を付けてください。
+
 ## ソース
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
@@ -304,7 +308,8 @@ public sealed class MyExtension : Extension
 - [`AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)
 - [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
-- [`LibraryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/LibraryService.cs) and [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`LibraryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/LibraryService.cs), [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs) and [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryRegistrar.cs)
+- [`FallbackTypeAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/FallbackTypeAttribute.cs) and [`UndisplayableDataScanner.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/UndisplayableDataScanner.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CustomDataTypes.cs) and [`GraphNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/GraphNode.cs)

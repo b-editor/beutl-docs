@@ -240,6 +240,8 @@ Render code lives on the `Resource` (`Drawable.Resource.OnDraw`, `FilterEffect.R
 
 Base types such as `Drawable`, `Sound`, and `EngineObject` declare a `[FallbackType]`. If a saved project refers to an unavailable extension type, the corresponding fallback keeps its serialized data so it can be saved again. A fallback drawable produces no drawing; it is not a replacement implementation of the missing extension.
 
+Since preview.16, the **Undisplayable data** tool tab lists each fallback with the type it was saved as, under **Missing type** when that type is not loaded and **Load failed** when reading it threw, and the timeline marks the clips that hold one. A user who opens a project without your extension finds there where it was used.
+
 ## Common derived classes
 
 <div style={{ overflowX: 'auto' }}>
@@ -297,6 +299,8 @@ public sealed class MyExtension : Extension
 
 `AddDrawable<T>()` and `AddSound<T>()` now register the `EngineObject` format as well, so their items can be added to the timeline. `AddMultiple` remains useful when one item offers several representations.
 
+Each method that names an item also takes an optional `description`. The library shows it as the item's tooltip and in search results, and its search matches it after the name. Since preview.16, Beutl's own items describe themselves in one sentence followed by the names that other editors use for them, such as "Applies effects to everything below it (adjustment layer).", so that users find them by those names too. Describe your items the same way.
+
 ## Source
 
 - [`IProperty.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/IProperty.cs), [`Property.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/PropertySystem/Property.cs), and [`EnginePropertyExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/EnginePropertyExtensions.cs)
@@ -304,7 +308,8 @@ public sealed class MyExtension : Extension
 - [`AudioVisualizerDrawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/AudioVisualizers/AudioVisualizerDrawable.cs)
 - [`IPropertyAnimation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/IPropertyAnimation.cs) and [`ComponentAnimations.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/ComponentAnimations.cs)
 - [`KeyFrameAnimationExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Animation/KeyFrameAnimationExtensions.cs), [`ExpressionContext.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Expressions/ExpressionContext.cs), and [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
-- [`LibraryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/LibraryService.cs) and [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs)
+- [`LibraryService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Services/LibraryService.cs), [`LibraryServiceExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/Services/LibraryServiceExtensions.cs) and [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/LibraryRegistrar.cs)
+- [`FallbackTypeAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/Serialization/FallbackTypeAttribute.cs) and [`UndisplayableDataScanner.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/UndisplayableDataScanner.cs)
 - [`UnitAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/UnitAttribute.cs)
 - [`CombinedEditorAttribute.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CombinedEditorAttribute.cs) and [`ComponentExpression.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/Expressions/ComponentExpression.cs)
 - [`CustomDataTypes.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/CustomDataTypes.cs) and [`GraphNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.NodeGraph/GraphNode.cs)

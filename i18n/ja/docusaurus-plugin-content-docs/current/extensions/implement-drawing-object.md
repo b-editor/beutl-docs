@@ -266,10 +266,12 @@ preview.15 以降、このインターフェースにはメンバーが追加さ
 
 preview.14 以降、プロパティパネルは、`IEditingHandleProvider` を実装したエフェクトの目のアイコンの隣に、照準のアイコンの **「フレームで編集」** ボタンを表示します。エフェクトの一覧の項目にも、単独のエフェクトのヘッダーにも表示されます。このボタンは `IEditorSelection.Select` でエフェクトを選択するので、プレビューにはそのエフェクトのハンドルが表示されます。その間、プレビューは描画オブジェクトのトランスフォームの枠、拡大縮小のハンドル、中心点を描かず、ヒットテストもしないため、ドラッグで編集されるのはエフェクトだけです。描画オブジェクトの本体をクリックすると、その要素が再び選択されます。複数の要素を選んでいる間は、このボタンは表示されません。
 
+preview.16 以降、受け取った画像の上にハンドルを置くエフェクトは、`IEditingHandleProvider` にメンバー `EditingStageHint` を 1 つ加えた `IEditingStageProvider` を実装できます。エフェクトが選択され、プレビューが **移動** ツールのまま一時停止していて、パスエディタが閉じている間、プレビューはそのエフェクトより後のエフェクトを除いて描画し、`EditingStageHint` を注記として表示します。そのため、画像を動かす後のエフェクトがあっても、画像がハンドルからずれません。**パペット**、**メッシュワープ**、**コーナーピン**のエフェクトがこれを実装しています。
+
 ## ソース
 
 - [`RectShape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/RectShape.cs) and [`Shape.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/Shape.cs)
 - [`ResourceReconciler.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/ResourceReconciler.cs) and [`PathFigure.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Geometry/PathFigure.cs)
-- [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
+- [`IEditingHandleProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingHandleProvider.cs), [`IEditingStageProvider.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Engine/IEditingStageProvider.cs) and [`drawing-on-resources-migration.md`](https://github.com/b-editor/beutl/blob/main/docs/extension-authoring/drawing-on-resources-migration.md)
 - [`FilterEffectEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/PropertyEditors/ViewModels/FilterEffectEditorViewModel.cs)
 - [`Drawable.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Drawable.cs), [`GraphicsContext2D.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/GraphicsContext2D.cs), and [`RenderNode.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Rendering/RenderNode.cs)

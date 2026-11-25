@@ -4,7 +4,7 @@ description: 公開された拡張契約を使って、コマンド、プロパ�
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.15 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.15 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
+Beutl 2.0.0-preview.16 は、これらの契約を `Beutl.Extensibility` から公開しています。[preview.16 の SDK](create-csproj.md) を使い、拡張機能を再ビルドしてください。以前のプレビューでは、名前空間が同じままアセンブリ間を移動した契約型があります。
 
 ## コマンド {/* #commands */}
 
@@ -154,6 +154,8 @@ public sealed class PercentEditorContext(IPropertyAdapter<float> property)
 ```
 
 このコンテキストは、`Beutl.Controls.PropertyEditors` の `NumberEditor<double>` をコントロールにして、`RegisterValue<float, double>` で登録します。`IValueEditorContext<TEdit>` には既定の実装を持つメンバーが追加され、Beutl のコントロールはこれらを呼びます。`PreviewEdit(value, relative)` は、入力したテキストを `relative` が `false` で、ドラッグとホイールの操作を `true` でプレビューします。`GetIncrementValue(shown)` は次の操作の起点になる値を返し、`TryGetFocusedEditValue` と `PreviewFocusedEdit` は、欄にフォーカスがある間、式の下の値を表示し、受け取ります。独自のコントロールも同じように呼んでください。
+
+入力を欄の表示と比べるだけでは、欄にすでに表示されている値をユーザーが入力したとき、どの成分が入力されたのかを区別できません。preview.16 以降、どの欄を変更したかを知っているコントロールは、成分 `i` のビット `i` を立てた値でそれを `PreviewEdit(value, relative, editedComponents)` に渡します。Beutl のベクトル、相対位置、相対矩形のエディタはこの方法を使います。`PropertyEditorViewModel<TValue, TEdit>` から派生したコンテキストは、続けて `ReplaceUnderExpression(underlying, shown, input, editedComponents)` を呼び、これは既定では成分を受け取らないオーバーロードを呼びます。成分ごとに欄があるエディタは、これをオーバーライドして `ComponentAnimations.ReplaceEditedComponents(underlying, input, editedComponents)` を返してください。これは、印の付いた成分を `input` から取り、`underlying` のほかの成分を残します。
 
 ## MCP ツール {/* #mcp-tools */}
 

@@ -161,6 +161,11 @@ A third-party decoder declares what it returns by setting `ChannelLayout` on its
 
 For video, build the color space of a decoded frame from the source's tags with `BitmapColorSpaceMapping.BuildTargetColorSpace(transfer, primaries)`, or `BuildHdrColorSpace` when `IsHdrTransfer(transfer)` is `true`, as the built-in decoders and encoders do. Since preview.13, `GetTransferFunction` maps `BitmapColorTransfer.Bt709` and `Rec2020`, the tags of BT.709, BT.601 and BT.2020 SDR video, to the new `BitmapColorSpaceTransferFn.CoreMedia709`: gamma 1.9609375 with a slope of 1/16 near black, the curve QuickTime and AVFoundation use. Such video decodes with darker shadows than before, and an export writes brighter shadow codes, so it plays back in QuickTime as it was rendered. A decoder or encoder that goes through the mapping follows the built-in ones without change. `BitmapColorSpaceTransferFn.Bt709` and `Rec2020` keep their values, the exact inverse of the camera curve, for code that wants it; a decoder that uses them directly shows the shadows of such video lighter than Beutl's own decoders.
 
+Since preview.16, the user can choose how a video element reads its source's transfer curve, and whether it deinterlaces the source, from **Transfer Curve** and **Deinterlace** in the menu of its **Source** property. A decoder takes part through the `VideoStreamInfo` it returns and the `MediaOptions` it receives:
+
+- Set `ColorTags` to the stream's tags, the ones you build the frames' color space from. A **Transfer Curve** other than **Auto (Follow Tags)** reads the frames' code values in the color space of these tags, an untagged stream as sRGB, with the chosen curve in place of the tagged one; HDR video keeps its own. Set `HasIccProfile` when the frames carry the color space of an embedded ICC profile instead: Beutl then keeps that color space and replaces only its curve.
+- `MediaOptions.Deinterlace` carries the element's deinterlacing settings. A decoder that can deinterlace declares what it supports in `IDecoderInfo.Capabilities`, such as `DeinterlaceAuto | DeinterlaceExplicit | DeinterlaceBwdif`, and reports in `DeinterlaceStatus` that it applied them (`Applied`) or, under **Auto**, that the frames are progressive (`NotNeededProgressive`), with the field order it found in `DetectedFieldOrder`. When an element asks for deinterlacing, the registry tries the decoders whose capabilities cover the settings first, and goes on to the next one when a reader reports neither. A decoder that declares nothing still opens the file, without deinterlacing, and the menu tells the user that the decoder does not support it.
+
 ### The decoder registry {/* #decoder-registry */}
 
 Since preview.15, decoders belong to the host's `DecoderRegistry` instead of the process. `DecodingExtension.Load` registers the decoder that `GetDecoderInfo()` returns in the registry of its context, and `Unload` removes it from there. `EnumerateDecoder()` lists the registered decoders in the order of the user's decoder priority, and `GuessDecoder(file)` those whose `IsSupported(file)` is `true`. `FileExtensions.Classify(file)` tells video, audio and still-image files apart by extension, with the video and audio extensions that the registered decoders declare.
@@ -180,7 +185,39 @@ public static class AudioFiles
 }
 ```
 
-Rendering carries the registry in `CompositionContext.Decoders`, beside `Fonts`. A `VideoSource` or `SoundSource` that has a file throws `InvalidOperationException` when it reconciles without one, so code that renders a scene or reads a source outside Beutl's own renderer passes the host's registry wherever an API takes `DecoderRegistry? decoders`, such as `SceneRenderer`, `ExportRendererFactory.Create` and `SourceSound.TryGetOriginalDuration`. A test makes a registry of its own with `new DecoderRegistry(new ExtensionConfig())` and registers its decoders in it; `BuiltInDecoders.Register(decoders)` adds the built-in WAV and animated image decoders.
+Rendering carries the registry in `CompositionContext.Decoders`, beside `Fonts`. A `VideoSource` or `SoundSource` that has a file throws `InvalidOperationException` when it reconciles without one, so code that renders a scene or reads a source outside Beutl's own renderer passes the host's registry wherever an API takes `DecoderRegistry? decoders`, such as `ExportRendererFactory.Create` and `SourceSound.TryGetOriginalDuration`, and in the `SceneRenderServices` of a [scene renderer](#rendering-a-scene). A test makes a registry of its own with `new DecoderRegistry(new ExtensionConfig())` and registers its decoders in it; `BuiltInDecoders.Register(decoders)` adds the built-in WAV and animated image decoders.
+
+### Rendering a scene {/* #rendering-a-scene */}
+
+Since preview.16, `SceneRenderer`, `SceneComposer`, `SceneCompositor` and `ObjectTemplateService` take a `SceneRenderServices` (namespace `Beutl`), which holds the `Fonts`, `Decoders`, `EditorConfig` and `ProxyConfig` that a scene renders with. Build it from the services of the editor whose scene you render, so that the render resolves the project's fonts and media, and follows the user's preview settings, as the preview does:
+
+```csharp
+using Beutl;
+using Beutl.Configuration;
+using Beutl.Extensibility;
+using Beutl.Graphics.Rendering;
+using Beutl.Media;
+using Beutl.Media.Decoding;
+using Beutl.ProjectSystem;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class SceneRenders
+{
+    // Renders a scene the way the editor's preview does.
+    public static SceneRenderer CreatePreviewRenderer(IEditorContext editor, Scene scene)
+    {
+        var configuration = editor.GetRequiredService<GlobalConfiguration>();
+        var services = new SceneRenderServices(
+            editor.GetRequiredService<FontManager>(),
+            editor.GetRequiredService<DecoderRegistry>(),
+            configuration.EditorConfig,
+            configuration.ProxyStoreConfig);
+        return new SceneRenderer(scene, services, RenderIntent.Preview);
+    }
+}
+```
+
+Without `EditorConfig`, the renderer uses the default render cache and plays proxies where they exist, unless it is told to read the original media with `forceOriginalSource`; without `ProxyConfig`, it asks for proxies of the default preset. `WithoutConfiguration()` keeps the fonts and the registry and leaves both settings out. `SceneRenderServices.Empty` holds nothing, so a text element throws `InvalidOperationException` when it lays out its text, and a video or a sound that has a file when it reconciles. A nested scene renders with the services of the scene that holds it.
 
 ## Media time and project rates {/* #media-time-and-project-rates */}
 
@@ -250,6 +287,9 @@ public static class EditorTimes
 - [`MediaReader.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaReader.cs)
 - [`DecoderRegistry.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderRegistry.cs), [`DecoderFileExtensions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderFileExtensions.cs), [`BuiltInDecoders.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/BuiltInDecoders.cs) and [`DecodingExtension.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Extensibility/DecodingExtension.cs)
 - [`AudioStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/AudioStreamInfo.cs)
+- [`VideoStreamInfo.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/VideoStreamInfo.cs), [`MediaOptions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/MediaOptions.cs), [`DecoderCapabilities.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/DecoderCapabilities.cs) and [`VideoDeinterlaceOptions.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Decoding/VideoDeinterlaceOptions.cs)
+- [`VideoTransferInterpretation.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/VideoTransferInterpretation.cs) and [`VideoSource.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Source/VideoSource.cs)
+- [`SceneRenderServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneRenderServices.cs), [`SceneRenderer.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneRenderer.cs) and [`SceneCompositor.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneCompositor.cs)
 - [`MediaTime.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Core/MediaTime.cs)
 - [`TimeDisplayFormatter.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/TimeDisplayFormatter.cs), [`GotoTimecodeParser.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/GotoTimecodeParser.cs) and [`TimeDisplayFormat.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/TimeDisplayFormat.cs)
 - [`GlobalConfiguration.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Configuration/GlobalConfiguration.cs)
