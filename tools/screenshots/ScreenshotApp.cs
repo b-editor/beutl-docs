@@ -41,7 +41,8 @@ public sealed class ScreenshotApp : Application
 
         Decoders = new DecoderRegistry(Configuration.ExtensionConfig);
         Fonts = new Beutl.Media.FontManager(Configuration.FontConfig);
-        Templates = new ObjectTemplateService(Fonts, Configuration.EditorConfig, Configuration.ProxyStoreConfig, Decoders);
+        Templates = new ObjectTemplateService(new SceneRenderServices(Fonts, Decoders, Configuration.EditorConfig,
+            Configuration.ProxyStoreConfig));
         _thumbnails = new FileThumbnailService(Decoders, Templates);
         object updates = DesktopInternals.Create(DesktopInternals.Type("Beutl.Services.AppUpdateController"),
             Configuration.UpdateConfig, Notifications);

@@ -76,12 +76,11 @@ internal static class Scenarios
                 // instead of overwriting the sample state below whenever the probe returns.
                 await (Task)DesktopInternals.Method(versionControl.GetType(), "GetAvailabilityAsync")
                     .Invoke(versionControl, [CancellationToken.None])!;
+                // Opened at a sample path, which is only displayed; screenshots never create a project there.
                 var model = DesktopInternals.Create<CreateNewProjectViewModel>(
                     DesktopInternals.Property<ProjectService>(main, "ProjectService"), versionControl,
-                    ScreenshotApp.Instance.Configuration);
+                    ScreenshotApp.Instance.Configuration, "/home/user/Projects");
                 model.Name.Value = "MyProject";
-                // Display a sample path only; screenshots never create a project there.
-                model.Location.Value = "/home/user/Projects";
                 model.IsGitAvailable.Value = true;
                 model.TrackHistory.Value = true;
                 var dialog = new CreateNewProject { DataContext = model, UseLayoutRounding = true };
@@ -155,7 +154,7 @@ internal static class Scenarios
             {
                 using var model = new EditorSettingsPageViewModel(ScreenshotApp.Instance.Configuration);
                 var view = new EditorSettingsPage { DataContext = model };
-                using var host = new CaptureHost(view, 960, 720);
+                using var host = new CaptureHost(view, 960, 800);
                 string header = id switch
                 {
                     "frame-cache" => Strings.FrameCache,
