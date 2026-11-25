@@ -7,6 +7,7 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 
 | Beutl            | .NET | [Avalonia](https://github.com/AvaloniaUI/Avalonia) | FFmpeg |
 | ---------------- | ---- | -------------------------------------------------- | ------ |
+| 2.0.0-preview.16 | 11.0 | 12.2.0                                             | 8.x    |
 | 2.0.0-preview.15 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.14 | 11.0 | 12.1.6                                             | 8.x    |
 | 2.0.0-preview.13 | 11.0 | 12.1.6                                             | 8.x    |
@@ -39,9 +40,9 @@ Beutlのバージョンとその依存フレームワーク、ライブラリの
 | 1.0.0-preview.2  | 7.0  | 11.0.4                                             | 6.0    |
 | 1.0.0-preview.1  | 7.0  | 11.0.4                                             | 6.0    |
 
-preview.9 から preview.15 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
+preview.9 から preview.16 は FFmpeg 8 系を使用します。`FFmpeg.AutoGen.Bindings.DynamicallyLoaded` のバージョンは `8.1.0` で、インストーラーは FFmpeg 8 系の共有ライブラリを選びます。
 
-Beutl が書き出すファイルを読める最も古いバージョンを示す `FileFormat.Floor` は、preview.15 でも `2.0.0-preview.11` のままです。preview.12 から preview.15 にはこれを引き上げた変更がないため、preview.15 で保存したプロジェクトは preview.11 で開けます。preview.11 以降で保存したプロジェクトは、preview.10 以前では開けません。preview.11 では、1 行にまとめたプロパティを 1 つの式で動かせるようになり、古いバージョンはこの新しい種類の式を保存時に失うため、下限を引き上げました。
+Beutl が書き出すファイルを読める最も古いバージョンを示す `FileFormat.Floor` は、preview.16 では `2.0.0-preview.15` です。preview.16 で保存したプロジェクトは preview.15 以降で開け、preview.14 以前では開けません。preview.15 以降、1 行にまとめたプロパティのうち 1 つ（移動の X など）の式を編集すると、新しい種類の式 `CombinedValueExpression` が保存されることがあり、preview.14 以前はこれを保存時に失うため、preview.16 で下限を引き上げました。preview.11 から preview.15 の下限は `2.0.0-preview.11` でした。preview.11 以降で保存したプロジェクトは、preview.10 以前では開けません。preview.11 では、1 行にまとめたプロパティを 1 つの式で動かせるようになり、古いバージョンはこの新しい種類の式を保存時に失うため、下限を引き上げました。
 
 ## ソース
 

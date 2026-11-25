@@ -4,7 +4,7 @@ description: Register commands, property editors, MCP tools and element sources,
 sidebar_position: 7
 ---
 
-Beutl 2.0.0-preview.15 exposes these contracts through `Beutl.Extensibility`. Use the [preview.15 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
+Beutl 2.0.0-preview.16 exposes these contracts through `Beutl.Extensibility`. Use the [preview.16 SDK](create-csproj.md) and rebuild your extension: several contract types have moved between assemblies in earlier previews, even where their namespaces stayed the same.
 
 ## Commands {/* #commands */}
 
@@ -154,6 +154,8 @@ public sealed class PercentEditorContext(IPropertyAdapter<float> property)
 ```
 
 Register it with `RegisterValue<float, double>`, with a `NumberEditor<double>` from `Beutl.Controls.PropertyEditors` as its control. `IValueEditorContext<TEdit>` gains members with default implementations, which Beutl's controls call: `PreviewEdit(value, relative)` previews typed text with `relative` set to `false`, and drags and wheel steps with `true`; `GetIncrementValue(shown)` gives the value that the next step starts from; `TryGetFocusedEditValue` and `PreviewFocusedEdit` show and take the value under the expression while the field has the focus. A control of your own calls them the same way.
+
+Comparing typed input with what the fields show cannot tell which component the user typed in when the user types the value that a field already shows. Since preview.16, a control that knows which fields it changed passes them to `PreviewEdit(value, relative, editedComponents)`, with bit `i` set for component `i`, as Beutl's vector, relative point and relative rectangle editors do. A context that derives from `PropertyEditorViewModel<TValue, TEdit>` then calls `ReplaceUnderExpression(underlying, shown, input, editedComponents)`, which calls the overload without the components by default. An editor with a field per component overrides it to return `ComponentAnimations.ReplaceEditedComponents(underlying, input, editedComponents)`, which takes the marked components from `input` and keeps the others of `underlying`.
 
 ## MCP tools {/* #mcp-tools */}
 

@@ -3,7 +3,18 @@ title: 拡張機能開発の注意点
 description: 拡張機能のビルド・パッケージ作成・テストで見落としやすい Beutl 2.x の動作と、その対処方法をまとめます。
 ---
 
-API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.15 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+API からは読み取りにくく、拡張機能の作者が実際につまずいた動作をまとめたページです。Beutl 本体で直すべきものには、対応する Issue へのリンクを付けています。対象は Beutl 2.0.0-preview.16 です。以下の API を移行してから、対応する SDK で拡張機能を再ビルドしてください。
+
+## preview.15 からの移行 {/* #migrating-from-preview-15 */}
+
+preview.15 の拡張機能を移行するときは、次の変更を確認してください。ほとんどの拡張機能は、テスト用のプロジェクトを Avalonia 12.2.0 に移し、preview.16 の SDK で再ビルドするだけで済みます。シーンのレンダラー、コンポジター、オブジェクトテンプレートのサービスを自分で作成する拡張機能、プロキシのストアやジョブキューを実装する拡張機能、`SpeedIntegrator` を使う拡張機能は変更が必要です。削除した API に互換用の API はありません。
+
+- **テスト用のプロジェクト**: ターゲットフレームワークは `net11.0` のままです。Avalonia は 12.2.0 になるため、`Avalonia.Headless` などの Avalonia のパッケージを Beutl のバージョンに固定しているテスト用のプロジェクトは 12.2.0 に移します。`BeutlHostPackageReference` は自動で追従します。ファイル形式の下限は preview.15 に上がります。preview.16 で保存したプロジェクトは preview.15 以降で開け、preview.11 から preview.14 では開けません。[バージョンの対応表](version-mapping.md)を参照してください。
+- **`SceneRenderer`、`SceneComposer`、`SceneCompositor`、`ObjectTemplateService`**: これらのコンストラクターと `ObjectTemplatePreviewRenderer.RenderPngAsync` は、個別の `FontManager?`、`EditorConfig?`、`ProxyStoreConfig?`、`DecoderRegistry?` の引数の代わりに `SceneRenderServices` を受け取ります。`SceneComposer` の 2 つのコンストラクターは、`SceneComposer(scene, services, disableResourceShare, forceOriginalSource)` の 1 つになりました。`SceneCompositor.Fonts` と `Decoders` は、新しい `Services` から読んだフォントとレジストリを引き続き返します。[シーンを描画する](media-providers.md#rendering-a-scene)を参照してください。
+- **プロキシ**: `IProxyStore` の `TryGet`、`TryTransition`、`Delete`、`Touch` と `IProxyJobQueue` の `EnqueueAsync` は、最後の引数に省略可能な `VideoDeinterlaceOptions deinterlace` を受け取ります。これらを呼ぶコードは再ビルドするだけで済みますが、どちらかのインターフェースを実装するクラスには引数の追加が必要で、preview.15 向けにビルドしたパッケージがこれらのいずれかを実装していると、preview.16 では読み込まれません。プロキシのジェネレーターは、要素のインターレース解除の設定を `ProxyJob.Deinterlace` で受け取り、同じ `Deinterlace` を持つ `ProxyEntry` を登録します。Beutl は、設定が一致する要素にだけプロキシを使います。ストアは preview.15 が作成したプロキシを読まなくなったため、作り直す必要があります。
+- **`SpeedIntegrator`**: コンストラクターはサンプルレートを受け取らない `SpeedIntegrator(Action? invalidateCallback = null)` になり、`SampleRate` と `TryGetCache(int)` は削除されました。キーフレームを設定した速度を、毎秒 60 回の合計ではなく、キーフレームからキーフレームまで正確に積分します。そのため、速度にキーフレームを設定したクリップは、以前とわずかに異なるソースの時刻に対応し、急な変化では最大で数フレームずれます。また、前回の積分の後に追加、削除、移動されたキーフレームにも追従します。
+- **動画のソース**: `SourceVideo` は、ソースの伝達曲線の解釈と、インターレース解除をするかどうかの 2 つの設定を新しく保存します。ユーザーは、**「ソース」** プロパティのメニューの **「伝達曲線」** と **「インターレース解除」** で設定します。`IDecoderInfo` には `Capabilities` が、`IProxyResolver` にはインターレース解除の設定を受け取る `Resolve` のオーバーロードが追加され、いずれも既定の実装があります。デコーダーは、報告する内容を通してこれらの設定に従います。[デコーダー](media-providers.md#decoders)を参照してください。
+- **成分ごとに欄があるプロパティエディタ**: コントロールは、ユーザーが入力した成分を `IValueEditorContext<TEdit>.PreviewEdit(value, relative, editedComponents)` でコンテキストに伝えられるようになり、`PropertyEditorViewModel<TValue>` はそれを新しい `ReplaceUnderExpression` のオーバーロードに渡します。どちらも既定では成分を受け取らないオーバーロードを呼ぶため、既存のコンテキストはこれまでどおりに動作します。[式の下の値を編集する](editor-integration.md#editing-under-an-expression)を参照してください。
 
 ## preview.14 からの移行 {/* #migrating-from-preview-14 */}
 
@@ -434,3 +445,5 @@ preview.11 以降の macOS では、**「設定」→「表示」→「ネイテ
 - [`FormattedText.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/TextFormatting/FormattedText.cs)
 - [`TextElements.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Graphics/Shapes/TextElements.cs)
 - [`ILayerAttributeService.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor/Services/ILayerAttributeService.cs)
+- [`SceneRenderServices.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/SceneRenderServices.cs) and [`SpeedIntegrator.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/SpeedIntegrator.cs)
+- [`IProxyStore.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Proxy/IProxyStore.cs), [`IProxyJobQueue.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Proxy/IProxyJobQueue.cs) and [`ProxyStoreIndex.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Engine/Media/Proxy/ProxyStoreIndex.cs)
