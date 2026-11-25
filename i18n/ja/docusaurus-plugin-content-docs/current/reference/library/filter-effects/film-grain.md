@@ -43,7 +43,7 @@ sidebar_position: 50
 
 ### カラー (Color)
 
-`0` ではすべてのチャンネルで同じグレインを使うので、グレインに色が付きません。`100` ではチャンネルごとに異なるグレインを使います。
+`0` ではすべてのチャンネルで同じグレインを使うので、グレインに色が付きません。`100` ではチャンネルごとに異なるグレインを使います。その間の値では両方を混ぜ、グレインの強さは両端と変わりません。
 
 - **型:** `float`
 - **既定値:** `0`
@@ -72,6 +72,6 @@ sidebar_position: 50
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs)
 
 - [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)

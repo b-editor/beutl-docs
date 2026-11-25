@@ -19,6 +19,8 @@ AIワークスペースでは、Beutl内で有料の生成・編集機能を利�
 
 Beutlアカウントにログインしてください。アカウントでAIを利用できない場合は、Proプランの案内が表示されます。プランのボタンはブラウザーでアカウント管理を開き、Beutlに戻るとアカウント情報を更新します。
 
+リクエストは、開始したアカウントに結び付きます。実行中にログアウトしたり別のアカウントに切り替えたりすると、Beutlはそのリクエストの処理をやめ、結果を追加しません。開始したアカウントにログインし直すと、完了していないリクエストを回復できます。
+
 ## セクション
 
 | セクション | 用途 |
@@ -51,3 +53,4 @@ Beutlアカウントにログインしてください。アカウントでAIを�
 - [`AiVideoEditingViewModel.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiVideoEditingViewModel.cs)
 - [`AiFileDrop.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/AiWorkspaceTab/Views/AiFileDrop.cs)
 - [`ElementCaptionTemplateAdapter.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor/Services/Captions/ElementCaptionTemplateAdapter.cs)
+- [`AiAccountJobScope.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/AiWorkspaceTab/Services/AiAccountJobScope.cs) / [`AiRecoveryState.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/AiWorkspaceTab/ViewModels/AiRecoveryState.cs)（リクエストとアカウントの切り替え）

@@ -47,6 +47,8 @@ You can toggle the visibility of each tab from the right-click context menu on a
 
 Type a keyword into the input box to search across the items in every tab. Results show the item name, description, and type (drawable, effect, etc.), sorted by relevance.
 
+The descriptions of the built-in items also give the names other editors use for them, so you can search by those names too. For example, `adjustment` finds **Backdrop**, `parent` finds **Group**, `green screen` finds **Chroma key**, `precomp` finds **Scene Reference (Video)**, and `posterize` finds **Stepped Motion**. When Beutl is set to another language, the descriptions give these names in that language and in English, so either works.
+
 When the input box is empty, all registered items are listed in a flat view.
 
 Press **`Ctrl + F`** (**`Cmd + F`** on macOS) anywhere in the Library tab to switch to **Search** and select the text in its input box.
@@ -75,6 +77,8 @@ Representative categories:
 - **Transforms**: Translate, scale, rotate, 3D rotate, skew
 - **Filter effects**: Blur, motion blur, bloom, drop shadow, stroke, color correction, curves, LUT, blend, mosaic, displacement map, scripted effects (C# / SKSL / GLSL), and more
 - **Audio effects**: Delay, equalizer, and more
+
+When you add a container such as **Group**, **Decorator**, **Sound Group**, or **3D Scene** on its own, by dropping it on the timeline or the preview or with **Add Element**, its element gets a [portal](../library/portal/portal-object.md) that takes in the elements on the five layers below it. A **3D Scene** also brings a **Cube** on the layer just below it, so the scene shows something right away; see [3D Scene](../library/3d-objects/3d-scene.md#usage).
 
 For details on each item, see the [Library reference](../library/index.md).
 
@@ -111,3 +115,5 @@ A category tree of nodes available for node-based rendering. Nodes are grouped b
 - [`NodesView.axaml`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/NodesView.axaml.cs)
 - [`LibraryGalleryView.axaml`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml) / [`.axaml.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/Views/LibraryViews/LibraryGalleryView.axaml.cs)
 - [`LibraryGalleryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryGalleryItemViewModel.cs) / [`LibraryPreviewCapture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryPreviewCapture.cs) / [`LibraryThumbnailSet.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Editor.Components/LibraryThumbnails/LibraryThumbnailSet.cs)
+- [`LibraryRegistrar.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor/Services/LibraryRegistrar.cs) / [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.resx) / [`LibraryItemViewModel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/LibraryTab/ViewModels/LibraryItemViewModel.cs) (descriptions and search)
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs) (containers and 3D Scenes added on their own)

@@ -60,8 +60,8 @@ Time properties continue to display and accept time text such as `00:00:01.500`.
 By dragging with the mouse on the timeline,
 you can edit the start time and duration of elements.
 
-To make editing easier in Beutl, elements snap to the time of other layers during drag operations.
-Toggle **Snap** in the timeline's empty-area right-click menu to turn snapping on or off. While resizing an element's edge, hold `Alt` to disable snapping temporarily. Holding `Alt` while dragging the element's body duplicates it.
+To make editing easier in Beutl, elements snap during drag operations to the edges of other elements, the playhead, markers, and the scene's start and end, and to the lines of the BPM grid when nothing else is near.
+Turn snapping on or off with the **Snap** button above the timeline's layer headers, or with **Snap** in the timeline's empty-area right-click menu. Hold `Alt` while dragging to disable snapping temporarily. Holding `Alt` while dragging the element's body also duplicates it. See [Placing, moving, and resizing](../reference/tool-tabs/timeline.md#placing-moving-and-resizing).
 
 <video controls muted playsInline title="" src="_images/5.edit-element/move-element.mp4" />
 
@@ -100,3 +100,4 @@ If saving would lose part of the loaded data, Beutl protects the original elemen
 - [`SceneRecovery.ElementRestore.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/SceneRecovery.ElementRestore.cs)
 - [`Element.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.ProjectSystem/ProjectSystem/Element.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
+- [`SnapHelper.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/SnapHelper.cs) (snap targets)

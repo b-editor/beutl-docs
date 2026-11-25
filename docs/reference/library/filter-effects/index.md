@@ -11,6 +11,8 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Sharpen**](./sharpen.md) — Makes details stand out by strengthening the difference between each pixel and its surroundings.
 - [**Radial Blur**](./radial-blur.md) — Blurs outward from, or around, a center point.
 - [**Motion blur**](./motion-blur.md) — Averages the drawable at several times within a shutter interval to blur its motion.
+- [**Echo**](./echo.md) — Draws fading copies of the layer from earlier or later moments together with the current one.
+- [**Stepped Motion**](./stepped-motion.md) — Holds each picture of the layer for a while, so it moves in steps like stop-motion.
 - [**Bokeh**](./bokeh.md) — Blurs the layer into the shape of a lens aperture, so bright points stand out as circles or polygons.
 - [**Bloom**](./bloom.md) — Adds a linear-light glow around the bright parts of the layer.
 - [**Light rays**](./light-rays.md) — Stretches the layer's highlights away from a center point.
@@ -51,11 +53,15 @@ Filter effects that post-process a drawable's rendered output. Effects can be ch
 - [**Transform**](./transform.md) — Applies a 2D transform as a filter effect (separately from the layer's own Transform).
 - [**Mosaic**](./mosaic.md) — Pixelates the layer into mosaic blocks.
 - [**Color Shift**](./color-shift.md) — Shifts each RGB and alpha channel independently to create a chromatic aberration look.
+- [**Lens Chromatic Aberration**](./lens-chromatic-aberration.md) — Separates the red and blue channels around a center, like the color fringes of a lens.
 - [**Shake**](./shake.md) — Applies a randomized shake / jitter to the layer.
 - [**Displacement Map**](./displacement-map.md) — Distorts the layer using another layer as a displacement map.
 - [**Mesh warp**](./mesh-warp.md) — Deforms the layer by dragging the control points of a grid in the preview.
+- [**Corner Pin**](./corner-pin.md) — Moves the layer's four corners and stretches the picture between them in perspective.
+- [**Puppet**](./puppet.md) — Bends the layer around pins that you place and drag in the preview.
 - [**Path Follow**](./path-follow.md) — Warps the layer so that it follows a path geometry.
 - [**Layer**](./layer.md) — Applies a chain of filter effects to a referenced layer instead of the current one.
 - [**Delay Animation**](./delay-animation.md) — Runs an effect chain on each part of the layer in turn, each part later than the one before.
+- [**Range animator**](./range-animator.md) — Moves, scales, rotates, fades, blurs or tints a selected range of the layer's parts, such as the characters of a split text.
 - [**Pixel Sort**](./pixel-sort.md) — Sorts pixels by brightness or hue along a specified direction.
 - [**Node Graph (Effect)**](./node-graph-effect.md) — Uses a node graph as a custom filter effect.

@@ -43,7 +43,7 @@ sidebar_position: 51
 
 ### ぼかし (Feather)
 
-変化しない中央部から最大の強さまでの移り変わりの幅です。`0` では境界がくっきりします。
+変化しない中央部から最大の強さまでの移り変わりの幅を、中心から四隅までの距離に対するパーセントで指定します。移り変わりは `中間点` を中心に広がります。中心や四隅を越える部分だけが切り捨てられるので、`中間点` が `0` や `100` に近くても大きな `ぼかし` はなめらかなままで、ビネットは `中間点` で半分の強さになります。`0` では境界がくっきりします。
 
 - **型:** `float`
 - **既定値:** `50`
@@ -64,6 +64,6 @@ sidebar_position: 51
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs)
 
 - [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)

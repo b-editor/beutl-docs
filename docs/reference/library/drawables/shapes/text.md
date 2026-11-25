@@ -77,7 +77,7 @@ Aligns each line within the width of the longest line: **Align left** (`Start`),
 
 ### Split by characters (SplitByCharacters)
 
-When `true`, each character is rendered as a separate object so effects can be applied per character.
+When `true`, each character is rendered as a separate object so effects can be applied per character. [Delay Animation](../../filter-effects/delay-animation.md) and [Range animator](../../filter-effects/range-animator.md) then animate the characters one after another or in a range you move across them, and their `Unit` can treat each word or line as one part.
 
 - **Type:** `bool`
 - **Default:** `false`
@@ -124,7 +124,7 @@ Optional outline pen. Set to draw an outline. With the pen's [**Stroke order**](
 Glyph fill brush.
 
 - **Type:** `Brush?`
-- **Default:** `null`
+- **Default:** `#FFFFFFFF` (white)
 - **Animatable:** No
 
 ## Common properties
@@ -137,7 +137,7 @@ Enter the text, pick a font, and adjust the size and other properties. For anima
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
+[`src/Beutl.Engine/Graphics/Shapes/TextBlock.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/Shapes/TextBlock.cs)
 
 - [`FontManager.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/Font/FontManager.cs)
 - [`TextAlignment.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextAlignment.cs)
@@ -146,4 +146,4 @@ Enter the text, pick a font, and adjust the size and other properties. For anima
 - [`StrokeOrder.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Media/StrokeOrder.cs)
 - [`TextFontFallback.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Engine/Media/TextFormatting/TextFontFallback.cs)
 - [`App.axaml.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/App.axaml.cs)
-- [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/GraphicsStrings.resx)
+- [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.resx)

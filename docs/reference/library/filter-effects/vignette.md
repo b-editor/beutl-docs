@@ -43,7 +43,7 @@ Shape of the vignette. At `0` it follows the layer's proportions, so a wide laye
 
 ### Feather
 
-Width of the transition between the untouched middle and the full strength. `0` gives a hard edge.
+Width of the transition between the untouched middle and the full strength, as a percentage of the way from the center to the corners. The transition is centered on `Midpoint`. Only the part that would reach past the center or the corners is cut off, so a wide `Feather` stays soft even when `Midpoint` is near `0` or `100`, and the vignette still reaches half its strength at `Midpoint`. `0` gives a hard edge.
 
 - **Type:** `float`
 - **Default:** `50`
@@ -64,6 +64,6 @@ Add the effect to an adjustment layer to darken the corners of everything beneat
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/Vignette.cs)
 
 - [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.resx)

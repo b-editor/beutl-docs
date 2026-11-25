@@ -8,6 +8,8 @@ sidebar_position: 22
 
 Use this tab when a scene cannot find or read its video, audio, image, 3D model, LUT, or font files.
 
+Objects that Beutl cannot show for other reasons, such as objects from an extension that is not installed, are listed in the [Undisplayable data](./undisplayable-data.md) tab.
+
 ## Tab characteristics
 
 - **Open by default**: No
@@ -15,7 +17,7 @@ Use this tab when a scene cannot find or read its video, audio, image, 3D model,
 
 ## How to open
 
-Choose **Open repair tool** in the missing-media notification. This tab is not listed in **View → Tools**.
+Choose **Open repair tool** in the missing-media notification. **Scene → Relink missing media** in the menu bar checks the scene again and opens the tab. This tab is not listed in **View → Tools**.
 
 ## Relinking files
 
@@ -35,6 +37,7 @@ Use **Keep offline** in an item's more menu to leave that item unresolved while 
 
 - [Editing Elements](../../get-started/edit-element.md)
 - [Project Structure](../../get-started/project-structure.md)
+- [Undisplayable data](./undisplayable-data.md)
 
 ## Source
 
@@ -43,3 +46,4 @@ Use **Keep offline** in an item's more menu to leave that item unresolved while 
 - [`MissingMediaView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/Views/MissingMediaView.axaml)
 - [`EditViewModel.MissingMedia.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.MissingMedia.cs)
 - [`MissingMediaStrings.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/MissingMediaStrings.resx)
+- [`MenuBarViewModel.Scene.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/MenuBarViewModel.Scene.cs) (the **Scene** menu)

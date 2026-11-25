@@ -8,6 +8,8 @@ sidebar_position: 22
 
 シーンが参照する動画・音声・画像・3Dモデル・LUT・フォントのファイルを見つけられない、または読み込めない場合に使います。
 
+拡張機能がインストールされていないなど、ほかの理由で表示できないオブジェクトは、[表示できないデータ](./undisplayable-data.md)タブに一覧されます。
+
 ## タブの特性
 
 - **デフォルトで開く**: いいえ
@@ -15,7 +17,7 @@ sidebar_position: 22
 
 ## 開き方
 
-欠損メディアの通知から **修復ツールを開く** を選びます。このタブは **「表示」→「ツール」** には表示されません。
+欠損メディアの通知から **修復ツールを開く** を選びます。メニューバーの **「シーン」→「欠損メディアを再リンク」** では、シーンを確認し直してからこのタブを開きます。このタブは **「表示」→「ツール」** には表示されません。
 
 ## ファイルの再リンク
 
@@ -35,6 +37,7 @@ sidebar_position: 22
 
 - [要素の編集](../../get-started/edit-element.md)
 - [プロジェクトの構造](../../get-started/project-structure.md)
+- [表示できないデータ](./undisplayable-data.md)
 
 ## ソース
 
@@ -43,3 +46,4 @@ sidebar_position: 22
 - [`MissingMediaView.axaml`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Editor.Components/MissingMediaTab/Views/MissingMediaView.axaml)
 - [`EditViewModel.MissingMedia.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl/ViewModels/EditViewModel.MissingMedia.cs)
 - [`MissingMediaStrings.ja.resx`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Language/MissingMediaStrings.ja.resx)
+- [`MenuBarViewModel.Scene.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/MenuBarViewModel.Scene.cs)（**シーン** メニュー）

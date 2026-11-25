@@ -45,7 +45,11 @@ MyProject/
 
 ## バージョン間の互換性 {/* #version-compatibility */}
 
-**2.0.0-preview.11 以降で保存したプロジェクトは、preview.10 以前では開けません。** preview.12、preview.13、preview.14、preview.15 はプロジェクト形式の最低対応バージョンを 2.0.0-preview.11 のまま変えないので、これらで保存したプロジェクトも preview.11 で開けます。古いバージョンでも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
+**2.0.0-preview.16 で保存したプロジェクトを開くには、2.0.0-preview.15 以降が必要です。** preview.14 以前でも使う必要がある場合は、更新前にプロジェクトフォルダー全体をバックアップしてください。
+
+分離した成分の式で `Value` や `ValueAtTime` を使うと、preview.14 以前では保存時にその式が失われるため、最低対応バージョンが上がりました。この最低バージョンは、preview.16 で保存したすべてのプロジェクトに適用されます。[成分を分離する](./keyframe.md#separate-components)を参照してください。
+
+preview.11 から preview.15 までのプロジェクト形式の最低対応バージョンは 2.0.0-preview.11 でした。
 
 プロジェクト・シーン・要素のファイルには、開くために必要な最低バージョンが記録されます。preview.11 で最低対応バージョンが上がるのは、移動の X と Y のように 2 つや 3 つの値をまとめて表示する行が、式を新しい種類の式として保存するためです。古いバージョンはそこに式を見つけられず、次に保存するときに失ってしまうため、そのようなプロジェクトを開かないようにしています。この最低対応バージョンは、そうした式を使っているかどうかにかかわらず、preview.11 で保存したすべてのプロジェクトに適用されます。[1 行にまとめて表示される値](./keyframe.md#joined-rows)を参照してください。
 
@@ -73,3 +77,4 @@ preview.9 ではタイムラインとメディアの時刻を整数の flick 数
 - [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
 - [`StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Core/Serialization/FileFormat.cs)

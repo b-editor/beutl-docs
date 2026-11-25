@@ -39,6 +39,8 @@ The layout follows the shape of the tab:
 
 The wheels stay in the middle of the height they have. They move their controls beside their pads, or use fewer columns, when that makes the pads larger. The numbers they show never change the layout, so a drag does not move them.
 
+When the tab is too short even for the smallest wheels, everything under the toolbar scrolls together with one scroll bar, and the toolbar stays in place.
+
 If the underlying Color Grading effect is removed, the tab closes automatically.
 
 ## Toolbar
@@ -73,7 +75,9 @@ The drop-down at the right end of the toolbar switches the color wheels.
 
 **Pivot** is the effect's **Contrast Pivot**, the luminance around which contrast is applied. Temperature balances cool against warm, Tint balances green against magenta, and Vibrance raises low-saturation colors first.
 
-Each slider spans its property's range, and its fill starts at the default. A press on the rail puts the value there, a press on the thumb grabs it where it is, and a drag follows the pointer, a tenth as fast with `Alt` (`Command` on macOS). A double click returns the slider to its default. You can also type a value into the box beside it.
+Each slider spans its property's range, and its fill starts at the default. A press on the rail puts the value there, a press on the thumb grabs it where it is, and a drag follows the pointer, a tenth as fast with `Alt` (`Command` on macOS). A double click returns the slider to its default. You can also type a value or a calculation into the box beside it; see [Typing calculations](./element-property.md#typing-calculations).
+
+`Esc` or Undo during a drag puts the value back where the drag began, and starting playback ends the drag and keeps the value it reached. This holds for every drag in the tab: on the sliders, the wheels and their R, G, and B boxes, and the **Tonal Range** bar.
 
 Every slider has the same **⋮** menu as the Properties tab, so you can add keyframes, edit the animation, or set an expression from here. A slider whose value an expression gives shows the expression's result, and moving it edits the value under the expression. See [Editing under an expression](../../get-started/keyframe.md#editing-under-an-expression).
 
@@ -87,7 +91,7 @@ Each wheel is a puck on a disk laid out like the vectorscope: the Cb axis runs t
 - **Number boxes**: Set R, G, and B one at a time, in steps of `0.01`.
 - **Reset button**: Returns the wheel to neutral: `1` for Gamma and Gain, `0` for the others.
 
-Every wheel also has the **⋮** menu for keyframes and expressions, and a wheel with an expression edits the value under it, as a slider does.
+Every wheel also has the **⋮** menu for keyframes and expressions, and a wheel with an expression edits the value under it, as a slider does. Typing into or dragging one of its R, G, and B boxes then changes only that channel.
 
 ### Wheels by mode
 
@@ -128,3 +132,4 @@ The following state is restored when the tab is reopened, even after it has been
 - [`ColorGradingPropertiesEditor.axaml.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.Editor.Components/ColorGradingProperties/Views/ColorGradingPropertiesEditor.axaml.cs) (the "Edit in tab" button on the properties side)
 - [`ColorBalancePad.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/ColorBalancePad.cs) / [`HeaderScrubGesture.cs`](https://github.com/b-editor/beutl/blob/70d09a97d4491bf6616e248fec809faa58e47db7/src/Beutl.Controls/PropertyEditors/HeaderScrubGesture.cs) (when a drag on a wheel begins)
 - [`NumberEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/NumberEditorViewModel.cs) / [`GradingColorEditorViewModel.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/ViewModels/GradingColorEditorViewModel.cs) (editing under an expression)
+- [`GradingContentPanel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/ColorGradingTab/Views/GradingContentPanel.cs) / [`ColorGradingWheel.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Controls/PropertyEditors/ColorGradingWheel.cs) / [`DragSession.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/DragSession.cs) (scrolling a short tab, editing one channel under an expression, and ending a drag)

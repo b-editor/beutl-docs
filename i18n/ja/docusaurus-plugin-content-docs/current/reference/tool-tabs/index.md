@@ -75,6 +75,7 @@ sidebar_position: 2
 | [トランジション](./transition.md) | 要素の開始・終了位置のトランジションを編集する |
 | [スマホプレビュー](./mobile-preview.md) | スマホで映像と音声を確認し、再生を操作する |
 | [無音区間で自動分割](./silence-split.md) | 音声要素の無音部分を検出し、分割または削除する |
+| [表示できないデータ](./undisplayable-data.md) | 未インストールの拡張機能のオブジェクトなど、このビルドで表示できないデータを探して場所を表示する |
 
 このドキュメントの情報源は、[Beutl リポジトリ](https://github.com/b-editor/beutl)の `src/Beutl/Services/StartupTasks/LoadPrimitiveExtensionTask.cs` および `src/Beutl.Editor.Components/` 配下の `*TabExtension.cs` です。
 

@@ -43,7 +43,7 @@ How smoothly neighboring grains blend into each other. `0` gives hard square gra
 
 ### Color
 
-At `0`, all channels share the same grain, so the grain has no color. At `100`, each channel has its own grain.
+At `0`, all channels share the same grain, so the grain has no color. At `100`, each channel has its own grain. Values in between mix the two, and the grain stays as strong as at either end.
 
 - **Type:** `float`
 - **Default:** `0`
@@ -72,6 +72,6 @@ Add the effect to footage, or to an [adjustment layer](../../tool-tabs/timeline.
 
 ## Source
 
-[`src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/FilmGrain.cs)
 
 - [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.resx)

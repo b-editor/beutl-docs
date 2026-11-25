@@ -16,7 +16,9 @@ Library → Portal
 
 ### Count
 
-Number of elements directly below the portal (with the next consecutive Z-indexes) that will be captured into the flow. The container that follows the portal will receive these elements as its children.
+Number of layers directly below the portal (the next consecutive Z-indexes) whose elements will be captured into the flow. The container that follows the portal will receive these elements as its children.
+
+When you add a container such as **Group**, **Decorator**, **Sound Group**, or **3D Scene** on its own from the Library, its new element comes with a portal whose **Count** is `5`, so the container takes in the elements on the five layers below it. A portal created in any other way, for example along with a container added to an existing element in the [Element Property](../../tool-tabs/element-property.md) tab, starts at `0`.
 
 - **Type:** `int`
 - **Default:** `0`
@@ -37,3 +39,5 @@ This object inherits from `EngineObject` and exposes the [common properties](../
 ## Source
 
 [`src/Beutl.ProjectSystem/ProjectSystem/PortalObject.cs`](https://github.com/b-editor/beutl/blob/main/src/Beutl.ProjectSystem/ProjectSystem/PortalObject.cs)
+
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs) (the portal of a container added from the Library)

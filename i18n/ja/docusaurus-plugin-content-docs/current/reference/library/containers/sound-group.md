@@ -7,7 +7,7 @@ sidebar_position: 3
 # サウンドグループ
 
 複数のサウンドソースをグループ化して 1 つの出力にミックスし、グループ全体に共通の音量・速度・エフェクトを適用できるようにします。
-It can be used in conjunction with [Portal](../portal/portal-object.md).
+[ポータル](../portal/portal-object.md)と併用することができます。
 
 ## ライブラリでの場所
 

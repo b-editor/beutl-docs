@@ -8,6 +8,8 @@ sidebar_position: 52
 
 レイヤーに重ねた格子の制御点を動かして、レイヤーを変形します。プレビューで点をドラッグすると、絵がそれに合わせて伸び縮みします。メッシュ全体が 1 つの値なので、`メッシュ` にキーフレームを打つと、ある形から次の形へ変化させられます。
 
+変形した絵の外側の縁は 1 ピクセルほどの幅でなめらかに描かれるので、メッシュで斜めになった辺も、動いている間もギザギザになりません。前のエフェクトでレイヤーが複数の部分に分割されているときは、メッシュワープはそれらを 1 枚の絵として曲げ、部分どうしが接する辺はそのまま描くので、部分の間にすき間はできません。
+
 ## ライブラリでの場所
 
 「ライブラリ」 → フィルターエフェクト → メッシュワープ
@@ -15,7 +17,7 @@ sidebar_position: 52
 ## プレビューでメッシュを編集する
 
 1. プロパティタブで、エフェクトの目のアイコンの左にある十字のボタン **フレームで編集** をクリックします。[エフェクトのハンドルをプレビューで編集する](../../tool-tabs/element-property.md#effect-handles)を参照してください。
-2. プレビューにレイヤーに重なった格子が表示されます。点と点を結ぶ線、四隅のオレンジの点、ほかの点を示す青い点です。その間、オブジェクト自体のトランスフォームハンドルは隠れます。
+2. プレビューにレイヤーに重なった格子が表示されます。点と点を結ぶ線、四隅のオレンジの点、ほかの点を示す青い点です。その間、オブジェクト自体のトランスフォームハンドルは隠れます。メッシュワープの後ろにほかのエフェクトがあるときは、その間それらがプレビューで非表示になるので、後続のエフェクトが絵を動かす場合でも、格子はメッシュワープが作る絵の上に重なります。プレビューの下部には **メッシュの制御点を編集中。プレビューでは後続のエフェクトを一時的に非表示にしています。** と表示されます。再生中、**移動** 以外のツールを選んでいるとき、ほかのものを選択したときは、後続のエフェクトも表示されます。
 3. 点をドラッグします。点はレイヤーの範囲の外にも動かせ、絵はそこまで引き伸ばされます。ドラッグ 1 回が 1 回の取り消し単位になり、`Esc` でキャンセルできます。
 
 ハンドルは `強さ` にかかわらず、`0` のときでも、作ったとおりのメッシュの形を示します。`メッシュ` にキーフレームがあるときは、ドラッグすると現在のフレームのキーフレームが変わり、そこにキーフレームがなければスプラインイージングで追加されます。`メッシュ` に式が設定されている間は、ドラッグしても何も起こりません。
@@ -81,4 +83,5 @@ sidebar_position: 52
 
 - [`MeshWarpGrid.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/MeshWarpGrid.cs) / [`MeshWarpInterpolation.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/MeshWarpInterpolation.cs)
 - [`MeshWarpGridEditor.axaml`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/MeshWarpGridEditor.axaml) / [`TransformHandlesOverlay.EditingHandles.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Views/TransformHandlesOverlay.EditingHandles.cs)
-- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)
+- [`TriangleWarpRenderer.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/TriangleWarpRenderer.cs) / [`PlayerViewModel.EditingStage.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.EditingStage.cs)
+- [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.ja.resx)

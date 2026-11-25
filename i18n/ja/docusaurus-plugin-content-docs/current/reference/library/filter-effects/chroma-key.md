@@ -48,7 +48,7 @@ sidebar_position: 23
 
 ### スピル抑制 (SpillSuppression)
 
-髪に付く緑の縁取りのように、スクリーンが反射して残す部分にかぶったキー色を取り除く強さをパーセントで指定します。キー色で最も強いチャンネル（グリーンバックなら緑）を、ほかの 2 チャンネルの平均に向けて下げます。`100` ではその平均を超えなくなり、`50` では半分だけ近づきます。ほかのチャンネルと透明度は変わりません。黒やグレーのように色味のはっきりしないキー色では抑制されず、`0` では色をそのまま残します。
+髪に付く緑の縁取りのように、スクリーンが反射して残す部分にかぶったキー色を取り除く強さをパーセントで指定します。グリーンバックやブルーバックのようにキー色が赤・緑・青に近いときは、キー色で最も強いチャンネル（グリーンバックなら緑）を、ほかの 2 チャンネルの平均に向けて下げます。`100` ではその平均を超えなくなり、`50` では半分だけ近づき、ほかのチャンネルは変わりません。キー色がシアン・マゼンタ・イエローに近く、2 つのチャンネルが強いときは、その 2 つを同じように最も弱いチャンネルに向けて下げます。その中間のキー色では両方を混ぜて使います。透明度は変わりません。黒やグレーのように色味のはっきりしないキー色では抑制されず、`0` では色をそのまま残します。
 
 - **型:** `float`
 - **既定値:** `0`
@@ -61,6 +61,6 @@ sidebar_position: 23
 
 ## ソース
 
-[`src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs)
+[`src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/ChromaKey.cs)
 
 - [`GraphicsStrings.ja.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.ja.resx)

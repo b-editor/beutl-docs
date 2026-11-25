@@ -8,6 +8,8 @@ sidebar_position: 52
 
 Deforms the layer by moving the control points of a grid laid over it. You drag the points in the preview, and the picture stretches with them. The whole mesh is one value, so keyframes on `Mesh` change the layer from one shape to the next.
 
+The outer edges of the warped picture are smoothed over about a pixel, so a side that the mesh slants shows no jagged steps, even while it moves. When an earlier effect has split the layer into parts, Mesh warp bends them as one picture and leaves the sides where the parts meet as they are, so the parts still join without a gap.
+
 ## Library location
 
 Library → Filter Effect → Mesh warp
@@ -15,7 +17,7 @@ Library → Filter Effect → Mesh warp
 ## Editing the mesh in the preview
 
 1. In the Properties tab, click **Edit in frame**, the crosshair button left of the effect's eye. See [Editing an effect's handles in the preview](../../tool-tabs/element-property.md#effect-handles).
-2. The preview shows the grid over the layer: lines between the points, orange dots at the four corners, and blue dots for the other points. The object's own transform handles hide meanwhile.
+2. The preview shows the grid over the layer: lines between the points, orange dots at the four corners, and blue dots for the other points. The object's own transform handles hide meanwhile. When effects come after Mesh warp, the preview hides them meanwhile, so the grid stays on the picture that Mesh warp makes even when a later effect would move it, and a note at the bottom of the preview says **Editing mesh points. Later effects are hidden in the preview.** They show again during playback, with a tool other than **Move**, or once you select something else.
 3. Drag a point. A point can go outside the layer's bounds, and the picture stretches out to it. Each drag is one undo step, and `Esc` cancels it.
 
 The handles show the mesh as you shaped it whatever the `Strength`, even at `0`. When `Mesh` has keyframes, a drag changes the keyframe at the current frame, or adds one there with spline easing. While `Mesh` has an expression, dragging does nothing.
@@ -81,4 +83,5 @@ Click **Edit in frame**, then drag the points to bend a logo, bulge a face, or f
 
 - [`MeshWarpGrid.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/MeshWarpGrid.cs) / [`MeshWarpInterpolation.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Engine/Graphics/FilterEffects/MeshWarpInterpolation.cs)
 - [`MeshWarpGridEditor.axaml`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Editor.Components/PropertyEditors/Views/MeshWarpGridEditor.axaml) / [`TransformHandlesOverlay.EditingHandles.cs`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl/Views/TransformHandlesOverlay.EditingHandles.cs)
-- [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/002aefdf04748db026dfeaf506d5e465576ca08c/src/Beutl.Language/GraphicsStrings.resx)
+- [`TriangleWarpRenderer.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Engine/Graphics/FilterEffects/TriangleWarpRenderer.cs) / [`PlayerViewModel.EditingStage.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl/ViewModels/PlayerViewModel.EditingStage.cs)
+- [`GraphicsStrings.resx`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Language/GraphicsStrings.resx)

@@ -45,9 +45,13 @@ The local UI state in `.beutl` is excluded from project history. See [Version Co
 
 ## Version compatibility {/* #version-compatibility */}
 
-**Projects saved by 2.0.0-preview.11 or later do not open in preview.10 or earlier.** Preview.12, preview.13, preview.14, and preview.15 keep the project file format floor at 2.0.0-preview.11, so projects they save still open in preview.11. Back up the whole project folder before upgrading if you need to keep an older version usable.
+**Projects saved by 2.0.0-preview.16 require at least 2.0.0-preview.15.** Back up the whole project folder before upgrading if you need to open it in preview.14 or earlier.
 
-Project, scene, and element files record the minimum Beutl version needed to open them. Preview.11 raises the floor because a row that shows two or three values together, such as a Translate's X and Y, saves its expression as a new kind of expression. An older version would find no expression there and lose it the next time it saved, so it refuses such a project instead. The floor applies to every project that preview.11 saves, whether or not it uses such an expression. See [Values shown in one row](./keyframe.md#joined-rows).
+Preview.16 raises the minimum because an expression on a separate component can use `Value` or `ValueAtTime`. Preview.14 and earlier would discard that kind of expression when they saved the project. The minimum applies to all projects saved by preview.16. See [Separate components](./keyframe.md#separate-components).
+
+Preview.11 through preview.15 used a project file format floor of 2.0.0-preview.11.
+
+Project, scene, and element files record the minimum Beutl version needed to open them. Preview.11 raised the floor because a row that shows two or three values together, such as a Translate's X and Y, saves its expression as a new kind of expression. An older version would find no expression there and lose it the next time it saved, so it refuses such a project instead. The floor applies to every project that preview.11 saves, whether or not it uses such an expression. See [Values shown in one row](./keyframe.md#joined-rows).
 
 Preview.10 raised the floor because the [Stroke](../reference/library/filter-effects/stroke.md) effect's draw order moved from its `Style` property to the pen's **Stroke order**. A saved `Style` is converted when loaded, but an older version would ignore the new setting and draw the stroke over the content. Only the saved value carries over: **Stroke order** cannot be animated, so a `Style` driven by keyframes or an expression loads as its base value.
 
@@ -73,3 +77,4 @@ Preview.9 stores timeline and media times as integer flick counts. Older time st
 - [`ProjectColorPaletteFile.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl.Core/ProjectColorPaletteFile.cs) / [`ProjectColorPaletteHost.cs`](https://github.com/b-editor/beutl/blob/48658e4918efab9d95204015c41a36864ca60dbc/src/Beutl/Services/ProjectColorPaletteHost.cs) / [`ProjectThumbnailService.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl/Services/ProjectThumbnailService.cs)
 - [`MediaTimeJsonConverter.cs`](https://github.com/b-editor/beutl/blob/f9cbaeef9da0077f6745010a2d69955e12c45187/src/Beutl.Core/JsonConverters/MediaTimeJsonConverter.cs)
 - [`StrokeEffect.cs`](https://github.com/b-editor/beutl/blob/fb0eb00b07159f8c1a96c308b38958e29590686a/src/Beutl.Engine/Graphics/FilterEffects/StrokeEffect.cs)
+- [`FileFormat.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Core/Serialization/FileFormat.cs)

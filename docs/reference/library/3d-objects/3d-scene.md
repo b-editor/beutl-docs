@@ -77,6 +77,12 @@ Background fill color of the rendered scene.
 
 This object inherits from `Drawable` and exposes the [common properties](../common-properties.md) declared on its base classes.
 
+## Usage
+
+When you add a **3D Scene** on its own from the Library, by dropping it on the timeline or the preview or with **Add Element**, Beutl also adds a **Cube** on the layer just below it, so the scene shows something right away. The 3D Scene's element takes in the 3D objects and lights on the five layers below it through its [portal](../portal/portal-object.md), so you can add more of them on the next layers. Both elements are added in one undo step, on neighboring layers; when a layer there is taken or locked, they go to free layers together. When no 3D object on those layers overlaps the scene in time, its element shows a [warning](../../tool-tabs/timeline.md#element-warnings).
+
 ## Source
 
 [`src/Beutl.Engine/Graphics3D/Scene3D.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.Engine/Graphics3D/Scene3D.cs)
+
+- [`LibraryElementDescription.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.Editor.Components/Helpers/LibraryElementDescription.cs) (the sample cube and the portal)

@@ -7,6 +7,7 @@ sidebar_position: 3
 # Sound Group
 
 Groups multiple sound sources and mixes them into a single output, allowing common gain / speed / effects to be applied to the entire group.
+It can be used in conjunction with [Portal](../portal/portal-object.md).
 
 ## Library location
 

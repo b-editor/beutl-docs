@@ -172,7 +172,7 @@ void main() {
 - **絵と画像のワイヤーは直接繋がります。** **エフェクト入力** などの絵はパスのサンプラーに、パスの出力は **グラフ出力** など絵を受け取る入力に直接繋がります。これらのワイヤーは型変換ありの色で表示されます。グラフが最初に読む絵がソースで、出力が覆う範囲を決めます。ほかの絵はソースに位置を揃えます。繋いでいないサンプラーはソースを読みます。**描画先** は画像のワイヤーだけを受け取り、絵を繋ぐとワイヤーが赤くなります。
 - **`uv` はすべての入力を同じ位置で読みます。** 覆う範囲が違う入力は、パスの出力に揃えたコピーを使うので、出力に余白を付けても入力の位置はずれません。固定サイズの画像、メッシュ、**画像の情報** に繋いだパスは、それぞれの座標を保ちます。
 - **反復はグループです。** **繰り返し** と **シミュレーションを再生** は中身を反復ごとに評価し、各状態の出力は同じ位置の状態の入力に渡ります。シミュレーションの再生は開始時刻から一定の刻みで計算し直すので、シークしても再生したときと同じ絵になり、プレビューでも書き出しでも同じです。毎フレーム計算し直し、100,000 ステップを超えるとノードは実行せずにエラーを表示します。反復の中で余白を付けると反復ごとに大きくなるので、余白は反復の前で付けます。
-- **失敗はノードに表示されます。** コードや接続の誤りは、グラフを記録した時点でノードに表示されます。macOS でのジオメトリステージや上限を超える画像など、GPU だけが拒否できる失敗は、出力が絵になったノード、またはグループの出力に届く中のノードに表示されます。ワイヤーは赤くなり、そのグラフは何も描画せず、フレームのほかの部分は描画されます。書き出しも止まりません。
+- **失敗はノードに表示されます。** コードや接続の誤りは、グラフを記録した時点でそのノードにだけ表示されます。後に続くノードはその誤りを繰り返して表示しませんが、自身の誤りは表示します。macOS でのジオメトリステージや上限を超える画像など、GPU だけが拒否できる失敗は、出力が絵になったノード、またはグループの出力に届く中のノードに表示されます。ワイヤーは赤くなり、そのグラフは何も描画せず、フレームのほかの部分は描画されます。書き出しも止まりません。
 - **部分描画と部分画像。** **部分描画** を使うと、パスは出力のうちフレームに必要な部分だけを描画し、**入力領域** で出力の各ピクセルが入力のどの部分を読むかを指定できます。**部分画像** ではさらに、パスの画像がその部分だけを持つので、大きな[繰り返し配置](../library/filter-effects/repeat.md)のグリッドのようにフレームよりはるかに広い絵でも解像度を保ちます。このときパスは、各ピクセルの位置を **画像の情報** から求める必要があります。余白のないパスなら最初のコードはそのまま動き、入力領域のない入力は全体のままです。
 
 ## モニターノード
@@ -216,6 +216,7 @@ void main() {
 
 - [`NodesRegistrar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/Nodes/NodesRegistrar.cs) / [`ShaderNodesRegistrar.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/Nodes/Shaders/ShaderNodesRegistrar.cs)
 - [`ShaderPassNode.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/Nodes/Shaders/ShaderPassNode.cs) / [`ShaderSettingsNodes.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/Nodes/Shaders/ShaderSettingsNodes.cs) / [`ShaderLoopNode.cs`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/Nodes/Shaders/ShaderLoopNode.cs)
+- [`ShaderPassNode.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.NodeGraph/Nodes/Shaders/ShaderPassNode.cs) / [`ShaderGraphPicture.cs`](https://github.com/b-editor/beutl/blob/2c662378061e338f16e0f6f70e03704c172c5891/src/Beutl.NodeGraph/Nodes/Shaders/ShaderGraphPicture.cs)（シェーダーグラフのエラーを表示するノード）
 - [`NodeGraph README`](https://github.com/b-editor/beutl/blob/dadee0db956ddb874ab88f48329bc84a5ce5cf6b/src/Beutl.NodeGraph/README.md#shader-nodes)
 - [`GenerativeNode.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeNode.cs)
 - [`GenerativeGraphRunner.cs`](https://github.com/b-editor/beutl/blob/v2.0.0-preview.8/src/Beutl.NodeGraph/Generative/GenerativeGraphRunner.cs)
