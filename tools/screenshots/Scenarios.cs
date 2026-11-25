@@ -154,7 +154,7 @@ internal static class Scenarios
             {
                 using var model = new EditorSettingsPageViewModel(ScreenshotApp.Instance.Configuration);
                 var view = new EditorSettingsPage { DataContext = model };
-                using var host = new CaptureHost(view, 960, 720);
+                using var host = new CaptureHost(view, 960, 800);
                 string header = id switch
                 {
                     "frame-cache" => Strings.FrameCache,
